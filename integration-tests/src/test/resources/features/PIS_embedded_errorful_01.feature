@@ -19,3 +19,11 @@ Feature: Payment Initiation Service - Embedded Approach
 
     #TODO exchange commented payment ids with valid ones
 
+    Scenario Outline: Errorful Update of Psu Data at Authorisation Resource (embedded)
+        Given PSU initiated a payment <payment-service> with the payment-id <payment-id>
+ #       And created an authorisation resource which he wants to update using <authorisation-data> TODO: Waiting for IPE's successful authorization request/ can be reused for this step
+        When PSU sends the errorful authorisation udpate request
+        Then an error response code and the appropriate error response are received
+        Examples:
+            | payment-service   | payment-id                           | authorisation-data
+            | payments          | a9115f14-4f72-4e4e-8798-10101010xxxx | authWithPsuAuth-not-existing-paymentId.json
