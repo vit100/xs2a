@@ -25,6 +25,7 @@ import de.adorsys.aspsp.xs2a.spi.domain.account.*;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.AspspPayment;
+import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiAddress;
 import de.adorsys.aspsp.xs2a.spi.domain.psu.Psu;
 import de.adorsys.aspsp.xs2a.spi.domain.psu.SpiScaMethod;
 import de.adorsys.aspsp.xs2a.spi.domain.psu.Tan;
@@ -77,30 +78,34 @@ public class AccountMockServerData {
 
     private void fillPayments() {
         // Payment data for Cucumber Test
-        paymentRepository.save(getPayment("a9115f14-4f72-4e4e-8798-202808e85238", psus.get(3), EUR, BigDecimal.valueOf(150), psus.get(7),
-            "Online-Shoppping Amazon", LocalDate.parse("2018-07-15"), LocalDateTime.parse("2018-07-15T18:30:35.035"), SpiTransactionStatus.RCVD, PisPaymentType.SINGLE, 15));
-        paymentRepository.save(getPayment("68147b90-e4ef-41c6-9c8b-c848c1e93700", psus.get(3), EUR, BigDecimal.valueOf(1030), psus.get(8),
-            "Holidays", LocalDate.parse("2018-07-31"), LocalDateTime.parse("2018-07-31T18:30:35.035"), SpiTransactionStatus.PDNG, PisPaymentType.SINGLE, 31));
-        paymentRepository.save(getPayment("97694f0d-32e2-43a4-9e8d-261f2fc28236", psus.get(3), EUR, BigDecimal.valueOf(70), psus.get(9),
-            "Concert Tickets", LocalDate.parse("2018-07-08"), LocalDateTime.parse("2018-07-08T18:30:35.035"), SpiTransactionStatus.RJCT, PisPaymentType.SINGLE, 8));
+        paymentRepository.save(getPayment("a9115f14-4f72-4e4e-8798-202808e85238", "Telekom-12345", psus.get(3), EUR,
+            BigDecimal.valueOf(150), psus.get(7), "TE002DEFXX" , "151", "Bonn", "DE", "53227",
+            "Landgrabenweg", "Ref. Number Telekom-123", SpiTransactionStatus.RCVD));
+
+        paymentRepository.save(getPayment("68147b90-e4ef-41c6-9c8b-c848c1e93700", "Mueller-010888", psus.get(3), EUR,
+            BigDecimal.valueOf(1030), psus.get(8), "MU784555X" , "122", "Nuernberg", "DE", "90429",
+            "Fuerther Straße", "Ref. Number Mueller-123", SpiTransactionStatus.PDNG));
+
+        paymentRepository.save(getPayment("97694f0d-32e2-43a4-9e8d-261f2fc28236", "Amazon-12345", psus.get(3), EUR,
+            BigDecimal.valueOf(70), psus.get(9), "AMZ897ZZ23" , "28", "Muenchen", "DE", "80807",
+            "Domagkstraße", "Ref. Number Amazon-123", SpiTransactionStatus.RJCT));
+
 
     }
 
-    private AspspPayment getPayment(String paymentId, Psu debtor, Currency currency, BigDecimal amount, Psu creditor, String purposeCode, LocalDate requestedExecutionDate,
-                                    LocalDateTime requestedExecutionTime, SpiTransactionStatus paymentStatus, PisPaymentType paymentType, int dayOfExecution) {
+    private AspspPayment getPayment(String paymentId, String endToEndId, Psu debtor, Currency currency, BigDecimal amount, Psu creditor, String creditorAgent,
+                                    String buildingNumber, String city, String country, String postalCode, String street,
+                                    String remittanceUnstructured, SpiTransactionStatus paymentStatus) {
         AspspPayment payment = new AspspPayment();
         payment.setPaymentId(paymentId);
+        payment.setEndToEndIdentification(endToEndId);
         payment.setDebtorAccount(getRef(debtor, currency));
-        payment.setUltimateDebtor(getFirstElementName(debtor));
         payment.setInstructedAmount(new SpiAmount(currency, amount));
         payment.setCreditorAccount(getRef(creditor, currency));
+        payment.setCreditorAgent(creditorAgent);
         payment.setCreditorName(getFirstElementName(creditor));
-        payment.setUltimateCreditor(getFirstElementName(creditor));
-        payment.setPurposeCode(purposeCode);
-        payment.setRequestedExecutionDate(requestedExecutionDate);
-        payment.setRequestedExecutionTime(requestedExecutionTime);
-        payment.setDayOfExecution(dayOfExecution);
-        payment.setPisPaymentType(paymentType);
+        payment.setCreditorAddress(new SpiAddress(street, buildingNumber, city, postalCode, country));
+        payment.setRemittanceInformationUnstructured(remittanceUnstructured);
         payment.setPaymentStatus(paymentStatus);
         return payment;
     }

@@ -8,32 +8,33 @@
     "body": {}
   },
   "response": {
+    "code": "200",
     "header": {
     },
     "body": {
-      "endToEndIdentification": "Mueller-123456789",
+      "endToEndIdentification": "Telekom-12345",
       "debtorAccount": {
-        "currency": "EUR",
-        "iban": "DE52500105173911841934"
+        "iban": "DE89370400440532013004",
+        "currency": "EUR"
       },
       "instructedAmount": {
         "currency": "EUR",
-        "amount": "150.00"
+        "amount": "150"
       },
       "creditorAccount": {
-        "currency": "EUR",
-        "iban": "DE06500105171657611553"
+        "iban": "DE68500105174416628385",
+        "currency": "EUR"
       },
-      "creditorAgent": "AAAADEBBXXX",
-      "creditorName": "Jochen Mueller",
+      "creditorAgent": "TE002DEFXX",
+      "creditorName": "Telekom",
       "creditorAddress": {
-        "buildingNumber": "1",
-        "city": "Nürnberg",
-        "country": "DE",
-        "postalCode": "90429",
-        "street": "Fürther Straße"
+        "street": "Landgrabenweg",
+        "buildingNumber": "151",
+        "city": "Bonn",
+        "postalCode": "53227",
+        "country": "DE"
       },
-      "remittanceInformationUnstructured": "Ref. Number Mueller-1111",
+      "remittanceInformationUnstructured": "Ref. Number Telekom-123",
       "transactionStatus": "RCVD"
     }
   }

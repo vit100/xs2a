@@ -128,14 +128,14 @@ Feature: Payment Initiation Service
     #                                                                                                                  #
     ####################################################################################################################
 
-#    Scenario Outline: Successful Payment Information Request
-#        Given Psu wants to request the payment information of a payment with payment-id <payment-id> by using the payment-service <payment-service>
-#        And the set of payment information data <payment-information>
-#        When PSU requests the information of the payment
-#        Then an appropriate response code and the payment information is delivered to the PSU
-#        Examples:
-#            | payment-id                           | payment-service              | payment-information                    |
- #           | a9115f14-4f72-4e4e-8798-202808e85238 | payments                     | singlePayInformation-successful.json   |
+    Scenario Outline: Successful Payment Information Request
+        Given Psu wants to request the payment information of a payment with payment-id <payment-id> by using the payment-service <payment-service>
+        And the set of payment information data <payment-information>
+        When PSU requests the information of the payment
+        Then an appropriate response code and the payment information is delivered to the PSU
+        Examples:
+            | payment-id                           | payment-service              | payment-information                    |
+            | a9115f14-4f72-4e4e-8798-202808e85238 | payments                     | singlePayInformation-successful.json   |
  #           | b8115f14-4f72-4e4e-8798-202808e85289 | bulk-payments                | bulkPayInformation-successful.json     |
  #           | p7115f14-4f72-4e4e-8798-202808e85232 | periodic-payments            | periodicPayInformation-successful.json |
 
