@@ -99,25 +99,25 @@ Feature: Payment Initiation Service
     # Payment Status                                                                                                   #
     #                                                                                                                  #
     ####################################################################################################################
-    Scenario Outline: Successful payment status request
-        Given Psu wants to request the payment status of a payment with payment-id <payment-id> by using the payment-service <payment-service>
-        And the set of data <payment-status>
-        When PSU requests the status of the payment
-        Then an appropriate response code and the status is delivered to the PSU
-        Examples:
-            | payment-id                           | payment-service | payment-status                |
-            | a9115f14-4f72-4e4e-8798-202808e85238 | payments        | paymentStatus-RCVD-successful.json |
-            | 68147b90-e4ef-41c6-9c8b-c848c1e93700 | payments        | paymentStatus-PDNG-successful.json |
-            | 97694f0d-32e2-43a4-9e8d-261f2fc28236 | payments        | paymentStatus-RJCT-successful.json |
+#    Scenario Outline: Successful payment status request
+#        Given Psu wants to request the payment status of a payment with payment-id <payment-id> by using the payment-service <payment-service>
+#        And the set of data <payment-status>
+#        When PSU requests the status of the payment
+#        Then an appropriate response code and the status is delivered to the PSU
+#        Examples:
+#            | payment-id                           | payment-service | payment-status                |
+#            | a9115f14-4f72-4e4e-8798-202808e85238 | payments        | paymentStatus-RCVD-successful.json |
+#            | 68147b90-e4ef-41c6-9c8b-c848c1e93700 | payments        | paymentStatus-PDNG-successful.json |
+#            | 97694f0d-32e2-43a4-9e8d-261f2fc28236 | payments        | paymentStatus-RJCT-successful.json |
 
-    Scenario Outline: Failed payment status request
-        Given Psu requests the payment status of a payment with payment-id <payment-id> by using the payment-service <payment-service>
-        And the errorful set of data <payment-status>
-        When PSU requests the status of the payment with error
-        Then an error response code and the appropriate error response are received
-        Examples:
-            | payment-id                           | payment-service      | payment-status                             |
-            | 529e0507-7539-4a65-9b74-bdf87061e99b | payments             | paymentStatus-not-existing-id.json         |
+#    Scenario Outline: Failed payment status request
+#        Given Psu requests the payment status of a payment with payment-id <payment-id> by using the payment-service <payment-service>
+#        And the errorful set of data <payment-status>
+#        When PSU requests the status of the payment with error
+#        Then an error response code and the appropriate error response are received
+#        Examples:
+#            | payment-id                           | payment-service      | payment-status                             |
+#            | 529e0507-7539-4a65-9b74-bdf87061e99b | payments             | paymentStatus-not-existing-id.json         |
             #| a9115f14-4f72-4e4e-8798-202808e85238 | payments             | paymentStatus-no-request-id.json           |
             #| a9115f14-4f72-4e4e-8798-202808e85238 | payments             | paymentStatus-wrong-format-request-id.json |
             #| a9115f14-4f72-4e4e-8798-202808e85238 | recurring-payments   | paymentStatus-wrong-payment-service.json   |
@@ -145,7 +145,7 @@ Feature: Payment Initiation Service
         Then an error response code and the appropriate error response are received
         Examples:
             | payment-id                           | payment-service              | payment-information                        |
-            | 11111111-aaaa-xxxx-1111-1x1x1x1x1x1x | payments                     | singlePayInformation-not-existing-id.json  |
+#            | 11111111-aaaa-xxxx-1111-1x1x1x1x1x1x | payments                     | singlePayInformation-not-existing-id.json  |
 #            | a9115f14-4f72-4e4e-8798-202808e85238 | payments                     | singlePayInformation-no-request-id.json     |
 #            | a9115f14-4f72-4e4e-8798-202808e85238 | payments                     | singlePayInformation-wrong-format-request-id.json |
 #            | a9115f14-4f72-4e4e-8798-202808e85238 | recurring-payments           | singlePayInformation-wrong-payment-service.json |
