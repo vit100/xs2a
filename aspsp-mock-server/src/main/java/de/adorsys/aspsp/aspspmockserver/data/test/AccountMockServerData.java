@@ -20,7 +20,6 @@ import de.adorsys.aspsp.aspspmockserver.repository.PaymentRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.TransactionRepository;
-import de.adorsys.aspsp.xs2a.consent.api.pis.PisPaymentType;
 import de.adorsys.aspsp.xs2a.spi.domain.account.*;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
@@ -81,16 +80,12 @@ public class AccountMockServerData {
         paymentRepository.save(getPayment("a9115f14-4f72-4e4e-8798-202808e85238", "Telekom-12345", psus.get(3), EUR,
             BigDecimal.valueOf(150), psus.get(7), "TE002DEFXX" , "151", "Bonn", "DE", "53227",
             "Landgrabenweg", "Ref. Number Telekom-123", SpiTransactionStatus.RCVD));
-
         paymentRepository.save(getPayment("68147b90-e4ef-41c6-9c8b-c848c1e93700", "Mueller-010888", psus.get(3), EUR,
             BigDecimal.valueOf(1030), psus.get(8), "MU784555X" , "122", "Nuernberg", "DE", "90429",
             "Fuerther Straße", "Ref. Number Mueller-123", SpiTransactionStatus.PDNG));
-
         paymentRepository.save(getPayment("97694f0d-32e2-43a4-9e8d-261f2fc28236", "Amazon-12345", psus.get(3), EUR,
             BigDecimal.valueOf(70), psus.get(9), "AMZ897ZZ23" , "28", "Muenchen", "DE", "80807",
             "Domagkstraße", "Ref. Number Amazon-123", SpiTransactionStatus.RJCT));
-
-
     }
 
     private AspspPayment getPayment(String paymentId, String endToEndId, Psu debtor, Currency currency, BigDecimal amount, Psu creditor, String creditorAgent,
