@@ -54,6 +54,18 @@ public class PisConsentService {
     private final PisScaAuthorisationService pisScaAuthorisationService;
 
     public ResponseObject createPisConsent(Object payment, Object xs2aResponse, PaymentRequestParameters requestParameters, TppInfo tppInfo) {
+        if (EnumSet.of(SINGLE, PERIODIC).contains(requestParameters.getPaymentType()) && ((PaymentInitialisationResponse) xs2aResponse).isInvalidPaymentResponse()) {
+            return ResponseObject.builder()
+                       .body(xs2aResponse)
+                       .build();
+        }
+
+        if (requestParameters.getPaymentType() == BULK && isInvalidPaymentList((List<PaymentInitialisationResponse>) xs2aResponse)) {
+            return ResponseObject.builder()
+                       .body(xs2aResponse)
+                       .build();
+        }
+
         CreatePisConsentData consentData = getPisConsentData(payment, xs2aResponse, tppInfo, requestParameters, new AspspConsentData());
 
         PisConsentRequest pisConsentRequest;
@@ -139,5 +151,10 @@ public class PisConsentService {
             pisConsentData = new CreatePisConsentData(paymentMap, tppInfo, requestParameters.getPaymentProduct().getCode(), aspspConsentData);
         }
         return pisConsentData;
+    }
+
+    private boolean isInvalidPaymentList(List<PaymentInitialisationResponse> responseBody) {
+        return responseBody.stream()
+                   .noneMatch(c -> c.getTppMessages() == null);
     }
 }

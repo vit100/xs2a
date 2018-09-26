@@ -78,5 +78,9 @@ public class PaymentInitialisationResponse {
 
     @JsonIgnore
     private String paymentType;
+
+    public boolean isInvalidPaymentResponse() {
+        return tppMessages != null;
+    }
 }
 

@@ -18,6 +18,7 @@ package de.adorsys.aspsp.xs2a.service.mapper;
 
 import de.adorsys.aspsp.xs2a.domain.ResponseObject;
 import de.adorsys.aspsp.xs2a.exception.MessageError;
+import de.adorsys.psd2.model.PaymentInitationRequestResponse201;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,9 @@ public class ResponseMapper {
     }
 
     public <T> ResponseEntity<T> created(ResponseObject<T> response) {
+        if (response.getBody() instanceof PaymentInitationRequestResponse201 && ((PaymentInitationRequestResponse201) response.getBody()).getTppMessages() != null) {
+            return getEntity(response, BAD_REQUEST);
+        }
         return getEntity(response, CREATED);
     }
 

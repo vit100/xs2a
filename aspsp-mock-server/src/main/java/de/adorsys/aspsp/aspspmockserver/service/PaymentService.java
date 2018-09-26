@@ -62,6 +62,11 @@ public class PaymentService {
      * @return Optional of saved single payment
      */
     public Optional<SpiSinglePayment> addPayment(@NotNull SpiSinglePayment payment) {
+        if (!isAccountExisting(payment.getDebtorAccount())) {
+            log.warn("Account doesn't exists: {}", payment.getDebtorAccount());
+            return Optional.empty();
+        }
+
         if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getContent())) {
             AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, SINGLE));
             return Optional.ofNullable(paymentMapper.mapToSpiSinglePayment(saved));
@@ -153,6 +158,14 @@ public class PaymentService {
                                                   .flatMap(this::getInterimAvailableBalanceByReference);
         return balance
                    .map(b -> b.getSpiBalanceAmount().getContent().compareTo(amount) >= 0)
+                   .orElse(false);
+    }
+
+    private boolean isAccountExisting(SpiAccountReference reference) {
+        List<SpiAccountDetails> accountsByIban = accountService.getAccountsByIban(reference.getIban());
+        return Optional.ofNullable(accountsByIban)
+                   .map(a -> filterDetailsByCurrency(a, reference.getCurrency()))
+                   .map(Optional::isPresent)
                    .orElse(false);
     }
 
