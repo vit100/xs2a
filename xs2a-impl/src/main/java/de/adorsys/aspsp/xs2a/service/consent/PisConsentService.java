@@ -155,6 +155,7 @@ public class PisConsentService {
 
     private boolean isInvalidPaymentList(List<PaymentInitialisationResponse> responseBody) {
         return responseBody.stream()
-                   .noneMatch(c -> c.getTppMessages() == null);
+                   .map(c -> c.getTppMessages() == null)
+                   .count() > 0;
     }
 }

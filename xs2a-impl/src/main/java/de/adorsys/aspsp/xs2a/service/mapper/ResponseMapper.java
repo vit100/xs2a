@@ -49,7 +49,7 @@ public class ResponseMapper {
         return getEntity(response, OK);
     }
 
-    public <T> ResponseEntity<T> created(ResponseObject<T> response) {
+    public <T> ResponseEntity<T> created(ResponseObject<T> response) { //TODO Rework instanseof statement https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/350
         if (response.getBody() instanceof PaymentInitationRequestResponse201 && ((PaymentInitationRequestResponse201) response.getBody()).getTppMessages() != null) {
             return getEntity(response, BAD_REQUEST);
         }
