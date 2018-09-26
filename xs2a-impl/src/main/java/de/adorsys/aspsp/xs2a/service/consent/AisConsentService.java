@@ -21,7 +21,7 @@ import de.adorsys.aspsp.xs2a.consent.api.ActionStatus;
 import de.adorsys.aspsp.xs2a.consent.api.AisConsentStatusResponse;
 import de.adorsys.aspsp.xs2a.consent.api.ConsentActionRequest;
 import de.adorsys.aspsp.xs2a.consent.api.ais.*;
-import de.adorsys.aspsp.xs2a.domain.account.AccountReference;
+import de.adorsys.aspsp.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.aspsp.xs2a.domain.consent.*;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountConsent;
@@ -102,6 +102,16 @@ public class AisConsentService {
     }
 
     /**
+     * Requests CMS to update consent status into provided one
+     *
+     * @param consentId String representation of identifier of stored consent
+     * @param consentStatus SpiConsentStatus the consent be changed to
+     */
+    public void updateConsentStatus(String consentId, SpiConsentStatus consentStatus) {
+        consentRestTemplate.put(remoteAisConsentUrls.updateAisConsentStatus(), null, consentId, consentStatus);
+    }
+
+    /**
      * Sends a POST request to CMS to perform decrement of consent usages and report status of the operation held with certain AIS consent
      *
      * @param tppId        String representation of TPP`s identifier from TPP Certificate
@@ -118,8 +128,8 @@ public class AisConsentService {
      * @param consentId String representation of identifier of stored consent
      * @return long representation of identifier of stored consent authorization
      */
-    public Optional<String> createAisConsentAuthorization(String consentId, Xs2aScaStatus scaStatus) {
-        AisConsentAuthorizationRequest request = aisConsentMapper.mapToAisConsentAuthorization(scaStatus);
+    public Optional<String> createAisConsentAuthorization(String consentId, Xs2aScaStatus scaStatus, String psuId) {
+        AisConsentAuthorizationRequest request = aisConsentMapper.mapToAisConsentAuthorization(scaStatus, psuId);
 
         CreateAisConsentAuthorizationResponse response = consentRestTemplate.postForEntity(remoteAisConsentUrls.createAisConsentAuthorization(),
             request, CreateAisConsentAuthorizationResponse.class, consentId).getBody();
@@ -146,11 +156,14 @@ public class AisConsentService {
      * @param updatePsuData Consent psu data
      */
     public void updateConsentAuthorization(UpdateConsentPsuDataReq updatePsuData) {
-        final String consentId = updatePsuData.getConsentId();
-        final String authorizationId = updatePsuData.getAuthorizationId();
-        final AisConsentAuthorizationRequest request = aisConsentMapper.mapToAisConsentAuthorizationRequest(updatePsuData);
+        Optional.ofNullable(updatePsuData)
+            .ifPresent(req -> {
+                final String consentId = req.getConsentId();
+                final String authorizationId = req.getAuthorizationId();
+                final AisConsentAuthorizationRequest request = aisConsentMapper.mapToAisConsentAuthorizationRequest(req);
 
-        consentRestTemplate.put(remoteAisConsentUrls.updateAisConsentAuthorization(), request, AisConsentAuthorizationResponse.class, consentId, authorizationId);
+                consentRestTemplate.put(remoteAisConsentUrls.updateAisConsentAuthorization(), request, consentId, authorizationId);
+            });
     }
 
     private boolean isDirectAccessRequest(CreateConsentReq request) {
@@ -188,10 +201,10 @@ public class AisConsentService {
                    .collect(Collectors.toSet());
     }
 
-    private Set<String> getIbansFromAccountReference(List<AccountReference> references) {
+    private Set<String> getIbansFromAccountReference(List<Xs2aAccountReference> references) {
         return Optional.ofNullable(references)
                    .map(list -> list.stream()
-                                    .map(AccountReference::getIban)
+                                    .map(Xs2aAccountReference::getIban)
                                     .collect(Collectors.toSet()))
                    .orElseGet(Collections::emptySet);
     }

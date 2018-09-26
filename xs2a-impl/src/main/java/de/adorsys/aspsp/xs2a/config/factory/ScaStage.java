@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.xs2a.consent.api.ais;
+package de.adorsys.aspsp.xs2a.config.factory;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import de.adorsys.aspsp.xs2a.service.authorization.pis.PisAuthorisationService;
+import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
+import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
+import lombok.RequiredArgsConstructor;
 
-@Data
-@ApiModel(description = "Ais consent update blob request", value = "AisConsentBlobUpdateRequest")
-public class UpdateAisConsentAspspDataRequest {
+import java.util.function.BiFunction;
 
-    @ApiModelProperty(value = "ASPSP consent data", required = true, example = "zdxcvvzzzxcvzzzz")
-    private byte[] aspspConsentData;
+@RequiredArgsConstructor
+public abstract class ScaStage<T, U, R> implements BiFunction<T, U, R> {
+    protected final PaymentSpi paymentSpi;
+    protected final PisAuthorisationService pisAuthorisationService;
+    protected final Xs2aPisConsentMapper xs2aPisConsentMapper;
 }
