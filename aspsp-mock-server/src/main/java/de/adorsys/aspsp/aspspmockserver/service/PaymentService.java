@@ -62,13 +62,13 @@ public class PaymentService {
      * @return Optional of saved single payment
      */
     public Optional<SpiSinglePayment> addPayment(@NotNull SpiSinglePayment payment) {
-        if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getAmount())) {
+
         if (!isAccountExisting(payment.getDebtorAccount())) {
             log.warn("Account doesn't exists: {}", payment.getDebtorAccount());
             return Optional.empty();
         }
 
-        if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getContent())) {
+        if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getAmount())) {
             AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, SINGLE));
             return Optional.ofNullable(paymentMapper.mapToSpiSinglePayment(saved));
         }
