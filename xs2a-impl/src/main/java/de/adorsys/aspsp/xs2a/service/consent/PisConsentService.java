@@ -60,7 +60,7 @@ public class PisConsentService {
                        .build();
         }
 
-        if (requestParameters.getPaymentType() == BULK && isInvalidPaymentList((List<PaymentInitialisationResponse>) xs2aResponse)) {
+        if (requestParameters.getPaymentType() == BULK && !isValidPaymentList((List<PaymentInitialisationResponse>) xs2aResponse)) {
             return ResponseObject.builder()
                        .body(xs2aResponse)
                        .build();
@@ -153,9 +153,8 @@ public class PisConsentService {
         return pisConsentData;
     }
 
-    private boolean isInvalidPaymentList(List<PaymentInitialisationResponse> responseBody) {
+    private boolean isValidPaymentList(List<PaymentInitialisationResponse> responseBody) {
         return responseBody.stream()
-                   .map(c -> c.getTppMessages() == null)
-                   .count() > 0;
+                   .anyMatch(c -> c.getTppMessages() == null);
     }
 }
