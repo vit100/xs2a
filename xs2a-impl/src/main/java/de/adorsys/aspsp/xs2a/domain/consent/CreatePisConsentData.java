@@ -16,19 +16,18 @@
 
 package de.adorsys.aspsp.xs2a.domain.consent;
 
-import de.adorsys.aspsp.xs2a.domain.pis.PaymentInitialisationResponse;
 import de.adorsys.aspsp.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.aspsp.xs2a.domain.pis.SinglePayment;
 import de.adorsys.aspsp.xs2a.domain.pis.TppInfo;
 import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
 import lombok.Value;
 
-import java.util.Map;
+import java.util.List;
 
 @Value
 public class CreatePisConsentData {
     private SinglePayment singlePayment;
-    private Map<SinglePayment, PaymentInitialisationResponse> paymentIdentifierMap;
+    private List<SinglePayment> bulkPayments;
     private PeriodicPayment periodicPayment;
     private TppInfo tppInfo;
     private String paymentProduct;
@@ -39,12 +38,12 @@ public class CreatePisConsentData {
         this.tppInfo = tppInfo;
         this.paymentProduct = paymentProduct;
         this.aspspConsentData = aspspConsentData;
-        this.paymentIdentifierMap = null;
+        this.bulkPayments = null;
         this.periodicPayment = null;
     }
 
-    public CreatePisConsentData(Map<SinglePayment, PaymentInitialisationResponse> paymentIdentifierMap, TppInfo tppInfo, String paymentProduct, AspspConsentData aspspConsentData) {
-        this.paymentIdentifierMap = paymentIdentifierMap;
+    public CreatePisConsentData(List<SinglePayment> bulkPayments, TppInfo tppInfo, String paymentProduct, AspspConsentData aspspConsentData) {
+        this.bulkPayments = bulkPayments;
         this.tppInfo = tppInfo;
         this.paymentProduct = paymentProduct;
         this.aspspConsentData = aspspConsentData;
@@ -57,7 +56,7 @@ public class CreatePisConsentData {
         this.tppInfo = tppInfo;
         this.paymentProduct = paymentProduct;
         this.aspspConsentData = aspspConsentData;
-        this.paymentIdentifierMap = null;
+        this.bulkPayments = null;
         this.singlePayment = null;
     }
 }

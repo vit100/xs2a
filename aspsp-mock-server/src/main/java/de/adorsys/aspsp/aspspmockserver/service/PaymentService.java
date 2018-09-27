@@ -39,7 +39,6 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static de.adorsys.aspsp.xs2a.consent.api.pis.PisPaymentType.PERIODIC;
 import static de.adorsys.aspsp.xs2a.consent.api.pis.PisPaymentType.SINGLE;
@@ -110,12 +109,14 @@ public class PaymentService {
      * @return list of single payments forming bulk payment
      */
     public List<SpiSinglePayment> addBulkPayments(List<SpiSinglePayment> payments) {
-        List<AspspPayment> aspspPayments = paymentMapper.mapToAspspPaymentList(payments).stream()
-                                               .peek(p -> {
-                                                   if (isNonExistingAccount(p)) {
-                                                       p.setPaymentStatus(SpiTransactionStatus.RJCT);
-                                                   }
-                                               }).collect(Collectors.toList());
+        List<AspspPayment> aspspPayments = paymentMapper.mapToAspspPaymentList(payments);
+
+        aspspPayments.forEach(pmt -> {
+            if (isNonExistingAccount(pmt)) {
+                pmt.setPaymentStatus(SpiTransactionStatus.RJCT);
+            }
+        });
+
         List<AspspPayment> savedPayments = paymentRepository.save(aspspPayments);
         return paymentMapper.mapToSpiSinglePaymentList(savedPayments);
     }

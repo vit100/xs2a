@@ -32,4 +32,5 @@ public class SpiPaymentInitialisationResponse {
     private String psuMessage;
     private String[] tppMessages;
     private boolean tppRedirectPreferred;
+    private SpiSinglePayment payment;
 }

@@ -153,6 +153,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        initialisationResponse.setChallengeData(mapToChallengeData(pir.getChallengeData()));
                        initialisationResponse.setTppMessages(mapToMessageErrorCodes(pir.getTppMessages()));
                        initialisationResponse.setLinks(new Links());
+                       initialisationResponse.setPayment(mapToSinglePayment(response.getPayment()));
                        return initialisationResponse;
                    }).orElse(new PaymentInitialisationResponse());
     }
@@ -180,6 +181,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
         return Optional.ofNullable(spiSinglePayment)
                    .map(sp -> {
                        SinglePayment payments = new SinglePayment();
+                       payments.setPaymentId(spiSinglePayment.getPaymentId());
                        payments.setEndToEndIdentification(sp.getEndToEndIdentification());
                        payments.setDebtorAccount(spiXs2aAccountMapper.mapToXs2aAccountReference(sp.getDebtorAccount()));
                        payments.setUltimateDebtor(sp.getUltimateDebtor());

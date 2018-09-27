@@ -35,9 +35,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus.RCVD;
 import static de.adorsys.aspsp.xs2a.domain.consent.Xs2aAuthorisationStartType.IMPLICIT;
@@ -129,14 +127,13 @@ public class PisConsentService {
             periodicPayment.setPaymentId(response.getPaymentId());
             pisConsentData = new CreatePisConsentData(periodicPayment, tppInfo, requestParameters.getPaymentProduct().getCode(), aspspConsentData);
         } else {
-            BulkPayment payments = (BulkPayment) payment;
             List<PaymentInitialisationResponse> responses = (List<PaymentInitialisationResponse>) xs2aResponse;
 
-            Map<SinglePayment, PaymentInitialisationResponse> paymentMap = IntStream.range(0, payments.getPayments().size())
-                                                                               .boxed()
-                                                                               .collect(Collectors.toMap(payments.getPayments()::get, responses::get));
-            paymentMap.forEach((k, v) -> k.setPaymentId(v.getPaymentId()));
-            pisConsentData = new CreatePisConsentData(paymentMap, tppInfo, requestParameters.getPaymentProduct().getCode(), aspspConsentData);
+            List<SinglePayment> paymentList = responses.stream()
+                                                  .map(PaymentInitialisationResponse::getPayment)
+                                                  .collect(Collectors.toList());
+
+            pisConsentData = new CreatePisConsentData(paymentList, tppInfo, requestParameters.getPaymentProduct().getCode(), aspspConsentData);
         }
         return pisConsentData;
     }

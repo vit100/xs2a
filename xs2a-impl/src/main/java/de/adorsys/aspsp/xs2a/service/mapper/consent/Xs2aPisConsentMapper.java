@@ -41,7 +41,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -78,7 +77,7 @@ public class Xs2aPisConsentMapper {
 
     public PisConsentRequest mapToCmsPisConsentRequestForBulkPayment(CreatePisConsentData createPisConsentData) {
         PisConsentRequest request = new PisConsentRequest();
-        request.setPayments(mapToPisPaymentForBulkPayment(createPisConsentData.getPaymentIdentifierMap()));
+        request.setPayments(mapToPisPaymentForBulkPayment(createPisConsentData.getBulkPayments()));
         request.setPaymentProduct(PisPaymentProduct.getByCode(createPisConsentData.getPaymentProduct()).orElse(null));
         request.setPaymentType(PisPaymentType.BULK);
         request.setTppInfo(mapToTppInfo(createPisConsentData.getTppInfo()));
@@ -158,9 +157,9 @@ public class Xs2aPisConsentMapper {
                    }).orElse(null);
     }
 
-    private List<PisPayment> mapToPisPaymentForBulkPayment(Map<SinglePayment, PaymentInitialisationResponse> paymentIdentifierMap) {
-        return paymentIdentifierMap.entrySet().stream()
-                   .map(etr -> mapToPisPaymentForSinglePayment(etr.getKey()))
+    private List<PisPayment> mapToPisPaymentForBulkPayment(List<SinglePayment> bulkPayments) {
+        return bulkPayments.stream()
+                   .map(this::mapToPisPaymentForSinglePayment)
                    .collect(Collectors.toList());
     }
 
