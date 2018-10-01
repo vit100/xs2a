@@ -78,5 +78,8 @@ public class PaymentInitialisationResponse {
 
     @JsonIgnore
     private String paymentType;
+
+    @JsonIgnore
+    private byte[] aspspConsentData;
 }
 

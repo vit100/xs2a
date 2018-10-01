@@ -26,6 +26,7 @@ import de.adorsys.aspsp.xs2a.domain.code.Xs2aPurposeCode;
 import de.adorsys.aspsp.xs2a.domain.consent.Xs2aAuthenticationObject;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiXs2aAccountMapper;
+import de.adorsys.aspsp.xs2a.spi.domain.SpiResponse;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.*;
@@ -155,6 +156,24 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        initialisationResponse.setLinks(new Links());
                        return initialisationResponse;
                    }).orElse(new PaymentInitialisationResponse());
+    }
+
+    public PaymentInitialisationResponse mapToPaymentInitializationResponse(SpiResponse<SpiPaymentInitialisationResponse> response) {
+        return Optional.ofNullable(response)
+                   .map(pir -> {
+                       PaymentInitialisationResponse initialisationResponse = mapToPaymentInitializationResponse(pir.getPayload());
+                       initialisationResponse.setAspspConsentData(response.getAspspConsentData().getAspspConsentData());
+                       return initialisationResponse;
+                   }).orElse(new PaymentInitialisationResponse());
+    }
+
+    public List<PaymentInitialisationResponse> mapToPaymentInitializationResponseList(SpiResponse<List<SpiPaymentInitialisationResponse>> response) {
+        byte[] aspspConsentData = response.getAspspConsentData().getAspspConsentData();
+        return response.getPayload().stream().map(pir -> {
+            PaymentInitialisationResponse initialisationResponse = mapToPaymentInitializationResponse(pir);
+            initialisationResponse.setAspspConsentData(aspspConsentData);
+            return initialisationResponse;
+        }).collect(Collectors.toList());
     }
 
     public PaymentInitialisationResponse mapToPaymentInitResponseFailedPayment(SinglePayment payment, MessageErrorCode error) {

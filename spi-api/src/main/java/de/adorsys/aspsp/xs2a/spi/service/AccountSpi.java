@@ -124,7 +124,7 @@ public interface AccountSpi {
      * @param aspspConsentData Encrypted data that may be stored in the consent management system in the consent linked to a request.
      *                         May be null if consent does not contain such data, or request isn't done from a workflow with a consent
      */
-    void performStrongUserAuthorisation(String psuId, AspspConsentData aspspConsentData);
+    SpiResponse performStrongUserAuthorisation(String psuId, AspspConsentData aspspConsentData);
 
     /**
      * Applies strong customer authorization
@@ -133,5 +133,5 @@ public interface AccountSpi {
      * @param aspspConsentData       Encrypted data that may be stored in the consent management system in the consent linked to a request.
      *                               May be null if consent does not contain such data, or request isn't done from a workflow with a consent
      */
-    void applyStrongUserAuthorisation(SpiAccountConfirmation spiAccountConfirmation, AspspConsentData aspspConsentData);
+    SpiResponse applyStrongUserAuthorisation(SpiAccountConfirmation spiAccountConfirmation, AspspConsentData aspspConsentData);
 }

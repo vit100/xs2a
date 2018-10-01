@@ -19,13 +19,11 @@ package de.adorsys.aspsp.xs2a.service.payment;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.mapper.PaymentMapper;
 import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPaymentInitialisationResponse;
 import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,24 +33,16 @@ public class RedirectAndEmbeddedPaymentService implements ScaPaymentService {
 
     @Override
     public PaymentInitialisationResponse createSinglePayment(SinglePayment payment, TppInfo tppInfo, String paymentProduct) {
-        AspspConsentData aspspConsentData = new AspspConsentData();
-        SpiPaymentInitialisationResponse aspspResponse = paymentSpi.createPaymentInitiation(paymentMapper.mapToSpiSinglePayment(payment), aspspConsentData).getPayload();
-        return paymentMapper.mapToPaymentInitializationResponse(aspspResponse);
+        return paymentMapper.mapToPaymentInitializationResponse(paymentSpi.createPaymentInitiation(paymentMapper.mapToSpiSinglePayment(payment), new AspspConsentData()));
     }
 
     @Override
     public PaymentInitialisationResponse createPeriodicPayment(PeriodicPayment payment, TppInfo tppInfo, String paymentProduct) {
-        AspspConsentData aspspConsentData = new AspspConsentData();
-        SpiPaymentInitialisationResponse aspspResponse = paymentSpi.initiatePeriodicPayment(paymentMapper.mapToSpiPeriodicPayment(payment), aspspConsentData).getPayload();
-        return paymentMapper.mapToPaymentInitializationResponse(aspspResponse);
+        return paymentMapper.mapToPaymentInitializationResponse(paymentSpi.initiatePeriodicPayment(paymentMapper.mapToSpiPeriodicPayment(payment), new AspspConsentData()));
     }
 
     @Override
     public List<PaymentInitialisationResponse> createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo, String paymentProduct) {
-        AspspConsentData aspspConsentData = new AspspConsentData();
-        return paymentSpi.createBulkPayments(paymentMapper.mapToSpiBulkPayment(bulkPayment), aspspConsentData).getPayload()
-                   .stream()
-                   .map(paymentMapper::mapToPaymentInitializationResponse)
-                   .collect(Collectors.toList());
+        return paymentMapper.mapToPaymentInitializationResponseList(paymentSpi.createBulkPayments(paymentMapper.mapToSpiBulkPayment(bulkPayment), new AspspConsentData()));
     }
 }

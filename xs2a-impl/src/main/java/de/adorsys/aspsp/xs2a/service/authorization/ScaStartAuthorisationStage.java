@@ -52,16 +52,20 @@ public class ScaStartAuthorisationStage extends ScaStage<UpdatePisConsentPsuData
             return new UpdatePisConsentPsuDataResponse(FAILED);
         }
         request.setCmsAspspConsentData(new CmsAspspConsentData(authorisationStatusSpiResponse.getAspspConsentData().getAspspConsentData()));
-        List<SpiScaMethod> spiScaMethods = paymentSpi.readAvailableScaMethod(request.getPsuId(), authorisationStatusSpiResponse.getAspspConsentData()).getPayload();
+        SpiResponse<List<SpiScaMethod>> readAvailableScaMethodResponse = paymentSpi.readAvailableScaMethod(request.getPsuId(), authorisationStatusSpiResponse.getAspspConsentData());
+        pisConsentDataService.updateConsentData(readAvailableScaMethodResponse.getAspspConsentData());
+        List<SpiScaMethod> spiScaMethods = readAvailableScaMethodResponse.getPayload();
 
         if (CollectionUtils.isEmpty(spiScaMethods)) {
-            paymentSpi.executePayment(pisConsentAuthorisationResponse.getPaymentType(), pisConsentAuthorisationResponse.getPayments(), authorisationStatusSpiResponse.getAspspConsentData());
+            SpiResponse<String> executePaymentResponse = paymentSpi.executePayment(pisConsentAuthorisationResponse.getPaymentType(), pisConsentAuthorisationResponse.getPayments(), readAvailableScaMethodResponse.getAspspConsentData());
+            pisConsentDataService.updateConsentData(executePaymentResponse.getAspspConsentData());
             request.setScaStatus(FINALISED);
             return pisAuthorisationService.doUpdatePisConsentAuthorisation(request);
 
         } else if (isSingleScaMethod(spiScaMethods)) {
 
-            paymentSpi.performStrongUserAuthorisation(request.getPsuId(), pisConsentDataService.getConsentDataByPaymentId(request.getPaymentId()));
+            SpiResponse strongUserAuthorisation = paymentSpi.performStrongUserAuthorisation(request.getPsuId(), readAvailableScaMethodResponse.getAspspConsentData());
+            pisConsentDataService.updateConsentData(strongUserAuthorisation.getAspspConsentData());
             request.setScaStatus(SCAMETHODSELECTED);
             request.setAuthenticationMethodId(spiScaMethods.get(0).name());
             return pisAuthorisationService.doUpdatePisConsentAuthorisation(request);

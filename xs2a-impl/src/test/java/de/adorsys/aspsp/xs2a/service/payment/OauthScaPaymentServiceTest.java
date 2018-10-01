@@ -77,14 +77,22 @@ public class OauthScaPaymentServiceTest {
         when(paymentMapper.mapToSpiBulkPayment(getBulk(true, true, IBAN))).thenReturn(getSpiBulkPayment(true, true, IBAN));
         when(paymentMapper.mapToSpiBulkPayment(getBulk(true, false, IBAN))).thenReturn(getSpiBulkPayment(true, false, IBAN));
         when(paymentMapper.mapToSpiBulkPayment(getBulk(false, false, WRONG_IBAN))).thenReturn(getSpiBulkPayment(false, false, WRONG_IBAN));
-        when(paymentMapper.mapToPaymentInitializationResponse(getSpiResp(true))).thenReturn(getResp(true));
-        when(paymentMapper.mapToPaymentInitializationResponse(getSpiResp(false))).thenReturn(getResp(false));
+        when(paymentMapper.mapToPaymentInitializationResponse(getPISpiResp(true))).thenReturn(getResp(true));
+        when(paymentMapper.mapToPaymentInitializationResponse(getPISpiResp(false))).thenReturn(getResp(false));
         when(paymentMapper.mapToPaymentInitResponseFailedPayment(getPayment(false), PAYMENT_FAILED))
             .thenReturn(getResp(false));
-        when(paymentSpi.createBulkPayments(getSpiBulkPayment(true, true, IBAN), ASPSP_CONSENT_DATA)).thenReturn(new SpiResponse<>(getSpiRespList(true, true), ASPSP_CONSENT_DATA));
-        when(paymentSpi.createBulkPayments(getSpiBulkPayment(true, false, IBAN), ASPSP_CONSENT_DATA)).thenReturn(new SpiResponse<>(getSpiRespList(true, false), ASPSP_CONSENT_DATA));
-        when(paymentSpi.createBulkPayments(getSpiBulkPayment(false, false, WRONG_IBAN), ASPSP_CONSENT_DATA)).thenReturn(new SpiResponse<>(getSpiRespList(false, false), ASPSP_CONSENT_DATA));
+        when(paymentSpi.createBulkPayments(getSpiBulkPayment(true, true, IBAN), ASPSP_CONSENT_DATA)).thenReturn(new SpiResponse<>(getPISpiRespList(true, true), ASPSP_CONSENT_DATA));
+        when(paymentSpi.createBulkPayments(getSpiBulkPayment(true, false, IBAN), ASPSP_CONSENT_DATA)).thenReturn(new SpiResponse<>(getPISpiRespList(true, false), ASPSP_CONSENT_DATA));
+        when(paymentSpi.createBulkPayments(getSpiBulkPayment(false, false, WRONG_IBAN), ASPSP_CONSENT_DATA)).thenReturn(new SpiResponse<>(getPISpiRespList(false, false), ASPSP_CONSENT_DATA));
         when(pisConsentDataService.getConsentDataByPaymentId(anyString())).thenReturn(ASPSP_CONSENT_DATA);
+
+        when(paymentMapper.mapToPaymentInitializationResponse(getSpiResp(true))).thenReturn(getResp(true));
+        when(paymentMapper.mapToPaymentInitializationResponse(getSpiResp(false))).thenReturn(getResp(false));
+
+        when(paymentMapper.mapToPaymentInitializationResponseList(getSpiRespList(true, true))).thenReturn(Arrays.asList(getResp(true), getResp(true)));
+        when(paymentMapper.mapToPaymentInitializationResponseList(getSpiRespList(true, false))).thenReturn(Arrays.asList(getResp(true), getResp(false)));
+        when(paymentMapper.mapToPaymentInitializationResponseList(getSpiRespList(false, false))).thenReturn(Arrays.asList(getResp(false), getResp(false)));
+
     }
 
     @Test
@@ -155,11 +163,11 @@ public class OauthScaPaymentServiceTest {
         return response;
     }
 
-    private List<SpiPaymentInitialisationResponse> getSpiRespList(boolean firstOk, boolean secondOk) {
-        return Arrays.asList(getSpiResp(firstOk), getSpiResp(secondOk));
+    private List<SpiPaymentInitialisationResponse> getPISpiRespList(boolean firstOk, boolean secondOk) {
+        return Arrays.asList(getPISpiResp(firstOk), getPISpiResp(secondOk));
     }
 
-    private SpiPaymentInitialisationResponse getSpiResp(boolean paymentOk) {
+    private SpiPaymentInitialisationResponse getPISpiResp(boolean paymentOk) {
         SpiPaymentInitialisationResponse response = new SpiPaymentInitialisationResponse();
         if (paymentOk) {
             response.setPaymentId(PAYMENT_ID);
@@ -169,6 +177,14 @@ public class OauthScaPaymentServiceTest {
         }
 
         return response;
+    }
+
+    private SpiResponse<SpiPaymentInitialisationResponse> getSpiResp(boolean paymentOk) {
+        return new SpiResponse<>(getPISpiResp(paymentOk), new AspspConsentData());
+    }
+
+    private SpiResponse<List<SpiPaymentInitialisationResponse>> getSpiRespList(boolean firstOk, boolean secondOk) {
+        return new SpiResponse<>(getPISpiRespList(firstOk, secondOk), new AspspConsentData());
     }
 
     private SinglePayment getPayment(boolean paymentOk) {

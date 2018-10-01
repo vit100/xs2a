@@ -79,14 +79,15 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
             response.setPsuId(request.getPsuId());
             response.setPassword(request.getPassword());
 
-            SpiResponse<List<SpiScaMethod>> spiResponse = accountSpi.readAvailableScaMethods(request.getPsuId(), request.getPassword(), aisConsentDataService.getConsentData(request.getConsentId()));
-            aisConsentDataService.updateConsentData(authorisationStatusSpiResponse.getAspspConsentData());
-            proceedResponseForAvailableMethods(response, spiResponse.getPayload(), request.getConsentId());
+            SpiResponse<List<SpiScaMethod>> readAvailableScaMethodsResponse = accountSpi.readAvailableScaMethods(request.getPsuId(), request.getPassword(), authorisationStatusSpiResponse.getAspspConsentData());
+            aisConsentDataService.updateConsentData(readAvailableScaMethodsResponse.getAspspConsentData());
+            proceedResponseForAvailableMethods(response, readAvailableScaMethodsResponse.getPayload(), request.getConsentId());
             return response;
         }
 
         if (isScaMethodSelectionStage(request, consentAuthorization)) {
-            accountSpi.performStrongUserAuthorisation(request.getPsuId(), aspspConsentData);
+            SpiResponse performStrongUserAuthorisationResponse = accountSpi.performStrongUserAuthorisation(request.getPsuId(), aspspConsentData);
+            aisConsentDataService.updateConsentData(performStrongUserAuthorisationResponse.getAspspConsentData());
             response.setChosenScaMethod(request.getAuthenticationMethodId());
             response.setScaStatus(Xs2aScaStatus.SCAMETHODSELECTED);
             response.setResponseLinkType(START_AUTHORISATION_WITH_TRANSACTION_AUTHORISATION);
@@ -94,7 +95,8 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
         }
 
         if (isAuthorizationStage(request)) {
-            accountSpi.applyStrongUserAuthorisation(aisConsentMapper.mapToSpiAccountConfirmation(request), aspspConsentData);
+            SpiResponse applyStrongUserAuthorisationResponse = accountSpi.applyStrongUserAuthorisation(aisConsentMapper.mapToSpiAccountConfirmation(request), aspspConsentData);
+            aisConsentDataService.updateConsentData(applyStrongUserAuthorisationResponse.getAspspConsentData());
             response.setScaAuthenticationData(request.getScaAuthenticationData());
             response.setScaStatus(Xs2aScaStatus.FINALISED);
             response.setResponseLinkType(START_AUTHORISATION_WITH_AUTHENTICATION_METHOD_SELECTION);
@@ -112,7 +114,8 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
                 response.setScaStatus(Xs2aScaStatus.PSUAUTHENTICATED);
                 response.setResponseLinkType(START_AUTHORISATION_WITH_AUTHENTICATION_METHOD_SELECTION);
             } else {
-                accountSpi.performStrongUserAuthorisation(response.getPsuId(), aisConsentDataService.getConsentData(consentId));
+                SpiResponse spiResponse = accountSpi.performStrongUserAuthorisation(response.getPsuId(), aisConsentDataService.getConsentData(consentId));
+                aisConsentDataService.updateConsentData(spiResponse.getAspspConsentData());
                 response.setChosenScaMethod(availableMethods.get(0).name());
                 response.setScaStatus(Xs2aScaStatus.SCAMETHODSELECTED);
                 response.setResponseLinkType(START_AUTHORISATION_WITH_TRANSACTION_AUTHORISATION);

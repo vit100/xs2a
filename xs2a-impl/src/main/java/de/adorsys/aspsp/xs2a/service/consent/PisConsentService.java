@@ -23,6 +23,7 @@ import de.adorsys.aspsp.xs2a.domain.ResponseObject;
 import de.adorsys.aspsp.xs2a.domain.consent.CreatePisConsentData;
 import de.adorsys.aspsp.xs2a.domain.consent.Xsa2CreatePisConsentAuthorisationResponse;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
+import de.adorsys.aspsp.xs2a.service.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.authorization.pis.PisScaAuthorisationService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
 import de.adorsys.aspsp.xs2a.service.profile.AspspProfileServiceWrapper;
@@ -52,6 +53,7 @@ public class PisConsentService {
     private final Xs2aPisConsentMapper pisConsentMapper;
     private final AspspProfileServiceWrapper profileService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
+    private final PisConsentDataService pisConsentDataService;
 
     public ResponseObject createPisConsent(Object payment, Object xs2aResponse, PaymentRequestParameters requestParameters, TppInfo tppInfo) {
         CreatePisConsentData consentData = getPisConsentData(payment, xs2aResponse, tppInfo, requestParameters, new AspspConsentData());
@@ -66,11 +68,16 @@ public class PisConsentService {
         }
         CreatePisConsentResponse consentResponse = consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsent(), pisConsentRequest, CreatePisConsentResponse.class).getBody();
 
+        byte[] aspspConsentData = isPaymentTypeSingleOrPeriodic(requestParameters.getPaymentType())
+                                      ? ((PaymentInitialisationResponse) xs2aResponse).getAspspConsentData()
+                                      : ((List<PaymentInitialisationResponse>) xs2aResponse).get(0).getAspspConsentData();
+        pisConsentDataService.updateConsentData(new AspspConsentData(aspspConsentData, consentResponse.getConsentId()));
+
         return ResponseObject.builder().body(extendPaymentResponseFields(xs2aResponse, consentResponse.getConsentId(), requestParameters.getPaymentType())).build();
     }
 
     private <T> Object extendPaymentResponseFields(T response, String consentId, PaymentType paymentType) {
-        Object extendedResponse = EnumSet.of(SINGLE, PERIODIC).contains(paymentType)
+        Object extendedResponse = isPaymentTypeSingleOrPeriodic(paymentType)
                                       ? extendPaymentResponseFieldsSimple((PaymentInitialisationResponse) response, consentId, paymentType)
                                       : extendPaymentResponseFieldsBulk((List<PaymentInitialisationResponse>) response, consentId);
 
@@ -95,7 +102,7 @@ public class PisConsentService {
     }
 
     private <T> Object createPisAuthorisationForImplicitApproach(T response, PaymentType paymentType) {
-        if (EnumSet.of(SINGLE, PERIODIC).contains(paymentType)) {
+        if (isPaymentTypeSingleOrPeriodic(paymentType)) {
             PaymentInitialisationResponse resp = (PaymentInitialisationResponse) response;
             return pisScaAuthorisationService.createConsentAuthorisation(resp.getPaymentId(), paymentType)
                        .map(r -> extendResponseFieldsWithAuthData(r, resp))
@@ -139,5 +146,9 @@ public class PisConsentService {
             pisConsentData = new CreatePisConsentData(paymentMap, tppInfo, requestParameters.getPaymentProduct().getCode(), aspspConsentData);
         }
         return pisConsentData;
+    }
+
+    private boolean isPaymentTypeSingleOrPeriodic(PaymentType paymentType){
+        return EnumSet.of(SINGLE, PERIODIC).contains(paymentType);
     }
 }

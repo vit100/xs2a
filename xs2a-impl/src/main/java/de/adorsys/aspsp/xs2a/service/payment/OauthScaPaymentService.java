@@ -20,11 +20,9 @@ import de.adorsys.aspsp.xs2a.domain.MessageErrorCode;
 import de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.mapper.PaymentMapper;
+import de.adorsys.aspsp.xs2a.spi.domain.SpiResponse;
 import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiBulkPayment;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPaymentInitialisationResponse;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPeriodicPayment;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiSinglePayment;
 import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -42,31 +40,28 @@ public class OauthScaPaymentService implements ScaPaymentService {
     private final PaymentSpi paymentSpi;
 
     @Override
+    public PaymentInitialisationResponse createSinglePayment(SinglePayment singlePayment, TppInfo tppInfo, String paymentProduct) {
+        return paymentMapper.mapToPaymentInitializationResponse(paymentSpi.createPaymentInitiation(paymentMapper.mapToSpiSinglePayment(singlePayment), new AspspConsentData()));
+    }
+
+    @Override
     public PaymentInitialisationResponse createPeriodicPayment(PeriodicPayment periodicPayment, TppInfo tppInfo, String paymentProduct) {
-        SpiPeriodicPayment spiPeriodicPayment = paymentMapper.mapToSpiPeriodicPayment(periodicPayment);
-        return paymentMapper.mapToPaymentInitializationResponse(paymentSpi.initiatePeriodicPayment(spiPeriodicPayment, new AspspConsentData()).getPayload());
+        return paymentMapper.mapToPaymentInitializationResponse(paymentSpi.initiatePeriodicPayment(paymentMapper.mapToSpiPeriodicPayment(periodicPayment), new AspspConsentData()));
     }
 
     @Override
     public List<PaymentInitialisationResponse> createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo, String paymentProduct) {
-        SpiBulkPayment spiBulkPayment = paymentMapper.mapToSpiBulkPayment(bulkPayment);
-        List<SpiPaymentInitialisationResponse> spiPaymentInitiations = paymentSpi.createBulkPayments(spiBulkPayment, new AspspConsentData()).getPayload();
+        SpiResponse<List<SpiPaymentInitialisationResponse>> spiResponse = paymentSpi.createBulkPayments(paymentMapper.mapToSpiBulkPayment(bulkPayment), new AspspConsentData());
+        return checkAndUpdatePaymentsForRejectionStatus(paymentMapper.mapToPaymentInitializationResponseList(spiResponse));
+    }
 
-        return spiPaymentInitiations.stream()
-                   .map(paymentMapper::mapToPaymentInitializationResponse)
+    private List<PaymentInitialisationResponse> checkAndUpdatePaymentsForRejectionStatus(List<PaymentInitialisationResponse> paymentInitialisationResponseList) {
+        return paymentInitialisationResponseList.stream()
                    .peek(resp -> {
                        if (StringUtils.isBlank(resp.getPaymentId()) || resp.getTransactionStatus() == Xs2aTransactionStatus.RJCT) {
                            resp.setTppMessages(new MessageErrorCode[]{PAYMENT_FAILED});
                            resp.setTransactionStatus(Xs2aTransactionStatus.RJCT);
                        }
-                   })
-                   .collect(Collectors.toList());
-    }
-
-    @Override
-    public PaymentInitialisationResponse createSinglePayment(SinglePayment singlePayment, TppInfo tppInfo, String paymentProduct) {
-        SpiSinglePayment spiSinglePayment = paymentMapper.mapToSpiSinglePayment(singlePayment);
-        SpiPaymentInitialisationResponse spiPeriodicPaymentResp = paymentSpi.createPaymentInitiation(spiSinglePayment, new AspspConsentData()).getPayload();
-        return paymentMapper.mapToPaymentInitializationResponse(spiPeriodicPaymentResp);
+                   }).collect(Collectors.toList());
     }
 }

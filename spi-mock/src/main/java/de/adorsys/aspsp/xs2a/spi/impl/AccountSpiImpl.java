@@ -179,12 +179,14 @@ public class AccountSpiImpl implements AccountSpi {
      * For detailed description see {@link PaymentSpi#performStrongUserAuthorisation(String, AspspConsentData)}
      */
     @Override
-    public void performStrongUserAuthorisation(String psuId, AspspConsentData aspspConsentData) {
+    public SpiResponse performStrongUserAuthorisation(String psuId, AspspConsentData aspspConsentData) {
         aspspRestTemplate.exchange(remoteSpiUrls.getGenerateTanConfirmationForAis(), HttpMethod.POST, null, Void.class, psuId);
+        return new SpiResponse<>(null, aspspConsentData);
     }
 
     @Override
-    public void applyStrongUserAuthorisation(SpiAccountConfirmation confirmation, AspspConsentData aspspConsentData) {
+    public SpiResponse applyStrongUserAuthorisation(SpiAccountConfirmation confirmation, AspspConsentData aspspConsentData) {
         aspspRestTemplate.exchange(remoteSpiUrls.applyStrongUserAuthorisationForAis(), HttpMethod.PUT, new HttpEntity<>(confirmation), ResponseEntity.class);
+        return new SpiResponse<>(null, aspspConsentData);
     }
 }
