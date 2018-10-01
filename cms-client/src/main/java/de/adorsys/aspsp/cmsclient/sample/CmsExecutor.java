@@ -151,7 +151,7 @@ public class CmsExecutor {
         HttpUriParams uriParams = HttpUriParams.builder()
                                       .addPathVariable("consent-id", consentId)
                                       .build();
-        Optional<UpdateConsentAspspDataRequest>  getAspspDataResponse = Optional.of(cmsServiceInvoker.invoke(new GetAisConsentAspspDataMethod(uriParams)));
+        Optional<UpdateConsentAspspDataRequest> getAspspDataResponse = Optional.of(cmsServiceInvoker.invoke(new GetAisConsentAspspDataMethod(uriParams)));
         getAspspDataResponse.ifPresent(resp -> logger.info("Ais consent aspsp data: " + resp.getAspspConsentData()));
     }
 
