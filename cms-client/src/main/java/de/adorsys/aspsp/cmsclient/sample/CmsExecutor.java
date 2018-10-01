@@ -26,6 +26,7 @@ import de.adorsys.aspsp.xs2a.consent.api.ais.AisAccountAccessInfo;
 import de.adorsys.aspsp.xs2a.consent.api.ais.AisAccountConsent;
 import de.adorsys.aspsp.xs2a.consent.api.ais.CreateAisConsentRequest;
 import de.adorsys.aspsp.xs2a.consent.api.ais.CreateAisConsentResponse;
+import de.adorsys.aspsp.xs2a.consent.api.pis.PisConsentAspspDataResponse;
 import de.adorsys.aspsp.xs2a.consent.api.pis.PisPayment;
 import de.adorsys.aspsp.xs2a.consent.api.pis.PisPaymentProduct;
 import de.adorsys.aspsp.xs2a.consent.api.pis.PisPaymentType;
@@ -70,12 +71,14 @@ public class CmsExecutor {
         getConsentStatusById(cmsServiceInvoker);
         saveConsentActionLog(cmsServiceInvoker);
         updateConsentAccess(cmsServiceInvoker);
+        getAisConsentAspspData(cmsServiceInvoker);
         updateAisConsentAspspData(cmsServiceInvoker);
         updateConsentStatus(cmsServiceInvoker);
 
         createPaymentConsent(cmsServiceInvoker);
         getPaymentConsentById(cmsServiceInvoker);
         getPaymentConsentStatusById(cmsServiceInvoker);
+        getPisConsentAspspData(cmsServiceInvoker);
         updatePisConsentAspspData(cmsServiceInvoker);
         updatePaymentConsentStatus(cmsServiceInvoker);
     }
@@ -140,7 +143,20 @@ public class CmsExecutor {
     }
 
     /**
-     * Sends request to PUT api/v1/ais/consent/{consent-id}/aspspConsentData endpoint
+     * Sends request to GET api/v1/ais/consent/{consent-id}/aspsp-consent-data endpoint
+     *
+     * @param cmsServiceInvoker Service, performing rest call
+     */
+    private static void getAisConsentAspspData(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
+        HttpUriParams uriParams = HttpUriParams.builder()
+                                      .addPathVariable("consent-id", consentId)
+                                      .build();
+        Optional<UpdateConsentAspspDataRequest>  getAspspDataResponse = Optional.of(cmsServiceInvoker.invoke(new GetAisConsentAspspDataMethod(uriParams)));
+        getAspspDataResponse.ifPresent(resp -> logger.info("Ais consent aspsp data: " + resp.getAspspConsentData()));
+    }
+
+    /**
+     * Sends request to PUT api/v1/ais/consent/{consent-id}/aspsp-consent-data endpoint
      *
      * @param cmsServiceInvoker Service, performing rest call
      */
@@ -148,8 +164,8 @@ public class CmsExecutor {
         HttpUriParams uriParams = HttpUriParams.builder()
                                       .addPathVariable("consent-id", consentId)
                                       .build();
-        Optional<CreateAisConsentResponse> updateBlobResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new UpdateAisAspspConsentDataMethod(buildUpdateConsentAspspDataRequest(), uriParams)));
-        updateBlobResponse.ifPresent(resp -> logger.info("Ais consent aspsp data was updated in: " + resp.getConsentId()));
+        Optional<CreateAisConsentResponse> updateAspspDataResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new UpdateAisAspspConsentDataMethod(buildUpdateConsentAspspDataRequest(), uriParams)));
+        updateAspspDataResponse.ifPresent(resp -> logger.info("Ais consent aspsp data was updated in: " + resp.getConsentId()));
     }
 
     /**
@@ -244,7 +260,20 @@ public class CmsExecutor {
     }
 
     /**
-     * Sends request to PUT api/v1/pis/consent/{consent-id}/aspspConsentData endpoint
+     * Sends request to GET api/v1/pis/consent/{consent-id}/aspsp-consent-data endpoint
+     *
+     * @param cmsServiceInvoker Service, performing rest call
+     */
+    private static void getPisConsentAspspData(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
+        HttpUriParams uriParams = HttpUriParams.builder()
+                                      .addPathVariable("consent-id", consentId)
+                                      .build();
+        Optional<PisConsentAspspDataResponse> getAspspDataResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new GetPisConsentAspspDataMethod(uriParams)));
+        getAspspDataResponse.ifPresent(resp -> logger.info("Pis consent aspsp data: " + resp.getAspspConsentData()));
+    }
+
+    /**
+     * Sends request to PUT api/v1/pis/consent/{consent-id}/aspsp-consent-data endpoint
      *
      * @param cmsServiceInvoker Service, performing rest call
      */
@@ -252,8 +281,8 @@ public class CmsExecutor {
         HttpUriParams uriParams = HttpUriParams.builder()
                                       .addPathVariable("consent-id", consentId)
                                       .build();
-        Optional<CreatePisConsentResponse> updateBlobResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new UpdatePisConsentAspspDataMethod(buildUpdateConsentAspspDataRequest(), uriParams)));
-        updateBlobResponse.ifPresent(resp -> logger.info("Pis consent aspsp data was updated in: " + resp.getConsentId()));
+        Optional<CreatePisConsentResponse> updateAspspDataResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new UpdatePisConsentAspspDataMethod(buildUpdateConsentAspspDataRequest(), uriParams)));
+        updateAspspDataResponse.ifPresent(resp -> logger.info("Pis consent aspsp data was updated in: " + resp.getConsentId()));
     }
 
     /**

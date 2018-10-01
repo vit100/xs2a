@@ -23,9 +23,9 @@ import de.adorsys.aspsp.xs2a.consent.api.UpdateConsentAspspDataRequest;
 import de.adorsys.aspsp.xs2a.consent.api.pis.proto.CreatePisConsentResponse;
 
 public class UpdatePisConsentAspspDataMethod extends RestCmsRequestMethod<UpdateConsentAspspDataRequest, CreatePisConsentResponse> {
-    private static final String UPDATE_PIS_CONSENT_BLOB_URI = "api/v1/pis/consent/{consent-id}/aspspConsentData";
+    private static final String UPDATE_PIS_CONSENT_ASPSP_DATA_URI = "api/v1/pis/consent/{consent-id}/aspsp-consent-data";
 
     public UpdatePisConsentAspspDataMethod(final UpdateConsentAspspDataRequest request, HttpUriParams uriParams) {
-        super(request, HttpMethod.PUT, UPDATE_PIS_CONSENT_BLOB_URI, uriParams);
+        super(request, HttpMethod.PUT, UPDATE_PIS_CONSENT_ASPSP_DATA_URI, uriParams);
     }
 }

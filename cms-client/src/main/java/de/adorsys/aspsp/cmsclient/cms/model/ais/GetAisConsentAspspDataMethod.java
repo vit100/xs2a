@@ -20,12 +20,12 @@ import de.adorsys.aspsp.cmsclient.cms.RestCmsRequestMethod;
 import de.adorsys.aspsp.cmsclient.core.HttpMethod;
 import de.adorsys.aspsp.cmsclient.core.util.HttpUriParams;
 import de.adorsys.aspsp.xs2a.consent.api.UpdateConsentAspspDataRequest;
-import de.adorsys.aspsp.xs2a.consent.api.ais.CreateAisConsentResponse;
+import de.adorsys.aspsp.xs2a.consent.api.pis.proto.CreatePisConsentResponse;
 
-public class UpdateAisAspspConsentDataMethod extends RestCmsRequestMethod<UpdateConsentAspspDataRequest, CreateAisConsentResponse> {
-    private static final String UPDATE_AIS_CONSENT_ASPSP_DATA_URI = "api/v1/ais/consent/{consent-id}/aspsp-consent-data";
+public class GetAisConsentAspspDataMethod extends RestCmsRequestMethod<Void, UpdateConsentAspspDataRequest> {
+    private static final String GET_AIS_CONSENT_ASPSP_DATA_URI = "api/v1/ais/consent/{consent-id}/aspsp-consent-data";
 
-    public UpdateAisAspspConsentDataMethod(final UpdateConsentAspspDataRequest request, HttpUriParams uriParams) {
-        super(request, HttpMethod.PUT, UPDATE_AIS_CONSENT_ASPSP_DATA_URI, uriParams);
+    public GetAisConsentAspspDataMethod(HttpUriParams uriParams) {
+        super(HttpMethod.GET, GET_AIS_CONSENT_ASPSP_DATA_URI, uriParams);
     }
 }
