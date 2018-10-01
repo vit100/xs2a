@@ -24,6 +24,7 @@ import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountReference;
 import de.adorsys.aspsp.xs2a.spi.domain.account.SpiBalanceType;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.AspspPayment;
+import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiCancelPayment;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiSinglePayment;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +69,8 @@ public class PaymentServiceTest {
         when(accountService.getAccountsByIban(WRONG_IBAN)).thenReturn(null);
         when(paymentMapper.mapToAspspPayment(any(), any())).thenReturn(new AspspPayment());
         when(paymentMapper.mapToSpiSinglePayment(any(AspspPayment.class))).thenReturn(getSpiSinglePayment(50));
+        when(paymentService.cancelPayment(PAYMENT_ID)).thenReturn(buildSpiCancelPayment());
+        when(paymentRepository.findOne(PAYMENT_ID)).thenReturn(new AspspPayment());
     }
 
     @Test
@@ -128,6 +131,22 @@ public class PaymentServiceTest {
         assertThat(actualPayments).isNotNull();
     }
 
+    @Test
+    public void cancelPaymentSuccess() {
+        //Given
+        Optional<SpiCancelPayment> given = buildSpiCancelPayment();
+
+        //When
+        Optional<SpiCancelPayment> actual = paymentService.cancelPayment(PAYMENT_ID);
+
+        //Then
+        assertThat(given).isEqualTo(actual);
+    }
+
+    private Optional<SpiCancelPayment> buildSpiCancelPayment() {
+        return Optional.of(new SpiCancelPayment());
+    }
+
     private SpiSinglePayment getSpiSinglePayment(long amountToTransfer) {
         SpiSinglePayment payment = new SpiSinglePayment();
         SpiAmount amount = new SpiAmount(Currency.getInstance("EUR"), new BigDecimal(amountToTransfer));
@@ -157,7 +176,7 @@ public class PaymentServiceTest {
 
     private List<SpiAccountDetails> getAccountDetails() {
         return Collections.singletonList(
-            new SpiAccountDetails("12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, getBalances())
+            new SpiAccountDetails("12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, getBalances())
         );
     }
 

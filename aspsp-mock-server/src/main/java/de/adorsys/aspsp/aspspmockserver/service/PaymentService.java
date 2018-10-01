@@ -26,6 +26,7 @@ import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.aspsp.xs2a.spi.domain.consent.SpiConsentStatus;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.AspspPayment;
+import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiCancelPayment;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPeriodicPayment;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiSinglePayment;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,7 @@ public class PaymentService {
      * @return Optional of saved single payment
      */
     public Optional<SpiSinglePayment> addPayment(@NotNull SpiSinglePayment payment) {
-        if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getContent())) {
+        if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getAmount())) {
             AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, SINGLE));
             return Optional.ofNullable(paymentMapper.mapToSpiSinglePayment(saved));
         }
@@ -148,11 +149,26 @@ public class PaymentService {
         return paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
     }
 
+    /**
+     * Cancel payment
+     *
+     * @param paymentId Payment identifier
+     * @return SpiCancelPayment containing information about the requirement of aspsp for start authorisation
+     */
+    public Optional<SpiCancelPayment> cancelPayment(String paymentId) {
+        return Optional.ofNullable(paymentRepository.findOne(paymentId))
+                   .map(p -> new SpiCancelPayment());
+    }
+
+    public List<AspspPayment> getAllPayments() {
+        return paymentRepository.findAll();
+    }
+
     private boolean areFundsSufficient(SpiAccountReference reference, BigDecimal amount) {
         Optional<SpiAccountBalance> balance = Optional.ofNullable(reference)
                                                   .flatMap(this::getInterimAvailableBalanceByReference);
         return balance
-                   .map(b -> b.getSpiBalanceAmount().getContent().compareTo(amount) >= 0)
+                   .map(b -> b.getSpiBalanceAmount().getAmount().compareTo(amount) >= 0)
                    .orElse(false);
     }
 
@@ -183,11 +199,7 @@ public class PaymentService {
 
     private BigDecimal getContentFromAmount(SpiAmount amount) {
         return Optional.ofNullable(amount)
-                   .map(SpiAmount::getContent)
+                   .map(SpiAmount::getAmount)
                    .orElse(BigDecimal.ZERO);
-    }
-
-    public List<AspspPayment> getAllPayments() {
-        return paymentRepository.findAll();
     }
 }
