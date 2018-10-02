@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Content of the body of a consent request. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class Consents {
-
     @JsonProperty("access")
     private AccountAccess access = null;
 
@@ -66,7 +65,6 @@ public class Consents {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Boolean getRecurringIndicator() {
         return recurringIndicator;
     }
@@ -108,7 +106,6 @@ public class Consents {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Integer getFrequencyPerDay() {
         return frequencyPerDay;
     }
@@ -129,7 +126,6 @@ public class Consents {
      **/
     @ApiModelProperty(required = true, value = "If \"true\" indicates that a payment initiation service will be addressed in the same \"session\". ")
     @NotNull
-
     public Boolean isCombinedServiceIndicator() {
         return combinedServiceIndicator;
     }
@@ -137,6 +133,7 @@ public class Consents {
     public void setCombinedServiceIndicator(Boolean combinedServiceIndicator) {
         this.combinedServiceIndicator = combinedServiceIndicator;
     }
+
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -147,11 +144,7 @@ public class Consents {
             return false;
         }
         Consents consents = (Consents) o;
-        return Objects.equals(this.access, consents.access) &&
-            Objects.equals(this.recurringIndicator, consents.recurringIndicator) &&
-            Objects.equals(this.validUntil, consents.validUntil) &&
-            Objects.equals(this.frequencyPerDay, consents.frequencyPerDay) &&
-            Objects.equals(this.combinedServiceIndicator, consents.combinedServiceIndicator);
+        return Objects.equals(this.access, consents.access) && Objects.equals(this.recurringIndicator, consents.recurringIndicator) && Objects.equals(this.validUntil, consents.validUntil) && Objects.equals(this.frequencyPerDay, consents.frequencyPerDay) && Objects.equals(this.combinedServiceIndicator, consents.combinedServiceIndicator);
     }
 
     @Override
@@ -184,3 +177,4 @@ public class Consents {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

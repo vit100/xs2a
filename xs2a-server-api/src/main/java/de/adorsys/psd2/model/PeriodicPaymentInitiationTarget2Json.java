@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON Body for a periodic target-2 payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PeriodicPaymentInitiationTarget2Json {
-
     @JsonProperty("endToEndIdentification")
     private String endToEndIdentification = null;
 
@@ -90,7 +89,6 @@ public class PeriodicPaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -132,7 +130,6 @@ public class PeriodicPaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -172,7 +169,6 @@ public class PeriodicPaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCreditorName() {
         return creditorName;
     }
@@ -323,6 +319,7 @@ public class PeriodicPaymentInitiationTarget2Json {
         this.dayOfExecution = dayOfExecution;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -332,19 +329,7 @@ public class PeriodicPaymentInitiationTarget2Json {
             return false;
         }
         PeriodicPaymentInitiationTarget2Json periodicPaymentInitiationTarget2Json = (PeriodicPaymentInitiationTarget2Json) o;
-        return Objects.equals(this.endToEndIdentification, periodicPaymentInitiationTarget2Json.endToEndIdentification) &&
-            Objects.equals(this.debtorAccount, periodicPaymentInitiationTarget2Json.debtorAccount) &&
-            Objects.equals(this.instructedAmount, periodicPaymentInitiationTarget2Json.instructedAmount) &&
-            Objects.equals(this.creditorAccount, periodicPaymentInitiationTarget2Json.creditorAccount) &&
-            Objects.equals(this.creditorAgent, periodicPaymentInitiationTarget2Json.creditorAgent) &&
-            Objects.equals(this.creditorName, periodicPaymentInitiationTarget2Json.creditorName) &&
-            Objects.equals(this.creditorAddress, periodicPaymentInitiationTarget2Json.creditorAddress) &&
-            Objects.equals(this.remittanceInformationUnstructured, periodicPaymentInitiationTarget2Json.remittanceInformationUnstructured) &&
-            Objects.equals(this.startDate, periodicPaymentInitiationTarget2Json.startDate) &&
-            Objects.equals(this.endDate, periodicPaymentInitiationTarget2Json.endDate) &&
-            Objects.equals(this.executionRule, periodicPaymentInitiationTarget2Json.executionRule) &&
-            Objects.equals(this.frequency, periodicPaymentInitiationTarget2Json.frequency) &&
-            Objects.equals(this.dayOfExecution, periodicPaymentInitiationTarget2Json.dayOfExecution);
+        return Objects.equals(this.endToEndIdentification, periodicPaymentInitiationTarget2Json.endToEndIdentification) && Objects.equals(this.debtorAccount, periodicPaymentInitiationTarget2Json.debtorAccount) && Objects.equals(this.instructedAmount, periodicPaymentInitiationTarget2Json.instructedAmount) && Objects.equals(this.creditorAccount, periodicPaymentInitiationTarget2Json.creditorAccount) && Objects.equals(this.creditorAgent, periodicPaymentInitiationTarget2Json.creditorAgent) && Objects.equals(this.creditorName, periodicPaymentInitiationTarget2Json.creditorName) && Objects.equals(this.creditorAddress, periodicPaymentInitiationTarget2Json.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, periodicPaymentInitiationTarget2Json.remittanceInformationUnstructured) && Objects.equals(this.startDate, periodicPaymentInitiationTarget2Json.startDate) && Objects.equals(this.endDate, periodicPaymentInitiationTarget2Json.endDate) && Objects.equals(this.executionRule, periodicPaymentInitiationTarget2Json.executionRule) && Objects.equals(this.frequency, periodicPaymentInitiationTarget2Json.frequency) && Objects.equals(this.dayOfExecution, periodicPaymentInitiationTarget2Json.dayOfExecution);
     }
 
     @Override
@@ -385,3 +370,4 @@ public class PeriodicPaymentInitiationTarget2Json {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

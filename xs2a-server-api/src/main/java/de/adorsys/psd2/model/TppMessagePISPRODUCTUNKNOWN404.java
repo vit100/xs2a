@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The addressed payment product is not supported by the ASPSP. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessagePISPRODUCTUNKNOWN404 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessagePISPRODUCTUNKNOWN404 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessagePISPRODUCTUNKNOWN404 {
             return false;
         }
         TppMessagePISPRODUCTUNKNOWN404 tppMessagePISPRODUCTUNKNOWN404 = (TppMessagePISPRODUCTUNKNOWN404) o;
-        return Objects.equals(this.category, tppMessagePISPRODUCTUNKNOWN404.category) &&
-            Objects.equals(this.code, tppMessagePISPRODUCTUNKNOWN404.code) &&
-            Objects.equals(this.path, tppMessagePISPRODUCTUNKNOWN404.path) &&
-            Objects.equals(this.text, tppMessagePISPRODUCTUNKNOWN404.text);
+        return Objects.equals(this.category, tppMessagePISPRODUCTUNKNOWN404.category) && Objects.equals(this.code, tppMessagePISPRODUCTUNKNOWN404.code) && Objects.equals(this.path, tppMessagePISPRODUCTUNKNOWN404.path) && Objects.equals(this.text, tppMessagePISPRODUCTUNKNOWN404.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessagePISPRODUCTUNKNOWN404 {
         }
     }
 }
+

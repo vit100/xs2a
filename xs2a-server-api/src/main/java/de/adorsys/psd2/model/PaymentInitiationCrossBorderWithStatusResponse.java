@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON response body consistion of the corresponding cross-border payment initation JSON body together with an optional transaction status field. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitiationCrossBorderWithStatusResponse {
-
     @JsonProperty("debtorAccount")
     private Object debtorAccount = null;
 
@@ -54,7 +53,6 @@ public class PaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -96,7 +94,6 @@ public class PaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -136,7 +133,6 @@ public class PaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCreditorName() {
         return creditorName;
     }
@@ -205,6 +201,7 @@ public class PaymentInitiationCrossBorderWithStatusResponse {
         this.transactionStatus = transactionStatus;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -214,14 +211,7 @@ public class PaymentInitiationCrossBorderWithStatusResponse {
             return false;
         }
         PaymentInitiationCrossBorderWithStatusResponse paymentInitiationCrossBorderWithStatusResponse = (PaymentInitiationCrossBorderWithStatusResponse) o;
-        return Objects.equals(this.debtorAccount, paymentInitiationCrossBorderWithStatusResponse.debtorAccount) &&
-            Objects.equals(this.instructedAmount, paymentInitiationCrossBorderWithStatusResponse.instructedAmount) &&
-            Objects.equals(this.creditorAccount, paymentInitiationCrossBorderWithStatusResponse.creditorAccount) &&
-            Objects.equals(this.creditorAgent, paymentInitiationCrossBorderWithStatusResponse.creditorAgent) &&
-            Objects.equals(this.creditorName, paymentInitiationCrossBorderWithStatusResponse.creditorName) &&
-            Objects.equals(this.creditorAddress, paymentInitiationCrossBorderWithStatusResponse.creditorAddress) &&
-            Objects.equals(this.remittanceInformationUnstructured, paymentInitiationCrossBorderWithStatusResponse.remittanceInformationUnstructured) &&
-            Objects.equals(this.transactionStatus, paymentInitiationCrossBorderWithStatusResponse.transactionStatus);
+        return Objects.equals(this.debtorAccount, paymentInitiationCrossBorderWithStatusResponse.debtorAccount) && Objects.equals(this.instructedAmount, paymentInitiationCrossBorderWithStatusResponse.instructedAmount) && Objects.equals(this.creditorAccount, paymentInitiationCrossBorderWithStatusResponse.creditorAccount) && Objects.equals(this.creditorAgent, paymentInitiationCrossBorderWithStatusResponse.creditorAgent) && Objects.equals(this.creditorName, paymentInitiationCrossBorderWithStatusResponse.creditorName) && Objects.equals(this.creditorAddress, paymentInitiationCrossBorderWithStatusResponse.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, paymentInitiationCrossBorderWithStatusResponse.remittanceInformationUnstructured) && Objects.equals(this.transactionStatus, paymentInitiationCrossBorderWithStatusResponse.transactionStatus);
     }
 
     @Override
@@ -257,3 +247,4 @@ public class PaymentInitiationCrossBorderWithStatusResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

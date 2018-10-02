@@ -14,9 +14,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Structured remittance information ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class RemittanceInformationStructured {
-
     @JsonProperty("reference")
     private String reference = null;
 
@@ -38,7 +37,6 @@ public class RemittanceInformationStructured {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     @Size(max = 35)
     public String getReference() {
         return reference;
@@ -88,6 +86,7 @@ public class RemittanceInformationStructured {
         this.referenceIssuer = referenceIssuer;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -97,9 +96,7 @@ public class RemittanceInformationStructured {
             return false;
         }
         RemittanceInformationStructured remittanceInformationStructured = (RemittanceInformationStructured) o;
-        return Objects.equals(this.reference, remittanceInformationStructured.reference) &&
-            Objects.equals(this.referenceType, remittanceInformationStructured.referenceType) &&
-            Objects.equals(this.referenceIssuer, remittanceInformationStructured.referenceIssuer);
+        return Objects.equals(this.reference, remittanceInformationStructured.reference) && Objects.equals(this.referenceType, remittanceInformationStructured.referenceType) && Objects.equals(this.referenceIssuer, remittanceInformationStructured.referenceIssuer);
     }
 
     @Override
@@ -130,3 +127,4 @@ public class RemittanceInformationStructured {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

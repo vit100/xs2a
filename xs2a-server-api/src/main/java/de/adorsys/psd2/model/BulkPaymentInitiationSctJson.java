@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON Body for a bulk SCT payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BulkPaymentInitiationSctJson {
-
     @JsonProperty("batchBookingPreferred")
     private Boolean batchBookingPreferred = null;
 
@@ -84,7 +83,6 @@ public class BulkPaymentInitiationSctJson {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -119,6 +117,7 @@ public class BulkPaymentInitiationSctJson {
         this.payments = payments;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -128,10 +127,7 @@ public class BulkPaymentInitiationSctJson {
             return false;
         }
         BulkPaymentInitiationSctJson bulkPaymentInitiationSctJson = (BulkPaymentInitiationSctJson) o;
-        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationSctJson.batchBookingPreferred) &&
-            Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationSctJson.requestedExecutionDate) &&
-            Objects.equals(this.debtorAccount, bulkPaymentInitiationSctJson.debtorAccount) &&
-            Objects.equals(this.payments, bulkPaymentInitiationSctJson.payments);
+        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationSctJson.batchBookingPreferred) && Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationSctJson.requestedExecutionDate) && Objects.equals(this.debtorAccount, bulkPaymentInitiationSctJson.debtorAccount) && Objects.equals(this.payments, bulkPaymentInitiationSctJson.payments);
     }
 
     @Override
@@ -163,3 +159,4 @@ public class BulkPaymentInitiationSctJson {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The payment initiation has failed due to a missing KID. This is a specific message code for the Norwegian market, where ASPSP can require the payer to transmit the KID. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessagePISREQUIREDKIDMISSING401 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessagePISREQUIREDKIDMISSING401 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessagePISREQUIREDKIDMISSING401 {
             return false;
         }
         TppMessagePISREQUIREDKIDMISSING401 tppMessagePISREQUIREDKIDMISSING401 = (TppMessagePISREQUIREDKIDMISSING401) o;
-        return Objects.equals(this.category, tppMessagePISREQUIREDKIDMISSING401.category) &&
-            Objects.equals(this.code, tppMessagePISREQUIREDKIDMISSING401.code) &&
-            Objects.equals(this.path, tppMessagePISREQUIREDKIDMISSING401.path) &&
-            Objects.equals(this.text, tppMessagePISREQUIREDKIDMISSING401.text);
+        return Objects.equals(this.category, tppMessagePISREQUIREDKIDMISSING401.category) && Objects.equals(this.code, tppMessagePISREQUIREDKIDMISSING401.code) && Objects.equals(this.path, tppMessagePISREQUIREDKIDMISSING401.path) && Objects.equals(this.text, tppMessagePISREQUIREDKIDMISSING401.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessagePISREQUIREDKIDMISSING401 {
         }
     }
 }
+

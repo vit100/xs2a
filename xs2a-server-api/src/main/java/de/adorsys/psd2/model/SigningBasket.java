@@ -14,9 +14,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON Body of a establish signing basket request ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class SigningBasket {
-
     @JsonProperty("paymentIds")
     private PaymentIdList paymentIds = null;
 
@@ -65,6 +64,7 @@ public class SigningBasket {
         this.consentIds = consentIds;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -74,8 +74,7 @@ public class SigningBasket {
             return false;
         }
         SigningBasket signingBasket = (SigningBasket) o;
-        return Objects.equals(this.paymentIds, signingBasket.paymentIds) &&
-            Objects.equals(this.consentIds, signingBasket.consentIds);
+        return Objects.equals(this.paymentIds, signingBasket.paymentIds) && Objects.equals(this.consentIds, signingBasket.consentIds);
     }
 
     @Override
@@ -105,3 +104,4 @@ public class SigningBasket {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

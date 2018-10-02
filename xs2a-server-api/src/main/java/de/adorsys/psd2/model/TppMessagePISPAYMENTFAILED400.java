@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The payment initiation POST request failed during the initial process. Additional information may be provided by the ASPSP. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessagePISPAYMENTFAILED400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessagePISPAYMENTFAILED400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessagePISPAYMENTFAILED400 {
             return false;
         }
         TppMessagePISPAYMENTFAILED400 tppMessagePISPAYMENTFAILED400 = (TppMessagePISPAYMENTFAILED400) o;
-        return Objects.equals(this.category, tppMessagePISPAYMENTFAILED400.category) &&
-            Objects.equals(this.code, tppMessagePISPAYMENTFAILED400.code) &&
-            Objects.equals(this.path, tppMessagePISPAYMENTFAILED400.path) &&
-            Objects.equals(this.text, tppMessagePISPAYMENTFAILED400.text);
+        return Objects.equals(this.category, tppMessagePISPAYMENTFAILED400.category) && Objects.equals(this.code, tppMessagePISPAYMENTFAILED400.code) && Objects.equals(this.path, tppMessagePISPAYMENTFAILED400.path) && Objects.equals(this.text, tppMessagePISPAYMENTFAILED400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessagePISPAYMENTFAILED400 {
         }
     }
 }
+

@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON based account report.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class AccountReport {
-
     @JsonProperty("booked")
     private TransactionList booked = null;
 
@@ -89,6 +88,7 @@ public class AccountReport {
         this._links = _links;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -98,9 +98,7 @@ public class AccountReport {
             return false;
         }
         AccountReport accountReport = (AccountReport) o;
-        return Objects.equals(this.booked, accountReport.booked) &&
-            Objects.equals(this.pending, accountReport.pending) &&
-            Objects.equals(this._links, accountReport._links);
+        return Objects.equals(this.booked, accountReport.booked) && Objects.equals(this.pending, accountReport.pending) && Objects.equals(this._links, accountReport._links);
     }
 
     @Override
@@ -131,3 +129,4 @@ public class AccountReport {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

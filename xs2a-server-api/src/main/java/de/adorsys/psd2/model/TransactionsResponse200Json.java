@@ -14,9 +14,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful read transaction list request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TransactionsResponse200Json {
-
     @JsonProperty("account")
     private Object account = null;
 
@@ -108,6 +107,7 @@ public class TransactionsResponse200Json {
         this._links = _links;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -117,10 +117,7 @@ public class TransactionsResponse200Json {
             return false;
         }
         TransactionsResponse200Json transactionsResponse200Json = (TransactionsResponse200Json) o;
-        return Objects.equals(this.account, transactionsResponse200Json.account) &&
-            Objects.equals(this.transactions, transactionsResponse200Json.transactions) &&
-            Objects.equals(this.balances, transactionsResponse200Json.balances) &&
-            Objects.equals(this._links, transactionsResponse200Json._links);
+        return Objects.equals(this.account, transactionsResponse200Json.account) && Objects.equals(this.transactions, transactionsResponse200Json.transactions) && Objects.equals(this.balances, transactionsResponse200Json.balances) && Objects.equals(this._links, transactionsResponse200Json._links);
     }
 
     @Override
@@ -152,3 +149,4 @@ public class TransactionsResponse200Json {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "A list of balances regarding this account, e.g. the current balance, the last booked balance. The list migght be restricted to the current ballance. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BalanceList extends ArrayList<Balance> {
 
     @Override
@@ -50,3 +50,4 @@ public class BalanceList extends ArrayList<Balance> {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

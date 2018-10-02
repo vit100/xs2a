@@ -1,6 +1,5 @@
 package de.adorsys.psd2.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful update PSU Authentication request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class UpdatePsuAuthenticationResponse {
-
     @JsonProperty("chosenScaMethod")
     private ChosenScaMethod chosenScaMethod = null;
 
@@ -109,7 +107,6 @@ public class UpdatePsuAuthenticationResponse {
      **/
     @ApiModelProperty
     @Valid
-    @JsonIgnore
     public Map getLinks() {
         return _links;
     }
@@ -158,6 +155,7 @@ public class UpdatePsuAuthenticationResponse {
         this.psuMessage = psuMessage;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -167,12 +165,7 @@ public class UpdatePsuAuthenticationResponse {
             return false;
         }
         UpdatePsuAuthenticationResponse updatePsuAuthenticationResponse = (UpdatePsuAuthenticationResponse) o;
-        return Objects.equals(this.chosenScaMethod, updatePsuAuthenticationResponse.chosenScaMethod) &&
-            Objects.equals(this.challengeData, updatePsuAuthenticationResponse.challengeData) &&
-            Objects.equals(this.scaMethods, updatePsuAuthenticationResponse.scaMethods) &&
-            Objects.equals(this._links, updatePsuAuthenticationResponse._links) &&
-            Objects.equals(this.scaStatus, updatePsuAuthenticationResponse.scaStatus) &&
-            Objects.equals(this.psuMessage, updatePsuAuthenticationResponse.psuMessage);
+        return Objects.equals(this.chosenScaMethod, updatePsuAuthenticationResponse.chosenScaMethod) && Objects.equals(this.challengeData, updatePsuAuthenticationResponse.challengeData) && Objects.equals(this.scaMethods, updatePsuAuthenticationResponse.scaMethods) && Objects.equals(this._links, updatePsuAuthenticationResponse._links) && Objects.equals(this.scaStatus, updatePsuAuthenticationResponse.scaStatus) && Objects.equals(this.psuMessage, updatePsuAuthenticationResponse.psuMessage);
     }
 
     @Override
@@ -206,3 +199,4 @@ public class UpdatePsuAuthenticationResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

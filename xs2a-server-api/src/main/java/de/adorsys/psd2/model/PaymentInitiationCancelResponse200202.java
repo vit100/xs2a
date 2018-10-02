@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the response for a successful cancel payment request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitiationCancelResponse200202 {
-
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
 
@@ -134,6 +133,7 @@ public class PaymentInitiationCancelResponse200202 {
         this._links = _links;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -143,11 +143,7 @@ public class PaymentInitiationCancelResponse200202 {
             return false;
         }
         PaymentInitiationCancelResponse200202 paymentInitiationCancelResponse200202 = (PaymentInitiationCancelResponse200202) o;
-        return Objects.equals(this.transactionStatus, paymentInitiationCancelResponse200202.transactionStatus) &&
-            Objects.equals(this.scaMethods, paymentInitiationCancelResponse200202.scaMethods) &&
-            Objects.equals(this.chosenScaMethod, paymentInitiationCancelResponse200202.chosenScaMethod) &&
-            Objects.equals(this.challengeData, paymentInitiationCancelResponse200202.challengeData) &&
-            Objects.equals(this._links, paymentInitiationCancelResponse200202._links);
+        return Objects.equals(this.transactionStatus, paymentInitiationCancelResponse200202.transactionStatus) && Objects.equals(this.scaMethods, paymentInitiationCancelResponse200202.scaMethods) && Objects.equals(this.chosenScaMethod, paymentInitiationCancelResponse200202.chosenScaMethod) && Objects.equals(this.challengeData, paymentInitiationCancelResponse200202.challengeData) && Objects.equals(this._links, paymentInitiationCancelResponse200202._links);
     }
 
     @Override
@@ -180,3 +176,4 @@ public class PaymentInitiationCancelResponse200202 {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

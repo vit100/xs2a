@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The PSU-ID cannot be matched by the addressed ASPSP or is blocked, or a password resp. OTP was not correct. Additional information might be added. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
             return false;
         }
         TppMessageGENERICPSUCREDENTIALSINVALID401 tppMessageGENERICPSUCREDENTIALSINVALID401 = (TppMessageGENERICPSUCREDENTIALSINVALID401) o;
-        return Objects.equals(this.category, tppMessageGENERICPSUCREDENTIALSINVALID401.category) &&
-            Objects.equals(this.code, tppMessageGENERICPSUCREDENTIALSINVALID401.code) &&
-            Objects.equals(this.path, tppMessageGENERICPSUCREDENTIALSINVALID401.path) &&
-            Objects.equals(this.text, tppMessageGENERICPSUCREDENTIALSINVALID401.text);
+        return Objects.equals(this.category, tppMessageGENERICPSUCREDENTIALSINVALID401.category) && Objects.equals(this.code, tppMessageGENERICPSUCREDENTIALSINVALID401.code) && Objects.equals(this.path, tppMessageGENERICPSUCREDENTIALSINVALID401.path) && Objects.equals(this.text, tppMessageGENERICPSUCREDENTIALSINVALID401.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
         }
     }
 }
+

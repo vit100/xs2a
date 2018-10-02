@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful update PSU Identification request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class UpdatePsuIdenticationResponse {
-
     @JsonProperty("_links")
     private Map _links = null;
 
@@ -88,6 +87,7 @@ public class UpdatePsuIdenticationResponse {
         this.psuMessage = psuMessage;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -97,9 +97,7 @@ public class UpdatePsuIdenticationResponse {
             return false;
         }
         UpdatePsuIdenticationResponse updatePsuIdenticationResponse = (UpdatePsuIdenticationResponse) o;
-        return Objects.equals(this._links, updatePsuIdenticationResponse._links) &&
-            Objects.equals(this.scaStatus, updatePsuIdenticationResponse.scaStatus) &&
-            Objects.equals(this.psuMessage, updatePsuIdenticationResponse.psuMessage);
+        return Objects.equals(this._links, updatePsuIdenticationResponse._links) && Objects.equals(this.scaStatus, updatePsuIdenticationResponse.scaStatus) && Objects.equals(this.psuMessage, updatePsuIdenticationResponse.psuMessage);
     }
 
     @Override
@@ -130,3 +128,4 @@ public class UpdatePsuIdenticationResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

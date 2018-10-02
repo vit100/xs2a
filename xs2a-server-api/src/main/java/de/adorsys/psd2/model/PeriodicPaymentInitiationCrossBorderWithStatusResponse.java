@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON response body consistion of the corresponding periodic cross-border payment initation JSON body together with an optional transaction status field. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PeriodicPaymentInitiationCrossBorderWithStatusResponse {
-
     @JsonProperty("debtorAccount")
     private Object debtorAccount = null;
 
@@ -70,7 +69,6 @@ public class PeriodicPaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -112,7 +110,6 @@ public class PeriodicPaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -152,7 +149,6 @@ public class PeriodicPaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCreditorName() {
         return creditorName;
     }
@@ -323,6 +319,7 @@ public class PeriodicPaymentInitiationCrossBorderWithStatusResponse {
         this.transactionStatus = transactionStatus;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -332,19 +329,7 @@ public class PeriodicPaymentInitiationCrossBorderWithStatusResponse {
             return false;
         }
         PeriodicPaymentInitiationCrossBorderWithStatusResponse periodicPaymentInitiationCrossBorderWithStatusResponse = (PeriodicPaymentInitiationCrossBorderWithStatusResponse) o;
-        return Objects.equals(this.debtorAccount, periodicPaymentInitiationCrossBorderWithStatusResponse.debtorAccount) &&
-            Objects.equals(this.instructedAmount, periodicPaymentInitiationCrossBorderWithStatusResponse.instructedAmount) &&
-            Objects.equals(this.creditorAccount, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorAccount) &&
-            Objects.equals(this.creditorAgent, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorAgent) &&
-            Objects.equals(this.creditorName, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorName) &&
-            Objects.equals(this.creditorAddress, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorAddress) &&
-            Objects.equals(this.remittanceInformationUnstructured, periodicPaymentInitiationCrossBorderWithStatusResponse.remittanceInformationUnstructured) &&
-            Objects.equals(this.startDate, periodicPaymentInitiationCrossBorderWithStatusResponse.startDate) &&
-            Objects.equals(this.endDate, periodicPaymentInitiationCrossBorderWithStatusResponse.endDate) &&
-            Objects.equals(this.executionRule, periodicPaymentInitiationCrossBorderWithStatusResponse.executionRule) &&
-            Objects.equals(this.frequency, periodicPaymentInitiationCrossBorderWithStatusResponse.frequency) &&
-            Objects.equals(this.dayOfExecution, periodicPaymentInitiationCrossBorderWithStatusResponse.dayOfExecution) &&
-            Objects.equals(this.transactionStatus, periodicPaymentInitiationCrossBorderWithStatusResponse.transactionStatus);
+        return Objects.equals(this.debtorAccount, periodicPaymentInitiationCrossBorderWithStatusResponse.debtorAccount) && Objects.equals(this.instructedAmount, periodicPaymentInitiationCrossBorderWithStatusResponse.instructedAmount) && Objects.equals(this.creditorAccount, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorAccount) && Objects.equals(this.creditorAgent, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorAgent) && Objects.equals(this.creditorName, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorName) && Objects.equals(this.creditorAddress, periodicPaymentInitiationCrossBorderWithStatusResponse.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, periodicPaymentInitiationCrossBorderWithStatusResponse.remittanceInformationUnstructured) && Objects.equals(this.startDate, periodicPaymentInitiationCrossBorderWithStatusResponse.startDate) && Objects.equals(this.endDate, periodicPaymentInitiationCrossBorderWithStatusResponse.endDate) && Objects.equals(this.executionRule, periodicPaymentInitiationCrossBorderWithStatusResponse.executionRule) && Objects.equals(this.frequency, periodicPaymentInitiationCrossBorderWithStatusResponse.frequency) && Objects.equals(this.dayOfExecution, periodicPaymentInitiationCrossBorderWithStatusResponse.dayOfExecution) && Objects.equals(this.transactionStatus, periodicPaymentInitiationCrossBorderWithStatusResponse.transactionStatus);
     }
 
     @Override
@@ -385,3 +370,4 @@ public class PeriodicPaymentInitiationCrossBorderWithStatusResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

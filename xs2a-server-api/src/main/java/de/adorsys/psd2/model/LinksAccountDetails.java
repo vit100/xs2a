@@ -13,9 +13,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Links to the account, which can be directly used for retrieving account information from this dedicated account.  Links to \"balances\" and/or \"transactions\"  These links are only supported, when the corresponding consent has been already granted. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class LinksAccountDetails extends HashMap<String, String> {
-
     @JsonProperty("balances")
     private String balances = null;
 
@@ -60,6 +59,7 @@ public class LinksAccountDetails extends HashMap<String, String> {
         this.transactions = transactions;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -69,9 +69,7 @@ public class LinksAccountDetails extends HashMap<String, String> {
             return false;
         }
         LinksAccountDetails _linksAccountDetails = (LinksAccountDetails) o;
-        return Objects.equals(this.balances, _linksAccountDetails.balances) &&
-            Objects.equals(this.transactions, _linksAccountDetails.transactions) &&
-            super.equals(o);
+        return Objects.equals(this.balances, _linksAccountDetails.balances) && Objects.equals(this.transactions, _linksAccountDetails.transactions) && super.equals(o);
     }
 
     @Override
@@ -101,3 +99,4 @@ public class LinksAccountDetails extends HashMap<String, String> {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

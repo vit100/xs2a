@@ -14,9 +14,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the response for a successful read balance request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class ReadBalanceResponse200 {
-
     @JsonProperty("account")
     private Object account = null;
 
@@ -63,6 +62,7 @@ public class ReadBalanceResponse200 {
         this.balances = balances;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -72,8 +72,7 @@ public class ReadBalanceResponse200 {
             return false;
         }
         ReadBalanceResponse200 readBalanceResponse200 = (ReadBalanceResponse200) o;
-        return Objects.equals(this.account, readBalanceResponse200.account) &&
-            Objects.equals(this.balances, readBalanceResponse200.balances);
+        return Objects.equals(this.account, readBalanceResponse200.account) && Objects.equals(this.balances, readBalanceResponse200.balances);
     }
 
     @Override
@@ -103,3 +102,4 @@ public class ReadBalanceResponse200 {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

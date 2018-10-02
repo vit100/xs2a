@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Addressed card number is unknown to the ASPSP or not associated to the PSU. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessagePIISCARDINVALID400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessagePIISCARDINVALID400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessagePIISCARDINVALID400 {
             return false;
         }
         TppMessagePIISCARDINVALID400 tppMessagePIISCARDINVALID400 = (TppMessagePIISCARDINVALID400) o;
-        return Objects.equals(this.category, tppMessagePIISCARDINVALID400.category) &&
-            Objects.equals(this.code, tppMessagePIISCARDINVALID400.code) &&
-            Objects.equals(this.path, tppMessagePIISCARDINVALID400.path) &&
-            Objects.equals(this.text, tppMessagePIISCARDINVALID400.text);
+        return Objects.equals(this.category, tppMessagePIISCARDINVALID400.category) && Objects.equals(this.code, tppMessagePIISCARDINVALID400.code) && Objects.equals(this.path, tppMessagePIISCARDINVALID400.path) && Objects.equals(this.text, tppMessagePIISCARDINVALID400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessagePIISCARDINVALID400 {
         }
     }
 }
+

@@ -13,9 +13,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The multipart message definition for the initiation of a periodic payment initiation  where the information of the payment is contained in an pain.001 message (Part 1) and  the additional informations related to the periodic payment is an additional JSON message (Part 2). ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PeriodicPaymentInitiationMultipartBody {
-
     @JsonProperty("xml_sct")
     private Object xmlSct = null;
 
@@ -61,6 +60,7 @@ public class PeriodicPaymentInitiationMultipartBody {
         this.jsonStandingorderType = jsonStandingorderType;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -70,8 +70,7 @@ public class PeriodicPaymentInitiationMultipartBody {
             return false;
         }
         PeriodicPaymentInitiationMultipartBody periodicPaymentInitiationMultipartBody = (PeriodicPaymentInitiationMultipartBody) o;
-        return Objects.equals(this.xmlSct, periodicPaymentInitiationMultipartBody.xmlSct) &&
-            Objects.equals(this.jsonStandingorderType, periodicPaymentInitiationMultipartBody.jsonStandingorderType);
+        return Objects.equals(this.xmlSct, periodicPaymentInitiationMultipartBody.xmlSct) && Objects.equals(this.jsonStandingorderType, periodicPaymentInitiationMultipartBody.jsonStandingorderType);
     }
 
     @Override
@@ -101,3 +100,4 @@ public class PeriodicPaymentInitiationMultipartBody {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

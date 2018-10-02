@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "This service is not reachable for the addressed PSU due to a channel independent blocking by the ASPSP. Additional information might be given by the ASPSP. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICSERVICEBLOCKED403 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICSERVICEBLOCKED403 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICSERVICEBLOCKED403 {
             return false;
         }
         TppMessageGENERICSERVICEBLOCKED403 tppMessageGENERICSERVICEBLOCKED403 = (TppMessageGENERICSERVICEBLOCKED403) o;
-        return Objects.equals(this.category, tppMessageGENERICSERVICEBLOCKED403.category) &&
-            Objects.equals(this.code, tppMessageGENERICSERVICEBLOCKED403.code) &&
-            Objects.equals(this.path, tppMessageGENERICSERVICEBLOCKED403.path) &&
-            Objects.equals(this.text, tppMessageGENERICSERVICEBLOCKED403.text);
+        return Objects.equals(this.category, tppMessageGENERICSERVICEBLOCKED403.category) && Objects.equals(this.code, tppMessageGENERICSERVICEBLOCKED403.code) && Objects.equals(this.path, tppMessageGENERICSERVICEBLOCKED403.path) && Objects.equals(this.text, tppMessageGENERICSERVICEBLOCKED403.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICSERVICEBLOCKED403 {
         }
     }
 }
+

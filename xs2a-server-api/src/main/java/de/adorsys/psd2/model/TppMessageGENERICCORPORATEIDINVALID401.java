@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The PSU-Corporate-ID cannot be matched by the addressed ASPSP.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICCORPORATEIDINVALID401 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICCORPORATEIDINVALID401 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICCORPORATEIDINVALID401 {
             return false;
         }
         TppMessageGENERICCORPORATEIDINVALID401 tppMessageGENERICCORPORATEIDINVALID401 = (TppMessageGENERICCORPORATEIDINVALID401) o;
-        return Objects.equals(this.category, tppMessageGENERICCORPORATEIDINVALID401.category) &&
-            Objects.equals(this.code, tppMessageGENERICCORPORATEIDINVALID401.code) &&
-            Objects.equals(this.path, tppMessageGENERICCORPORATEIDINVALID401.path) &&
-            Objects.equals(this.text, tppMessageGENERICCORPORATEIDINVALID401.text);
+        return Objects.equals(this.category, tppMessageGENERICCORPORATEIDINVALID401.category) && Objects.equals(this.code, tppMessageGENERICCORPORATEIDINVALID401.code) && Objects.equals(this.path, tppMessageGENERICCORPORATEIDINVALID401.path) && Objects.equals(this.text, tppMessageGENERICCORPORATEIDINVALID401.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICCORPORATEIDINVALID401 {
         }
     }
 }
+

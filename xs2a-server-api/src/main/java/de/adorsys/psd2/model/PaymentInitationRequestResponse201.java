@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the response for a successful payment initiation request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitationRequestResponse201 {
-
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
 
@@ -81,7 +80,6 @@ public class PaymentInitationRequestResponse201 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getPaymentId() {
         return paymentId;
     }
@@ -249,6 +247,7 @@ public class PaymentInitationRequestResponse201 {
         this.tppMessages = tppMessages;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -258,16 +257,7 @@ public class PaymentInitationRequestResponse201 {
             return false;
         }
         PaymentInitationRequestResponse201 paymentInitationRequestResponse201 = (PaymentInitationRequestResponse201) o;
-        return Objects.equals(this.transactionStatus, paymentInitationRequestResponse201.transactionStatus) &&
-            Objects.equals(this.paymentId, paymentInitationRequestResponse201.paymentId) &&
-            Objects.equals(this.transactionFees, paymentInitationRequestResponse201.transactionFees) &&
-            Objects.equals(this.transactionFeeIndicator, paymentInitationRequestResponse201.transactionFeeIndicator) &&
-            Objects.equals(this.scaMethods, paymentInitationRequestResponse201.scaMethods) &&
-            Objects.equals(this.chosenScaMethod, paymentInitationRequestResponse201.chosenScaMethod) &&
-            Objects.equals(this.challengeData, paymentInitationRequestResponse201.challengeData) &&
-            Objects.equals(this._links, paymentInitationRequestResponse201._links) &&
-            Objects.equals(this.psuMessage, paymentInitationRequestResponse201.psuMessage) &&
-            Objects.equals(this.tppMessages, paymentInitationRequestResponse201.tppMessages);
+        return Objects.equals(this.transactionStatus, paymentInitationRequestResponse201.transactionStatus) && Objects.equals(this.paymentId, paymentInitationRequestResponse201.paymentId) && Objects.equals(this.transactionFees, paymentInitationRequestResponse201.transactionFees) && Objects.equals(this.transactionFeeIndicator, paymentInitationRequestResponse201.transactionFeeIndicator) && Objects.equals(this.scaMethods, paymentInitationRequestResponse201.scaMethods) && Objects.equals(this.chosenScaMethod, paymentInitationRequestResponse201.chosenScaMethod) && Objects.equals(this.challengeData, paymentInitationRequestResponse201.challengeData) && Objects.equals(this._links, paymentInitationRequestResponse201._links) && Objects.equals(this.psuMessage, paymentInitationRequestResponse201.psuMessage) && Objects.equals(this.tppMessages, paymentInitationRequestResponse201.tppMessages);
     }
 
     @Override
@@ -305,3 +295,4 @@ public class PaymentInitationRequestResponse201 {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

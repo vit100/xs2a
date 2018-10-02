@@ -12,9 +12,8 @@ import java.util.Objects;
  * Address
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class Address {
-
     @JsonProperty("street")
     private String street = null;
 
@@ -127,6 +126,7 @@ public class Address {
         this.country = country;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -136,11 +136,7 @@ public class Address {
             return false;
         }
         Address address = (Address) o;
-        return Objects.equals(this.street, address.street) &&
-            Objects.equals(this.buildingNumber, address.buildingNumber) &&
-            Objects.equals(this.city, address.city) &&
-            Objects.equals(this.postalCode, address.postalCode) &&
-            Objects.equals(this.country, address.country);
+        return Objects.equals(this.street, address.street) && Objects.equals(this.buildingNumber, address.buildingNumber) && Objects.equals(this.city, address.city) && Objects.equals(this.postalCode, address.postalCode) && Objects.equals(this.country, address.country);
     }
 
     @Override
@@ -173,3 +169,4 @@ public class Address {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

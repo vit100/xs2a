@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Signature/corporate seal certificate has been blocked by the ASPSP. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICCERTIFICATEBLOCKED401 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICCERTIFICATEBLOCKED401 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICCERTIFICATEBLOCKED401 {
             return false;
         }
         TppMessageGENERICCERTIFICATEBLOCKED401 tppMessageGENERICCERTIFICATEBLOCKED401 = (TppMessageGENERICCERTIFICATEBLOCKED401) o;
-        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEBLOCKED401.category) &&
-            Objects.equals(this.code, tppMessageGENERICCERTIFICATEBLOCKED401.code) &&
-            Objects.equals(this.path, tppMessageGENERICCERTIFICATEBLOCKED401.path) &&
-            Objects.equals(this.text, tppMessageGENERICCERTIFICATEBLOCKED401.text);
+        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEBLOCKED401.category) && Objects.equals(this.code, tppMessageGENERICCERTIFICATEBLOCKED401.code) && Objects.equals(this.path, tppMessageGENERICCERTIFICATEBLOCKED401.path) && Objects.equals(this.text, tppMessageGENERICCERTIFICATEBLOCKED401.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICCERTIFICATEBLOCKED401 {
         }
     }
 }
+

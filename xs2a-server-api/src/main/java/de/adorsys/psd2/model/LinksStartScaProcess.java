@@ -9,13 +9,12 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- * A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the  response depend on the dynamical decisions of the ASPSP when processing the request.  **Remark:** All links can be relative or full links, to be decided by the ASPSP.  Type of links admitted in this response, (further links might be added for ASPSP defined  extensions):  - &#x27;scaRedirect&#x27;:    In case of an SCA Redirect Approach, the ASPSP is transmitting the link to which to    redirect the PSU browser. - &#x27;scaOAuth&#x27;:    In case of a SCA OAuth2 Approach, the ASPSP is transmitting the URI where the configuration of the Authorisation Server can be retrieved. The configuration follows the OAuth 2.0 Authorisation Server Metadata specification. - &#x27;updatePsuIdentification&#x27;:    The link to the authorisation or cancellation authorisation sub-resource,    where PSU identification data needs to be uploaded. - &#x27;startAuthorisationWithPsuAuthentication&#x27;:   The link to the authorisation or cancellation authorisation sub-resource,    where PSU authentication data needs to be uploaded. - &#x27;selectAuthenticationMethod&#x27;:   The link to the authorisation or cancellation authorisation sub-resource,    where the selected authentication method needs to be uploaded.    This link is contained under exactly the same conditions as the data element &#x27;scaMethods&#x27;. - &#x27;authoriseTransaction&#x27;:   The link to the authorisation or cancellation authorisation sub-resource,    where the authorisation data has to be uploaded, e.g. the TOP received by SMS.  - &#x27;scaStatus&#x27;:    The link to retrieve the scaStatus of the corresponding authorisation sub-resource.
+ * A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the  response depend on the dynamical decisions of the ASPSP when processing the request.  **Remark:** All links can be relative or full links, to be decided by the ASPSP.  Type of links admitted in this response, (further links might be added for ASPSP defined  extensions):  - &#39;scaRedirect&#39;:    In case of an SCA Redirect Approach, the ASPSP is transmitting the link to which to    redirect the PSU browser. - &#39;scaOAuth&#39;:    In case of a SCA OAuth2 Approach, the ASPSP is transmitting the URI where the configuration of the Authorisation Server can be retrieved. The configuration follows the OAuth 2.0 Authorisation Server Metadata specification. - &#39;updatePsuIdentification&#39;:    The link to the authorisation or cancellation authorisation sub-resource,    where PSU identification data needs to be uploaded. - &#39;startAuthorisationWithPsuAuthentication&#39;:   The link to the authorisation or cancellation authorisation sub-resource,    where PSU authentication data needs to be uploaded. - &#39;selectAuthenticationMethod&#39;:   The link to the authorisation or cancellation authorisation sub-resource,    where the selected authentication method needs to be uploaded.    This link is contained under exactly the same conditions as the data element &#39;scaMethods&#39;. - &#39;authoriseTransaction&#39;:   The link to the authorisation or cancellation authorisation sub-resource,    where the authorisation data has to be uploaded, e.g. the TOP received by SMS.  - &#39;scaStatus&#39;:    The link to retrieve the scaStatus of the corresponding authorisation sub-resource.
  */
 @ApiModel(description = "A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the  response depend on the dynamical decisions of the ASPSP when processing the request.  **Remark:** All links can be relative or full links, to be decided by the ASPSP.  Type of links admitted in this response, (further links might be added for ASPSP defined  extensions):  - 'scaRedirect':    In case of an SCA Redirect Approach, the ASPSP is transmitting the link to which to    redirect the PSU browser. - 'scaOAuth':    In case of a SCA OAuth2 Approach, the ASPSP is transmitting the URI where the configuration of the Authorisation Server can be retrieved. The configuration follows the OAuth 2.0 Authorisation Server Metadata specification. - 'updatePsuIdentification':    The link to the authorisation or cancellation authorisation sub-resource,    where PSU identification data needs to be uploaded. - 'startAuthorisationWithPsuAuthentication':   The link to the authorisation or cancellation authorisation sub-resource,    where PSU authentication data needs to be uploaded. - 'selectAuthenticationMethod':   The link to the authorisation or cancellation authorisation sub-resource,    where the selected authentication method needs to be uploaded.    This link is contained under exactly the same conditions as the data element 'scaMethods'. - 'authoriseTransaction':   The link to the authorisation or cancellation authorisation sub-resource,    where the authorisation data has to be uploaded, e.g. the TOP received by SMS.  - 'scaStatus':    The link to retrieve the scaStatus of the corresponding authorisation sub-resource.  ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class LinksStartScaProcess extends HashMap<String, String> {
-
     @JsonProperty("scaRedirect")
     private String scaRedirect = null;
 
@@ -170,6 +169,7 @@ public class LinksStartScaProcess extends HashMap<String, String> {
         this.scaStatus = scaStatus;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -179,14 +179,7 @@ public class LinksStartScaProcess extends HashMap<String, String> {
             return false;
         }
         LinksStartScaProcess _linksStartScaProcess = (LinksStartScaProcess) o;
-        return Objects.equals(this.scaRedirect, _linksStartScaProcess.scaRedirect) &&
-            Objects.equals(this.scaOAuth, _linksStartScaProcess.scaOAuth) &&
-            Objects.equals(this.updatePsuIdentification, _linksStartScaProcess.updatePsuIdentification) &&
-            Objects.equals(this.startAuthorisationWithPsuAuthentication, _linksStartScaProcess.startAuthorisationWithPsuAuthentication) &&
-            Objects.equals(this.selectAuthenticationMethod, _linksStartScaProcess.selectAuthenticationMethod) &&
-            Objects.equals(this.authoriseTransaction, _linksStartScaProcess.authoriseTransaction) &&
-            Objects.equals(this.scaStatus, _linksStartScaProcess.scaStatus) &&
-            super.equals(o);
+        return Objects.equals(this.scaRedirect, _linksStartScaProcess.scaRedirect) && Objects.equals(this.scaOAuth, _linksStartScaProcess.scaOAuth) && Objects.equals(this.updatePsuIdentification, _linksStartScaProcess.updatePsuIdentification) && Objects.equals(this.startAuthorisationWithPsuAuthentication, _linksStartScaProcess.startAuthorisationWithPsuAuthentication) && Objects.equals(this.selectAuthenticationMethod, _linksStartScaProcess.selectAuthenticationMethod) && Objects.equals(this.authoriseTransaction, _linksStartScaProcess.authoriseTransaction) && Objects.equals(this.scaStatus, _linksStartScaProcess.scaStatus) && super.equals(o);
     }
 
     @Override
@@ -221,3 +214,4 @@ public class LinksStartScaProcess extends HashMap<String, String> {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON body for a periodic cross-border payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PeriodicPaymentInitiationCrossBorderJson {
-
     @JsonProperty("debtorAccount")
     private Object debtorAccount = null;
 
@@ -67,7 +66,6 @@ public class PeriodicPaymentInitiationCrossBorderJson {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -109,7 +107,6 @@ public class PeriodicPaymentInitiationCrossBorderJson {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -149,7 +146,6 @@ public class PeriodicPaymentInitiationCrossBorderJson {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCreditorName() {
         return creditorName;
     }
@@ -300,6 +296,7 @@ public class PeriodicPaymentInitiationCrossBorderJson {
         this.dayOfExecution = dayOfExecution;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -309,18 +306,7 @@ public class PeriodicPaymentInitiationCrossBorderJson {
             return false;
         }
         PeriodicPaymentInitiationCrossBorderJson periodicPaymentInitiationCrossBorderJson = (PeriodicPaymentInitiationCrossBorderJson) o;
-        return Objects.equals(this.debtorAccount, periodicPaymentInitiationCrossBorderJson.debtorAccount) &&
-            Objects.equals(this.instructedAmount, periodicPaymentInitiationCrossBorderJson.instructedAmount) &&
-            Objects.equals(this.creditorAccount, periodicPaymentInitiationCrossBorderJson.creditorAccount) &&
-            Objects.equals(this.creditorAgent, periodicPaymentInitiationCrossBorderJson.creditorAgent) &&
-            Objects.equals(this.creditorName, periodicPaymentInitiationCrossBorderJson.creditorName) &&
-            Objects.equals(this.creditorAddress, periodicPaymentInitiationCrossBorderJson.creditorAddress) &&
-            Objects.equals(this.remittanceInformationUnstructured, periodicPaymentInitiationCrossBorderJson.remittanceInformationUnstructured) &&
-            Objects.equals(this.startDate, periodicPaymentInitiationCrossBorderJson.startDate) &&
-            Objects.equals(this.endDate, periodicPaymentInitiationCrossBorderJson.endDate) &&
-            Objects.equals(this.executionRule, periodicPaymentInitiationCrossBorderJson.executionRule) &&
-            Objects.equals(this.frequency, periodicPaymentInitiationCrossBorderJson.frequency) &&
-            Objects.equals(this.dayOfExecution, periodicPaymentInitiationCrossBorderJson.dayOfExecution);
+        return Objects.equals(this.debtorAccount, periodicPaymentInitiationCrossBorderJson.debtorAccount) && Objects.equals(this.instructedAmount, periodicPaymentInitiationCrossBorderJson.instructedAmount) && Objects.equals(this.creditorAccount, periodicPaymentInitiationCrossBorderJson.creditorAccount) && Objects.equals(this.creditorAgent, periodicPaymentInitiationCrossBorderJson.creditorAgent) && Objects.equals(this.creditorName, periodicPaymentInitiationCrossBorderJson.creditorName) && Objects.equals(this.creditorAddress, periodicPaymentInitiationCrossBorderJson.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, periodicPaymentInitiationCrossBorderJson.remittanceInformationUnstructured) && Objects.equals(this.startDate, periodicPaymentInitiationCrossBorderJson.startDate) && Objects.equals(this.endDate, periodicPaymentInitiationCrossBorderJson.endDate) && Objects.equals(this.executionRule, periodicPaymentInitiationCrossBorderJson.executionRule) && Objects.equals(this.frequency, periodicPaymentInitiationCrossBorderJson.frequency) && Objects.equals(this.dayOfExecution, periodicPaymentInitiationCrossBorderJson.dayOfExecution);
     }
 
     @Override
@@ -360,3 +346,4 @@ public class PeriodicPaymentInitiationCrossBorderJson {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

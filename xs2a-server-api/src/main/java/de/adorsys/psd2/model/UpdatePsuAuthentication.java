@@ -14,9 +14,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Content of the body of a Update PSU Authentication Request  Password subfield is used. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class UpdatePsuAuthentication {
-
     @JsonProperty("psuData")
     private PsuData psuData = null;
 
@@ -40,6 +39,7 @@ public class UpdatePsuAuthentication {
     public void setPsuData(PsuData psuData) {
         this.psuData = psuData;
     }
+
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -79,3 +79,4 @@ public class UpdatePsuAuthentication {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Format of certain request fields are not matching the XS2A requirements. An explicit path to the corresponding field might be added in the return message. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICFORMATERROR400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICFORMATERROR400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICFORMATERROR400 {
             return false;
         }
         TppMessageGENERICFORMATERROR400 tppMessageGENERICFORMATERROR400 = (TppMessageGENERICFORMATERROR400) o;
-        return Objects.equals(this.category, tppMessageGENERICFORMATERROR400.category) &&
-            Objects.equals(this.code, tppMessageGENERICFORMATERROR400.code) &&
-            Objects.equals(this.path, tppMessageGENERICFORMATERROR400.path) &&
-            Objects.equals(this.text, tppMessageGENERICFORMATERROR400.text);
+        return Objects.equals(this.category, tppMessageGENERICFORMATERROR400.category) && Objects.equals(this.code, tppMessageGENERICFORMATERROR400.code) && Objects.equals(this.path, tppMessageGENERICFORMATERROR400.path) && Objects.equals(this.text, tppMessageGENERICFORMATERROR400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICFORMATERROR400 {
         }
     }
 }
+

@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON response body consistion of the corresponding SCT payment initation JSON body together with an optional transaction status field. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitiationSctWithStatusResponse {
-
     @JsonProperty("endToEndIdentification")
     private String endToEndIdentification = null;
 
@@ -77,7 +76,6 @@ public class PaymentInitiationSctWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -119,7 +117,6 @@ public class PaymentInitiationSctWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -159,7 +156,6 @@ public class PaymentInitiationSctWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCreditorName() {
         return creditorName;
     }
@@ -227,6 +223,7 @@ public class PaymentInitiationSctWithStatusResponse {
         this.transactionStatus = transactionStatus;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -236,15 +233,7 @@ public class PaymentInitiationSctWithStatusResponse {
             return false;
         }
         PaymentInitiationSctWithStatusResponse paymentInitiationSctWithStatusResponse = (PaymentInitiationSctWithStatusResponse) o;
-        return Objects.equals(this.endToEndIdentification, paymentInitiationSctWithStatusResponse.endToEndIdentification) &&
-            Objects.equals(this.debtorAccount, paymentInitiationSctWithStatusResponse.debtorAccount) &&
-            Objects.equals(this.instructedAmount, paymentInitiationSctWithStatusResponse.instructedAmount) &&
-            Objects.equals(this.creditorAccount, paymentInitiationSctWithStatusResponse.creditorAccount) &&
-            Objects.equals(this.creditorAgent, paymentInitiationSctWithStatusResponse.creditorAgent) &&
-            Objects.equals(this.creditorName, paymentInitiationSctWithStatusResponse.creditorName) &&
-            Objects.equals(this.creditorAddress, paymentInitiationSctWithStatusResponse.creditorAddress) &&
-            Objects.equals(this.remittanceInformationUnstructured, paymentInitiationSctWithStatusResponse.remittanceInformationUnstructured) &&
-            Objects.equals(this.transactionStatus, paymentInitiationSctWithStatusResponse.transactionStatus);
+        return Objects.equals(this.endToEndIdentification, paymentInitiationSctWithStatusResponse.endToEndIdentification) && Objects.equals(this.debtorAccount, paymentInitiationSctWithStatusResponse.debtorAccount) && Objects.equals(this.instructedAmount, paymentInitiationSctWithStatusResponse.instructedAmount) && Objects.equals(this.creditorAccount, paymentInitiationSctWithStatusResponse.creditorAccount) && Objects.equals(this.creditorAgent, paymentInitiationSctWithStatusResponse.creditorAgent) && Objects.equals(this.creditorName, paymentInitiationSctWithStatusResponse.creditorName) && Objects.equals(this.creditorAddress, paymentInitiationSctWithStatusResponse.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, paymentInitiationSctWithStatusResponse.remittanceInformationUnstructured) && Objects.equals(this.transactionStatus, paymentInitiationSctWithStatusResponse.transactionStatus);
     }
 
     @Override
@@ -281,3 +270,4 @@ public class PaymentInitiationSctWithStatusResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

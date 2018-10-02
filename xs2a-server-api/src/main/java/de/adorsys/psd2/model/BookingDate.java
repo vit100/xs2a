@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "The Date when an entry is posted to an account on the ASPSPs books. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BookingDate {
 
     @Override
@@ -49,3 +49,4 @@ public class BookingDate {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

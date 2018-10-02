@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Signature/corporate seal certificate was not available in the request but is mandated for the corresponding. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICCERTIFICATEMISSING401 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
             return false;
         }
         TppMessageGENERICCERTIFICATEMISSING401 tppMessageGENERICCERTIFICATEMISSING401 = (TppMessageGENERICCERTIFICATEMISSING401) o;
-        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEMISSING401.category) &&
-            Objects.equals(this.code, tppMessageGENERICCERTIFICATEMISSING401.code) &&
-            Objects.equals(this.path, tppMessageGENERICCERTIFICATEMISSING401.path) &&
-            Objects.equals(this.text, tppMessageGENERICCERTIFICATEMISSING401.text);
+        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEMISSING401.category) && Objects.equals(this.code, tppMessageGENERICCERTIFICATEMISSING401.code) && Objects.equals(this.path, tppMessageGENERICCERTIFICATEMISSING401.path) && Objects.equals(this.text, tppMessageGENERICCERTIFICATEMISSING401.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
         }
     }
 }
+

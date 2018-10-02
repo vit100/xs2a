@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON Body for a bulk TARGET-2 payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BulkPaymentInitiationTarget2Json {
-
     @JsonProperty("batchBookingPreferred")
     private Boolean batchBookingPreferred = null;
 
@@ -84,7 +83,6 @@ public class BulkPaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -119,6 +117,7 @@ public class BulkPaymentInitiationTarget2Json {
         this.payments = payments;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -128,10 +127,7 @@ public class BulkPaymentInitiationTarget2Json {
             return false;
         }
         BulkPaymentInitiationTarget2Json bulkPaymentInitiationTarget2Json = (BulkPaymentInitiationTarget2Json) o;
-        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationTarget2Json.batchBookingPreferred) &&
-            Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationTarget2Json.requestedExecutionDate) &&
-            Objects.equals(this.debtorAccount, bulkPaymentInitiationTarget2Json.debtorAccount) &&
-            Objects.equals(this.payments, bulkPaymentInitiationTarget2Json.payments);
+        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationTarget2Json.batchBookingPreferred) && Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationTarget2Json.requestedExecutionDate) && Objects.equals(this.debtorAccount, bulkPaymentInitiationTarget2Json.debtorAccount) && Objects.equals(this.payments, bulkPaymentInitiationTarget2Json.payments);
     }
 
     @Override
@@ -163,3 +159,4 @@ public class BulkPaymentInitiationTarget2Json {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

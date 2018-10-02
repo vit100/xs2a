@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The addressed resource is unknown relative to the TPP.   - 404 (if account-id in path)   - 403 (if other resource in path)   - 400 (if payload) ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
             return false;
         }
         TppMessageGENERICRESOURCEUNKNOWN404403400 tppMessageGENERICRESOURCEUNKNOWN404403400 = (TppMessageGENERICRESOURCEUNKNOWN404403400) o;
-        return Objects.equals(this.category, tppMessageGENERICRESOURCEUNKNOWN404403400.category) &&
-            Objects.equals(this.code, tppMessageGENERICRESOURCEUNKNOWN404403400.code) &&
-            Objects.equals(this.path, tppMessageGENERICRESOURCEUNKNOWN404403400.path) &&
-            Objects.equals(this.text, tppMessageGENERICRESOURCEUNKNOWN404403400.text);
+        return Objects.equals(this.category, tppMessageGENERICRESOURCEUNKNOWN404403400.category) && Objects.equals(this.code, tppMessageGENERICRESOURCEUNKNOWN404403400.code) && Objects.equals(this.path, tppMessageGENERICRESOURCEUNKNOWN404403400.path) && Objects.equals(this.text, tppMessageGENERICRESOURCEUNKNOWN404403400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
         }
     }
 }
+

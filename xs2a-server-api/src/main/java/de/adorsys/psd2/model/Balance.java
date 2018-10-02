@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "A single balance element ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class Balance {
-
     @JsonProperty("balanceAmount")
     private Amount balanceAmount = null;
 
@@ -88,6 +87,7 @@ public class Balance {
      * @return lastChangeDateTime
      **/
     @ApiModelProperty(value = "This data element might be used to indicate e.g. with the expected or booked balance that no action is known  on the account, which is not yet booked. ")
+
     @Valid
     public OffsetDateTime getLastChangeDateTime() {
         return lastChangeDateTime;
@@ -108,6 +108,7 @@ public class Balance {
      * @return referenceDate
      **/
     @ApiModelProperty(value = "Reference date of the balance")
+
     @Valid
     public LocalDate getReferenceDate() {
         return referenceDate;
@@ -138,6 +139,7 @@ public class Balance {
         this.lastCommittedTransaction = lastCommittedTransaction;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -147,11 +149,7 @@ public class Balance {
             return false;
         }
         Balance balance = (Balance) o;
-        return Objects.equals(this.balanceAmount, balance.balanceAmount) &&
-            Objects.equals(this.balanceType, balance.balanceType) &&
-            Objects.equals(this.lastChangeDateTime, balance.lastChangeDateTime) &&
-            Objects.equals(this.referenceDate, balance.referenceDate) &&
-            Objects.equals(this.lastCommittedTransaction, balance.lastCommittedTransaction);
+        return Objects.equals(this.balanceAmount, balance.balanceAmount) && Objects.equals(this.balanceType, balance.balanceType) && Objects.equals(this.lastChangeDateTime, balance.lastChangeDateTime) && Objects.equals(this.referenceDate, balance.referenceDate) && Objects.equals(this.lastCommittedTransaction, balance.lastCommittedTransaction);
     }
 
     @Override
@@ -184,3 +182,4 @@ public class Balance {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

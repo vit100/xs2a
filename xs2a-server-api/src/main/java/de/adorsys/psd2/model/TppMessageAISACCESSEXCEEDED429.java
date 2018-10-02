@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Message to the TPP:  The access on the account has been exceeding the consented multiplicity per day. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageAISACCESSEXCEEDED429 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageAISACCESSEXCEEDED429 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageAISACCESSEXCEEDED429 {
             return false;
         }
         TppMessageAISACCESSEXCEEDED429 tppMessageAISACCESSEXCEEDED429 = (TppMessageAISACCESSEXCEEDED429) o;
-        return Objects.equals(this.category, tppMessageAISACCESSEXCEEDED429.category) &&
-            Objects.equals(this.code, tppMessageAISACCESSEXCEEDED429.code) &&
-            Objects.equals(this.path, tppMessageAISACCESSEXCEEDED429.path) &&
-            Objects.equals(this.text, tppMessageAISACCESSEXCEEDED429.text);
+        return Objects.equals(this.category, tppMessageAISACCESSEXCEEDED429.category) && Objects.equals(this.code, tppMessageAISACCESSEXCEEDED429.code) && Objects.equals(this.path, tppMessageAISACCESSEXCEEDED429.path) && Objects.equals(this.text, tppMessageAISACCESSEXCEEDED429.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageAISACCESSEXCEEDED429 {
         }
     }
 }
+

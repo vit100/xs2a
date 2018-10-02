@@ -40,7 +40,7 @@ public class FundsConfirmationController implements FundsConfirmationApi {
     private final FundsConfirmationModelMapper fundsConfirmationModelMapper;
 
     @Override
-    public ResponseEntity<?> checkAvailabilityOfFunds(ConfirmationOfFunds body, UUID xRequestID, String digest, String signature, byte[] tpPSignatureCertificate) {
+    public ResponseEntity checkAvailabilityOfFunds(ConfirmationOfFunds body, UUID xRequestID, String digest, String signature, byte[] tpPSignatureCertificate) {
         return responseMapper.ok(fundsConfirmationService.fundsConfirmation(fundsConfirmationModelMapper.mapToFundsConfirmationRequest(body)));
     }
 }

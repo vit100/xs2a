@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful conset request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class ConsentsResponse201 {
-
     @JsonProperty("consentStatus")
     private ConsentStatus consentStatus = null;
 
@@ -73,7 +72,6 @@ public class ConsentsResponse201 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getConsentId() {
         return consentId;
     }
@@ -184,6 +182,7 @@ public class ConsentsResponse201 {
         this.message = message;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -193,13 +192,7 @@ public class ConsentsResponse201 {
             return false;
         }
         ConsentsResponse201 consentsResponse201 = (ConsentsResponse201) o;
-        return Objects.equals(this.consentStatus, consentsResponse201.consentStatus) &&
-            Objects.equals(this.consentId, consentsResponse201.consentId) &&
-            Objects.equals(this.scaMethods, consentsResponse201.scaMethods) &&
-            Objects.equals(this.chosenScaMethod, consentsResponse201.chosenScaMethod) &&
-            Objects.equals(this.challengeData, consentsResponse201.challengeData) &&
-            Objects.equals(this._links, consentsResponse201._links) &&
-            Objects.equals(this.message, consentsResponse201.message);
+        return Objects.equals(this.consentStatus, consentsResponse201.consentStatus) && Objects.equals(this.consentId, consentsResponse201.consentId) && Objects.equals(this.scaMethods, consentsResponse201.scaMethods) && Objects.equals(this.chosenScaMethod, consentsResponse201.chosenScaMethod) && Objects.equals(this.challengeData, consentsResponse201.challengeData) && Objects.equals(this._links, consentsResponse201._links) && Objects.equals(this.message, consentsResponse201.message);
     }
 
     @Override
@@ -234,3 +227,4 @@ public class ConsentsResponse201 {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

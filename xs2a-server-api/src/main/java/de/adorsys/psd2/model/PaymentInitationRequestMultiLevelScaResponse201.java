@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the response for a successful payment initiation request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitationRequestMultiLevelScaResponse201 {
-
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
 
@@ -72,7 +71,6 @@ public class PaymentInitationRequestMultiLevelScaResponse201 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getPaymentId() {
         return paymentId;
     }
@@ -180,6 +178,7 @@ public class PaymentInitationRequestMultiLevelScaResponse201 {
         this.tppMessages = tppMessages;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -189,13 +188,7 @@ public class PaymentInitationRequestMultiLevelScaResponse201 {
             return false;
         }
         PaymentInitationRequestMultiLevelScaResponse201 paymentInitationRequestMultiLevelScaResponse201 = (PaymentInitationRequestMultiLevelScaResponse201) o;
-        return Objects.equals(this.transactionStatus, paymentInitationRequestMultiLevelScaResponse201.transactionStatus) &&
-            Objects.equals(this.paymentId, paymentInitationRequestMultiLevelScaResponse201.paymentId) &&
-            Objects.equals(this.transactionFees, paymentInitationRequestMultiLevelScaResponse201.transactionFees) &&
-            Objects.equals(this.transactionFeeIndicator, paymentInitationRequestMultiLevelScaResponse201.transactionFeeIndicator) &&
-            Objects.equals(this._links, paymentInitationRequestMultiLevelScaResponse201._links) &&
-            Objects.equals(this.psuMessage, paymentInitationRequestMultiLevelScaResponse201.psuMessage) &&
-            Objects.equals(this.tppMessages, paymentInitationRequestMultiLevelScaResponse201.tppMessages);
+        return Objects.equals(this.transactionStatus, paymentInitationRequestMultiLevelScaResponse201.transactionStatus) && Objects.equals(this.paymentId, paymentInitationRequestMultiLevelScaResponse201.paymentId) && Objects.equals(this.transactionFees, paymentInitationRequestMultiLevelScaResponse201.transactionFees) && Objects.equals(this.transactionFeeIndicator, paymentInitationRequestMultiLevelScaResponse201.transactionFeeIndicator) && Objects.equals(this._links, paymentInitationRequestMultiLevelScaResponse201._links) && Objects.equals(this.psuMessage, paymentInitationRequestMultiLevelScaResponse201.psuMessage) && Objects.equals(this.tppMessages, paymentInitationRequestMultiLevelScaResponse201.tppMessages);
     }
 
     @Override
@@ -230,3 +223,4 @@ public class PaymentInitationRequestMultiLevelScaResponse201 {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The PSU has not activated the addressed account for the usage of the PIIS associated with the TPP.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessagePIISNOPIISACTIVATION400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessagePIISNOPIISACTIVATION400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessagePIISNOPIISACTIVATION400 {
             return false;
         }
         TppMessagePIISNOPIISACTIVATION400 tppMessagePIISNOPIISACTIVATION400 = (TppMessagePIISNOPIISACTIVATION400) o;
-        return Objects.equals(this.category, tppMessagePIISNOPIISACTIVATION400.category) &&
-            Objects.equals(this.code, tppMessagePIISNOPIISACTIVATION400.code) &&
-            Objects.equals(this.path, tppMessagePIISNOPIISACTIVATION400.path) &&
-            Objects.equals(this.text, tppMessagePIISNOPIISACTIVATION400.text);
+        return Objects.equals(this.category, tppMessagePIISNOPIISACTIVATION400.category) && Objects.equals(this.code, tppMessagePIISNOPIISACTIVATION400.code) && Objects.equals(this.path, tppMessagePIISNOPIISACTIVATION400.path) && Objects.equals(this.text, tppMessagePIISNOPIISACTIVATION400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessagePIISNOPIISACTIVATION400 {
         }
     }
 }
+

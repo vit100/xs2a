@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON Body for a bulk SCT INST payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BulkPaymentInitiationSctInstJson {
-
     @JsonProperty("batchBookingPreferred")
     private Boolean batchBookingPreferred = null;
 
@@ -84,7 +83,6 @@ public class BulkPaymentInitiationSctInstJson {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -119,6 +117,7 @@ public class BulkPaymentInitiationSctInstJson {
         this.payments = payments;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -128,10 +127,7 @@ public class BulkPaymentInitiationSctInstJson {
             return false;
         }
         BulkPaymentInitiationSctInstJson bulkPaymentInitiationSctInstJson = (BulkPaymentInitiationSctInstJson) o;
-        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationSctInstJson.batchBookingPreferred) &&
-            Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationSctInstJson.requestedExecutionDate) &&
-            Objects.equals(this.debtorAccount, bulkPaymentInitiationSctInstJson.debtorAccount) &&
-            Objects.equals(this.payments, bulkPaymentInitiationSctInstJson.payments);
+        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationSctInstJson.batchBookingPreferred) && Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationSctInstJson.requestedExecutionDate) && Objects.equals(this.debtorAccount, bulkPaymentInitiationSctInstJson.debtorAccount) && Objects.equals(this.payments, bulkPaymentInitiationSctInstJson.payments);
     }
 
     @Override
@@ -163,3 +159,4 @@ public class BulkPaymentInitiationSctInstJson {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

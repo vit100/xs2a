@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Exchange Rate")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class ExchangeRate {
-
     @JsonProperty("currencyFrom")
     private String currencyFrom = null;
 
@@ -48,7 +47,6 @@ public class ExchangeRate {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCurrencyFrom() {
         return currencyFrom;
     }
@@ -69,7 +67,6 @@ public class ExchangeRate {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getRateFrom() {
         return rateFrom;
     }
@@ -90,7 +87,6 @@ public class ExchangeRate {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCurrencyTo() {
         return currencyTo;
     }
@@ -111,7 +107,6 @@ public class ExchangeRate {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getRateTo() {
         return rateTo;
     }
@@ -160,6 +155,7 @@ public class ExchangeRate {
         this.rateContract = rateContract;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -169,12 +165,7 @@ public class ExchangeRate {
             return false;
         }
         ExchangeRate exchangeRate = (ExchangeRate) o;
-        return Objects.equals(this.currencyFrom, exchangeRate.currencyFrom) &&
-            Objects.equals(this.rateFrom, exchangeRate.rateFrom) &&
-            Objects.equals(this.currencyTo, exchangeRate.currencyTo) &&
-            Objects.equals(this.rateTo, exchangeRate.rateTo) &&
-            Objects.equals(this.rateDate, exchangeRate.rateDate) &&
-            Objects.equals(this.rateContract, exchangeRate.rateContract);
+        return Objects.equals(this.currencyFrom, exchangeRate.currencyFrom) && Objects.equals(this.rateFrom, exchangeRate.rateFrom) && Objects.equals(this.currencyTo, exchangeRate.currencyTo) && Objects.equals(this.rateTo, exchangeRate.rateTo) && Objects.equals(this.rateDate, exchangeRate.rateDate) && Objects.equals(this.rateContract, exchangeRate.rateContract);
     }
 
     @Override
@@ -208,3 +199,4 @@ public class ExchangeRate {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -13,9 +13,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Reference to an account by the Primary Account Number (PAN) of a card,  can be tokenised by the ASPSP due to PCI DSS requirements. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class AccountReferenceIban {
-
     @JsonProperty("iban")
     private String iban = null;
 
@@ -34,7 +33,6 @@ public class AccountReferenceIban {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getIban() {
         return iban;
     }
@@ -62,6 +60,7 @@ public class AccountReferenceIban {
         this.currency = currency;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -71,8 +70,7 @@ public class AccountReferenceIban {
             return false;
         }
         AccountReferenceIban accountReferenceIban = (AccountReferenceIban) o;
-        return Objects.equals(this.iban, accountReferenceIban.iban) &&
-            Objects.equals(this.currency, accountReferenceIban.currency);
+        return Objects.equals(this.iban, accountReferenceIban.iban) && Objects.equals(this.currency, accountReferenceIban.currency);
     }
 
     @Override
@@ -102,3 +100,4 @@ public class AccountReferenceIban {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

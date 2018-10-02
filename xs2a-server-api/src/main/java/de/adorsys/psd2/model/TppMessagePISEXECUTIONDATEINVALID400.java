@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The requested execution date is not a valid execution date for the ASPSP. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessagePISEXECUTIONDATEINVALID400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessagePISEXECUTIONDATEINVALID400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessagePISEXECUTIONDATEINVALID400 {
             return false;
         }
         TppMessagePISEXECUTIONDATEINVALID400 tppMessagePISEXECUTIONDATEINVALID400 = (TppMessagePISEXECUTIONDATEINVALID400) o;
-        return Objects.equals(this.category, tppMessagePISEXECUTIONDATEINVALID400.category) &&
-            Objects.equals(this.code, tppMessagePISEXECUTIONDATEINVALID400.code) &&
-            Objects.equals(this.path, tppMessagePISEXECUTIONDATEINVALID400.path) &&
-            Objects.equals(this.text, tppMessagePISEXECUTIONDATEINVALID400.text);
+        return Objects.equals(this.category, tppMessagePISEXECUTIONDATEINVALID400.category) && Objects.equals(this.code, tppMessagePISEXECUTIONDATEINVALID400.code) && Objects.equals(this.path, tppMessagePISEXECUTIONDATEINVALID400.path) && Objects.equals(this.text, tppMessagePISEXECUTIONDATEINVALID400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessagePISEXECUTIONDATEINVALID400 {
         }
     }
 }
+

@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Transaction details")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TransactionDetails {
-
     @JsonProperty("transactionId")
     private String transactionId = null;
 
@@ -97,6 +96,7 @@ public class TransactionDetails {
      * @return transactionId
      **/
     @ApiModelProperty(value = "the Transaction Id can be used as access-ID in the API, where more details on an transaction is offered.  If this data attribute is provided this shows that the AIS can get access on more details about this  transaction using the GET Transaction Details Request  ")
+
 
     public String getTransactionId() {
         return transactionId;
@@ -242,6 +242,7 @@ public class TransactionDetails {
      * @return valueDate
      **/
     @ApiModelProperty(value = "The Date at which assets become available to the account owner in case of a credit.")
+
     @Valid
     public LocalDate getValueDate() {
         return valueDate;
@@ -525,6 +526,7 @@ public class TransactionDetails {
         this._links = _links;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -534,28 +536,7 @@ public class TransactionDetails {
             return false;
         }
         TransactionDetails transactionDetails = (TransactionDetails) o;
-        return Objects.equals(this.transactionId, transactionDetails.transactionId) &&
-            Objects.equals(this.entryReference, transactionDetails.entryReference) &&
-            Objects.equals(this.endToEndId, transactionDetails.endToEndId) &&
-            Objects.equals(this.mandateId, transactionDetails.mandateId) &&
-            Objects.equals(this.checkId, transactionDetails.checkId) &&
-            Objects.equals(this.creditorId, transactionDetails.creditorId) &&
-            Objects.equals(this.bookingDate, transactionDetails.bookingDate) &&
-            Objects.equals(this.valueDate, transactionDetails.valueDate) &&
-            Objects.equals(this.transactionAmount, transactionDetails.transactionAmount) &&
-            Objects.equals(this.exchangeRate, transactionDetails.exchangeRate) &&
-            Objects.equals(this.creditorName, transactionDetails.creditorName) &&
-            Objects.equals(this.creditorAccount, transactionDetails.creditorAccount) &&
-            Objects.equals(this.ultimateCreditor, transactionDetails.ultimateCreditor) &&
-            Objects.equals(this.debtorName, transactionDetails.debtorName) &&
-            Objects.equals(this.debtorAccount, transactionDetails.debtorAccount) &&
-            Objects.equals(this.ultimateDebtor, transactionDetails.ultimateDebtor) &&
-            Objects.equals(this.remittanceInformationUnstructured, transactionDetails.remittanceInformationUnstructured) &&
-            Objects.equals(this.remittanceInformationStructured, transactionDetails.remittanceInformationStructured) &&
-            Objects.equals(this.purposeCode, transactionDetails.purposeCode) &&
-            Objects.equals(this.bankTransactionCode, transactionDetails.bankTransactionCode) &&
-            Objects.equals(this.proprietaryBankTransactionCode, transactionDetails.proprietaryBankTransactionCode) &&
-            Objects.equals(this._links, transactionDetails._links);
+        return Objects.equals(this.transactionId, transactionDetails.transactionId) && Objects.equals(this.entryReference, transactionDetails.entryReference) && Objects.equals(this.endToEndId, transactionDetails.endToEndId) && Objects.equals(this.mandateId, transactionDetails.mandateId) && Objects.equals(this.checkId, transactionDetails.checkId) && Objects.equals(this.creditorId, transactionDetails.creditorId) && Objects.equals(this.bookingDate, transactionDetails.bookingDate) && Objects.equals(this.valueDate, transactionDetails.valueDate) && Objects.equals(this.transactionAmount, transactionDetails.transactionAmount) && Objects.equals(this.exchangeRate, transactionDetails.exchangeRate) && Objects.equals(this.creditorName, transactionDetails.creditorName) && Objects.equals(this.creditorAccount, transactionDetails.creditorAccount) && Objects.equals(this.ultimateCreditor, transactionDetails.ultimateCreditor) && Objects.equals(this.debtorName, transactionDetails.debtorName) && Objects.equals(this.debtorAccount, transactionDetails.debtorAccount) && Objects.equals(this.ultimateDebtor, transactionDetails.ultimateDebtor) && Objects.equals(this.remittanceInformationUnstructured, transactionDetails.remittanceInformationUnstructured) && Objects.equals(this.remittanceInformationStructured, transactionDetails.remittanceInformationStructured) && Objects.equals(this.purposeCode, transactionDetails.purposeCode) && Objects.equals(this.bankTransactionCode, transactionDetails.bankTransactionCode) && Objects.equals(this.proprietaryBankTransactionCode, transactionDetails.proprietaryBankTransactionCode) && Objects.equals(this._links, transactionDetails._links);
     }
 
     @Override
@@ -605,3 +586,4 @@ public class TransactionDetails {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

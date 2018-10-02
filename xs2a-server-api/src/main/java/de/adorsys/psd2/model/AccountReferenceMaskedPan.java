@@ -13,9 +13,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Reference to an account by the Primary Account Number (PAN) of a card in a masked form. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class AccountReferenceMaskedPan {
-
     @JsonProperty("maskedPan")
     private String maskedPan = null;
 
@@ -34,7 +33,6 @@ public class AccountReferenceMaskedPan {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getMaskedPan() {
         return maskedPan;
     }
@@ -62,6 +60,7 @@ public class AccountReferenceMaskedPan {
         this.currency = currency;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -71,8 +70,7 @@ public class AccountReferenceMaskedPan {
             return false;
         }
         AccountReferenceMaskedPan accountReferenceMaskedPan = (AccountReferenceMaskedPan) o;
-        return Objects.equals(this.maskedPan, accountReferenceMaskedPan.maskedPan) &&
-            Objects.equals(this.currency, accountReferenceMaskedPan.currency);
+        return Objects.equals(this.maskedPan, accountReferenceMaskedPan.maskedPan) && Objects.equals(this.currency, accountReferenceMaskedPan.currency);
     }
 
     @Override
@@ -102,3 +100,4 @@ public class AccountReferenceMaskedPan {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

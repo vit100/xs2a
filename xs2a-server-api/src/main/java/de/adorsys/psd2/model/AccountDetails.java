@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The ASPSP shall give at least one of the account reference identifiers:   - iban   - bban   - pan   - maskedPan   - msisdn If the account is a multicurrency account currency code in \"currency\" is set to \"XXX\". ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class AccountDetails {
-
     @JsonProperty("resourceId")
     private String resourceId = null;
 
@@ -72,6 +71,7 @@ public class AccountDetails {
      * @return resourceId
      **/
     @ApiModelProperty(value = "This shall be filled, if addressable resource are created by the ASPSP on the /accounts or /card-accounts endpoint.")
+
     @Size(max = 35)
     public String getResourceId() {
         return resourceId;
@@ -369,21 +369,7 @@ public class AccountDetails {
             return false;
         }
         AccountDetails accountDetails = (AccountDetails) o;
-        return Objects.equals(this.resourceId, accountDetails.resourceId) &&
-            Objects.equals(this.iban, accountDetails.iban) &&
-            Objects.equals(this.bban, accountDetails.bban) &&
-            Objects.equals(this.msisdn, accountDetails.msisdn) &&
-            Objects.equals(this.currency, accountDetails.currency) &&
-            Objects.equals(this.name, accountDetails.name) &&
-            Objects.equals(this.product, accountDetails.product) &&
-            Objects.equals(this.cashAccountType, accountDetails.cashAccountType) &&
-            Objects.equals(this.status, accountDetails.status) &&
-            Objects.equals(this.bic, accountDetails.bic) &&
-            Objects.equals(this.linkedAccounts, accountDetails.linkedAccounts) &&
-            Objects.equals(this.usage, accountDetails.usage) &&
-            Objects.equals(this.details, accountDetails.details) &&
-            Objects.equals(this.balances, accountDetails.balances) &&
-            Objects.equals(this._links, accountDetails._links);
+        return Objects.equals(this.resourceId, accountDetails.resourceId) && Objects.equals(this.iban, accountDetails.iban) && Objects.equals(this.bban, accountDetails.bban) && Objects.equals(this.msisdn, accountDetails.msisdn) && Objects.equals(this.currency, accountDetails.currency) && Objects.equals(this.name, accountDetails.name) && Objects.equals(this.product, accountDetails.product) && Objects.equals(this.cashAccountType, accountDetails.cashAccountType) && Objects.equals(this.status, accountDetails.status) && Objects.equals(this.bic, accountDetails.bic) && Objects.equals(this.linkedAccounts, accountDetails.linkedAccounts) && Objects.equals(this.usage, accountDetails.usage) && Objects.equals(this.details, accountDetails.details) && Objects.equals(this.balances, accountDetails.balances) && Objects.equals(this._links, accountDetails._links);
     }
 
     @Override
@@ -457,3 +443,4 @@ public class AccountDetails {
         }
     }
 }
+

@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful select PSU Authentication Method request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class SelectPsuAuthenticationMethodResponse {
-
     @JsonProperty("chosenScaMethod")
     private ChosenScaMethod chosenScaMethod = null;
 
@@ -133,6 +132,7 @@ public class SelectPsuAuthenticationMethodResponse {
         this.psuMessage = psuMessage;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -142,11 +142,7 @@ public class SelectPsuAuthenticationMethodResponse {
             return false;
         }
         SelectPsuAuthenticationMethodResponse selectPsuAuthenticationMethodResponse = (SelectPsuAuthenticationMethodResponse) o;
-        return Objects.equals(this.chosenScaMethod, selectPsuAuthenticationMethodResponse.chosenScaMethod) &&
-            Objects.equals(this.challengeData, selectPsuAuthenticationMethodResponse.challengeData) &&
-            Objects.equals(this._links, selectPsuAuthenticationMethodResponse._links) &&
-            Objects.equals(this.scaStatus, selectPsuAuthenticationMethodResponse.scaStatus) &&
-            Objects.equals(this.psuMessage, selectPsuAuthenticationMethodResponse.psuMessage);
+        return Objects.equals(this.chosenScaMethod, selectPsuAuthenticationMethodResponse.chosenScaMethod) && Objects.equals(this.challengeData, selectPsuAuthenticationMethodResponse.challengeData) && Objects.equals(this._links, selectPsuAuthenticationMethodResponse._links) && Objects.equals(this.scaStatus, selectPsuAuthenticationMethodResponse.scaStatus) && Objects.equals(this.psuMessage, selectPsuAuthenticationMethodResponse.psuMessage);
     }
 
     @Override
@@ -179,3 +175,4 @@ public class SelectPsuAuthenticationMethodResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

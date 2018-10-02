@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The addressed resource is associated with the TPP but has expired, not addressable anymore.   - 403 (if path)   - 400 (if payload) ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICRESOURCEEXPIRED403400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICRESOURCEEXPIRED403400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICRESOURCEEXPIRED403400 {
             return false;
         }
         TppMessageGENERICRESOURCEEXPIRED403400 tppMessageGENERICRESOURCEEXPIRED403400 = (TppMessageGENERICRESOURCEEXPIRED403400) o;
-        return Objects.equals(this.category, tppMessageGENERICRESOURCEEXPIRED403400.category) &&
-            Objects.equals(this.code, tppMessageGENERICRESOURCEEXPIRED403400.code) &&
-            Objects.equals(this.path, tppMessageGENERICRESOURCEEXPIRED403400.path) &&
-            Objects.equals(this.text, tppMessageGENERICRESOURCEEXPIRED403400.text);
+        return Objects.equals(this.category, tppMessageGENERICRESOURCEEXPIRED403400.category) && Objects.equals(this.code, tppMessageGENERICRESOURCEEXPIRED403400.code) && Objects.equals(this.path, tppMessageGENERICRESOURCEEXPIRED403400.path) && Objects.equals(this.text, tppMessageGENERICRESOURCEEXPIRED403400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICRESOURCEEXPIRED403400 {
         }
     }
 }
+

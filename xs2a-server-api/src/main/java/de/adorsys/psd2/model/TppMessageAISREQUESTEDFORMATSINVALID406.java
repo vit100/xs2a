@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Message to the TPP:  The requested formats in the Accept header entry are not matching the formats offered by the ASPSP. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageAISREQUESTEDFORMATSINVALID406 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
             return false;
         }
         TppMessageAISREQUESTEDFORMATSINVALID406 tppMessageAISREQUESTEDFORMATSINVALID406 = (TppMessageAISREQUESTEDFORMATSINVALID406) o;
-        return Objects.equals(this.category, tppMessageAISREQUESTEDFORMATSINVALID406.category) &&
-            Objects.equals(this.code, tppMessageAISREQUESTEDFORMATSINVALID406.code) &&
-            Objects.equals(this.path, tppMessageAISREQUESTEDFORMATSINVALID406.path) &&
-            Objects.equals(this.text, tppMessageAISREQUESTEDFORMATSINVALID406.text);
+        return Objects.equals(this.category, tppMessageAISREQUESTEDFORMATSINVALID406.category) && Objects.equals(this.code, tppMessageAISREQUESTEDFORMATSINVALID406.code) && Objects.equals(this.path, tppMessageAISREQUESTEDFORMATSINVALID406.path) && Objects.equals(this.text, tppMessageAISREQUESTEDFORMATSINVALID406.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
         }
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The parameter is not supported by the API provider. This code should only be used for parameters that are described as ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICPARAMETERNOTSUPPORTED400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICPARAMETERNOTSUPPORTED400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICPARAMETERNOTSUPPORTED400 {
             return false;
         }
         TppMessageGENERICPARAMETERNOTSUPPORTED400 tppMessageGENERICPARAMETERNOTSUPPORTED400 = (TppMessageGENERICPARAMETERNOTSUPPORTED400) o;
-        return Objects.equals(this.category, tppMessageGENERICPARAMETERNOTSUPPORTED400.category) &&
-            Objects.equals(this.code, tppMessageGENERICPARAMETERNOTSUPPORTED400.code) &&
-            Objects.equals(this.path, tppMessageGENERICPARAMETERNOTSUPPORTED400.path) &&
-            Objects.equals(this.text, tppMessageGENERICPARAMETERNOTSUPPORTED400.text);
+        return Objects.equals(this.category, tppMessageGENERICPARAMETERNOTSUPPORTED400.category) && Objects.equals(this.code, tppMessageGENERICPARAMETERNOTSUPPORTED400.code) && Objects.equals(this.path, tppMessageGENERICPARAMETERNOTSUPPORTED400.path) && Objects.equals(this.text, tppMessageGENERICPARAMETERNOTSUPPORTED400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICPARAMETERNOTSUPPORTED400 {
         }
     }
 }
+

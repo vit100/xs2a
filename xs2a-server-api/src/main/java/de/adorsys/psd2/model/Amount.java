@@ -11,9 +11,8 @@ import java.util.Objects;
  * Amount
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class Amount {
-
     @JsonProperty("currency")
     private String currency = null;
 
@@ -32,7 +31,6 @@ public class Amount {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCurrency() {
         return currency;
     }
@@ -53,7 +51,6 @@ public class Amount {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getAmount() {
         return amount;
     }
@@ -61,6 +58,7 @@ public class Amount {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -71,8 +69,7 @@ public class Amount {
             return false;
         }
         Amount amount = (Amount) o;
-        return Objects.equals(this.currency, amount.currency) &&
-            Objects.equals(this.amount, amount.amount);
+        return Objects.equals(this.currency, amount.currency) && Objects.equals(this.amount, amount.amount);
     }
 
     @Override
@@ -102,3 +99,4 @@ public class Amount {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

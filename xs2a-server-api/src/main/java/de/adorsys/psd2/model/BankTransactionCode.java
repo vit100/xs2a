@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "Bank transaction code as used by the ASPSP and using the sub elements of this structured code defined by ISO 20022.   This code type is concatenating the three ISO20022 Codes    * Domain Code,    * Family Code, and    * SubFamiliy Code  by hyphens, resulting in “DomainCode”-“FamilyCode”-“SubFamilyCode”. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BankTransactionCode {
 
     @Override
@@ -49,3 +49,4 @@ public class BankTransactionCode {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

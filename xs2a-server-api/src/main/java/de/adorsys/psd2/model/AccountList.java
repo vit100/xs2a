@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "List of accounts with details. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class AccountList {
-
     @JsonProperty("accounts")
     @Valid
     private List<AccountDetails> accounts = new ArrayList<>();
@@ -48,6 +47,7 @@ public class AccountList {
     public void setAccounts(List<AccountDetails> accounts) {
         this.accounts = accounts;
     }
+
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -87,3 +87,4 @@ public class AccountList {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -6,11 +6,11 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Objects;
 
 /**
- * If this element equals &#x27;true&#x27;, the PSU prefers only one booking entry.  If this element equals &#x27;false&#x27;, the PSU prefers individual booking of all contained individual transactions.   The ASPSP will follow this preference according to contracts agreed on with the PSU.
+ * If this element equals &#39;true&#39;, the PSU prefers only one booking entry.  If this element equals &#39;false&#39;, the PSU prefers individual booking of all contained individual transactions.   The ASPSP will follow this preference according to contracts agreed on with the PSU.
  */
 @ApiModel(description = "If this element equals 'true', the PSU prefers only one booking entry.  If this element equals 'false', the PSU prefers individual booking of all contained individual transactions.   The ASPSP will follow this preference according to contracts agreed on with the PSU. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BatchBookingPreferred {
 
     @Override
@@ -49,3 +49,4 @@ public class BatchBookingPreferred {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

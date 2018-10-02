@@ -14,9 +14,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful create signing basket request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class SigningBasketResponse201 {
-
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
 
@@ -74,7 +73,6 @@ public class SigningBasketResponse201 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getBasketId() {
         return basketId;
     }
@@ -203,6 +201,7 @@ public class SigningBasketResponse201 {
         this.tppMessages = tppMessages;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -212,14 +211,7 @@ public class SigningBasketResponse201 {
             return false;
         }
         SigningBasketResponse201 signingBasketResponse201 = (SigningBasketResponse201) o;
-        return Objects.equals(this.transactionStatus, signingBasketResponse201.transactionStatus) &&
-            Objects.equals(this.basketId, signingBasketResponse201.basketId) &&
-            Objects.equals(this.scaMethods, signingBasketResponse201.scaMethods) &&
-            Objects.equals(this.chosenScaMethod, signingBasketResponse201.chosenScaMethod) &&
-            Objects.equals(this.challengeData, signingBasketResponse201.challengeData) &&
-            Objects.equals(this._links, signingBasketResponse201._links) &&
-            Objects.equals(this.psuMessage, signingBasketResponse201.psuMessage) &&
-            Objects.equals(this.tppMessages, signingBasketResponse201.tppMessages);
+        return Objects.equals(this.transactionStatus, signingBasketResponse201.transactionStatus) && Objects.equals(this.basketId, signingBasketResponse201.basketId) && Objects.equals(this.scaMethods, signingBasketResponse201.scaMethods) && Objects.equals(this.chosenScaMethod, signingBasketResponse201.chosenScaMethod) && Objects.equals(this.challengeData, signingBasketResponse201.challengeData) && Objects.equals(this._links, signingBasketResponse201._links) && Objects.equals(this.psuMessage, signingBasketResponse201.psuMessage) && Objects.equals(this.tppMessages, signingBasketResponse201.tppMessages);
     }
 
     @Override
@@ -255,3 +247,4 @@ public class SigningBasketResponse201 {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "This parameter is requesting a valid until date for the requested consent.  The content is the local ASPSP date in ISO-Date Format, e.g. 2017-10-30.   If a maximal available date is requested, a date in far future is to be used: \"9999-12-31\".  The consent object to be retrieved by the GET Consent Request will contain the adjusted date. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class ValidUntil {
 
     @Override
@@ -49,3 +49,4 @@ public class ValidUntil {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

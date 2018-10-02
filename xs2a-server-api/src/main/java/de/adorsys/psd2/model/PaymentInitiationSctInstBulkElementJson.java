@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body for a SCT INST payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitiationSctInstBulkElementJson {
-
     @JsonProperty("endToEndIdentification")
     private String endToEndIdentification = null;
 
@@ -92,7 +91,6 @@ public class PaymentInitiationSctInstBulkElementJson {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -132,7 +130,6 @@ public class PaymentInitiationSctInstBulkElementJson {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getCreditorName() {
         return creditorName;
     }
@@ -181,6 +178,7 @@ public class PaymentInitiationSctInstBulkElementJson {
         this.remittanceInformationUnstructured = remittanceInformationUnstructured;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -190,13 +188,7 @@ public class PaymentInitiationSctInstBulkElementJson {
             return false;
         }
         PaymentInitiationSctInstBulkElementJson paymentInitiationSctInstBulkElementJson = (PaymentInitiationSctInstBulkElementJson) o;
-        return Objects.equals(this.endToEndIdentification, paymentInitiationSctInstBulkElementJson.endToEndIdentification) &&
-            Objects.equals(this.instructedAmount, paymentInitiationSctInstBulkElementJson.instructedAmount) &&
-            Objects.equals(this.creditorAccount, paymentInitiationSctInstBulkElementJson.creditorAccount) &&
-            Objects.equals(this.creditorAgent, paymentInitiationSctInstBulkElementJson.creditorAgent) &&
-            Objects.equals(this.creditorName, paymentInitiationSctInstBulkElementJson.creditorName) &&
-            Objects.equals(this.creditorAddress, paymentInitiationSctInstBulkElementJson.creditorAddress) &&
-            Objects.equals(this.remittanceInformationUnstructured, paymentInitiationSctInstBulkElementJson.remittanceInformationUnstructured);
+        return Objects.equals(this.endToEndIdentification, paymentInitiationSctInstBulkElementJson.endToEndIdentification) && Objects.equals(this.instructedAmount, paymentInitiationSctInstBulkElementJson.instructedAmount) && Objects.equals(this.creditorAccount, paymentInitiationSctInstBulkElementJson.creditorAccount) && Objects.equals(this.creditorAgent, paymentInitiationSctInstBulkElementJson.creditorAgent) && Objects.equals(this.creditorName, paymentInitiationSctInstBulkElementJson.creditorName) && Objects.equals(this.creditorAddress, paymentInitiationSctInstBulkElementJson.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, paymentInitiationSctInstBulkElementJson.remittanceInformationUnstructured);
     }
 
     @Override
@@ -231,3 +223,4 @@ public class PaymentInitiationSctInstBulkElementJson {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Application layer eIDAS Signature for TPP authentication is not correct.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICSIGNATUREINVALID401 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
             return false;
         }
         TppMessageGENERICSIGNATUREINVALID401 tppMessageGENERICSIGNATUREINVALID401 = (TppMessageGENERICSIGNATUREINVALID401) o;
-        return Objects.equals(this.category, tppMessageGENERICSIGNATUREINVALID401.category) &&
-            Objects.equals(this.code, tppMessageGENERICSIGNATUREINVALID401.code) &&
-            Objects.equals(this.path, tppMessageGENERICSIGNATUREINVALID401.path) &&
-            Objects.equals(this.text, tppMessageGENERICSIGNATUREINVALID401.text);
+        return Objects.equals(this.category, tppMessageGENERICSIGNATUREINVALID401.category) && Objects.equals(this.code, tppMessageGENERICSIGNATUREINVALID401.code) && Objects.equals(this.path, tppMessageGENERICSIGNATUREINVALID401.path) && Objects.equals(this.text, tppMessageGENERICSIGNATUREINVALID401.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
         }
     }
 }
+

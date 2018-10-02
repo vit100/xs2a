@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successfull get consent request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class ConsentInformationResponse200Json {
-
     @JsonProperty("access")
     private AccountAccess access = null;
 
@@ -69,7 +68,6 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Boolean getRecurringIndicator() {
         return recurringIndicator;
     }
@@ -111,7 +109,6 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Integer getFrequencyPerDay() {
         return frequencyPerDay;
     }
@@ -162,6 +159,7 @@ public class ConsentInformationResponse200Json {
         this.consentStatus = consentStatus;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -171,12 +169,7 @@ public class ConsentInformationResponse200Json {
             return false;
         }
         ConsentInformationResponse200Json consentInformationResponse200Json = (ConsentInformationResponse200Json) o;
-        return Objects.equals(this.access, consentInformationResponse200Json.access) &&
-            Objects.equals(this.recurringIndicator, consentInformationResponse200Json.recurringIndicator) &&
-            Objects.equals(this.validUntil, consentInformationResponse200Json.validUntil) &&
-            Objects.equals(this.frequencyPerDay, consentInformationResponse200Json.frequencyPerDay) &&
-            Objects.equals(this.lastActionDate, consentInformationResponse200Json.lastActionDate) &&
-            Objects.equals(this.consentStatus, consentInformationResponse200Json.consentStatus);
+        return Objects.equals(this.access, consentInformationResponse200Json.access) && Objects.equals(this.recurringIndicator, consentInformationResponse200Json.recurringIndicator) && Objects.equals(this.validUntil, consentInformationResponse200Json.validUntil) && Objects.equals(this.frequencyPerDay, consentInformationResponse200Json.frequencyPerDay) && Objects.equals(this.lastActionDate, consentInformationResponse200Json.lastActionDate) && Objects.equals(this.consentStatus, consentInformationResponse200Json.consentStatus);
     }
 
     @Override
@@ -210,3 +203,4 @@ public class ConsentInformationResponse200Json {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

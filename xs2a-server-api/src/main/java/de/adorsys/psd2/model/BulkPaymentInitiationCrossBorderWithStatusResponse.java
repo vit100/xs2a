@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON response body consistion of the corresponding bulk cross-border payment initation JSON body together with an optional transaction status field. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BulkPaymentInitiationCrossBorderWithStatusResponse {
-
     @JsonProperty("batchBookingPreferred")
     private Boolean batchBookingPreferred = null;
 
@@ -87,7 +86,6 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -142,6 +140,7 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
         this.transactionStatus = transactionStatus;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -151,11 +150,7 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
             return false;
         }
         BulkPaymentInitiationCrossBorderWithStatusResponse bulkPaymentInitiationCrossBorderWithStatusResponse = (BulkPaymentInitiationCrossBorderWithStatusResponse) o;
-        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationCrossBorderWithStatusResponse.batchBookingPreferred) &&
-            Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationCrossBorderWithStatusResponse.requestedExecutionDate) &&
-            Objects.equals(this.debtorAccount, bulkPaymentInitiationCrossBorderWithStatusResponse.debtorAccount) &&
-            Objects.equals(this.payments, bulkPaymentInitiationCrossBorderWithStatusResponse.payments) &&
-            Objects.equals(this.transactionStatus, bulkPaymentInitiationCrossBorderWithStatusResponse.transactionStatus);
+        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationCrossBorderWithStatusResponse.batchBookingPreferred) && Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationCrossBorderWithStatusResponse.requestedExecutionDate) && Objects.equals(this.debtorAccount, bulkPaymentInitiationCrossBorderWithStatusResponse.debtorAccount) && Objects.equals(this.payments, bulkPaymentInitiationCrossBorderWithStatusResponse.payments) && Objects.equals(this.transactionStatus, bulkPaymentInitiationCrossBorderWithStatusResponse.transactionStatus);
     }
 
     @Override
@@ -188,3 +183,4 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

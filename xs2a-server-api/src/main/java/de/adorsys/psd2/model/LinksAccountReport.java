@@ -12,9 +12,8 @@ import java.util.Objects;
  * LinksAccountReport
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class LinksAccountReport extends HashMap<String, String> {
-
     @JsonProperty("account")
     private String account = null;
 
@@ -42,7 +41,6 @@ public class LinksAccountReport extends HashMap<String, String> {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getAccount() {
         return account;
     }
@@ -127,6 +125,7 @@ public class LinksAccountReport extends HashMap<String, String> {
         this.last = last;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -136,12 +135,7 @@ public class LinksAccountReport extends HashMap<String, String> {
             return false;
         }
         LinksAccountReport _linksAccountReport = (LinksAccountReport) o;
-        return Objects.equals(this.account, _linksAccountReport.account) &&
-            Objects.equals(this.first, _linksAccountReport.first) &&
-            Objects.equals(this.next, _linksAccountReport.next) &&
-            Objects.equals(this.previous, _linksAccountReport.previous) &&
-            Objects.equals(this.last, _linksAccountReport.last) &&
-            super.equals(o);
+        return Objects.equals(this.account, _linksAccountReport.account) && Objects.equals(this.first, _linksAccountReport.first) && Objects.equals(this.next, _linksAccountReport.next) && Objects.equals(this.previous, _linksAccountReport.previous) && Objects.equals(this.last, _linksAccountReport.last) && super.equals(o);
     }
 
     @Override
@@ -174,3 +168,4 @@ public class LinksAccountReport extends HashMap<String, String> {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

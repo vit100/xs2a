@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a Start SCA authorisation request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class StartScaprocessResponse {
-
     @JsonProperty("scaStatus")
     private ScaStatus scaStatus = null;
 
@@ -157,6 +156,7 @@ public class StartScaprocessResponse {
         this.psuMessage = psuMessage;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -166,12 +166,7 @@ public class StartScaprocessResponse {
             return false;
         }
         StartScaprocessResponse startScaprocessResponse = (StartScaprocessResponse) o;
-        return Objects.equals(this.scaStatus, startScaprocessResponse.scaStatus) &&
-            Objects.equals(this.scaMethods, startScaprocessResponse.scaMethods) &&
-            Objects.equals(this.chosenScaMethod, startScaprocessResponse.chosenScaMethod) &&
-            Objects.equals(this.challengeData, startScaprocessResponse.challengeData) &&
-            Objects.equals(this._links, startScaprocessResponse._links) &&
-            Objects.equals(this.psuMessage, startScaprocessResponse.psuMessage);
+        return Objects.equals(this.scaStatus, startScaprocessResponse.scaStatus) && Objects.equals(this.scaMethods, startScaprocessResponse.scaMethods) && Objects.equals(this.chosenScaMethod, startScaprocessResponse.chosenScaMethod) && Objects.equals(this.challengeData, startScaprocessResponse.challengeData) && Objects.equals(this._links, startScaprocessResponse._links) && Objects.equals(this.psuMessage, startScaprocessResponse.psuMessage);
     }
 
     @Override
@@ -205,3 +200,4 @@ public class StartScaprocessResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

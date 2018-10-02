@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Addressed SCA method in the Authentication Method Select Request is unknown or cannot be matched by the ASPSP with the PSU. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICSCAMETHODUNKNOWN400 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICSCAMETHODUNKNOWN400 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICSCAMETHODUNKNOWN400 {
             return false;
         }
         TppMessageGENERICSCAMETHODUNKNOWN400 tppMessageGENERICSCAMETHODUNKNOWN400 = (TppMessageGENERICSCAMETHODUNKNOWN400) o;
-        return Objects.equals(this.category, tppMessageGENERICSCAMETHODUNKNOWN400.category) &&
-            Objects.equals(this.code, tppMessageGENERICSCAMETHODUNKNOWN400.code) &&
-            Objects.equals(this.path, tppMessageGENERICSCAMETHODUNKNOWN400.path) &&
-            Objects.equals(this.text, tppMessageGENERICSCAMETHODUNKNOWN400.text);
+        return Objects.equals(this.category, tppMessageGENERICSCAMETHODUNKNOWN400.category) && Objects.equals(this.code, tppMessageGENERICSCAMETHODUNKNOWN400.code) && Objects.equals(this.path, tppMessageGENERICSCAMETHODUNKNOWN400.path) && Objects.equals(this.text, tppMessageGENERICSCAMETHODUNKNOWN400.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICSCAMETHODUNKNOWN400 {
         }
     }
 }
+

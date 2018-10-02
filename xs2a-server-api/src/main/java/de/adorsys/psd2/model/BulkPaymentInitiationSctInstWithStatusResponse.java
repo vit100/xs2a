@@ -17,9 +17,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON response body consistion of the corresponding bulk SCT INST payment initation JSON body together with an optional transaction status field. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class BulkPaymentInitiationSctInstWithStatusResponse {
-
     @JsonProperty("batchBookingPreferred")
     private Boolean batchBookingPreferred = null;
 
@@ -87,7 +86,6 @@ public class BulkPaymentInitiationSctInstWithStatusResponse {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -142,6 +140,7 @@ public class BulkPaymentInitiationSctInstWithStatusResponse {
         this.transactionStatus = transactionStatus;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -151,11 +150,7 @@ public class BulkPaymentInitiationSctInstWithStatusResponse {
             return false;
         }
         BulkPaymentInitiationSctInstWithStatusResponse bulkPaymentInitiationSctInstWithStatusResponse = (BulkPaymentInitiationSctInstWithStatusResponse) o;
-        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationSctInstWithStatusResponse.batchBookingPreferred) &&
-            Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationSctInstWithStatusResponse.requestedExecutionDate) &&
-            Objects.equals(this.debtorAccount, bulkPaymentInitiationSctInstWithStatusResponse.debtorAccount) &&
-            Objects.equals(this.payments, bulkPaymentInitiationSctInstWithStatusResponse.payments) &&
-            Objects.equals(this.transactionStatus, bulkPaymentInitiationSctInstWithStatusResponse.transactionStatus);
+        return Objects.equals(this.batchBookingPreferred, bulkPaymentInitiationSctInstWithStatusResponse.batchBookingPreferred) && Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationSctInstWithStatusResponse.requestedExecutionDate) && Objects.equals(this.debtorAccount, bulkPaymentInitiationSctInstWithStatusResponse.debtorAccount) && Objects.equals(this.payments, bulkPaymentInitiationSctInstWithStatusResponse.payments) && Objects.equals(this.transactionStatus, bulkPaymentInitiationSctInstWithStatusResponse.transactionStatus);
     }
 
     @Override
@@ -188,3 +183,4 @@ public class BulkPaymentInitiationSctInstWithStatusResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

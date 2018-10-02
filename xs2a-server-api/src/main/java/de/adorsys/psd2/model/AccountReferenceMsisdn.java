@@ -13,9 +13,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "An alias to access a payment account via a registered mobile phone number. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class AccountReferenceMsisdn {
-
     @JsonProperty("msisdn")
     private String msisdn = null;
 
@@ -34,7 +33,6 @@ public class AccountReferenceMsisdn {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public String getMsisdn() {
         return msisdn;
     }
@@ -62,6 +60,7 @@ public class AccountReferenceMsisdn {
         this.currency = currency;
     }
 
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -71,8 +70,7 @@ public class AccountReferenceMsisdn {
             return false;
         }
         AccountReferenceMsisdn accountReferenceMsisdn = (AccountReferenceMsisdn) o;
-        return Objects.equals(this.msisdn, accountReferenceMsisdn.msisdn) &&
-            Objects.equals(this.currency, accountReferenceMsisdn.currency);
+        return Objects.equals(this.msisdn, accountReferenceMsisdn.msisdn) && Objects.equals(this.currency, accountReferenceMsisdn.currency);
     }
 
     @Override
@@ -102,3 +100,4 @@ public class AccountReferenceMsisdn {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "Message to the TPP:  The addressed service is not valid for the addressed resources or the submitted data.    - 400 (if payload)   - 405 (if HTTP method) ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICSERVICEINVALID400405 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICSERVICEINVALID400405 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICSERVICEINVALID400405 {
             return false;
         }
         TppMessageGENERICSERVICEINVALID400405 tppMessageGENERICSERVICEINVALID400405 = (TppMessageGENERICSERVICEINVALID400405) o;
-        return Objects.equals(this.category, tppMessageGENERICSERVICEINVALID400405.category) &&
-            Objects.equals(this.code, tppMessageGENERICSERVICEINVALID400405.code) &&
-            Objects.equals(this.path, tppMessageGENERICSERVICEINVALID400405.path) &&
-            Objects.equals(this.text, tppMessageGENERICSERVICEINVALID400405.text);
+        return Objects.equals(this.category, tppMessageGENERICSERVICEINVALID400405.category) && Objects.equals(this.code, tppMessageGENERICSERVICEINVALID400405.code) && Objects.equals(this.path, tppMessageGENERICSERVICEINVALID400405.path) && Objects.equals(this.text, tppMessageGENERICSERVICEINVALID400405.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICSERVICEINVALID400405 {
         }
     }
 }
+

@@ -16,9 +16,8 @@ import java.util.Objects;
  */
 @ApiModel(description = "The contents of the signature/corporate seal certificate are not matching PSD2 general PSD2  or attribute requirements. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class TppMessageGENERICCERTIFICATEINVALID401 {
-
     @JsonProperty("category")
     private TppMessageCategory category = null;
     @JsonProperty("code")
@@ -61,7 +60,6 @@ public class TppMessageGENERICCERTIFICATEINVALID401 {
      **/
     @ApiModelProperty(required = true)
     @NotNull
-
     public CodeEnum getCode() {
         return code;
     }
@@ -117,10 +115,7 @@ public class TppMessageGENERICCERTIFICATEINVALID401 {
             return false;
         }
         TppMessageGENERICCERTIFICATEINVALID401 tppMessageGENERICCERTIFICATEINVALID401 = (TppMessageGENERICCERTIFICATEINVALID401) o;
-        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEINVALID401.category) &&
-            Objects.equals(this.code, tppMessageGENERICCERTIFICATEINVALID401.code) &&
-            Objects.equals(this.path, tppMessageGENERICCERTIFICATEINVALID401.path) &&
-            Objects.equals(this.text, tppMessageGENERICCERTIFICATEINVALID401.text);
+        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEINVALID401.category) && Objects.equals(this.code, tppMessageGENERICCERTIFICATEINVALID401.code) && Objects.equals(this.path, tppMessageGENERICCERTIFICATEINVALID401.path) && Objects.equals(this.text, tppMessageGENERICCERTIFICATEINVALID401.text);
     }
 
     @Override
@@ -181,3 +176,4 @@ public class TppMessageGENERICCERTIFICATEINVALID401 {
         }
     }
 }
+

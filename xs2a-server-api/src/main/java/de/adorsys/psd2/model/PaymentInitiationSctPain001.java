@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "A pain.001 structure corresponding to the SCT schema  urn:iso:std:iso:20022:tech:xsd:pain.001.001.03 ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitiationSctPain001 {
 
     @Override
@@ -49,3 +49,4 @@ public class PaymentInitiationSctPain001 {
         return o.toString().replace("\n", "\n    ");
     }
 }
+

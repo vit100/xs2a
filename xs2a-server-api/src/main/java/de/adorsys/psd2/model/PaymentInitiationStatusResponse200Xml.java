@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the response for a successful payment initiation status request in case of an XML based endpoint.  The status is returned as a pain.002 structure.   urn:iso:std:iso:20022:tech:xsd:pain.002.001.03  The chosen XML schema of the Status Request is following the XML schema definitions of the original pain.001 schema. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-08-09T18:41:17.591+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-02T14:31:50.251+02:00[Europe/Berlin]")
 public class PaymentInitiationStatusResponse200Xml {
 
     @Override
@@ -49,3 +49,4 @@ public class PaymentInitiationStatusResponse200Xml {
         return o.toString().replace("\n", "\n    ");
     }
 }
+
