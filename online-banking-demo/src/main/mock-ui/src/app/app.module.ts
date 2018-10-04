@@ -26,6 +26,7 @@ import { PisTanConfirmationCanceledComponent } from './components/pis-tan-confir
 import { PisConsentConfirmationSuccessfulComponent } from './components/pis-consent-confirmation-successful/pis-consent-confirmation-successful.component';
 import { PisConsentConfirmationErrorComponent } from './components/pis-consent-confirmation-error/pis-consent-confirmation-error.component';
 import { PisHelpPageComponent } from './components/pis-help-page/pis-help-page.component';
+import { HelpPageComponent } from './components/help-page/help-page.component';
 
 
 registerLocaleData(localeDE);
@@ -51,6 +52,7 @@ registerLocaleData(localeDE);
     PisConsentConfirmationSuccessfulComponent,
     PisConsentConfirmationErrorComponent,
     PisHelpPageComponent,
+    HelpPageComponent,
 
   ],
   imports: [

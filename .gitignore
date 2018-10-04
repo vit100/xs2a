@@ -29,10 +29,11 @@ dist/
 nbdist/
 .nb-gradle/
 
-### PisMockWebApp ###
+### mock-ui ###
 node_modules/
 node
 .vscode
+/online-banking-demo/src/main/resources/static/
 
 ### Other ###
 bin/

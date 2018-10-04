@@ -16,10 +16,12 @@ import { PisTanConfirmationErrorComponent } from './components/pis-tan-confirmat
 import { PisTanConfirmationPageComponent } from './components/pis-tan-confirmation-page/pis-tan-confirmation-page.component';
 import { PisConsentConfirmationDeniedComponent } from './components/pis-consent-confirmation-denied/pis-consent-confirmation-denied.component';
 import { PisConsentConfirmationSuccessfulComponent } from './components/pis-consent-confirmation-successful/pis-consent-confirmation-successful.component';
+import { HelpPageComponent } from './components/help-page/help-page.component';
 
 
 
 const routes: Routes = [
+  { path: '', component: HelpPageComponent},
   { path: 'ais', component: AisHelpPageComponent},
   { path: 'ais/consentconfirmationerror', component: AisConsentConfirmationErrorComponent },
   { path: 'ais/consentconfirmationdenied', component: AisConsentConfirmationDeniedComponent },
@@ -35,12 +37,11 @@ const routes: Routes = [
   { path: 'pis/tanconfirmation', component: PisTanConfirmationPageComponent },
   { path: 'pis/consentconfirmationdenied', component: PisConsentConfirmationDeniedComponent },
   { path: 'pis/consentconfirmationsuccessful', component: PisConsentConfirmationSuccessfulComponent },
-
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {useHash: true})
   ],
   exports: [
     RouterModule
