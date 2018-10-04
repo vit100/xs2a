@@ -40,7 +40,7 @@
         <resteasy.client.version>3.6.1.Final</resteasy.client.version>
         <keycloak.version>3.4.3.Final</keycloak.version>
         <fongo.version>2.0.5</fongo.version>
-        <ruleset.basedir>..</ruleset.basedir>
+        <ruleset.basedir>../..</ruleset.basedir>
         <archunit-junit4.version>0.9.1</archunit-junit4.version>
         <apache.commons.version>3.7</apache.commons.version>
         <apache.commons.collections>4.1</apache.commons.collections>

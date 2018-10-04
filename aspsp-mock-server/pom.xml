@@ -35,6 +35,7 @@
     <description>Mock server that simulates ASPSP system for XS2A Library</description>
 
     <properties>
+        <ruleset.basedir>../..</ruleset.basedir>
     </properties>
 
     <modules>
