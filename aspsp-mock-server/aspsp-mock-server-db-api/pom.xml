@@ -18,32 +18,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
-        <artifactId>xs2a</artifactId>
+        <artifactId>aspsp-mock-server</artifactId>
         <groupId>de.adorsys.aspsp</groupId>
         <version>1.9-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aspsp-mock-server</artifactId>
+    <artifactId>aspsp-mock-server-db-api</artifactId>
     <version>1.9-SNAPSHOT</version>
-    <packaging>pom</packaging>
-
-    <description>Mock server that simulates ASPSP system for XS2A Library</description>
+    <packaging>jar</packaging>
 
     <properties>
     </properties>
 
-    <modules>
-        <module>aspsp-mock-server-app</module>
-        <module>aspsp-mock-server-db-api</module>
-        <module>aspsp-mock-server-db-impl-postgre</module>
-    </modules>
-
     <dependencies>
+
+        <!-- project dependencies -->
+
+        <dependency>
+            <groupId>de.adorsys.aspsp</groupId>
+            <artifactId>aspsp-mock-server-app</artifactId>
+            <version>1.9-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 </project>

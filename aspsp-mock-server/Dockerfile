@@ -9,7 +9,7 @@ ENV JAVA_TOOL_OPTIONS -Xmx1024m
 
 WORKDIR /opt/aspsp-mock-server
 
-COPY ./target/aspsp-mock-server*jar /opt/aspsp-mock-server/aspsp-mock-server.jar
+COPY ./aspsp-mock-server-app/target/aspsp-mock-server*jar /opt/aspsp-mock-server/aspsp-mock-server.jar
 
 EXPOSE 8080
 
