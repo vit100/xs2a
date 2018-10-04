@@ -26,7 +26,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aspsp-mock-server-db-impl-postgre</artifactId>
+    <artifactId>aspsp-mock-server-service-impl</artifactId>
     <version>1.9-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>de.adorsys.aspsp</groupId>
-            <artifactId>aspsp-mock-server-db-api</artifactId>
+            <artifactId>aspsp-mock-server-service-api</artifactId>
             <version>1.9-SNAPSHOT</version>
         </dependency>
 
@@ -63,10 +63,9 @@
                                 <bannedDependencies>
                                     <excludes>
                                         <exclude>de.adorsys.aspsp:aspsp-mock-server-app</exclude>
-                                        <exclude>de.adorsys.aspsp:aspsp-mock-server-service-*</exclude>
+                                        <exclude>de.adorsys.aspsp:aspsp-mock-server-db-*</exclude>
                                         <exclude>de.adorsys.aspsp:aspsp-mock-server-rest</exclude>
                                     </excludes>
-                                    <searchTransitive>false</searchTransitive>
                                 </bannedDependencies>
                             </rules>
                             <fail>true</fail>
