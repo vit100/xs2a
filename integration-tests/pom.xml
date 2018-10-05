@@ -106,19 +106,16 @@
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
             <version>${cucumber.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>${cucumber.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-spring</artifactId>
             <version>${cucumber.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -154,6 +151,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <requiresUnpack>
+                        <dependency>
+                            <groupId>info.cukes</groupId>
+                            <artifactId>cucumber-java</artifactId>
+                        </dependency>
+                    </requiresUnpack>
                     <includeSystemScope>true</includeSystemScope>
                     <mainClass>de.adorsys.aspsp.xs2a.integtest.IntegrationTestApp</mainClass>
                 </configuration>
