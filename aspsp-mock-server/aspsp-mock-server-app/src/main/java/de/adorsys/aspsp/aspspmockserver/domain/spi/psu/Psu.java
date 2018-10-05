@@ -20,16 +20,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class Psu {
-    @Id
     private String aspspPsuId;
     private String email;
     private String psuId;

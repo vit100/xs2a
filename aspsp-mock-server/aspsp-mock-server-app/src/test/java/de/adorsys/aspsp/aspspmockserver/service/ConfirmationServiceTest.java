@@ -17,10 +17,7 @@
 package de.adorsys.aspsp.aspspmockserver.service;
 
 import de.adorsys.aspsp.aspspmockserver.domain.ConfirmationType;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Tan;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.TanStatus;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.*;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
 import org.junit.Before;
@@ -73,9 +70,9 @@ public class ConfirmationServiceTest {
     public void setUp() {
         ReflectionTestUtils.setField(tanConfirmationService, "maximumNumberOfTanAttempts", 3);
         when(psuRepository.findOne(ASPSP_PSU_ID_1))
-            .thenReturn(getPsu1());
+            .thenReturn(Optional.of(getPsu1()));
         when(psuRepository.findOne(ASPSP_PSU_ID_2))
-            .thenReturn(getPsu2());
+            .thenReturn(Optional.of(getPsu2()));
         when(psuRepository.findOne(WRONG_PSU_ID))
             .thenReturn(null);
         when(accountService.getPsuIdByIban(WRONG_IBAN))
@@ -84,11 +81,11 @@ public class ConfirmationServiceTest {
             .thenReturn(Optional.of(ASPSP_PSU_ID_1));
         when(accountService.getPsuIdByIban(IBAN_2))
             .thenReturn(Optional.of(ASPSP_PSU_ID_2));
-        when(tanRepository.save(any(Tan.class)))
+        when(tanRepository.save(any(TanPO.class)))
             .thenReturn(getUnusedTan());
-        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_1, TanStatus.UNUSED))
+        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_1, TanStatusPO.UNUSED))
             .thenReturn(Collections.singletonList(getUnusedTan()));
-        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_2, TanStatus.UNUSED))
+        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_2, TanStatusPO.UNUSED))
             .thenReturn(Collections.emptyList());
         when(accountService.getPsuByPsuId(PSU_ID_1))
             .thenReturn(Optional.empty());
@@ -132,15 +129,15 @@ public class ConfirmationServiceTest {
         assertThat(actualResult.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-    private Psu getPsu1() {
-        return new Psu(PSU_ID_1, "test1@gmail.com", "aspsp1", "zzz", null, null, Collections.singletonList(SpiScaMethod.SMS_OTP));
+    private PsuPO getPsu1() {
+        return new PsuPO(PSU_ID_1, "test1@gmail.com", "aspsp1", "zzz", null, null, Collections.singletonList(SpiScaMethodPO.SMS_OTP));
     }
 
-    private Psu getPsu2() {
-        return new Psu(PSU_ID_2, "test2@gmail.com", "aspsp2", "zzz", null, null, Collections.singletonList(SpiScaMethod.SMS_OTP));
+    private PsuPO getPsu2() {
+        return new PsuPO(PSU_ID_2, "test2@gmail.com", "aspsp2", "zzz", null, null, Collections.singletonList(SpiScaMethodPO.SMS_OTP));
     }
 
-    private Tan getUnusedTan() {
-        return new Tan(TAN_ID, PSU_ID_1, TAN_NUMBER, TanStatus.UNUSED, 0);
+    private TanPO getUnusedTan() {
+        return new TanPO(TAN_ID, PSU_ID_1, TAN_NUMBER, TanStatusPO.UNUSED, 0);
     }
 }

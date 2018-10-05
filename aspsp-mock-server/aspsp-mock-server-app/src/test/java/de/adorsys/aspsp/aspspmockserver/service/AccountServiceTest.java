@@ -16,18 +16,22 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountBalance;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiBalanceType;
+import de.adorsys.aspsp.aspspmockserver.converter.PsuConverter;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.*;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmountPO;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.PsuPO;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethodPO;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
@@ -51,31 +55,38 @@ public class AccountServiceTest {
 
     @InjectMocks
     private AccountService accountService;
+
     @Mock
     PsuRepository psuRepository;
 
+    @Spy
+    PsuConverter psuConverter = Mappers.getMapper(PsuConverter.class);
+    public static final String PSU_ID1 = "12234556";
+
     @Before
     public void setUp() {
-        List<Psu> psuList = new ArrayList<>();
-        psuList.add(getPsuWithRightAccounts());
+        List<PsuPO> psuList = new ArrayList<>();
+        psuList.add(getPsuWithRightAccountsPO());
         when(psuRepository.findOne(PSU_ID))
-            .thenReturn(getPsuWithRightAccounts());
+            .thenReturn(Optional.ofNullable(getPsuWithRightAccountsPO()));
         when(psuRepository.findOne(WRONG_PSU_ID))
-            .thenReturn(null);
+            .thenReturn(Optional.empty());
+        when(psuRepository.findOne(PSU_ID1))
+            .thenReturn(Optional.empty());
         when(psuRepository.findPsuByAccountDetailsList_Iban(IBAN))
-            .thenReturn(Optional.of(getPsuWithRightAccounts()));
+            .thenReturn(Optional.of(getPsuWithRightAccountsPO()));
         when(psuRepository.findPsuByAccountDetailsList_Iban(WRONG_IBAN))
             .thenReturn(Optional.empty());
 
         when(psuRepository.findPsuByAccountDetailsList_Id(ACCOUNT_ID))
-            .thenReturn(Optional.of(getPsuWithRightAccounts()));
+            .thenReturn(Optional.of(getPsuWithRightAccountsPO()));
         when(psuRepository.findPsuByAccountDetailsList_Id(WRONG_ACCOUNT_ID))
             .thenReturn(Optional.empty());
         when(psuRepository.findPsuByAccountDetailsList_Id(null))
             .thenReturn(Optional.empty());
 
-        when(psuRepository.save(any(Psu.class)))
-            .thenReturn(getPsuWithRightAccounts());
+        when(psuRepository.save(any(PsuPO.class)))
+            .thenReturn(getPsuWithRightAccountsPO());
     }
 
     @Test
@@ -138,7 +149,7 @@ public class AccountServiceTest {
     @Test
     public void getAccount_WrongId() {
         //Given
-        accountService.addAccount("12234556", getSpiAccountDetails_1());
+        accountService.addAccount(PSU_ID1, getSpiAccountDetails_1());
 
         //When
         Optional<SpiAccountDetails> actualSpiAccountDetails = accountService.getAccountById(WRONG_ACCOUNT_ID);
@@ -183,8 +194,20 @@ public class AccountServiceTest {
             null, null, "XE3DDD", null, null, null, getNewBalanceList());
     }
 
+    private SpiAccountDetailsPO getSpiAccountDetails_1PO() {
+        return new SpiAccountDetailsPO(ACCOUNT_ID, IBAN, null, "1111222233334444",
+            "111122xxxxxx44", null, Currency.getInstance("EUR"), "Jack", "GIRO",
+            null, null, "XE3DDD", null, null, null, getNewBalanceListPO());
+    }
+
     private SpiAccountDetails getSpiAccountDetails_2() {
         return new SpiAccountDetails("qwertyuiop12345678", IBAN, null,
+            "4444333322221111", "444433xxxxxx1111", null, null, "Emily",
+            "GIRO", null, null, "ACVB222", null, null, null, null);
+    }
+
+    private SpiAccountDetailsPO getSpiAccountDetails_2PO() {
+        return new SpiAccountDetailsPO("qwertyuiop12345678", IBAN, null,
             "4444333322221111", "444433xxxxxx1111", null, null, "Emily",
             "GIRO", null, null, "ACVB222", null, null, null, null);
     }
@@ -203,14 +226,39 @@ public class AccountServiceTest {
         return sb;
     }
 
+    private List<SpiAccountBalancePO> getNewBalanceListPO() {
+        return Collections.singletonList(getNewSingleBalancesPO(new SpiAmountPO(EUR, BigDecimal.valueOf(1000))));
+    }
+
+    private SpiAccountBalancePO getNewSingleBalancesPO(SpiAmountPO spiAmount) {
+        SpiAccountBalancePO sb = new SpiAccountBalancePO();
+        sb.setReferenceDate(LocalDate.parse("2019-03-03"));
+        sb.setSpiBalanceAmount(spiAmount);
+        sb.setLastChangeDateTime(LocalDateTime.parse("2019-03-03T13:34:28.387"));
+        sb.setSpiBalanceType(SpiBalanceTypePO.INTERIM_AVAILABLE);
+        sb.setLastCommittedTransaction("abc");
+        return sb;
+    }
+
     private Psu getPsuWithRightAccounts() {
         return new Psu("12345678910", "test@gmail.com", "aspsp", "zzz", getAccounts(), null, Collections.singletonList(SpiScaMethod.SMS_OTP));
+    }
+
+    private PsuPO getPsuWithRightAccountsPO() {
+        return new PsuPO("12345678910", "test@gmail.com", "aspsp", "zzz", getAccountsPO(), null, Collections.singletonList(SpiScaMethodPO.SMS_OTP));
     }
 
     private List<SpiAccountDetails> getAccounts() {
         List<SpiAccountDetails> list = new ArrayList<>();
         list.add(getSpiAccountDetails_1());
         list.add(getSpiAccountDetails_2());
+        return list;
+    }
+
+    private List<SpiAccountDetailsPO> getAccountsPO() {
+        List<SpiAccountDetailsPO> list = new ArrayList<>();
+        list.add(getSpiAccountDetails_1PO());
+        list.add(getSpiAccountDetails_2PO());
         return list;
     }
 }

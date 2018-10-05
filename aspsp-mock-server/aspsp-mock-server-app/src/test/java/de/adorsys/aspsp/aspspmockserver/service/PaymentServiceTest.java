@@ -16,21 +16,20 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountBalance;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountReference;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiBalanceType;
+import de.adorsys.aspsp.aspspmockserver.converter.PaymentConverter;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.*;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.AspspPayment;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.SpiCancelPayment;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.SpiSinglePayment;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmountPO;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.*;
 import de.adorsys.aspsp.aspspmockserver.repository.PaymentRepository;
 import de.adorsys.aspsp.aspspmockserver.service.mapper.PaymentMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
@@ -56,10 +55,12 @@ public class PaymentServiceTest {
     private AccountService accountService;
     @Mock
     private PaymentMapper paymentMapper;
+    @Spy
+    private PaymentConverter paymentConverter = Mappers.getMapper(PaymentConverter.class);
 
     @Before
     public void setUp() {
-        when(paymentRepository.save(any(AspspPayment.class)))
+        when(paymentRepository.save(any(AspspPaymentPO.class)))
             .thenReturn(getAspspPayment());
         when(paymentRepository.exists(PAYMENT_ID))
             .thenReturn(true);
@@ -70,7 +71,7 @@ public class PaymentServiceTest {
         when(paymentMapper.mapToAspspPayment(any(), any())).thenReturn(new AspspPayment());
         when(paymentMapper.mapToSpiSinglePayment(any(AspspPayment.class))).thenReturn(getSpiSinglePayment(50));
         when(paymentService.cancelPayment(PAYMENT_ID)).thenReturn(buildSpiCancelPayment());
-        when(paymentRepository.findOne(PAYMENT_ID)).thenReturn(new AspspPayment());
+        when(paymentRepository.findOne(PAYMENT_ID)).thenReturn(Optional.of(new AspspPaymentPO()));
     }
 
     @Test
@@ -161,17 +162,23 @@ public class PaymentServiceTest {
         return payment;
     }
 
-    private AspspPayment getAspspPayment() {
-        AspspPayment payment = new AspspPayment();
-        SpiAmount amount = new SpiAmount(Currency.getInstance("EUR"), new BigDecimal((long) 50));
+    private AspspPaymentPO getAspspPayment() {
+        AspspPaymentPO payment = new AspspPaymentPO();
+        SpiAmountPO amount = new SpiAmountPO(Currency.getInstance("EUR"), new BigDecimal((long) 50));
         payment.setInstructedAmount(amount);
-        payment.setDebtorAccount(getReference());
+        payment.setDebtorAccount(getReferencePO());
         payment.setCreditorName("Merchant123");
         payment.setPurposeCode("BEQNSD");
         payment.setCreditorAgent("sdasd");
-        payment.setCreditorAccount(getReference());
+        payment.setCreditorAccount(getReferencePO());
         payment.setRemittanceInformationUnstructured("Ref Number Merchant");
         return payment;
+    }
+
+    private List<SpiAccountDetailsPO> getAccountDetailsPO() {
+        return Collections.singletonList(
+            new SpiAccountDetailsPO("12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, getBalancesPO())
+        );
     }
 
     private List<SpiAccountDetails> getAccountDetails() {
@@ -187,8 +194,20 @@ public class PaymentServiceTest {
         return Collections.singletonList(balance);
     }
 
+    private List<SpiAccountBalancePO> getBalancesPO() {
+        SpiAccountBalancePO balance = new SpiAccountBalancePO();
+        balance.setSpiBalanceAmount(new SpiAmountPO(CURRENCY, BigDecimal.valueOf(100)));
+        balance.setSpiBalanceType(SpiBalanceTypePO.INTERIM_AVAILABLE);
+        return Collections.singletonList(balance);
+    }
+
     private SpiAccountReference getReference() {
         SpiAccountDetails details = getAccountDetails().get(0);
         return new SpiAccountReference(details.getIban(), null, null, null, null, details.getCurrency());
+    }
+
+    private SpiAccountReferencePO getReferencePO() {
+        SpiAccountDetailsPO details = getAccountDetailsPO().get(0);
+        return new SpiAccountReferencePO(details.getIban(), null, null, null, null, details.getCurrency());
     }
 }

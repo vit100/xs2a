@@ -16,6 +16,9 @@
 
 package de.adorsys.aspsp.aspspmockserver.domain.spi.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +26,9 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 @Slf4j
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SpiAmount {
     private Currency currency;
     private BigDecimal amount;

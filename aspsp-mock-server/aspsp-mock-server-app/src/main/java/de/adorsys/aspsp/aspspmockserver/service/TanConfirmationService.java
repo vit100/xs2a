@@ -16,11 +16,10 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
+import de.adorsys.aspsp.aspspmockserver.converter.TanConverter;
 import de.adorsys.aspsp.aspspmockserver.domain.ConfirmationType;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.consent.SpiConsentStatus;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Tan;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.TanStatus;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.*;
 import de.adorsys.aspsp.aspspmockserver.exception.ApiError;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
 import freemarker.template.Configuration;
@@ -58,6 +57,7 @@ public class TanConfirmationService {
     private final AccountService accountService;
     private final PaymentService paymentService;
     private final ConsentService consentService;
+    private final TanConverter tanConverter;
 
     /**
      * Sends Authorization Request to user with selected Sca Method
@@ -116,14 +116,14 @@ public class TanConfirmationService {
 
     private int getTanNumberOfAttempts(String psuId) {
         return accountService.getPsuByPsuId(psuId)
-                   .flatMap(psu -> tanRepository.findByPsuIdAndTanStatus(psu.getPsuId(), TanStatus.UNUSED).stream()
+                   .flatMap(psu -> tanRepository.findByPsuIdAndTanStatus(psu.getPsuId(), TanStatusPO.UNUSED).stream()
                                        .findFirst()
-                                       .map(Tan::getNumberOfAttempts))
+                                       .map(TanPO::getNumberOfAttempts))
                    .orElse(maximumNumberOfTanAttempts);
     }
 
     private boolean isPsuTanNumberValid(String psuId, String tanNumber) {
-        return tanRepository.findByPsuIdAndTanStatus(psuId, TanStatus.UNUSED).stream()
+        return tanRepository.findByPsuIdAndTanStatus(psuId, TanStatusPO.UNUSED).stream()
                    .findFirst()
                    .map(t -> validateTanAndUpdateTanStatus(t, tanNumber))
                    .orElse(false);
@@ -131,30 +131,30 @@ public class TanConfirmationService {
 
     private boolean createAndSendTan(String psuId, String email) {
         changeOldTansToInvalid(psuId);
-        Tan tan = new Tan(psuId, generateTanNumber());
+        TanPO tan = new TanPO(psuId, generateTanNumber());
         tan = tanRepository.save(tan);
 
         return sendTanNumberOnEmail(email, tan.getTanNumber());
     }
 
     private void changeOldTansToInvalid(String psuId) {
-        List<Tan> tans = tanRepository.findByPsuIdAndTanStatus(psuId, TanStatus.UNUSED);
+        List<TanPO> tans = tanRepository.findByPsuIdAndTanStatus(psuId, TanStatusPO.UNUSED);
         if (isNotEmpty(tans)) {
-            for (Tan oldTan : tans) {
-                oldTan.setTanStatus(TanStatus.INVALID);
+            for (TanPO oldTan : tans) {
+                oldTan.setTanStatus(TanStatusPO.INVALID);
                 oldTan.setNumberOfAttempts(maximumNumberOfTanAttempts);
             }
             tanRepository.save(tans);
         }
     }
 
-    private boolean validateTanAndUpdateTanStatus(Tan originalTan, String givenTanNumber) {
+    private boolean validateTanAndUpdateTanStatus(TanPO originalTan, String givenTanNumber) {
         boolean isTanValid = originalTan.getTanNumber().equals(givenTanNumber);
         if (isTanValid) {
-            originalTan.setTanStatus(TanStatus.VALID);
+            originalTan.setTanStatus(TanStatusPO.VALID);
         } else {
             if (originalTan.getNumberOfAttempts() == maximumNumberOfTanAttempts - 1) {
-                originalTan.setTanStatus(TanStatus.INVALID);
+                originalTan.setTanStatus(TanStatusPO.INVALID);
             }
             originalTan.incrementNumberOfAttempts();
         }

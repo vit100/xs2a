@@ -16,16 +16,23 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
+import de.adorsys.aspsp.aspspmockserver.converter.PsuConverter;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetailsPO;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.PsuPO;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethodPO;
 import de.adorsys.aspsp.aspspmockserver.keycloak.KeycloakService;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
@@ -55,26 +62,30 @@ public class PsuServiceTest {
 
     @Mock
     private PsuRepository psuRepository;
+
     @Mock
     private KeycloakService keycloakService;
+
+    @Spy
+    private PsuConverter psuConverter = Mappers.getMapper(PsuConverter.class);
 
     @Before
     public void setUp() {
         //findAll
-        when(psuRepository.findAll()).thenReturn(Collections.singletonList(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts())));
+        when(psuRepository.findAll()).thenReturn(Collections.singletonList(getPsuPO(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetailsPO(false), getProducts())));
 
         //findOne
-        when(psuRepository.findOne(ASPSP_PSU_ID)).thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts()));
-        when(psuRepository.findOne(ASPSP_PSU_ID_1)).thenReturn(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(false), getProducts()));
+        when(psuRepository.findOne(ASPSP_PSU_ID)).thenReturn(Optional.of(getPsuPO(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetailsPO(false), getProducts())));
+        when(psuRepository.findOne(ASPSP_PSU_ID_1)).thenReturn(Optional.of(getPsuPO(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetailsPO(false), getProducts())));
         when(psuRepository.findOne(WRONG_PSU_ID)).thenReturn(null);
 
         //findByIban
-        when(psuRepository.findPsuByAccountDetailsList_Iban(IBAN)).thenReturn(Optional.of(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts())));
+        when(psuRepository.findPsuByAccountDetailsList_Iban(IBAN)).thenReturn(Optional.of(getPsuPO(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetailsPO(false), getProducts())));
         when(psuRepository.findPsuByAccountDetailsList_Iban(WRONG_IBAN)).thenReturn(Optional.empty());
 
         // find Psu by name
         when(psuRepository.findByPsuId(WRONG_PSU_ID)).thenReturn(Optional.empty());
-        when(psuRepository.findByPsuId(PSU_ID)).thenReturn(Optional.of(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts())));
+        when(psuRepository.findByPsuId(PSU_ID)).thenReturn(Optional.of(getPsuPO(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetailsPO(false), getProducts())));
         when(keycloakService.registerClient(WRONG_PSU_ID, PASSWORD, E_MAIL)).thenReturn(true);
 
         //exists
@@ -85,14 +96,14 @@ public class PsuServiceTest {
         doNothing().when(psuRepository).delete(PSU_ID);
 
         //save
-        when(psuRepository.save(getPsu(null, E_MAIL, PSU_ID, getDetails(false), getProducts())))
-            .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts()));
-        when(psuRepository.save(getPsu(null, E_MAIL, WRONG_PSU_ID, getDetails(false), getProducts())))
-            .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, WRONG_PSU_ID, getDetails(false), getProducts()));
-        when(psuRepository.save(getPsu(PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProductsExt())))
-            .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProductsExt()));
-        when(psuRepository.save(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(true), getProductsExt())))
-            .thenReturn(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(false), getProducts()));
+        when(psuRepository.save(getPsuPO(null, E_MAIL, PSU_ID, getDetailsPO(false), getProducts())))
+            .thenReturn(getPsuPO(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetailsPO(false), getProducts()));
+        when(psuRepository.save(getPsuPO(null, E_MAIL, WRONG_PSU_ID, getDetailsPO(false), getProducts())))
+            .thenReturn(getPsuPO(ASPSP_PSU_ID, E_MAIL, WRONG_PSU_ID, getDetailsPO(false), getProducts()));
+        when(psuRepository.save(getPsuPO(PSU_ID, E_MAIL, PSU_ID, getDetailsPO(false), getProductsExt())))
+            .thenReturn(getPsuPO(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetailsPO(false), getProductsExt()));
+        when(psuRepository.save(getPsuPO(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetailsPO(true), getProductsExt())))
+            .thenReturn(getPsuPO(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetailsPO(false), getProducts()));
     }
 
     @Test
@@ -203,10 +214,20 @@ public class PsuServiceTest {
         return products;
     }
 
+    private PsuPO getPsuPO(String aspspPsuId, String email, String psuId, List<SpiAccountDetailsPO> details, List<String> products) {
+        return new PsuPO(aspspPsuId, email, psuId, PASSWORD, details, products, Collections.singletonList(SpiScaMethodPO.SMS_OTP));
+    }
+
     private Psu getPsu(String aspspPsuId, String email, String psuId, List<SpiAccountDetails> details, List<String> products) {
         return new Psu(aspspPsuId, email, psuId, PASSWORD, details, products, Collections.singletonList(SpiScaMethod.SMS_OTP));
     }
 
+    private List<SpiAccountDetailsPO> getDetailsPO(boolean isEmpty) {
+        return isEmpty
+                   ? Collections.emptyList()
+                   : Collections.singletonList(new SpiAccountDetailsPO(ACCOUNT_ID, IBAN, null, null, null, null, EUR, "Alfred", null, null, null, null, null, null, null, Collections.emptyList()));
+
+    }
     private List<SpiAccountDetails> getDetails(boolean isEmpty) {
         return isEmpty
                    ? Collections.emptyList()

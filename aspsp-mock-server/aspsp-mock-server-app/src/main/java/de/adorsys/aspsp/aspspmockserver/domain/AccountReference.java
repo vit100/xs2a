@@ -44,8 +44,4 @@ public class AccountReference {
 
     @ApiModelProperty(value = "Codes following ISO 4217", example = "EUR")
     private Currency currency;
-
-    public AccountReference(String iban, Currency currency) {
-        this(iban, null, null, null, null, currency);
-    }
 }

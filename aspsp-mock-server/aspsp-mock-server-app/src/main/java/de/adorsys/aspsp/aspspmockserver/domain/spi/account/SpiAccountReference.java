@@ -16,19 +16,15 @@
 
 package de.adorsys.aspsp.aspspmockserver.domain.spi.account;
 
-import lombok.AllArgsConstructor;
-import lombok.Setter;
-import lombok.Value;
+import lombok.*;
 import lombok.experimental.NonFinal;
-import org.springframework.data.annotation.Id;
 
 import java.util.Currency;
 
-@Value
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SpiAccountReference {
-    @Id
-    @Setter
     @NonFinal
     private String iban;
     private String bban;

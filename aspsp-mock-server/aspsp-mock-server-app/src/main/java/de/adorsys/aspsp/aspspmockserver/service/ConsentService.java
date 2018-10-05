@@ -27,12 +27,17 @@ import org.springframework.web.client.RestTemplate;
 import javax.validation.constraints.NotNull;
 @Slf4j
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class ConsentService {
 
     @Qualifier("consentRestTemplate")
     private final RestTemplate consentRestTemplate;
     private final AisConsentRemoteUrls aisConsentRemoteUrls;
+
+    public ConsentService(RestTemplate consentRestTemplate, AisConsentRemoteUrls aisConsentRemoteUrls) {
+        this.consentRestTemplate = consentRestTemplate;
+        this.aisConsentRemoteUrls = aisConsentRemoteUrls;
+    }
 
     //TODO Create GlobalExceptionHandler for error 400 from consentManagement https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/158
     /**

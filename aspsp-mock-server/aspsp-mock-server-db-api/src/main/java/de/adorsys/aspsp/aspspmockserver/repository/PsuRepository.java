@@ -16,20 +16,28 @@
 
 package de.adorsys.aspsp.aspspmockserver.repository;
 
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.PsuPO;
 
+import java.util.List;
 import java.util.Optional;
 
-@Repository
-@Profile({"mongo", "fongo"})
-public interface PsuRepository extends MongoRepository<Psu, String> {
+public interface PsuRepository {
 
-    Optional<Psu> findPsuByAccountDetailsList_Iban(String iban);
+    Optional<PsuPO> findOne(String psuId);
 
-    Optional<Psu> findByPsuId(String psuId);
+    List<PsuPO> findAll();
 
-    Optional<Psu> findPsuByAccountDetailsList_Id(String accountId);
+    Optional<PsuPO> findPsuByAccountDetailsList_Iban(String iban);
+
+    Optional<PsuPO> findByPsuId(String psuId);
+
+    Optional<PsuPO> findPsuByAccountDetailsList_Id(String accountId);
+
+    PsuPO save(PsuPO psu);
+
+    boolean exists(String aspspPsuId);
+
+    void delete(String aspspPsuId);
+
+    void deleteAll();
 }

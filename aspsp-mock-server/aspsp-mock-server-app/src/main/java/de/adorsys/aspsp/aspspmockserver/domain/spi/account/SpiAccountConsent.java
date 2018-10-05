@@ -21,7 +21,6 @@ import de.adorsys.aspsp.aspspmockserver.domain.spi.consent.SpiConsentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 
@@ -29,7 +28,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class SpiAccountConsent {
-    @Id
     private String id;
     private SpiAccountAccess access;
     private boolean recurringIndicator;

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.aspspmockserver.service;
+package de.adorsys.aspsp.aspspmockserver.data.test;
 
-import de.adorsys.aspsp.aspspmockserver.data.test.AccountMockServerData;
 import de.adorsys.aspsp.aspspmockserver.repository.PaymentRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.TransactionRepository;
+import de.adorsys.aspsp.aspspmockserver.service.IntegrationTestsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class IntegrationTestsService {
+public class IntegrationTestsServiceImpl implements IntegrationTestsService {
     private final PaymentRepository paymentRepository;
     private final PsuRepository psuRepository;
     private final TransactionRepository transactionRepository;
@@ -43,6 +43,7 @@ public class IntegrationTestsService {
     @Autowired
     DefaultListableBeanFactory beanFactory;
 
+    @Override
     public void refreshTestingData() {
         paymentRepository.deleteAll();
         psuRepository.deleteAll();

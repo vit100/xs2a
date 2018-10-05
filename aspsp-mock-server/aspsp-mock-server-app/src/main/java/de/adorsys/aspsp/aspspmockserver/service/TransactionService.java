@@ -16,8 +16,10 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
+import de.adorsys.aspsp.aspspmockserver.converter.TransactionConverter;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiTransaction;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiTransactionPO;
 import de.adorsys.aspsp.aspspmockserver.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,24 +34,30 @@ import java.util.Optional;
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
+    private final TransactionConverter converter;
 
     public List<SpiTransaction> getAllTransactions() {
-        return transactionRepository.findAll();
+        List<SpiTransactionPO> list = transactionRepository.findAll();
+        return converter.toTransactionList(list);
     }
 
     public Optional<SpiTransaction> getTransactionById(String transactionId, String accountId) {
         Optional<SpiAccountDetails> details = accountService.getAccountById(accountId);
-        return details.map(det -> transactionRepository.findOneByTransactionIdAndAccount(det.getIban(), det.getCurrency(), transactionId));
+        return details
+                   .map(det -> transactionRepository.findOneByTransactionIdAndAccount(det.getIban(), det.getCurrency(), transactionId))
+                   .map(converter::toSpiTransaction);
     }
 
     public Optional<String> saveTransaction(SpiTransaction transaction) {
-        return Optional.ofNullable(transactionRepository.save(transaction))
+        return Optional.ofNullable(transactionRepository.save(converter.toSpiTransactionPO(transaction)))
+                   .map(converter::toSpiTransaction)
                    .map(SpiTransaction::getTransactionId);
     }
 
     public List<SpiTransaction> getTransactionsByPeriod(String accountId, LocalDate dateFrom, LocalDate dateTo) {
         Optional<SpiAccountDetails> details = accountService.getAccountById(accountId);
         return details.map(det -> transactionRepository.findAllByDates(det.getIban(), det.getCurrency(), dateFrom, dateTo))
+                   .map(converter::toTransactionList)
                    .orElseGet(Collections::emptyList);
     }
 

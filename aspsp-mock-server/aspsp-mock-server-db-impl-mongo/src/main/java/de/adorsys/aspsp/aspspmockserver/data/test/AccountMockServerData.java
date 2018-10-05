@@ -16,14 +16,14 @@
 
 package de.adorsys.aspsp.aspspmockserver.data.test;
 
-import de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType;
+import de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentTypePO;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.account.*;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiTransactionStatus;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.AspspPayment;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Tan;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmountPO;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiTransactionStatusPO;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.AspspPaymentPO;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.PsuPO;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethodPO;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.TanPO;
 import de.adorsys.aspsp.aspspmockserver.repository.PaymentRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
@@ -39,6 +39,8 @@ import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 
+import static java.util.Collections.*;
+
 /**
  * AccountMockServerData is used to create test data in DB.
  * To fill DB with test data 'aspsp-mock-server' app should be running with profile "data_test"
@@ -53,12 +55,12 @@ public class AccountMockServerData {
     private TransactionRepository transactionRepository;
     private TanRepository tanRepository;
     private PaymentRepository paymentRepository;
-    private List<SpiAccountDetails> accountDetails;
-    private List<Psu> psus;
-    private final List<String> ALLOWED_PAYMENTS = Collections.singletonList("sepa-credit-transfers");
+    private List<SpiAccountDetailsPO> accountDetails;
+    private List<PsuPO> psus;
+    private final List<String> ALLOWED_PAYMENTS = singletonList("sepa-credit-transfers");
     private final Currency EUR = Currency.getInstance("EUR");
     private final Currency USD = Currency.getInstance("USD");
-    private final SpiBalanceType BALANCE_TYPE = SpiBalanceType.INTERIM_AVAILABLE;
+    private final SpiBalanceTypePO BALANCE_TYPE = SpiBalanceTypePO.INTERIM_AVAILABLE;
 
     // Allowed Payments for Cucumber Test User
     private final List<String> ALLOWED_PAYMENTS_CUCUMBER_TESTUSER = Arrays.asList("sepa-credit-transfers");
@@ -78,21 +80,21 @@ public class AccountMockServerData {
     private void fillPayments() {
         // Payment data for Cucumber Test
         paymentRepository.save(getPayment("a9115f14-4f72-4e4e-8798-202808e85238", psus.get(3), EUR, BigDecimal.valueOf(150), psus.get(7),
-            "Online-Shoppping Amazon", LocalDate.parse("2018-07-15"), LocalDateTime.parse("2018-07-15T18:30:35.035"), SpiTransactionStatus.RCVD, PisPaymentType.SINGLE, 15));
+            "Online-Shoppping Amazon", LocalDate.parse("2018-07-15"), LocalDateTime.parse("2018-07-15T18:30:35.035"), SpiTransactionStatusPO.RCVD, PisPaymentTypePO.SINGLE, 15));
         paymentRepository.save(getPayment("68147b90-e4ef-41c6-9c8b-c848c1e93700", psus.get(3), EUR, BigDecimal.valueOf(1030), psus.get(8),
-            "Holidays", LocalDate.parse("2018-07-31"), LocalDateTime.parse("2018-07-31T18:30:35.035"), SpiTransactionStatus.PDNG, PisPaymentType.SINGLE, 31));
+            "Holidays", LocalDate.parse("2018-07-31"), LocalDateTime.parse("2018-07-31T18:30:35.035"), SpiTransactionStatusPO.PDNG, PisPaymentTypePO.SINGLE, 31));
         paymentRepository.save(getPayment("97694f0d-32e2-43a4-9e8d-261f2fc28236", psus.get(3), EUR, BigDecimal.valueOf(70), psus.get(9),
-                                          "Concert Tickets", LocalDate.parse("2018-07-08"), LocalDateTime.parse("2018-07-08T18:30:35.035"), SpiTransactionStatus.RJCT, PisPaymentType.SINGLE, 8));
+                                          "Concert Tickets", LocalDate.parse("2018-07-08"), LocalDateTime.parse("2018-07-08T18:30:35.035"), SpiTransactionStatusPO.RJCT, PisPaymentTypePO.SINGLE, 8));
 
     }
 
-    private AspspPayment getPayment(String paymentId, Psu debtor, Currency currency, BigDecimal amount, Psu creditor, String purposeCode, LocalDate requestedExecutionDate,
-                                    LocalDateTime requestedExecutionTime, SpiTransactionStatus paymentStatus, PisPaymentType paymentType, int dayOfExecution) {
-        AspspPayment payment = new AspspPayment();
+    private AspspPaymentPO getPayment(String paymentId, PsuPO debtor, Currency currency, BigDecimal amount, PsuPO creditor, String purposeCode, LocalDate requestedExecutionDate,
+                                    LocalDateTime requestedExecutionTime, SpiTransactionStatusPO paymentStatus, PisPaymentTypePO paymentType, int dayOfExecution) {
+        AspspPaymentPO payment = new AspspPaymentPO();
         payment.setPaymentId(paymentId);
         payment.setDebtorAccount(getRef(debtor, currency));
         payment.setUltimateDebtor(getFirstElementName(debtor));
-        payment.setInstructedAmount(new SpiAmount(currency, amount));
+        payment.setInstructedAmount(new SpiAmountPO(currency, amount));
         payment.setCreditorAccount(getRef(creditor, currency));
         payment.setCreditorName(getFirstElementName(creditor));
         payment.setUltimateCreditor(getFirstElementName(creditor));
@@ -123,45 +125,45 @@ public class AccountMockServerData {
         transactionRepository.save(getTransaction("bb0962ca-f6db-4ba7-b187-2b2e1af25845", psus.get(6), psus.get(3), BigDecimal.valueOf(200), EUR, LocalDate.parse("2018-05-15"), LocalDate.parse("2018-05-15"), "Alles Gute zum Geburtstag"));
     }
 
-    private SpiTransaction getTransaction(String transactionId, Psu psu, Psu debtor, BigDecimal amount, Currency currency, LocalDate bookingDate, LocalDate valueDate, String purposeCode) {
-        return new SpiTransaction(
+    private SpiTransactionPO getTransaction(String transactionId, PsuPO psu, PsuPO debtor, BigDecimal amount, Currency currency, LocalDate bookingDate, LocalDate valueDate, String purposeCode) {
+        return new SpiTransactionPO(
             transactionId, "", "", "", "", psu.getPsuId(), bookingDate, valueDate,
-            new SpiAmount(currency, amount), Collections.emptyList(), getFirstElementName(psu), getRef(psu, currency), getFirstElementName(psu),
+            new SpiAmountPO(currency, amount), emptyList(), getFirstElementName(psu), getRef(psu, currency), getFirstElementName(psu),
             getFirstElementName(debtor), getRef(debtor, currency), getFirstElementName(debtor), "",
             "", purposeCode, "", "");
     }
 
-    private String getFirstElementName(Psu creditor) {
+    private String getFirstElementName(PsuPO creditor) {
         return creditor.getAccountDetailsList().get(0).getName();
     }
 
-    private SpiAccountReference getRef(Psu psu, Currency currency) {
+    private SpiAccountReferencePO getRef(PsuPO psu, Currency currency) {
         return psu.getAccountDetailsList().stream()
                    .filter(det -> det.getCurrency() == currency)
                    .map(this::mapToReferenceFromDetails).findFirst().get();
     }
 
-    private List<Psu> fillPsu() {
+    private List<PsuPO> fillPsu() {
         return Arrays.asList(
-            psuRepository.save(new Psu("PSU_001", "fractal567@gmail.com", "aspsp", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS,Collections.emptyList())),
-            psuRepository.save(new Psu("PSU_002", "fractal567@gmail.com", "aspsp1", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS, Arrays.asList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("PSU_003", "fractal567@gmail.com", "aspsp2", "zzz", Arrays.asList(accountDetails.get(3), accountDetails.get(4)), ALLOWED_PAYMENTS, Arrays.asList(SpiScaMethod.SMS_OTP, SpiScaMethod.PUSH_OTP))),
-            psuRepository.save(new Psu("PSU_004", "fractal567@gmail.com", "aspsp3", "zzz", Arrays.asList(accountDetails.get(5), accountDetails.get(6)), ALLOWED_PAYMENTS, Arrays.asList(SpiScaMethod.PUSH_OTP, SpiScaMethod.CHIP_OTP))),
+            psuRepository.save(new PsuPO("PSU_001", "fractal567@gmail.com", "aspsp", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS, emptyList())),
+            psuRepository.save(new PsuPO("PSU_002", "fractal567@gmail.com", "aspsp1", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS, Arrays.asList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("PSU_003", "fractal567@gmail.com", "aspsp2", "zzz", Arrays.asList(accountDetails.get(3), accountDetails.get(4)), ALLOWED_PAYMENTS, Arrays.asList(SpiScaMethodPO.SMS_OTP, SpiScaMethodPO.PUSH_OTP))),
+            psuRepository.save(new PsuPO("PSU_004", "fractal567@gmail.com", "aspsp3", "zzz", Arrays.asList(accountDetails.get(5), accountDetails.get(6)), ALLOWED_PAYMENTS, Arrays.asList(SpiScaMethodPO.PUSH_OTP, SpiScaMethodPO.CHIP_OTP))),
 
             // Test User for Cucumber tests //TODO Update Sca Methods for all Cucumber PSUs
-            psuRepository.save(new Psu("d9e71419-24e4-4c5a-8d93-fcc23153aaff", "mueller.alex@web.de", "aspsp4", "zzz", Arrays.asList(accountDetails.get(7)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("d9e71419-24e4-4c5a-8d93-fcc23153aaff", "mueller.alex@web.de", "aspsp5", "zzz", Arrays.asList(accountDetails.get(7)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("PSU_CucumberGreenpeace", "greenpeace@web.de", "aspsp6", "zzz", Arrays.asList(accountDetails.get(8)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("PSU_CucumberTelekom", "telekom@telekom.de", "aspsp7", "zzz", Arrays.asList(accountDetails.get(9)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("PSU_CucumberJochen", "jochen.mueller@web.de", "aspsp8", "zzz", Arrays.asList(accountDetails.get(10)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("PSU_CucumberAmazon", "amazon@mail.com", "aspsp9", "zzz", Arrays.asList(accountDetails.get(11)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("PSU_CucumberHolidayCheck", "holidaycheck@mail.com", "aspsp10", "zzz", Arrays.asList(accountDetails.get(12)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP))),
-            psuRepository.save(new Psu("PSU_CucumberEventim", "eventim@web.de", "aspsp11", "zzz", Arrays.asList(accountDetails.get(13)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(SpiScaMethod.SMS_OTP)))
+            psuRepository.save(new PsuPO("d9e71419-24e4-4c5a-8d93-fcc23153aaff", "mueller.alex@web.de", "aspsp4", "zzz", singletonList(accountDetails.get(7)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("d9e71419-24e4-4c5a-8d93-fcc23153aaff", "mueller.alex@web.de", "aspsp5", "zzz", singletonList(accountDetails.get(7)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("PSU_CucumberGreenpeace", "greenpeace@web.de", "aspsp6", "zzz", singletonList(accountDetails.get(8)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("PSU_CucumberTelekom", "telekom@telekom.de", "aspsp7", "zzz", singletonList(accountDetails.get(9)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("PSU_CucumberJochen", "jochen.mueller@web.de", "aspsp8", "zzz", singletonList(accountDetails.get(10)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("PSU_CucumberAmazon", "amazon@mail.com", "aspsp9", "zzz", singletonList(accountDetails.get(11)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("PSU_CucumberHolidayCheck", "holidaycheck@mail.com", "aspsp10", "zzz", singletonList(accountDetails.get(12)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP))),
+            psuRepository.save(new PsuPO("PSU_CucumberEventim", "eventim@web.de", "aspsp11", "zzz", singletonList(accountDetails.get(13)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, singletonList(SpiScaMethodPO.SMS_OTP)))
         );
 
     }
 
-    private List<SpiAccountDetails> fillAccounts() {
+    private List<SpiAccountDetailsPO> fillAccounts() {
 
         return Arrays.asList(
             getNewAccount("11111-999999999", getNewBalanceList(EUR, BigDecimal.valueOf(1000)), "DE89370400440532013000", "AEYPM5403H", "DEUTDE8EXXX", "Müller", "SCT"),
@@ -183,8 +185,8 @@ public class AccountMockServerData {
         );
     }
 
-    private SpiAccountDetails getNewAccount(String id, List<SpiAccountBalance> balance, String iban, String pan, String bic, String name, String accountType) {
-        return new SpiAccountDetails(
+    private SpiAccountDetailsPO getNewAccount(String id, List<SpiAccountBalancePO> balance, String iban, String pan, String bic, String name, String accountType) {
+        return new SpiAccountDetailsPO (
             id,
             iban,
             iban.substring(3),
@@ -204,13 +206,13 @@ public class AccountMockServerData {
         );
     }
 
-    private List<SpiAccountBalance> getNewBalanceList(Currency currency, BigDecimal amount1) {
-        return Collections.singletonList(getBalance(currency, amount1, LocalDate.now(), LocalDateTime.now()));
+    private List<SpiAccountBalancePO> getNewBalanceList(Currency currency, BigDecimal amount1) {
+        return singletonList(getBalance(currency, amount1, LocalDate.now(), LocalDateTime.now()));
     }
 
-    private SpiAccountBalance getBalance(Currency currency, BigDecimal amount, LocalDate date, LocalDateTime dateTime) {
-        SpiAccountBalance balance = new SpiAccountBalance();
-        balance.setSpiBalanceAmount(new SpiAmount(currency, amount));
+    private SpiAccountBalancePO getBalance(Currency currency, BigDecimal amount, LocalDate date, LocalDateTime dateTime) {
+        SpiAccountBalancePO balance = new SpiAccountBalancePO();
+        balance.setSpiBalanceAmount(new SpiAmountPO(currency, amount));
         balance.setSpiBalanceType(BALANCE_TYPE);
         balance.setReferenceDate(date);
         balance.setLastChangeDateTime(dateTime);
@@ -219,8 +221,8 @@ public class AccountMockServerData {
     }
 
     // Custom Methods to create Test account for Cucumber tests
-    private SpiAccountDetails getNewAccountCucumberTest(String id, List<SpiAccountBalance> balance, String iban, String pan, String bic, String name, String accountType) {
-        return new SpiAccountDetails(
+    private SpiAccountDetailsPO getNewAccountCucumberTest(String id, List<SpiAccountBalancePO> balance, String iban, String pan, String bic, String name, String accountType) {
+        return new SpiAccountDetailsPO(
             id,
             iban,
             iban.substring(3),
@@ -240,17 +242,17 @@ public class AccountMockServerData {
         );
     }
 
-    private List<SpiAccountBalance> getNewBalanceListCucumberTests(Currency currency, BigDecimal amount1) {
-        return Collections.singletonList(getBalance(currency, amount1, LocalDate.now(), LocalDateTime.now()));
+    private List<SpiAccountBalancePO> getNewBalanceListCucumberTests(Currency currency, BigDecimal amount1) {
+        return singletonList(getBalance(currency, amount1, LocalDate.now(), LocalDateTime.now()));
     }
 
-    private SpiAccountReference mapToReferenceFromDetails(SpiAccountDetails details) {
-        return new SpiAccountReference(details.getIban(), details.getBban(), details.getPan(), details.getMaskedPan(), details.getMsisdn(), details.getCurrency());
+    private SpiAccountReferencePO mapToReferenceFromDetails(SpiAccountDetailsPO details) {
+        return new SpiAccountReferencePO(details.getIban(), details.getBban(), details.getPan(), details.getMaskedPan(), details.getMsisdn(), details.getCurrency());
     }
 
     private void fillTanRepository() {
-        tanRepository.save(new Tan("PSU_001", "111111"));
-        tanRepository.save(new Tan("PSU_002", "222222"));
-        tanRepository.save(new Tan("PSU_003", "333333"));
+        tanRepository.save(new TanPO("PSU_001", "111111"));
+        tanRepository.save(new TanPO("PSU_002", "222222"));
+        tanRepository.save(new TanPO("PSU_003", "333333"));
     }
 }

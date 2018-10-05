@@ -16,9 +16,13 @@
 
 package de.adorsys.aspsp.aspspmockserver.domain.spi.payment;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SpiAddress {
     private String street;
     private String buildingNumber;

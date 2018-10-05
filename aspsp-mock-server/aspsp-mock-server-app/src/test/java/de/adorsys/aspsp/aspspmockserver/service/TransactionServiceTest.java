@@ -16,16 +16,18 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountReference;
-import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiTransaction;
+import de.adorsys.aspsp.aspspmockserver.converter.TransactionConverter;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.*;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmountPO;
 import de.adorsys.aspsp.aspspmockserver.repository.TransactionRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
@@ -51,21 +53,26 @@ public class TransactionServiceTest {
 
     @InjectMocks
     private TransactionService transactionService;
+
     @Mock
     TransactionRepository transactionRepository;
+
     @Mock
     AccountService accountService;
+
+    @Spy
+    TransactionConverter transactionConverter = Mappers.getMapper(TransactionConverter.class);
 
     @Before
     public void setUp() {
         when(transactionRepository.findOneByTransactionIdAndAccount(IBAN, EUR, TRANSACTION_ID))
-            .thenReturn(getTransaction());
+            .thenReturn(getTransactionPO());
         when(transactionRepository.findOneByTransactionIdAndAccount(IBAN, EUR, WRONG_TRANSACTION_ID))
             .thenReturn(null);
-        when(transactionRepository.save(getTransaction()))
-            .thenReturn(getTransaction());
+        when(transactionRepository.save(getTransactionPO()))
+            .thenReturn(getTransactionPO());
         when(transactionRepository.findAllByDates(IBAN, EUR, DATE, DATE))
-            .thenReturn(Collections.singletonList(getTransaction()));
+            .thenReturn(Collections.singletonList(getTransactionPO()));
         when(accountService.getAccountById(ACCOUNT_ID))
             .thenReturn(Optional.of(getDetails()));
         when(accountService.getAccountById(WRONG_ACCOUNT_ID))
@@ -130,6 +137,12 @@ public class TransactionServiceTest {
         return new SpiTransaction(TRANSACTION_ID, null, null, "Creditor_id", null, null, DATE, DATE, new SpiAmount(EUR, BigDecimal.valueOf(1000)), null, "Creditor",
                                   new SpiAccountReference(IBAN, null, null, null, null, EUR), "Ult Creditor", "Debtor",
                                   new SpiAccountReference(IBAN_2, null, null, null, null, EUR), "Ult Debtor", null, null, "Purpose", "bankTrCode", "propBankTrCode");
+    }
+
+    private SpiTransactionPO getTransactionPO() {
+        return new SpiTransactionPO(TRANSACTION_ID, null, null, "Creditor_id", null, null, DATE, DATE, new SpiAmountPO(EUR, BigDecimal.valueOf(1000)), null, "Creditor",
+                                    new SpiAccountReferencePO(IBAN, null, null, null, null, EUR), "Ult Creditor", "Debtor",
+                                    new SpiAccountReferencePO(IBAN_2, null, null, null, null, EUR), "Ult Debtor", null, null, "Purpose", "bankTrCode", "propBankTrCode");
     }
 
     private SpiAccountDetails getDetails() {

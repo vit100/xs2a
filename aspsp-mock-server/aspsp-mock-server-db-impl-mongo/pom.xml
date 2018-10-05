@@ -44,6 +44,21 @@
             <version>1.9-SNAPSHOT</version>
         </dependency>
 
+        <!-- spring dependencies -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <!-- other dependencies -->
+
+        <dependency>
+            <groupId>com.github.fakemongo</groupId>
+            <artifactId>fongo</artifactId>
+            <version>${fongo.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

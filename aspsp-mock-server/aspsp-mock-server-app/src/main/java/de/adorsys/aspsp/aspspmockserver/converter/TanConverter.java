@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.aspspmockserver.repository;
+package de.adorsys.aspsp.aspspmockserver.converter;
 
-import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.AspspPayment;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Tan;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.TanPO;
+import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Repository
-@Profile({"mongo", "fongo"})
-public interface PaymentRepository extends MongoRepository<AspspPayment, String> {
-    List<AspspPayment> findByPaymentIdOrBulkId(String paymentId, String bulkId);
+@Mapper(componentModel = "spring")
+public interface TanConverter {
+
+    Tan toTan(TanPO po);
+
+    TanPO toTan(Tan tan);
+
+    List<Tan> toTanList(List<TanPO> list);
+
+    List<TanPO> toTanPOList(List<Tan> list);
 }

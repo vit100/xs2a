@@ -17,34 +17,36 @@
 package de.adorsys.aspsp.aspspmockserver.domain.spi.account;
 
 import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SpiTransaction {
-    @Id
-    private final String transactionId;
-    private final String entryReference;
-    private final String endToEndId;
-    private final String mandateId;
-    private final String checkId;
-    private final String creditorId;
-    private final LocalDate bookingDate;
-    private final LocalDate valueDate;
-    private final SpiAmount spiAmount;
-    private final List<SpiExchangeRate> exchangeRate;
-    private final String creditorName;
-    private final SpiAccountReference creditorAccount;
-    private final String ultimateCreditor;
-    private final String debtorName;
-    private final SpiAccountReference debtorAccount;
-    private final String ultimateDebtor;
-    private final String remittanceInformationUnstructured;
-    private final String remittanceInformationStructured;
-    private final String purposeCode;
-    private final String bankTransactionCodeCode;
-    private final String proprietaryBankTransactionCode;
+    private String transactionId;
+    private String entryReference;
+    private String endToEndId;
+    private String mandateId;
+    private String checkId;
+    private String creditorId;
+    private LocalDate bookingDate;
+    private LocalDate valueDate;
+    private SpiAmount spiAmount;
+    private List<SpiExchangeRate> exchangeRate;
+    private String creditorName;
+    private SpiAccountReference creditorAccount;
+    private String ultimateCreditor;
+    private String debtorName;
+    private SpiAccountReference debtorAccount;
+    private String ultimateDebtor;
+    private String remittanceInformationUnstructured;
+    private String remittanceInformationStructured;
+    private String purposeCode;
+    private String bankTransactionCodeCode;
+    private String proprietaryBankTransactionCode;
 }

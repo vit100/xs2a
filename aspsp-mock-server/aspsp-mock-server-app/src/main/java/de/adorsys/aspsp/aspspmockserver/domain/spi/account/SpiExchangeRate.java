@@ -16,12 +16,15 @@
 
 package de.adorsys.aspsp.aspspmockserver.domain.spi.account;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDate;
 import java.util.Currency;
 
-@Value
+@Data
+@NoArgsConstructor
 public class SpiExchangeRate {
     private Currency currencyFrom;
     private String rateFrom;

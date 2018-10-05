@@ -19,9 +19,9 @@ package de.adorsys.aspsp.aspspmockserver.domain.spi.account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.NonFinal;
-import org.springframework.data.annotation.Id;
 
 import java.util.Currency;
 import java.util.List;
@@ -29,8 +29,8 @@ import java.util.Optional;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SpiAccountDetails {
-    @Id
     @Setter
     @NonFinal
     private String id; // TODO shouldn't this be resourceId?
@@ -65,7 +65,7 @@ public class SpiAccountDetails {
     private Currency currency;
     private String name;
     private String product;
-    private SpiAccountType cashSpiAccountType;
+    private SpiAccountTypePO cashSpiAccountTypePO;
     private SpiAccountStatus spiAccountStatus;
 
     /**
@@ -75,7 +75,7 @@ public class SpiAccountDetails {
      */
     private String bic;
     private String linkedAccounts;
-    private SpiUsageType usageType;
+    private SpiUsageTypePO usageType;
     private String details;
 
     private List<SpiAccountBalance> balances;

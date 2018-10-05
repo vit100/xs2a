@@ -16,8 +16,11 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
+import de.adorsys.aspsp.aspspmockserver.converter.PsuConverter;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.PsuPO;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethodPO;
 import de.adorsys.aspsp.aspspmockserver.keycloak.KeycloakService;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ import java.util.Optional;
 public class PsuService {
     private final PsuRepository psuRepository;
     private final KeycloakService keycloakService;
+    private final PsuConverter psuConverter;
 
     /**
      * Checks psu for validity, saves it to DB and register it to Keycloak
@@ -52,7 +56,8 @@ public class PsuService {
             log.error("Can't register Psu: {} in Keycloak", psu.getPsuId());
             return null;
         }
-        return psuRepository.save(psu)
+        PsuPO psuPO = psuConverter.toPsuPO(psu);
+        return psuRepository.save(psuPO)
                    .getAspspPsuId();
     }
 
@@ -63,7 +68,7 @@ public class PsuService {
      * @return PSU
      */
     public Optional<Psu> getPsuByPsuId(String psuId) {
-        return psuRepository.findByPsuId(psuId);
+        return psuRepository.findByPsuId(psuId).map(psuConverter::toPsu);
     }
 
     /**
@@ -72,7 +77,8 @@ public class PsuService {
      * @return list of PSU
      */
     public List<Psu> getAllPsuList() {
-        return psuRepository.findAll();
+        List<PsuPO> list = psuRepository.findAll();
+        return psuConverter.toPsuList(list);
     }
 
     /**
@@ -97,6 +103,7 @@ public class PsuService {
      */
     public List<String> getAllowedPaymentProducts(String iban) {
         return psuRepository.findPsuByAccountDetailsList_Iban(iban)
+                   .map(psuConverter::toPsu)
                    .map(Psu::getPermittedPaymentProducts)
                    .orElse(null);
     }
@@ -114,8 +121,7 @@ public class PsuService {
             if (!allowedProducts.contains(product)) {
                 allowedProducts.add(product);
                 psu.setPermittedPaymentProducts(allowedProducts);
-                psuRepository.save(psu);
-
+                psuRepository.save(psuConverter.toPsuPO(psu));
             }
         }
     }
@@ -128,6 +134,7 @@ public class PsuService {
      */
     public List<SpiScaMethod> getScaMethods(String psuId) {
         return psuRepository.findByPsuId(psuId)
+                   .map(psuConverter::toPsu)
                    .map(Psu::getScaMethods)
                    .orElse(null);
     }
@@ -139,9 +146,10 @@ public class PsuService {
      * @param scaMethods list of SCA methods
      */
     public void updateScaMethods(String psuId, List<SpiScaMethod> scaMethods) {
+        List<SpiScaMethodPO> list = psuConverter.toScaMethodPOList(scaMethods);
         psuRepository.findByPsuId(psuId)
             .map(p -> {
-                p.setScaMethods(scaMethods);
+                p.setScaMethods(list);
                 return psuRepository.save(p);
             });
     }

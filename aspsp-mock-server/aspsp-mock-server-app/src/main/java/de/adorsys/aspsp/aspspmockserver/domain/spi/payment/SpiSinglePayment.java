@@ -20,7 +20,6 @@ import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountReference;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
 import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiTransactionStatus;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,7 +27,6 @@ import java.time.LocalDateTime;
 @Data
 public class SpiSinglePayment {
 
-    @Id
     private String paymentId;
     private String endToEndIdentification;
     private SpiAccountReference debtorAccount;
