@@ -16,13 +16,16 @@
 
 package de.adorsys.aspsp.xs2a.integtest;
 
-import org.junit.runner.JUnitCore;
+import cucumber.api.cli.Main;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class IntegrationTestApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Throwable {
 //            SpringApplication.run(IntegrationTestApp.class, args);
-            JUnitCore.main(CucumberIT.class.getCanonicalName());
+        String [] arguments = new String[]{ "-g","classes.de.adorsys.aspsp.xs2a.integtest.stepdefinitions","classes/features"};
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        byte status = Main.run(arguments, contextClassLoader);
+            // JUnitCore.main(CucumberIT.class.getCanonicalName());
     }
 }
