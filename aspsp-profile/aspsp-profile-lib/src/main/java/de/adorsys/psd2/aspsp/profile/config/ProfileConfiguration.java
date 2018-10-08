@@ -113,18 +113,24 @@ public class ProfileConfiguration {
     private boolean allPsd2Support;
 
     /**
-     * Type of authorisation start: IMPLICIT or EXPLICIT
-     */
-    private AuthorisationStartType authorisationStartType;
-
-    /**
      * If "false" indicates that an ASPSP might add balance information to transactions list
      */
     private boolean transactionsWithoutBalancesSupported;
 
+    /**
+     * If the option is set to "false", than ASPSP does not support signing basket
+     */
+    private boolean signingBasketSupported;
+
+    /**
+     * If the option is set to "true", then authorization of the payment cancellation is mandated by the ASPSP
+     */
+    private boolean paymentCancellationAuthorizationMandated;
+
     @PostConstruct
     private void addDefaultValues() { //NOPMD It is necessary to set single payment and booked booking status available by default
         setDefaultPaymentType(PaymentType.FUTURE_DATED);
+        setDefaultPaymentType(PaymentType.SINGLE);
         setDefaultBookingStatus(BOOKED);
         setAvailableAccountReferenceField(SupportedAccountReferenceField.IBAN); //Sets default Account Reference Field
     }

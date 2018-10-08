@@ -16,10 +16,10 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
 import de.adorsys.aspsp.aspspmockserver.keycloak.KeycloakService;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
-import de.adorsys.aspsp.xs2a.spi.domain.psu.Psu;
-import de.adorsys.aspsp.xs2a.spi.domain.psu.SpiScaMethod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -78,12 +78,12 @@ public class PsuService {
     /**
      * Removes PSU for ASPSP by its ASPSP primary identifier
      *
-     * @param psuId String representation of ASPSP identifier for specific PSU
+     * @param aspspPsuId String representation of ASPSP identifier for specific PSU
      * @return boolean representation of successful deletion(true) or its failure(false)
      */
-    public boolean deletePsuByPsuId(String psuId) {
-        if (StringUtils.isNotBlank(psuId) && psuRepository.exists(psuId)) {
-            psuRepository.deleteByPsuId(psuId);
+    public boolean deletePsuByAspspPsuId(String aspspPsuId) {
+        if (StringUtils.isNotBlank(aspspPsuId) && psuRepository.exists(aspspPsuId)) {
+            psuRepository.delete(aspspPsuId);
             return true;
         }
         return false;

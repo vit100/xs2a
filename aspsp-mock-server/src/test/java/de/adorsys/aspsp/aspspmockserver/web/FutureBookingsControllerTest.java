@@ -16,11 +16,11 @@
 
 package de.adorsys.aspsp.aspspmockserver.web;
 
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountBalance;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiBalanceType;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
 import de.adorsys.aspsp.aspspmockserver.service.FutureBookingsService;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountBalance;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountDetails;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiBalanceType;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,7 +89,7 @@ public class FutureBookingsControllerTest {
     private Optional<SpiAccountDetails> getSpiAccountDetails(BigDecimal amount) {
         return Optional.of(new SpiAccountDetails("qwertyuiop12345678", "DE99999999999999", null, "4444333322221111",
             "444433xxxxxx1111", null, Currency.getInstance("EUR"), "Emily", "GIRO",
-            null, "ACVB222", getNewBalanceList(amount)));
+            null, null, "ACVB222", null, null, null, getNewBalanceList(amount)));
     }
 
     private List<SpiAccountBalance> getNewBalanceList(BigDecimal amount) {

@@ -17,16 +17,17 @@
 package de.adorsys.aspsp.xs2a.service.consent;
 
 import de.adorsys.aspsp.xs2a.config.rest.consent.PisConsentRemoteUrls;
-import de.adorsys.aspsp.xs2a.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.aspsp.xs2a.consent.api.pis.proto.PisConsentRequest;
 import de.adorsys.aspsp.xs2a.domain.ResponseObject;
+import de.adorsys.aspsp.xs2a.domain.TppInfo;
 import de.adorsys.aspsp.xs2a.domain.consent.CreatePisConsentData;
 import de.adorsys.aspsp.xs2a.domain.consent.Xsa2CreatePisConsentAuthorisationResponse;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
+import de.adorsys.aspsp.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.aspsp.xs2a.service.authorization.pis.PisScaAuthorisationService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
-import de.adorsys.aspsp.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,12 +37,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus.RCVD;
-import static de.adorsys.aspsp.xs2a.domain.consent.Xs2aAuthorisationStartType.IMPLICIT;
 import static de.adorsys.aspsp.xs2a.domain.pis.PaymentType.*;
 
 @Service
@@ -51,7 +50,7 @@ public class PisConsentService {
     private final RestTemplate consentRestTemplate;
     private final PisConsentRemoteUrls remotePisConsentUrls;
     private final Xs2aPisConsentMapper pisConsentMapper;
-    private final AspspProfileServiceWrapper profileService;
+    private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
 
     public ResponseObject createPisConsent(Object payment, Object xs2aResponse, PaymentRequestParameters requestParameters, TppInfo tppInfo) {
@@ -67,36 +66,32 @@ public class PisConsentService {
         }
         CreatePisConsentResponse consentResponse = consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsent(), pisConsentRequest, CreatePisConsentResponse.class).getBody();
 
-        return ResponseObject.builder().body(extendPaymentResponseFields(xs2aResponse, consentResponse, requestParameters.getPaymentType())).build();
+        return ResponseObject.builder().body(extendPaymentResponseFields(xs2aResponse, consentResponse.getConsentId(), requestParameters.getPaymentType(), requestParameters.isTppExplicitAuthorisationPreferred())).build();
     }
 
-    private <T> Object extendPaymentResponseFields(T response, CreatePisConsentResponse cmsResponse, PaymentType paymentType) {
+    private <T> Object extendPaymentResponseFields(T response, String consentId, PaymentType paymentType, boolean tppExplicitAuthorisationPreferred) {
         Object extendedResponse = EnumSet.of(SINGLE, PERIODIC).contains(paymentType)
-                                      ? extendPaymentResponseFieldsSimple((PaymentInitialisationResponse) response, cmsResponse, paymentType)
-                                      : extendPaymentResponseFieldsBulk((List<PaymentInitialisationResponse>) response, cmsResponse);
+                                      ? extendPaymentResponseFieldsSimple((PaymentInitialisationResponse) response, consentId, paymentType)
+                                      : extendPaymentResponseFieldsBulk((List<PaymentInitialisationResponse>) response, consentId);
 
-        return IMPLICIT == profileService.getAuthorisationStartType()
+        return authorisationMethodService.isImplicitMethod(tppExplicitAuthorisationPreferred)
                    ? createPisAuthorisationForImplicitApproach(extendedResponse, paymentType)
                    : extendedResponse;
     }
 
-    private List<PaymentInitialisationResponse> extendPaymentResponseFieldsBulk(List<PaymentInitialisationResponse> responses, CreatePisConsentResponse cmsResponse) {
+    private List<PaymentInitialisationResponse> extendPaymentResponseFieldsBulk(List<PaymentInitialisationResponse> responses, String consentId) {
         return responses.stream()
-                   .map(resp -> extendPaymentResponseFieldsSimple(resp, cmsResponse, BULK))
+                   .map(resp -> extendPaymentResponseFieldsSimple(resp, consentId, BULK))
                    .collect(Collectors.toList());
     }
 
-    private PaymentInitialisationResponse extendPaymentResponseFieldsSimple(PaymentInitialisationResponse response, CreatePisConsentResponse cmsResponse, PaymentType paymentType) {
-        return Optional.ofNullable(cmsResponse)
-                   .filter(c -> StringUtils.isNoneBlank(c.getConsentId(), c.getPaymentId()))
-                   .map(c -> {
-                       response.setPaymentId(c.getPaymentId());
-                       response.setTransactionStatus(RCVD);
-                       response.setPisConsentId(c.getConsentId());
-                       response.setPaymentType(paymentType.name());
-                       return response;
-                   })
-                   .orElseGet(() -> response);
+    private PaymentInitialisationResponse extendPaymentResponseFieldsSimple(PaymentInitialisationResponse response, String consentId, PaymentType paymentType) {
+        if (StringUtils.isNotBlank(consentId)) {
+            response.setTransactionStatus(RCVD);
+            response.setPisConsentId(consentId);
+            response.setPaymentType(paymentType.name());
+        }
+        return response;
     }
 
     private <T> Object createPisAuthorisationForImplicitApproach(T response, PaymentType paymentType) {

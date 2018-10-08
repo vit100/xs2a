@@ -17,17 +17,18 @@
 package de.adorsys.aspsp.aspspmockserver.service;
 
 import de.adorsys.aspsp.aspspmockserver.config.rest.consent.PisConsentRemoteUrls;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountBalance;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountReference;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiTransactionStatus;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.consent.SpiConsentStatus;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.AspspPayment;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.SpiCancelPayment;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.SpiPeriodicPayment;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.payment.SpiSinglePayment;
 import de.adorsys.aspsp.aspspmockserver.repository.PaymentRepository;
 import de.adorsys.aspsp.aspspmockserver.service.mapper.PaymentMapper;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountBalance;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountDetails;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountReference;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
-import de.adorsys.aspsp.xs2a.spi.domain.consent.SpiConsentStatus;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.AspspPayment;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPeriodicPayment;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiSinglePayment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,8 +42,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static de.adorsys.aspsp.xs2a.consent.api.pis.PisPaymentType.PERIODIC;
-import static de.adorsys.aspsp.xs2a.consent.api.pis.PisPaymentType.SINGLE;
+import static de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType.PERIODIC;
+import static de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType.SINGLE;
 
 @Slf4j
 @Service
@@ -62,7 +63,7 @@ public class PaymentService {
      * @return Optional of saved single payment
      */
     public Optional<SpiSinglePayment> addPayment(@NotNull SpiSinglePayment payment) {
-        if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getContent())) {
+        if (areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getAmount())) {
             AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, SINGLE));
             return Optional.ofNullable(paymentMapper.mapToSpiSinglePayment(saved));
         }
@@ -148,11 +149,26 @@ public class PaymentService {
         return paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
     }
 
+    /**
+     * Cancel payment
+     *
+     * @param paymentId Payment identifier
+     * @return SpiCancelPayment containing information about the requirement of aspsp for start authorisation
+     */
+    public Optional<SpiCancelPayment> cancelPayment(String paymentId) {
+        return Optional.ofNullable(paymentRepository.findOne(paymentId))
+                   .map(p -> new SpiCancelPayment());
+    }
+
+    public List<AspspPayment> getAllPayments() {
+        return paymentRepository.findAll();
+    }
+
     private boolean areFundsSufficient(SpiAccountReference reference, BigDecimal amount) {
         Optional<SpiAccountBalance> balance = Optional.ofNullable(reference)
                                                   .flatMap(this::getInterimAvailableBalanceByReference);
         return balance
-                   .map(b -> b.getSpiBalanceAmount().getContent().compareTo(amount) >= 0)
+                   .map(b -> b.getSpiBalanceAmount().getAmount().compareTo(amount) >= 0)
                    .orElse(false);
     }
 
@@ -183,11 +199,7 @@ public class PaymentService {
 
     private BigDecimal getContentFromAmount(SpiAmount amount) {
         return Optional.ofNullable(amount)
-                   .map(SpiAmount::getContent)
+                   .map(SpiAmount::getAmount)
                    .orElse(BigDecimal.ZERO);
-    }
-
-    public List<AspspPayment> getAllPayments() {
-        return paymentRepository.findAll();
     }
 }

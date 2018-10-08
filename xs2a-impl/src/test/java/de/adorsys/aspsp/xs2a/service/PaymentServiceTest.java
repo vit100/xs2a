@@ -16,14 +16,12 @@
 
 package de.adorsys.aspsp.xs2a.service;
 
-import de.adorsys.aspsp.xs2a.domain.MessageErrorCode;
-import de.adorsys.aspsp.xs2a.domain.ResponseObject;
-import de.adorsys.aspsp.xs2a.domain.Xs2aAmount;
-import de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus;
-import de.adorsys.aspsp.xs2a.domain.account.AccountReference;
+import de.adorsys.aspsp.xs2a.config.factory.ReadPaymentFactory;
+import de.adorsys.aspsp.xs2a.domain.*;
+import de.adorsys.aspsp.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
+import de.adorsys.aspsp.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.mapper.PaymentMapper;
-import de.adorsys.aspsp.xs2a.service.payment.ReadPaymentFactory;
 import de.adorsys.aspsp.xs2a.service.payment.ReadSinglePayment;
 import de.adorsys.aspsp.xs2a.service.payment.ScaPaymentService;
 import de.adorsys.aspsp.xs2a.spi.domain.SpiResponse;
@@ -95,6 +93,8 @@ public class PaymentServiceTest {
     private ReadSinglePayment readSinglePayment;
     @Mock
     private AccountReferenceValidationService referenceValidationService;
+    @Mock
+    private PisConsentDataService pisConsentDataService;
 
     @Before
     public void setUp() {
@@ -129,6 +129,7 @@ public class PaymentServiceTest {
             .thenReturn(TPP_INFO);
 
         when(referenceValidationService.validateAccountReferences(any())).thenReturn(ResponseObject.builder().build());
+        when(pisConsentDataService.getAspspConsentDataByPaymentId(anyString())).thenReturn(ASPSP_CONSENT_DATA);
     }
 
     // TODO Update tests after rearranging order of payment creation with pis consent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/159
@@ -303,8 +304,8 @@ public class PaymentServiceTest {
         return singlePayments;
     }
 
-    private AccountReference getReference(String iban) {
-        AccountReference reference = new AccountReference();
+    private Xs2aAccountReference getReference(String iban) {
+        Xs2aAccountReference reference = new Xs2aAccountReference();
         reference.setIban(iban);
         reference.setCurrency(CURRENCY);
 
@@ -336,10 +337,16 @@ public class PaymentServiceTest {
 
     private static TppInfo getTppInfo() {
         TppInfo tppInfo = new TppInfo();
-        tppInfo.setRegistrationNumber("registrationNumber");
+        tppInfo.setAuthorisationNumber("registrationNumber");
         tppInfo.setTppName("tppName");
-        tppInfo.setTppRole("tppRole");
-        tppInfo.setNationalCompetentAuthority("nationalCompetentAuthority");
+        tppInfo.setTppRoles(Collections.singletonList(Xs2aTppRole.PISP));
+        tppInfo.setAuthorityId("authorityId");
+        tppInfo.setAuthorityName("authorityName");
+        tppInfo.setCountry("country");
+        tppInfo.setOrganisation("organisation");
+        tppInfo.setOrganisationUnit("organisationUnit");
+        tppInfo.setCity("city");
+        tppInfo.setState("state");
         tppInfo.setRedirectUri("redirectUri");
         tppInfo.setNokRedirectUri("nokRedirectUri");
         return tppInfo;

@@ -16,10 +16,10 @@
 
 package de.adorsys.aspsp.aspspmockserver.web;
 
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.Psu;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.psu.SpiScaMethod;
 import de.adorsys.aspsp.aspspmockserver.service.PsuService;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountDetails;
-import de.adorsys.aspsp.xs2a.spi.domain.psu.Psu;
-import de.adorsys.aspsp.xs2a.spi.domain.psu.SpiScaMethod;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +40,7 @@ import static org.springframework.http.HttpStatus.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PsuControllerTest {
     private static final String ASPSP_PSU_ID = "ec818c89-4346-4f16-b5c8-d781b040200c";
+    private static final String WRONG_ASPSP_PSU_ID = "WRONG_ASPSP_PSU_ID";
     private static final String PSU_ID = "aspsp";
     private static final String WRONG_PSU_ID = "zzz";
     private static final String E_MAIL = "info@adorsys.ua";
@@ -67,8 +68,8 @@ public class PsuControllerTest {
         when(psuService.getPsuByPsuId(WRONG_PSU_ID)).thenReturn(Optional.empty());
         when(psuService.getAllowedPaymentProducts(PSU_ID)).thenReturn(getProducts());
         when(psuService.getAllowedPaymentProducts(WRONG_PSU_ID)).thenReturn(null);
-        when(psuService.deletePsuByPsuId(PSU_ID)).thenReturn(true);
-        when(psuService.deletePsuByPsuId(WRONG_PSU_ID)).thenReturn(false);
+        when(psuService.deletePsuByAspspPsuId(ASPSP_PSU_ID)).thenReturn(true);
+        when(psuService.deletePsuByAspspPsuId(WRONG_ASPSP_PSU_ID)).thenReturn(false);
 
     }
 
@@ -142,7 +143,7 @@ public class PsuControllerTest {
     @Test
     public void deletePsu_Success() {
         //When
-        ResponseEntity actualResult = psuController.deletePsu(PSU_ID);
+        ResponseEntity actualResult = psuController.deletePsu(ASPSP_PSU_ID);
 
         //Then
         assertThat(actualResult.getStatusCode()).isEqualTo(NO_CONTENT);
@@ -151,7 +152,7 @@ public class PsuControllerTest {
     @Test
     public void deletePsu_Failure_wrong_id() {
         //When
-        ResponseEntity actualResult = psuController.deletePsu(WRONG_PSU_ID);
+        ResponseEntity actualResult = psuController.deletePsu(WRONG_ASPSP_PSU_ID);
 
         //Then
         assertThat(actualResult.getStatusCode()).isEqualTo(NOT_FOUND);
@@ -169,7 +170,7 @@ public class PsuControllerTest {
     private List<SpiAccountDetails> getDetails(boolean isEmpty) {
         return isEmpty
                    ? Collections.emptyList()
-                   : Collections.singletonList(new SpiAccountDetails(ACCOUNT_ID, IBAN, null, null, null, null, EUR, "Alfred", null, null, null, Collections.emptyList()));
+                   : Collections.singletonList(new SpiAccountDetails(ACCOUNT_ID, IBAN, null, null, null, null, EUR, "Alfred", null, null, null, null, null, null, null, Collections.emptyList()));
 
     }
 }

@@ -16,11 +16,11 @@
 
 package de.adorsys.aspsp.aspspmockserver.web;
 
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountBalance;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiAccountDetails;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.account.SpiBalanceType;
+import de.adorsys.aspsp.aspspmockserver.domain.spi.common.SpiAmount;
 import de.adorsys.aspsp.aspspmockserver.service.AccountService;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountBalance;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiAccountDetails;
-import de.adorsys.aspsp.xs2a.spi.domain.account.SpiBalanceType;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -239,13 +239,13 @@ public class AccountControllerTest {
     private SpiAccountDetails getSpiAccountDetails_1() {
         return new SpiAccountDetails(ACCOUNT_ID, IBAN, null, "1111222233334444",
             "111122xxxxxx44", null, CURRENCY, "Jack", "GIRO",
-            null, "XE3DDD", getNewBalanceList());
+            null, null, "XE3DDD", null, null, null, getNewBalanceList());
     }
 
     private SpiAccountDetails getSpiAccountDetails_2() {
         return new SpiAccountDetails("qwertyuiop12345678", IBAN, null, "4444333322221111",
             "444433xxxxxx1111", null, null, "Emily", "GIRO",
-            null, "ACVB222", getNewBalanceList());
+            null, null, "ACVB222", null, null, null, getNewBalanceList());
     }
 
     private List<SpiAccountBalance> getNewBalanceList() {
