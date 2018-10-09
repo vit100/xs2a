@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.5.
 
-## How to start
+## How to start AIS
 1. Start all spring boot servers, database in docker, a local keycloak instance and our ais-webapp on port 4200 (as described in Setup/Development server)
 2. Start a fakesmtp server to catch the TAN, which will be sent to the PSU email account. You can use `http://nilhcem.com/FakeSMTP/download.html`. Start it with sudo java -jar fakesmtp.jar`.
 3. In `aspsp-xs2a/aspsp-mock-server/src/main/resources/application.properties` set the following properties:
@@ -73,7 +73,59 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 7. Follow the instructions on the screen. If you have created a *Bank offered Consent* you should find checkboxes for every account the user owns. Select the accounts you want to give the tpp access to.
 8. After you have confirmed your accounts, you should find an email with the TAN in your fakeSMTP application. Insert the TAN in the TAN input. You have three attempts until the consent will be set revoked and you will be redirected to an error page.
 9. After clicking on the Submit button your payment will be confirmed and you should be redirected to the swagger page.
-    
+   
+## How to start PIS
+1. Start all spring boot servers, database in docker, a local keycloak instance and our pis-webapp on port 4200 (as described in Setup/Development server)
+2. Start a fakesmtp server to catch the TAN, which will be sent to the PSU email account. You can use `http://nilhcem.com/FakeSMTP/download.html`. Start it with sudo java -jar fakesmtp.jar`.
+3. In `aspsp-xs2a/aspsp-mock-server/src/main/resources/application.properties` set the following properties:
+    - spring.mail.host=localhost
+    - spring.mail.port=25
+    - spring.mail.password=
+    - spring.mail.username=
+    - spring.mail.properties.mail.smtp.auth=false
+    - spring.mail.properties.mail.smtp.starttls.enable=false
+4. Get the psu user credentials (login + password) in `http://localhost:28080/swagger-ui.html`. You can find these credentials with the `GET /psu/` endpoint. The user has to match the debtor iban from step 5. A user with these credentials must also exist in your local keycloak instance.
+5. Create a new payment in `http://localhost:8080/swagger-ui.html`. The endpoint for the creation is `Payment Initiation Service (PIS)` -> `POST /v1/{payment-service}/{payment-product}`
+    - Fill the data as like as the following example:
+
+          "header": {
+            "x-request-id": "2f77a125-aa7a-45c0-b414-cea25a116035",
+            "psu-ip-address": "192.168.0.26",
+            "date": "Sun, 11 Aug 2019 15:02:37 GMT"
+          },
+          "body": {
+            "endToEndIdentification": "WBG-123456789",
+            "debtorAccount": {
+              "currency": "EUR",
+              "iban": "DE52500105173911841934"
+            },
+            "instructedAmount": {
+              "currency": "EUR",
+              "amount": "520.00"
+            },
+            "creditorAccount": {
+              "currency": "EUR",
+              "iban": "DE15500105172295759744"
+            },
+            "creditorAgent" : "AAAADEBBXXX",
+            "creditorName": "WBG",
+            "creditorAddress": {
+              "buildingNumber": "56",
+              "city": "Nürnberg",
+              "country": "DE",
+              "postalCode": "90543",
+              "street": "WBG Straße"
+            },
+            "remittanceInformationUnstructured": "Ref. Number WBG-1222"
+          }
+        
+     - The data above creates a payment for the PSU with the IBAN "DE52500105173911841934".
+     
+6. There is a redirect_link in the response. Open this link in your browser. You should be redirected to our pis-webapp. If your not yet logged in via keycloak, the webapp should redirect you automatically to keycloak, where you have to login with the PSU credentials.
+    - ATTENTION: You have to login with the PSU credentials from step 4. 
+7. Follow the instructions on the screen.
+8. After you have confirmed the payment, you should find an email with the TAN in your fakeSMTP application. Insert the TAN in the TAN input. You have three attempts until the consent will be set revoked and you will be redirected to an error page.
+9. After clicking on the Submit button your payment will be confirmed and you should be redirected to the swagger page. 
 
 ## Setup
 
