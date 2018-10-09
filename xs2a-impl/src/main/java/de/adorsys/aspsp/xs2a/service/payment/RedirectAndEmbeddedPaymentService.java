@@ -22,11 +22,14 @@ import de.adorsys.aspsp.xs2a.domain.pis.PaymentInitialisationResponse;
 import de.adorsys.aspsp.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.aspsp.xs2a.domain.pis.SinglePayment;
 import de.adorsys.aspsp.xs2a.service.mapper.PaymentMapper;
+import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiBulkPaymentMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPaymentMapper;
 import de.adorsys.aspsp.xs2a.spi.domain.SpiResponse;
 import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPaymentInitialisationResponse;
+import de.adorsys.aspsp.xs2a.spi.domain.v2.SpiBulkPayment;
 import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
+import de.adorsys.aspsp.xs2a.spi.service.v2.BulkPaymentSpi;
 import de.adorsys.aspsp.xs2a.spi.service.v2.SinglePaymentSpi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +44,9 @@ public class RedirectAndEmbeddedPaymentService implements ScaPaymentService {
     private final PaymentMapper paymentMapper;
 
     private final SinglePaymentSpi singlePaymentSpi;
+    private final BulkPaymentSpi bulkPaymentSpi;
     private final Xs2aToSpiPaymentMapper xs2aToSpiPaymentMapper;
+    private final Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper;
 
     @Override
     public PaymentInitialisationResponse createSinglePayment(SinglePayment payment, TppInfo tppInfo, String paymentProduct) {
@@ -60,12 +65,14 @@ public class RedirectAndEmbeddedPaymentService implements ScaPaymentService {
 
     @Override
     public List<PaymentInitialisationResponse> createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo, String paymentProduct) {
-        SpiResponse<List<SpiPaymentInitialisationResponse>> response = paymentSpi.createBulkPayments(paymentMapper.mapToSpiBulkPayment(bulkPayment), new AspspConsentData()); //TODO don't create AspspConsentData without consentId https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
-        final AspspConsentData aspspConsentData = response.getAspspConsentData();
+        AspspConsentData aspspConsentData = new AspspConsentData(); //TODO don't create AspspConsentData without consentId https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
+        SpiBulkPayment spiBulkPayment = xs2aToSpiBulkPaymentMapper.mapToSpiBulkPayment(bulkPayment, paymentProduct);
+        SpiResponse<List<SpiPaymentInitialisationResponse>> response = bulkPaymentSpi.initiatePayment(spiBulkPayment, aspspConsentData);
+        AspspConsentData responseAspspConsentData = response.getAspspConsentData();
+
         return response.getPayload()
                    .stream()
-                   .map((SpiPaymentInitialisationResponse resp) ->
-                            paymentMapper.mapToPaymentInitializationResponse(resp, aspspConsentData))
+                   .map(resp -> paymentMapper.mapToPaymentInitializationResponse(resp, responseAspspConsentData))
                    .collect(Collectors.toList());
     }
 }

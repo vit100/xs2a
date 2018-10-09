@@ -17,6 +17,7 @@
 package de.adorsys.aspsp.xs2a.spi.mapper.v2;
 
 import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
+import de.adorsys.aspsp.xs2a.spi.domain.v2.SpiBulkPayment;
 import de.adorsys.aspsp.xs2a.spi.domain.v2.SpiSinglePayment;
 import org.springframework.stereotype.Component;
 
@@ -44,4 +45,7 @@ public class NewSpiPaymentMapper {
                    .orElse(null);
     }
 
+    public de.adorsys.aspsp.xs2a.spi.domain.payment.SpiBulkPayment mapToAspspSpiBulkPayment(SpiBulkPayment payment) {
+        return null;
+    }
 }
