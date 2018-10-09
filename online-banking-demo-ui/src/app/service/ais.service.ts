@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AccountConsent } from '../model/aspsp/accountConsent';
@@ -38,7 +38,6 @@ export class AisService {
 
   getConsent(consentId): Observable<AccountConsent> {
     const headers = new HttpHeaders({
-      // TODO: Dont use hard coded data
       'x-request-id': environment.xRequestId,
       'tpp-qwac-certificate': environment.tppQwacCertificate,
     });

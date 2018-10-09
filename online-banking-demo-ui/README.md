@@ -12,9 +12,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - spring.mail.username=
     - spring.mail.properties.mail.smtp.auth=false
     - spring.mail.properties.mail.smtp.starttls.enable=false
+4. Enable debug mode in ASPSPProfileApplication: `Edit Configuration -> ASPSPProfileApplication->Active Profiles-> Insert "debug_mode"
 4. Get the psu user credentials (login + password) in `http://localhost:28080/swagger-ui.html`. You can find these credentials with the `GET /psu/` endpoint. The user has to match the iban of the user (Step 5: dedicated accounts consent). A user with these credentials must also exist in your local keycloak instance.
 5. Create a new consent in `http://localhost:8080/swagger-ui.html`. The endpoint for the creation is `AISP, Consents` -> `POST /api/v1/consents`. There are two different types of consents. *Bank Offered Consents* and *Dedicated Accounts Consents*
+
+   Copy the PSU_ID (e.g. PSU_001) into the header field "PSU-ID". Also fill all other required header fields like PSU-IP-Address (0.0.0.0), X-Request-ID (99391c7e-ad88-49ec-a2ad-99ddcb1f7721). For payment-service choose `payments`, for payment-product choose `sepa-credit-transfers`
     - **Bank Offered Consent**
+
     ```
     {
     "access": {
@@ -64,7 +68,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     }
    ```
 
-6. There is a redirect_link in the response. Open this link in your browser. You should be redirected to our ais-webapp. If your not yet logged in via keycloak, the webapp should redirect you automatically to keycloak, where you have to login with the PSU credentials.
+6.  There is a redirect_link in the response. Open this link in your browser. You should be redirected to our ais-webapp. If your not yet logged in via keycloak, the webapp should redirect you automatically to keycloak, where you have to login with the PSU credentials.
     - ATTENTION: You have to login with the PSU credentials from step 4. 
 7. Follow the instructions on the screen. If you have created a *Bank offered Consent* you should find checkboxes for every account the user owns. Select the accounts you want to give the tpp access to.
 8. After you have confirmed your accounts, you should find an email with the TAN in your fakeSMTP application. Insert the TAN in the TAN input. You have three attempts until the consent will be set revoked and you will be redirected to an error page.
