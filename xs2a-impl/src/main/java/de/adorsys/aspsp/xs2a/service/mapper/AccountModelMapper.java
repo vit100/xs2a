@@ -142,7 +142,7 @@ public class AccountModelMapper {
                    .map(ts -> Arrays.stream(ts)
                                   .map(this::mapToTransaction)
                                   .collect(Collectors.toList()))
-                   .orElse(Collections.emptyList());
+                   .orElseGet(()->Collections.emptyList());
     }
 
     public TransactionDetails mapToTransaction(Transactions transactions) {
@@ -215,7 +215,7 @@ public class AccountModelMapper {
                        targetAddress.setCountry(code);
                        return targetAddress;
                    })
-                   .orElse(new Xs2aAddress());
+                   .orElseGet(Xs2aAddress::new);
     }
 
     public Xs2aAmount mapToXs2aAmount(Amount amount) {
@@ -226,7 +226,7 @@ public class AccountModelMapper {
                        targetAmount.setCurrency(Currency.getInstance(a.getCurrency()));
                        return targetAmount;
                    })
-                   .orElse(new Xs2aAmount());
+                   .orElseGet(Xs2aAmount::new);
 
     }
 
