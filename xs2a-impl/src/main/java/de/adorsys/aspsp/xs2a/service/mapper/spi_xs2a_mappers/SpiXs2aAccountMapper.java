@@ -27,6 +27,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -73,31 +74,40 @@ public class SpiXs2aAccountMapper {
     }
 
     public Optional<Xs2aAccountReport> mapToXs2aAccountReport(List<SpiTransaction> spiTransactions) {
-
         if (spiTransactions.isEmpty()) {
             return Optional.empty();
         }
 
-        Transactions[] booked = spiTransactions
-                                    .stream()
-                                    .filter(transaction -> transaction.getBookingDate() != null)
-                                    .map(this::mapToXs2aTransaction)
-                                    .toArray(Transactions[]::new);
+        return Optional.of(
+            new Xs2aAccountReport(
+                mapToXs2aTransactionList(spiTransactions, true),
+                mapToXs2aTransactionList(spiTransactions, false))
+        );
+    }
 
-        Transactions[] pending = spiTransactions
-                                     .stream()
-                                     .filter(transaction -> transaction.getBookingDate() == null)
-                                     .map(this::mapToXs2aTransaction)
-                                     .toArray(Transactions[]::new);
+    private Transactions[] mapToXs2aTransactionList(List<SpiTransaction> spiTransactions, boolean isBookedTransaction) {
+        return spiTransactions
+                   .stream()
+                   .filter(isBookedPredicate(isBookedTransaction))
+                   .map(this::mapToXs2aTransaction)
+                   .toArray(Transactions[]::new);
+    }
 
-        return Optional.of(new Xs2aAccountReport(booked, pending));
+    private Predicate<SpiTransaction> isBookedPredicate(boolean isBooked) {
+        return isBooked
+                   ? t -> t.getBookingDate() != null
+                   : t -> t.getBookingDate() == null;
     }
 
     public Xs2aAccountReference mapToXs2aAccountReference(SpiAccountReference spiAccountReference) {
         return Optional.ofNullable(spiAccountReference)
-                   .map(spiReference -> getXs2aAccountReference(spiReference.getIban(), spiReference.getBban(),
-                       spiReference.getPan(), spiReference.getMaskedPan(), spiReference.getMsisdn(),
-                       spiReference.getCurrency()))
+                   .map(s -> getXs2aAccountReference(
+                       s.getIban(),
+                       s.getBban(),
+                       s.getPan(),
+                       s.getMaskedPan(),
+                       s.getMsisdn(),
+                       s.getCurrency()))
                    .orElse(null);
 
     }
@@ -112,13 +122,13 @@ public class SpiXs2aAccountMapper {
 
     public SpiAccountReference mapToSpiAccountReference(Xs2aAccountReference account) {
         return Optional.ofNullable(account)
-                   .map(ac -> new SpiAccountReference(
-                       ac.getIban(),
-                       ac.getBban(),
-                       ac.getPan(),
-                       ac.getMaskedPan(),
-                       ac.getMsisdn(),
-                       ac.getCurrency()))
+                   .map(a -> new SpiAccountReference(
+                       a.getIban(),
+                       a.getBban(),
+                       a.getPan(),
+                       a.getMaskedPan(),
+                       a.getMsisdn(),
+                       a.getCurrency()))
                    .orElse(null);
     }
 
@@ -242,11 +252,11 @@ public class SpiXs2aAccountMapper {
         return Optional.ofNullable(spiAccountBalance)
                    .map(b -> {
                        Xs2aBalance balance = new Xs2aBalance();
-                       balance.setBalanceAmount(mapToXs2aAmount(spiAccountBalance.getSpiBalanceAmount()));
-                       balance.setBalanceType(BalanceType.valueOf(spiAccountBalance.getSpiBalanceType().name()));
-                       balance.setLastChangeDateTime(spiAccountBalance.getLastChangeDateTime());
-                       balance.setReferenceDate(spiAccountBalance.getReferenceDate());
-                       balance.setLastCommittedTransaction(spiAccountBalance.getLastCommittedTransaction());
+                       balance.setBalanceAmount(mapToXs2aAmount(b.getSpiBalanceAmount()));
+                       balance.setBalanceType(BalanceType.valueOf(b.getSpiBalanceType().name()));
+                       balance.setLastChangeDateTime(b.getLastChangeDateTime());
+                       balance.setReferenceDate(b.getReferenceDate());
+                       balance.setLastCommittedTransaction(b.getLastCommittedTransaction());
                        return balance;
                    })
                    .orElse(null);

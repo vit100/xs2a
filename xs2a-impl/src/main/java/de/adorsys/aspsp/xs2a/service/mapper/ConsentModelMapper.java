@@ -44,13 +44,13 @@ public class ConsentModelMapper {
 
     public CreateConsentReq mapToCreateConsentReq(Consents consent) {
         return Optional.ofNullable(consent)
-                   .map(cnst -> {
+                   .map(c -> {
                        CreateConsentReq createAisConsentRequest = new CreateConsentReq();
-                       createAisConsentRequest.setAccess(mapToAccountAccessInner(cnst.getAccess()));
-                       createAisConsentRequest.setRecurringIndicator(cnst.getRecurringIndicator());
-                       createAisConsentRequest.setValidUntil(cnst.getValidUntil());
-                       createAisConsentRequest.setFrequencyPerDay(cnst.getFrequencyPerDay());
-                       createAisConsentRequest.setCombinedServiceIndicator(BooleanUtils.toBoolean(cnst.isCombinedServiceIndicator()));
+                       createAisConsentRequest.setAccess(mapToAccountAccessInner(c.getAccess()));
+                       createAisConsentRequest.setRecurringIndicator(c.getRecurringIndicator());
+                       createAisConsentRequest.setValidUntil(c.getValidUntil());
+                       createAisConsentRequest.setFrequencyPerDay(c.getFrequencyPerDay());
+                       createAisConsentRequest.setCombinedServiceIndicator(BooleanUtils.toBoolean(c.isCombinedServiceIndicator()));
                        return createAisConsentRequest;
                    })
                    .orElse(null);
@@ -58,7 +58,7 @@ public class ConsentModelMapper {
 
     public ConsentStatusResponse200 mapToConsentStatusResponse200(ConsentStatusResponse consentStatusResponse) {
         return Optional.ofNullable(consentStatusResponse)
-                   .map(cstr -> new ConsentStatusResponse200().consentStatus(ConsentStatus.fromValue(cstr.getConsentStatus())))
+                   .map(c -> new ConsentStatusResponse200().consentStatus(ConsentStatus.fromValue(c.getConsentStatus())))
                    .orElse(null);
     }
 
@@ -72,12 +72,33 @@ public class ConsentModelMapper {
 
     public StartScaprocessResponse mapToStartScaProcessResponse(CreateConsentAuthorizationResponse createConsentAuthorizationResponse) {
         return Optional.ofNullable(createConsentAuthorizationResponse)
-                   .map(csar -> {
-                       ControllerLinkBuilder link = linkTo(methodOn(ConsentApi.class)._updateConsentsPsuData(csar.getConsentId(), csar.getAuthorizationId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null));
+                   .map(c -> {
+                       ControllerLinkBuilder link = linkTo(methodOn(ConsentApi.class)._updateConsentsPsuData(
+                           c.getConsentId(),
+                           c.getAuthorizationId(),
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null));
 
                        return new StartScaprocessResponse()
                                   .scaStatus(createConsentAuthorizationResponse.getScaStatus())
-                                  ._links(Collections.singletonMap(csar.getResponseLinkType().getValue(), link.toString()));
+                                  ._links(Collections.singletonMap(c.getResponseLinkType().getValue(), link.toString()));
                    })
                    .orElse(null);
     }
@@ -113,14 +134,14 @@ public class ConsentModelMapper {
 
     public ConsentInformationResponse200Json mapToConsentInformationResponse200Json(AccountConsent accountConsent) {
         return Optional.ofNullable(accountConsent)
-                   .map(consent ->
+                   .map(c ->
                             new ConsentInformationResponse200Json()
-                                .access(mapToAccountAccessDomain(consent.getAccess()))
-                                .recurringIndicator(consent.isRecurringIndicator())
-                                .validUntil(consent.getValidUntil())
-                                .frequencyPerDay(consent.getFrequencyPerDay())
-                                .lastActionDate(consent.getLastActionDate())
-                                .consentStatus(ConsentStatus.fromValue(consent.getConsentStatus().getValue()))
+                                .access(mapToAccountAccessDomain(c.getAccess()))
+                                .recurringIndicator(c.isRecurringIndicator())
+                                .validUntil(c.getValidUntil())
+                                .frequencyPerDay(c.getFrequencyPerDay())
+                                .lastActionDate(c.getLastActionDate())
+                                .consentStatus(ConsentStatus.fromValue(c.getConsentStatus().getValue()))
                    )
                    .orElse(null);
     }
@@ -138,40 +159,39 @@ public class ConsentModelMapper {
                                                   .orElse(Collections.emptyList());
         ScaMethods scaMethods = new ScaMethods();
         scaMethods.addAll(authList);
-
         return scaMethods;
     }
 
     private Xs2aAccountAccess mapToAccountAccessInner(AccountAccess accountAccess) {
         return Optional.ofNullable(accountAccess)
-                   .map(acs ->
+                   .map(a ->
                             new Xs2aAccountAccess(
-                                mapToXs2aAccountReferences(acs.getAccounts()),
-                                mapToXs2aAccountReferences(acs.getBalances()),
-                                mapToXs2aAccountReferences(acs.getTransactions()),
-                                mapToAccountAccessTypeFromAvailableAccounts(acs.getAvailableAccounts()),
-                                mapToAccountAccessTypeFromAllPsd2Enum(acs.getAllPsd2())
+                                mapToXs2aAccountReferences(a.getAccounts()),
+                                mapToXs2aAccountReferences(a.getBalances()),
+                                mapToXs2aAccountReferences(a.getTransactions()),
+                                mapToAccountAccessTypeFromAvailableAccounts(a.getAvailableAccounts()),
+                                mapToAccountAccessTypeFromAllPsd2Enum(a.getAllPsd2())
                             ))
                    .orElse(null);
     }
 
     private AccountAccess mapToAccountAccessDomain(Xs2aAccountAccess accountAccess) {
         return Optional.ofNullable(accountAccess)
-                   .map(access -> {
+                   .map(a -> {
                            AccountAccess mappedAccountAccess = new AccountAccess();
-                           mappedAccountAccess.setAccounts(new ArrayList<>(access.getAccounts()));
-                           mappedAccountAccess.setBalances(new ArrayList<>(access.getBalances()));
-                           mappedAccountAccess.setTransactions(new ArrayList<>(access.getTransactions()));
+                           mappedAccountAccess.setAccounts(new ArrayList<>(a.getAccounts()));
+                           mappedAccountAccess.setBalances(new ArrayList<>(a.getBalances()));
+                           mappedAccountAccess.setTransactions(new ArrayList<>(a.getTransactions()));
                            mappedAccountAccess.setAvailableAccounts(
                                AccountAccess.AvailableAccountsEnum.fromValue(
-                                   Optional.ofNullable(access.getAvailableAccounts())
+                                   Optional.ofNullable(a.getAvailableAccounts())
                                        .map(Xs2aAccountAccessType::getDescription)
                                        .orElse(null)
                                )
                            );
                            mappedAccountAccess.setAllPsd2(
                                AccountAccess.AllPsd2Enum.fromValue(
-                                   Optional.ofNullable(access.getAllPsd2())
+                                   Optional.ofNullable(a.getAllPsd2())
                                        .map(Xs2aAccountAccessType::getDescription)
                                        .orElse(null)
                                )

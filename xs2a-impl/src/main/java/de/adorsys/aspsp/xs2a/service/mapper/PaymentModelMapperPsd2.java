@@ -180,14 +180,14 @@ public class PaymentModelMapperPsd2 {
 
     private ChallengeData mapToChallengeData(Xs2aChallengeData xs2aChallengeData) {
         return Optional.ofNullable(xs2aChallengeData)
-                   .map(xs2aChallenge -> {
+                   .map(c -> {
                        ChallengeData psd2Challenge = new ChallengeData();
-                       psd2Challenge.setImage(xs2aChallengeData.getImage());
-                       psd2Challenge.setData(xs2aChallengeData.getData());
-                       psd2Challenge.setImageLink(xs2aChallengeData.getImageLink());
-                       psd2Challenge.setOtpMaxLength(xs2aChallengeData.getOtpMaxLength());
-                       psd2Challenge.setOtpFormat(ChallengeData.OtpFormatEnum.fromValue(xs2aChallengeData.getOtpFormat().getValue()));
-                       psd2Challenge.setAdditionalInformation(xs2aChallengeData.getAdditionalInformation());
+                       psd2Challenge.setImage(c.getImage());
+                       psd2Challenge.setData(c.getData());
+                       psd2Challenge.setImageLink(c.getImageLink());
+                       psd2Challenge.setOtpMaxLength(c.getOtpMaxLength());
+                       psd2Challenge.setOtpFormat(ChallengeData.OtpFormatEnum.fromValue(c.getOtpFormat().getValue()));
+                       psd2Challenge.setAdditionalInformation(c.getAdditionalInformation());
                        return psd2Challenge;
                    })
                    .orElse(null);
