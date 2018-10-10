@@ -44,11 +44,17 @@ public class SpiXs2aAccountMapper {
                            ad.getCurrency(),
                            ad.getName(),
                            ad.getProduct(),
-                           mapToAccountType(ad.getCashSpiAccountType()),
-                           mapToAccountStatus(ad.getSpiAccountStatus()),
+                           Optional.ofNullable(ad.getCashSpiAccountType())
+                               .map(t -> CashAccountType.valueOf(t.name()))
+                               .orElse(null),
+                           Optional.ofNullable(ad.getSpiAccountStatus())
+                               .map(status -> AccountStatus.valueOf(status.name()))
+                               .orElse(null),
                            ad.getBic(),
                            ad.getLinkedAccounts(),
-                           mapToXs2aUsageType(ad.getUsageType()),
+                           Optional.ofNullable(ad.getUsageType())
+                               .map(usage -> Xs2aUsageType.valueOf(usage.name()))
+                               .orElse(null),
                            ad.getDetails(),
                            mapToXs2aBalanceList(ad.getBalances())
                        )
@@ -228,24 +234,6 @@ public class SpiXs2aAccountMapper {
         reference.setMsisdn(msisdn);
         reference.setCurrency(currency);
         return reference;
-    }
-
-    private CashAccountType mapToAccountType(SpiAccountType spiAccountType) {
-        return Optional.ofNullable(spiAccountType)
-                   .map(type -> CashAccountType.valueOf(type.name()))
-                   .orElse(null);
-    }
-
-    private AccountStatus mapToAccountStatus(SpiAccountStatus spiAccountStatus) {
-        return Optional.ofNullable(spiAccountStatus)
-                   .map(status -> AccountStatus.valueOf(status.name()))
-                   .orElse(null);
-    }
-
-    private Xs2aUsageType mapToXs2aUsageType(SpiUsageType spiUsageType) {
-        return Optional.ofNullable(spiUsageType)
-                   .map(usage -> Xs2aUsageType.valueOf(usage.name()))
-                   .orElse(null);
     }
 
     private Xs2aBalance mapToBalance(SpiAccountBalance spiAccountBalance) {

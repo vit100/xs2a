@@ -23,6 +23,7 @@ import de.adorsys.aspsp.xs2a.domain.address.Xs2aAddress;
 import de.adorsys.aspsp.xs2a.domain.address.Xs2aCountryCode;
 import de.adorsys.aspsp.xs2a.domain.code.Xs2aFrequencyCode;
 import de.adorsys.aspsp.xs2a.domain.code.Xs2aPurposeCode;
+import de.adorsys.aspsp.xs2a.domain.consent.AuthenticationType;
 import de.adorsys.aspsp.xs2a.domain.consent.Xs2aAuthenticationObject;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiXs2aAccountMapper;
@@ -247,11 +248,23 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
         return spiXs2aAccountMapper.mapToXs2aAccountReference(spiSinglePayments.get(0).getDebtorAccount());
     }
 
-    private Xs2aAuthenticationObject[] mapToAuthenticationObjects(String[] authObjects) { //NOPMD TODO review and check PMD assertion https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/115
-        return new Xs2aAuthenticationObject[]{};//TODO Fill in th Linx
+    private Xs2aAuthenticationObject[] mapToAuthenticationObjects(String[] authObjects) { //NOPMD //TODO fix mapping if it is needed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/415
+       return Optional.ofNullable(authObjects)
+        .map(arr->Arrays.stream(arr)
+            .map(a->{
+                Xs2aAuthenticationObject o = new Xs2aAuthenticationObject();
+                o.setName("");
+                o.setAuthenticationMethodId("");
+                o.setAuthenticationType(AuthenticationType.valueOf(a));
+                o.setAuthenticationVersion("");
+                o.setExplanation("");
+                return o;
+            })
+            .toArray(Xs2aAuthenticationObject[]::new))
+           .orElseGet(()->new Xs2aAuthenticationObject[]{});
     }
 
-    private MessageErrorCode[] mapToMessageErrorCodes(String[] messageCodes) { //NOPMD TODO review and check PMD assertion https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/115
+    private MessageErrorCode[] mapToMessageErrorCodes(String... messageCodes) {
         return Optional.ofNullable(messageCodes)
                    .map(codes -> Arrays.stream(codes)
                                      .map(MessageErrorCode::valueOf)

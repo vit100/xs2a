@@ -126,21 +126,23 @@ public class AccountModelMapper {
 
     public AccountReport mapToAccountReport(Xs2aAccountReport accountReport) {
         TransactionList booked = new TransactionList();
-        List<TransactionDetails> bookedTransactions = Optional.ofNullable(accountReport.getBooked())
-                                                          .map(ts -> Arrays.stream(ts).map(this::mapToTransaction).collect(Collectors.toList()))
-                                                          .orElse(new ArrayList<>());
-        booked.addAll(bookedTransactions);
+        booked.addAll(mapToPsd2TransactionList(accountReport.getBooked()));
 
         TransactionList pending = new TransactionList();
-        List<TransactionDetails> pendingTransactions = Optional.ofNullable(accountReport.getPending())
-                                                           .map(ts -> Arrays.stream(ts).map(this::mapToTransaction).collect(Collectors.toList()))
-                                                           .orElse(new ArrayList<>());
-        pending.addAll(pendingTransactions);
+        pending.addAll(mapToPsd2TransactionList(accountReport.getPending()));
 
         return new AccountReport()
                    .booked(booked)
                    .pending(pending)
                    ._links(objectMapper.convertValue(accountReport.getLinks(), Map.class));
+    }
+
+    private List<TransactionDetails> mapToPsd2TransactionList(Transactions... transactions){
+        return Optional.ofNullable(transactions)
+                   .map(ts -> Arrays.stream(ts)
+                                  .map(this::mapToTransaction)
+                                  .collect(Collectors.toList()))
+                   .orElse(Collections.emptyList());
     }
 
     public TransactionDetails mapToTransaction(Transactions transactions) {
