@@ -137,12 +137,12 @@ public class AccountModelMapper {
                    ._links(objectMapper.convertValue(accountReport.getLinks(), Map.class));
     }
 
-    private List<TransactionDetails> mapToPsd2TransactionList(Transactions... transactions){
+    private List<TransactionDetails> mapToPsd2TransactionList(Transactions... transactions) {
         return Optional.ofNullable(transactions)
                    .map(ts -> Arrays.stream(ts)
                                   .map(this::mapToTransaction)
                                   .collect(Collectors.toList()))
-                   .orElseGet(()->Collections.emptyList());
+                   .orElseGet(Collections::emptyList);
     }
 
     public TransactionDetails mapToTransaction(Transactions transactions) {
@@ -230,7 +230,7 @@ public class AccountModelMapper {
 
     }
 
-    public TransactionsResponse200Json mapToTransactionsResponse200Json(Xs2aTransactionsReport transactionsReport){
+    public TransactionsResponse200Json mapToTransactionsResponse200Json(Xs2aTransactionsReport transactionsReport) {
         TransactionsResponse200Json transactionsResponse200Json = new TransactionsResponse200Json();
         transactionsResponse200Json.setTransactions(mapToAccountReport(transactionsReport.getAccountReport()));
         transactionsResponse200Json.setBalances(mapToBalanceList(transactionsReport.getBalances()));
