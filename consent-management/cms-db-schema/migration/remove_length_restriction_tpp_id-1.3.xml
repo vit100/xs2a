@@ -23,11 +23,11 @@
         <comment>Remove length restriction tppId</comment>
         <modifyDataType
             columnName="tpp_id"
-            newDataType="text"
+            newDataType="TEXT"
             tableName="ais_consent_action"/>
         <modifyDataType
             columnName="tpp_id"
-            newDataType="text"
+            newDataType="TEXT"
             tableName="ais_consent"/>
     </changeSet>
 

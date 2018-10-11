@@ -22,46 +22,55 @@
     <changeSet author="pru@adorsys.com.ua" id="2018-07-24-1">
         <comment>Create sequence for ais consent id.</comment>
         <createSequence sequenceName="ais_consent_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE ais_consent_id_seq</sql>
     </changeSet>
 
     <changeSet author="pru@adorsys.com.ua" id="2018-07-24-3">
         <comment>Create sequence for ais consent action id.</comment>
         <createSequence sequenceName="ais_consent_action_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE ais_consent_action_id_seq</sql>
     </changeSet>
 
     <changeSet author="pru@adorsys.com.ua" id="2018-07-24-4">
         <comment>Create sequence for pis consent id.</comment>
         <createSequence sequenceName="pis_consent_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE pis_consent_id_seq</sql>
     </changeSet>
 
     <changeSet author="msh@adorsys.com.ua" id="2018-08-14-1">
         <comment>Create sequence for pis account reference id.</comment>
         <createSequence sequenceName="pis_account_reference_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE pis_account_reference_id_seq</sql>
     </changeSet>
 
     <changeSet author="msh@adorsys.com.ua" id="2018-08-14-2">
         <comment>Create sequence for pis address id.</comment>
         <createSequence sequenceName="pis_address_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE pis_address_id_seq</sql>
     </changeSet>
 
     <changeSet author="msh@adorsys.com.ua" id="2018-08-14-3">
         <comment>Create sequence for pis payment data id.</comment>
         <createSequence sequenceName="pis_payment_data_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE pis_payment_data_id_seq</sql>
     </changeSet>
 
     <changeSet author="msh@adorsys.com.ua" id="2018-08-14-4">
         <comment>Create sequence for pis remittance id.</comment>
         <createSequence sequenceName="pis_remittance_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE pis_remittance_id_seq</sql>
     </changeSet>
 
     <changeSet author="msh@adorsys.com.ua" id="2018-08-14-5">
         <comment>Create sequence for pis tpp info id.</comment>
         <createSequence sequenceName="pis_tpp_info_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE pis_tpp_info_id_seq</sql>
     </changeSet>
 
     <changeSet author="pru@adorsys.com.ua" id="2018-09-07-1">
         <comment>Create sequence for pis consent authorization.</comment>
         <createSequence sequenceName="pis_consent_authorization_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE pis_consent_authorization_id_seq</sql>
     </changeSet>
 
     <changeSet author="mpo@adorsys.com.ua" id="2018-05-09-1">
@@ -84,18 +93,18 @@
             <column name="expected_frequency_per_day" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="expire_date" type="BLOB">
+            <column name="expire_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
             <column name="external_id" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_action_date" type="BLOB"/>
+            <column name="last_action_date" type="DATE"/>
             <column name="psu_id" type="VARCHAR(40)"/>
             <column name="recurring_indicator" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="request_date_time" type="BLOB">
+            <column name="request_date_time" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="tpp_frequency_per_day" type="INTEGER">
@@ -153,7 +162,7 @@
             <column name="action_status" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="request_date" type="BLOB">
+            <column name="request_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
             <column name="requested_consent_id" type="VARCHAR(40)">
@@ -300,17 +309,17 @@
             <column name="address_id" type="BIGINT"/>
             <column name="remittance_information_unstructured" type="VARCHAR(1000)"/>
             <column name="remittance_id" type="BIGINT"/>
-            <column name="requested_execution_date" type="BLOB">
+            <column name="requested_execution_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
-            <column name="requested_execution_time" type="BLOB">
+            <column name="requested_execution_time" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="ultimate_creditor" type="VARCHAR(100)"/>
             <column name="purpose_code" type="VARCHAR(10)"/>
-            <column name="start_date" type="BLOB"/>
+            <column name="start_date" type="DATE"/>
             <column name="execution_rule" type="VARCHAR(50)"/>
-            <column name="end_date" type="BLOB"/>
+            <column name="end_date" type="DATE"/>
             <column name="frequency" type="VARCHAR(25)"/>
             <column name="day_of_execution" type="INTEGER"/>
             <column name="consent_id" type="BIGINT">
@@ -350,6 +359,7 @@
     <changeSet author="age@adorsys.de" id="2018-08-28-1">
         <comment>Create sequence for ais consent authorization id.</comment>
         <createSequence sequenceName="ais_consent_authorization_id_seq"/>
+        <sql dbms="mariadb">CREATE SEQUENCE ais_consent_authorization_id_seq</sql>
     </changeSet>
 
     <changeSet author="age@adorsys.de" id="2018-08-28-2">
@@ -408,5 +418,4 @@
                                  initiallyDeferred="false"
                                  referencedColumnNames="id" referencedTableName="pis_consent"/>
     </changeSet>
-
 </databaseChangeLog>
