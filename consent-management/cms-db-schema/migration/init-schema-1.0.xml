@@ -71,7 +71,7 @@
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="aspsp_consent_data" type="BYTEA"/>
+            <column name="aspsp_consent_data" type="BLOB"/>
             <column name="combined_service_indicator" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
@@ -84,18 +84,18 @@
             <column name="expected_frequency_per_day" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="expire_date" type="BYTEA">
+            <column name="expire_date" type="BLOB">
                 <constraints nullable="false"/>
             </column>
             <column name="external_id" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_action_date" type="BYTEA"/>
+            <column name="last_action_date" type="BLOB"/>
             <column name="psu_id" type="VARCHAR(40)"/>
             <column name="recurring_indicator" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="request_date_time" type="BYTEA">
+            <column name="request_date_time" type="BLOB">
                 <constraints nullable="false"/>
             </column>
             <column name="tpp_frequency_per_day" type="INTEGER">
@@ -134,10 +134,12 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="consent_id, currency, type_access, iban" constraintName="ais_account_access_pkey" tableName="ais_account_access"/>
+        <addPrimaryKey columnNames="consent_id, currency, type_access, iban" constraintName="ais_account_access_pkey"
+                       tableName="ais_account_access"/>
 
         <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="ais_account_access"
-                                 constraintName="consent_id_fkey" deferrable="false" initiallyDeferred="false"
+                                 constraintName="fk__ais_account_access__ais_consent" deferrable="false"
+                                 initiallyDeferred="false"
                                  referencedColumnNames="id" referencedTableName="ais_consent"/>
     </changeSet>
 
@@ -151,7 +153,7 @@
             <column name="action_status" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="request_date" type="BYTEA">
+            <column name="request_date" type="BLOB">
                 <constraints nullable="false"/>
             </column>
             <column name="requested_consent_id" type="VARCHAR(40)">
@@ -198,7 +200,7 @@
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="aspsp_consent_data" type="BYTEA"/>
+            <column name="aspsp_consent_data" type="BLOB"/>
             <column name="consent_status" type="VARCHAR(25)">
                 <constraints nullable="false"/>
             </column>
@@ -218,7 +220,8 @@
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="tpp_info_id" baseTableName="pis_consent"
-                                 constraintName="tpp_info_id_fkey" deferrable="false" initiallyDeferred="false"
+                                 constraintName="fk__tpp_info_id__pis_tpp_info" deferrable="false"
+                                 initiallyDeferred="false"
                                  referencedColumnNames="tpp_info_id" referencedTableName="pis_tpp_info"/>
     </changeSet>
 
@@ -297,17 +300,17 @@
             <column name="address_id" type="BIGINT"/>
             <column name="remittance_information_unstructured" type="VARCHAR(1000)"/>
             <column name="remittance_id" type="BIGINT"/>
-            <column name="requested_execution_date" type="BYTEA">
+            <column name="requested_execution_date" type="BLOB">
                 <constraints nullable="false"/>
             </column>
-            <column name="requested_execution_time" type="BYTEA">
+            <column name="requested_execution_time" type="BLOB">
                 <constraints nullable="false"/>
             </column>
             <column name="ultimate_creditor" type="VARCHAR(100)"/>
             <column name="purpose_code" type="VARCHAR(10)"/>
-            <column name="start_date" type="BYTEA"/>
+            <column name="start_date" type="BLOB"/>
             <column name="execution_rule" type="VARCHAR(50)"/>
-            <column name="end_date" type="BYTEA"/>
+            <column name="end_date" type="BLOB"/>
             <column name="frequency" type="VARCHAR(25)"/>
             <column name="day_of_execution" type="INTEGER"/>
             <column name="consent_id" type="BIGINT">
@@ -316,28 +319,31 @@
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="debtor_account_account_reference_id" baseTableName="pis_payment_data"
-                                 constraintName="debtor_account_account_reference_id_fkey" deferrable="false"
+                                 constraintName="fk__pis_payment_data__pis_account_reference__debtor" deferrable="false"
                                  initiallyDeferred="false"
                                  referencedColumnNames="account_reference_id"
                                  referencedTableName="pis_account_reference"/>
 
         <addForeignKeyConstraint baseColumnNames="creditor_account_account_reference_id"
                                  baseTableName="pis_payment_data"
-                                 constraintName="creditor_account_account_reference_id_fkey" deferrable="false"
+                                 constraintName="fk__pis_payment_data__pis_account_reference__creditor" deferrable="false"
                                  initiallyDeferred="false"
                                  referencedColumnNames="account_reference_id"
                                  referencedTableName="pis_account_reference"/>
 
         <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="pis_payment_data"
-                                 constraintName="address_id_fkey" deferrable="false" initiallyDeferred="false"
+                                 constraintName="fk__pis_payment_data__pis_address" deferrable="false"
+                                 initiallyDeferred="false"
                                  referencedColumnNames="address_id" referencedTableName="pis_address"/>
 
         <addForeignKeyConstraint baseColumnNames="remittance_id" baseTableName="pis_payment_data"
-                                 constraintName="remittance_id_fkey" deferrable="false" initiallyDeferred="false"
+                                 constraintName="fk__pis_payment_data__pis_remittance" deferrable="false"
+                                 initiallyDeferred="false"
                                  referencedColumnNames="remittance_id" referencedTableName="pis_remittance"/>
 
         <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="pis_payment_data"
-                                 constraintName="consent_id_fkey" deferrable="false" initiallyDeferred="false"
+                                 constraintName="fk__pis_payment_data__pis_consent" deferrable="false"
+                                 initiallyDeferred="false"
                                  referencedColumnNames="id" referencedTableName="pis_consent"/>
     </changeSet>
 
@@ -369,7 +375,8 @@
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="ais_consent_authorization"
-                                 constraintName="consent_id_fkey" deferrable="false" initiallyDeferred="false"
+                                 constraintName="fk__ais_consent_authorization__ais_consent" deferrable="false"
+                                 initiallyDeferred="false"
                                  referencedColumnNames="id" referencedTableName="ais_consent"/>
     </changeSet>
 
@@ -397,7 +404,8 @@
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="pis_consent_authorization"
-                                 constraintName="consent_id_fkey" deferrable="false" initiallyDeferred="false"
+                                 constraintName="fk__pis_consent_authorization__pis_consent" deferrable="false"
+                                 initiallyDeferred="false"
                                  referencedColumnNames="id" referencedTableName="pis_consent"/>
     </changeSet>
 
