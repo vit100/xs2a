@@ -16,6 +16,7 @@
 
 package de.adorsys.aspsp.xs2a.spi.domain.consent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -29,6 +30,9 @@ import java.util.Objects;
 public class AspspConsentData {
     private final byte[] aspspConsentData;
     private final String consentId;
+
+    @JsonIgnore
+    private final String cryptoSalt;
 
     @Override
     public boolean equals(Object o) {

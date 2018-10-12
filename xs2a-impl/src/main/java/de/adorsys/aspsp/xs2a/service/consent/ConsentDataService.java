@@ -58,6 +58,6 @@ public abstract class ConsentDataService {
         byte[] aspspConsentData = Optional.ofNullable(xs2aConsentData.getAspspConsentDataBase64())
                                       .map(s -> Base64.getDecoder().decode(s))
                                       .orElse(null);
-        return new AspspConsentData(aspspConsentData, xs2aConsentData.getConsentId());
+        return new AspspConsentData(aspspConsentData, xs2aConsentData.getConsentId(), null);
     }
 }

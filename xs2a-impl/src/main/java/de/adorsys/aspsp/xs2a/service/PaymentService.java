@@ -211,14 +211,23 @@ public class PaymentService {
 
             PaymentInitialisationResponse paymentInitialisationResponse = (PaymentInitialisationResponse) responseObject.getBody();//TODO Refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
             AspspConsentData aspspConsentData = paymentInitialisationResponse.getAspspConsentData();
-            return Optional.of(new AspspConsentData(Optional.ofNullable(aspspConsentData).map(AspspConsentData::getAspspConsentData).orElse(null), paymentInitialisationResponse.getPisConsentId()));
+            return Optional.of(new AspspConsentData(Optional.ofNullable(aspspConsentData)
+                                                        .map(AspspConsentData::getAspspConsentData)
+                                                        .orElse(null),
+                                                    paymentInitialisationResponse.getPisConsentId(),
+                                                    null));
         } else if (paymentType == BULK) {
 
             List<PaymentInitialisationResponse> paymentInitialisationResponseList = (List<PaymentInitialisationResponse>) responseObject.getBody();//TODO Refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
             if (CollectionUtils.isNotEmpty(paymentInitialisationResponseList)) {
                 PaymentInitialisationResponse paymentInitialisationResponse = paymentInitialisationResponseList.get(0);
                 AspspConsentData aspspConsentData = paymentInitialisationResponse.getAspspConsentData();
-                return Optional.of(new AspspConsentData(Optional.ofNullable(aspspConsentData).map(AspspConsentData::getAspspConsentData).orElse(null), paymentInitialisationResponse.getPisConsentId()));
+                return Optional.of(new AspspConsentData(Optional.ofNullable(aspspConsentData)
+                                                            .map(AspspConsentData::getAspspConsentData)
+                                                            .orElse(null),
+                                                        paymentInitialisationResponse.getPisConsentId(),
+                                                        null
+                ));
             }
         }
 
