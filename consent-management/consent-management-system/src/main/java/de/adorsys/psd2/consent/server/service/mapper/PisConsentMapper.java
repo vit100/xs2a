@@ -16,7 +16,10 @@
 
 package de.adorsys.psd2.consent.server.service.mapper;
 
-import de.adorsys.psd2.consent.api.*;
+import de.adorsys.psd2.consent.api.CmsAccountReference;
+import de.adorsys.psd2.consent.api.CmsAddress;
+import de.adorsys.psd2.consent.api.CmsConsentStatus;
+import de.adorsys.psd2.consent.api.CmsRemittance;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
@@ -24,39 +27,41 @@ import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.consent.server.domain.ConsentType;
 import de.adorsys.psd2.consent.server.domain.payment.*;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PisConsentMapper {
+    private final ConsentMapper consentMapper;
 
-    public Optional<PisConsent> mapToPisConsent(PisConsentRequest request) {
-        return Optional.ofNullable(request.getPayments())
-                   .map(pmt -> {
-                       PisConsent consent = new PisConsent();
-                       consent.setExternalId(UUID.randomUUID().toString());
-                       consent.addPaymentsData(mapToPisPaymentDataList(pmt));
-                       consent.setPisTppInfo(mapToPisTppInfo(request.getTppInfo()));
-                       consent.setPisPaymentType(request.getPaymentType());
-                       consent.setPisPaymentProduct(request.getPaymentProduct());
-                       consent.setConsentType(ConsentType.PIS);
-                       consent.setConsentStatus(CmsConsentStatus.RECEIVED);
-                       consent.setAspspConsentData(request.getAspspConsentData());
-                       return consent;
-                   });
+    public PisConsent mapToPisConsent(PisConsentRequest request) {
+        PisConsent consent = new PisConsent();
+        consent.setPayments(mapToPisPaymentDataList(request.getPayments(), consent));
+        consent.setTppInfo(consentMapper.mapToTppInfo(request.getTppInfo()));
+        consent.setPisPaymentType(request.getPaymentType());
+        consent.setPisPaymentProduct(request.getPaymentProduct());
+        consent.setConsentType(ConsentType.PIS);
+        consent.setConsentStatus(CmsConsentStatus.RECEIVED);
+        return consent;
     }
 
-    private List<PisPaymentData> mapToPisPaymentDataList(List<PisPayment> payments) {
+    public List<PisPaymentData> mapToPisPaymentDataList(List<PisPayment> payments, PisConsent consent) {
+        if (CollectionUtils.isEmpty(payments)) {
+            return Collections.emptyList();
+        }
         return payments.stream()
-                   .map(this::mapToPisPaymentData)
+                   .map(p -> mapToPisPaymentData(p, consent))
                    .collect(Collectors.toList());
     }
 
-    private PisPaymentData mapToPisPaymentData(PisPayment payment) {
+    private PisPaymentData mapToPisPaymentData(PisPayment payment, PisConsent consent) {
         return Optional.ofNullable(payment)
                    .map(pm -> {
                        PisPaymentData pisPaymentData = new PisPaymentData();
@@ -81,23 +86,9 @@ public class PisConsentMapper {
                        pisPaymentData.setExecutionRule(pm.getExecutionRule());
                        pisPaymentData.setFrequency(pm.getFrequency());
                        pisPaymentData.setDayOfExecution(pm.getDayOfExecution());
+                       pisPaymentData.setConsent(consent);
 
                        return pisPaymentData;
-                   }).orElse(null);
-    }
-
-    private PisTppInfo mapToPisTppInfo(CmsTppInfo tppInfo) {
-        return Optional.ofNullable(tppInfo)
-                   .map(tin -> {
-                       PisTppInfo pisTppInfo = new PisTppInfo();
-                       pisTppInfo.setRegistrationNumber(tin.getRegistrationNumber());
-                       pisTppInfo.setTppName(tin.getTppName());
-                       pisTppInfo.setTppRole(tin.getTppRole());
-                       pisTppInfo.setNationalCompetentAuthority(tin.getNationalCompetentAuthority());
-                       pisTppInfo.setRedirectUri(tin.getRedirectUri());
-                       pisTppInfo.setNokRedirectUri(tin.getNokRedirectUri());
-
-                       return pisTppInfo;
                    }).orElse(null);
     }
 
@@ -123,7 +114,7 @@ public class PisConsentMapper {
                        response.setConsentStatus(pc.getConsentStatus());
                        response.setPaymentType(pc.getPisPaymentType());
                        response.setPaymentProduct(pc.getPisPaymentProduct());
-                       response.setTppInfo(mapToTppInfo(pc.getPisTppInfo()));
+                       response.setTppInfo(consentMapper.mapToCmsTppInfo(pc.getTppInfo()));
                        return response;
                    });
     }
@@ -191,11 +182,11 @@ public class PisConsentMapper {
     private CmsAccountReference mapToCmsAccountReference(PisAccountReference pisAccountReference) {
         return Optional.ofNullable(pisAccountReference)
                    .map(ref -> new CmsAccountReference(ref.getIban(),
-                       ref.getBban(),
-                       ref.getPan(),
-                       ref.getMaskedPan(),
-                       ref.getMsisdn(),
-                       ref.getCurrency())
+                                                       ref.getBban(),
+                                                       ref.getPan(),
+                                                       ref.getMaskedPan(),
+                                                       ref.getMsisdn(),
+                                                       ref.getCurrency())
                    ).orElse(null);
     }
 
@@ -209,22 +200,6 @@ public class PisConsentMapper {
                        cmsAddress.setPostalCode(adr.getPostalCode());
                        cmsAddress.setCountry(adr.getCountry());
                        return cmsAddress;
-                   }).orElse(null);
-    }
-
-    private CmsTppInfo mapToTppInfo(PisTppInfo pisTppInfo) {
-        return Optional.ofNullable(pisTppInfo)
-                   .map(tpp -> {
-                       CmsTppInfo tppInfo = new CmsTppInfo();
-
-                       tppInfo.setRegistrationNumber(tpp.getRegistrationNumber());
-                       tppInfo.setTppName(tpp.getTppName());
-                       tppInfo.setTppRole(tpp.getTppRole());
-                       tppInfo.setNationalCompetentAuthority(tpp.getNationalCompetentAuthority());
-                       tppInfo.setRedirectUri(tpp.getRedirectUri());
-                       tppInfo.setNokRedirectUri(tpp.getNokRedirectUri());
-                       return tppInfo;
-
                    }).orElse(null);
     }
 

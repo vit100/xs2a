@@ -43,10 +43,21 @@ public class PaymentController {
         @ApiResponse(code = 201, message = "Created", response = SpiSinglePayment.class),
         @ApiResponse(code = 204, message = "Payment Failed")})
     @PostMapping(path = "/")
-    public ResponseEntity<SpiSinglePayment> createPayment(@RequestBody SpiSinglePayment payment) {
+    public ResponseEntity<SpiSinglePayment> createSinglePayment(@RequestBody SpiSinglePayment payment) {
         return paymentService.addPayment(payment)
                    .map(saved -> new ResponseEntity<>(saved, CREATED))
-                   .orElse(ResponseEntity.noContent().build());
+                   .orElseGet(ResponseEntity.noContent()::build);
+    }
+
+    @ApiOperation(value = "Creates a periodic payment based on request body", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})
+    @ApiResponses(value = {
+        @ApiResponse(code = 201, message = "Created", response = SpiPeriodicPayment.class),
+        @ApiResponse(code = 400, message = "Bad Request")})
+    @PostMapping(path = "/create-periodic-payment")
+    public ResponseEntity<SpiPeriodicPayment> createPeriodicPayment(@RequestBody SpiPeriodicPayment payment) {
+        return paymentService.addPeriodicPayment(payment)
+                   .map(saved -> new ResponseEntity<>(saved, CREATED))
+                   .orElseGet(ResponseEntity.badRequest()::build);
     }
 
     @ApiOperation(value = "Creates a bulk payment(list of single payments) based on request body", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})
@@ -71,18 +82,7 @@ public class PaymentController {
     public ResponseEntity<SpiTransactionStatus> getPaymentStatusById(@PathVariable("paymentId") String paymentId) {
         return paymentService.getPaymentStatusById(paymentId)
                    .map(ResponseEntity::ok)
-                   .orElse(ResponseEntity.noContent().build());
-    }
-
-    @ApiOperation(value = "Creates a periodic payment based on request body", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})
-    @ApiResponses(value = {
-        @ApiResponse(code = 201, message = "Created", response = SpiPeriodicPayment.class),
-        @ApiResponse(code = 400, message = "Bad Request")})
-    @PostMapping(path = "/create-periodic-payment")
-    public ResponseEntity<SpiPeriodicPayment> createPeriodicPayment(@RequestBody SpiPeriodicPayment payment) {
-        return paymentService.addPeriodicPayment(payment)
-                   .map(saved -> new ResponseEntity<>(saved, CREATED))
-                   .orElse(ResponseEntity.badRequest().build());
+                   .orElseGet(ResponseEntity.noContent()::build);
     }
 
     @ApiOperation(value = "Returns all payments present at ASPSP", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})
@@ -114,6 +114,6 @@ public class PaymentController {
     public ResponseEntity<SpiCancelPayment> cancelPayment(@PathVariable("payment-id") String paymentId) {
         return paymentService.cancelPayment(paymentId)
                    .map(p -> new ResponseEntity<>(p, ACCEPTED))
-                   .orElse(ResponseEntity.badRequest().build());
+                   .orElseGet(ResponseEntity.badRequest()::build);
     }
 }

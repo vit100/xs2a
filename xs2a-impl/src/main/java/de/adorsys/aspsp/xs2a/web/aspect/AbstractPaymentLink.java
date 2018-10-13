@@ -16,11 +16,9 @@
 
 package de.adorsys.aspsp.xs2a.web.aspect;
 
-import de.adorsys.aspsp.xs2a.component.JsonConverter;
 import de.adorsys.aspsp.xs2a.domain.Links;
 import de.adorsys.aspsp.xs2a.domain.ResponseObject;
-import de.adorsys.aspsp.xs2a.domain.pis.PaymentInitialisationResponse;
-import de.adorsys.aspsp.xs2a.domain.pis.PaymentRequestParameters;
+import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.aspsp.xs2a.service.message.MessageService;
 import de.adorsys.aspsp.xs2a.service.profile.AspspProfileServiceWrapper;
@@ -37,8 +35,8 @@ import static de.adorsys.aspsp.xs2a.domain.pis.PaymentType.SINGLE;
 public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
     private AuthorisationMethodService authorisationMethodService;
 
-    public AbstractPaymentLink(int maxNumberOfCharInTransactionJson, AspspProfileServiceWrapper aspspProfileService, JsonConverter jsonConverter, MessageService messageService, AuthorisationMethodService authorisationMethodService) {
-        super(maxNumberOfCharInTransactionJson, aspspProfileService, jsonConverter, messageService);
+    public AbstractPaymentLink(AspspProfileServiceWrapper aspspProfileService, MessageService messageService, AuthorisationMethodService authorisationMethodService) {
+        super(aspspProfileService, messageService);
         this.authorisationMethodService = authorisationMethodService;
     }
 
@@ -47,20 +45,20 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
         Object body = result.getBody();
 
         if (EnumSet.of(SINGLE, PERIODIC).contains(paymentRequestParameters.getPaymentType())) {
-            doEnrichLink(paymentRequestParameters, (PaymentInitialisationResponse) body);
+            doEnrichLink(paymentRequestParameters, (PaymentInitiateResponse) body);
         } else {
-            ((List<PaymentInitialisationResponse>) body)
+            ((List<PaymentInitiateResponse>) body)
                 .forEach(r -> doEnrichLink(paymentRequestParameters, r));
         }
         return result;
     }
 
-    private void doEnrichLink(PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private void doEnrichLink(PaymentRequestParameters paymentRequestParameters, PaymentInitiateResponse body) {
         body.setLinks(buildPaymentLinks(paymentRequestParameters, body));
     }
 
     //TODO encode payment id with base64 encoding and add decoders to every endpoint links lead https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/382
-    private Links buildPaymentLinks(PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private Links buildPaymentLinks(PaymentRequestParameters paymentRequestParameters, PaymentInitiateResponse body) {
         if (RJCT == body.getTransactionStatus()) {
             return null;
         }
@@ -81,7 +79,7 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
         return links;
     }
 
-    private Links addEmbeddedRelatedLinks(Links links, PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private Links addEmbeddedRelatedLinks(Links links, PaymentRequestParameters paymentRequestParameters, PaymentInitiateResponse body) {
         String paymentService = paymentRequestParameters.getPaymentType().getValue();
         String paymentId = body.getPaymentId();
         String authorizationId = body.getAuthorizationId();
@@ -98,7 +96,7 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
         return links;
     }
 
-    private Links addRedirectRelatedLinks(Links links, PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private Links addRedirectRelatedLinks(Links links, PaymentRequestParameters paymentRequestParameters, PaymentInitiateResponse body) {
         String paymentService = paymentRequestParameters.getPaymentType().getValue();
         String paymentId = body.getPaymentId();
         String authorizationId = body.getAuthorizationId();

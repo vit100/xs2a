@@ -128,13 +128,13 @@ public class AccountModelMapper {
         TransactionList booked = new TransactionList();
         List<TransactionDetails> bookedTransactions = Optional.ofNullable(accountReport.getBooked())
                                                           .map(ts -> Arrays.stream(ts).map(this::mapToTransaction).collect(Collectors.toList()))
-                                                          .orElse(new ArrayList<>());
+                                                          .orElseGet(ArrayList::new);
         booked.addAll(bookedTransactions);
 
         TransactionList pending = new TransactionList();
         List<TransactionDetails> pendingTransactions = Optional.ofNullable(accountReport.getPending())
                                                            .map(ts -> Arrays.stream(ts).map(this::mapToTransaction).collect(Collectors.toList()))
-                                                           .orElse(new ArrayList<>());
+                                                           .orElseGet(ArrayList::new);
         pending.addAll(pendingTransactions);
 
         return new AccountReport()
@@ -208,12 +208,10 @@ public class AccountModelMapper {
                        targetAddress.setBuildingNumber(a.getBuildingNumber());
                        targetAddress.setCity(a.getCity());
                        targetAddress.setPostalCode(a.getPostalCode());
-                       Xs2aCountryCode code = new Xs2aCountryCode();
-                       code.setCode(a.getCountry());
-                       targetAddress.setCountry(code);
+                       targetAddress.setCountry(new Xs2aCountryCode(a.getCountry()));
                        return targetAddress;
                    })
-                   .orElse(new Xs2aAddress());
+                   .orElseGet(Xs2aAddress::new);
     }
 
     public Xs2aAmount mapToXs2aAmount(Amount amount) {
@@ -224,7 +222,7 @@ public class AccountModelMapper {
                        targetAmount.setCurrency(Currency.getInstance(a.getCurrency()));
                        return targetAmount;
                    })
-                   .orElse(new Xs2aAmount());
+                   .orElseGet(Xs2aAmount::new);
 
     }
 

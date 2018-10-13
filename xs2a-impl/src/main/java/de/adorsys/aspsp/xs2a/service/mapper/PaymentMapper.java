@@ -26,19 +26,21 @@ import de.adorsys.aspsp.xs2a.domain.code.Xs2aPurposeCode;
 import de.adorsys.aspsp.xs2a.domain.consent.Xs2aAuthenticationObject;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiXs2aAccountMapper;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
-import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiAmount;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
+import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.*;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiAddress;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiChallengeData;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentType;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiRemittance;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,7 +75,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                    .orElse(null);
     }
 
-    public SpiTransactionStatus mapToSpiTransactionStatus(Xs2aTransactionStatus xs2aTransactionStatus) {
+    private SpiTransactionStatus mapToSpiTransactionStatus(Xs2aTransactionStatus xs2aTransactionStatus) {
         return Optional.ofNullable(xs2aTransactionStatus)
                    .map(ts -> SpiTransactionStatus.valueOf(ts.name()))
                    .orElse(null);
@@ -139,6 +141,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
 
                    }).orElse(null);
     }
+
     //TODO remote AspspConsentData from here https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
     public PaymentInitialisationResponse mapToPaymentInitializationResponse(SpiPaymentInitialisationResponse response, AspspConsentData aspspConsentData) {
         return Optional.ofNullable(response)
@@ -156,7 +159,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        initialisationResponse.setLinks(new Links());
                        initialisationResponse.setAspspConsentData(aspspConsentData);
                        return initialisationResponse;
-                   }).orElse(new PaymentInitialisationResponse());
+                   }).orElseGet(PaymentInitialisationResponse::new);
     }
 
     public PaymentInitialisationResponse mapToPaymentInitResponseFailedPayment(SinglePayment payment, MessageErrorCode error) {
@@ -307,9 +310,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
         return Optional.ofNullable(creditorAddress)
                    .map(a -> {
                        Xs2aAddress address = new Xs2aAddress();
-                       Xs2aCountryCode code = new Xs2aCountryCode();
-                       code.setCode(Optional.ofNullable(a.getCountry()).orElse(null));
-                       address.setCountry(code);
+                       address.setCountry(new Xs2aCountryCode(a.getCountry()));
                        address.setPostalCode(a.getPostalCode());
                        address.setCity(a.getCity());
                        address.setStreet(a.getStreet());
@@ -335,23 +336,5 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        OtpFormat.getByValue(c.getSpiOtpFormat().getValue()).orElse(null),
                        c.getAdditionalInformation()))
                    .orElse(null);
-    }
-
-    public TppInfo mapToTppInfo(PaymentRequestParameters requestParameters) {
-        if (StringUtils.isBlank(requestParameters.getQwacCertificate())) {
-            return null;
-        }
-
-        try {
-            byte[] decodedBytes = Base64.getDecoder().decode(requestParameters.getQwacCertificate());
-            String decodedJson = new String(decodedBytes);
-            TppInfo tppInfo = objectMapper.readValue(decodedJson, TppInfo.class);
-            tppInfo.setRedirectUri(requestParameters.getTppRedirectUri());
-            tppInfo.setNokRedirectUri(requestParameters.getTppNokRedirectUri());
-            return tppInfo;
-        } catch (java.lang.Exception e) {
-            log.warn("Error with converting TppInfo from certificate {}", requestParameters.getQwacCertificate());
-            return null;
-        }
     }
 }

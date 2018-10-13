@@ -32,10 +32,10 @@ import de.adorsys.aspsp.xs2a.service.mapper.AccountModelMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiXs2aAccountMapper;
 import de.adorsys.aspsp.xs2a.service.validator.ValueValidatorService;
-import de.adorsys.aspsp.xs2a.spi.domain.SpiResponse;
-import de.adorsys.aspsp.xs2a.spi.domain.account.*;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
-import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.spi.domain.account.*;
+import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiAmount;
+import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
 import de.adorsys.aspsp.xs2a.spi.service.AccountSpi;
 import de.adorsys.psd2.consent.api.ActionStatus;
 import org.junit.Before;
@@ -268,70 +268,6 @@ public class AccountServiceTest {
         assertThat(response.hasError()).isEqualTo(true);
         assertThat(response.getError().getTransactionStatus()).isEqualTo(Xs2aTransactionStatus.RJCT);
         assertThat(response.getError().getTppMessage().getMessageErrorCode()).isEqualTo(RESOURCE_UNKNOWN_404);
-    }
-
-    //Get Transaction By TransactionId
-    @Test
-    public void getAccountReport_ByTransactionId_Success() {
-        //When:
-        ResponseObject<Xs2aAccountReport> response = accountService.getAccountReport(CONSENT_ID_WT, ACCOUNT_ID, null, null, TRANSACTION_ID, false, Xs2aBookingStatus.BOTH, false, false);
-
-        //Then:
-        assertThat(response.getError()).isEqualTo(null);
-        assertThat(response.getBody().getBooked()[0].getTransactionId()).isEqualTo(getTransaction().getTransactionId());
-    }
-
-    @Test
-    public void getAccountReport_ByTransactionId_WrongConsent_Failure() {
-        //When:
-        ResponseObject response = accountService.getAccountReport(WRONG_CONSENT_ID, ACCOUNT_ID, null, null, TRANSACTION_ID, false, Xs2aBookingStatus.BOTH, false, false);
-
-        //Then:
-        assertThat(response.hasError()).isEqualTo(true);
-        assertThat(response.getError().getTppMessage().getMessageErrorCode()).isEqualTo(CONSENT_UNKNOWN_403);
-    }
-
-    @Test
-    public void getAccountReport_ByTransactionId_AccountMismatch_Failure() {
-        //When:
-        ResponseObject response = accountService.getAccountReport(CONSENT_ID_WOB, WRONG_ACCOUNT_ID, null, null, TRANSACTION_ID, false, Xs2aBookingStatus.BOTH, false, false);
-
-        //Then:
-        assertThat(response.hasError()).isEqualTo(true);
-        assertThat(response.getError().getTppMessage().getMessageErrorCode()).isEqualTo(RESOURCE_UNKNOWN_404);
-    }
-
-    //Get Transactions By Period
-    @Test
-    public void getAccountReport_ByPeriod_Success() {
-        //When:
-        ResponseObject<Xs2aAccountReport> response = accountService.getAccountReport(CONSENT_ID_WT, ACCOUNT_ID, DATE, DATE, null, false, Xs2aBookingStatus.BOTH, false, false);
-
-        //Then:
-        assertThat(response.getError()).isEqualTo(null);
-        assertThat(response.getBody().getBooked()[0].getTransactionId()).isEqualTo(getTransaction().getTransactionId());
-    }
-
-    @Test
-    public void getAccountReport_ByPeriod_Failure_Wrong_Account() {
-        //When:
-        ResponseObject response = accountService.getAccountReport(CONSENT_ID_WB, WRONG_ACCOUNT_ID, DATE, DATE, null, false, Xs2aBookingStatus.BOTH, false, false);
-
-        //Then:
-        assertThat(response.hasError()).isEqualTo(true);
-        assertThat(response.getError().getTransactionStatus()).isEqualTo(Xs2aTransactionStatus.RJCT);
-        assertThat(response.getError().getTppMessage().getMessageErrorCode()).isEqualTo(RESOURCE_UNKNOWN_404);
-    }
-
-    @Test
-    public void getAccountReport_ByPeriod_Failure_Wrong_Consent() {
-        //When:
-        ResponseObject response = accountService.getAccountReport(WRONG_CONSENT_ID, ACCOUNT_ID, DATE, DATE, null, false, Xs2aBookingStatus.BOTH, false, false);
-
-        //Then:
-        assertThat(response.hasError()).isEqualTo(true);
-        assertThat(response.getError().getTransactionStatus()).isEqualTo(Xs2aTransactionStatus.RJCT);
-        assertThat(response.getError().getTppMessage().getMessageErrorCode()).isEqualTo(CONSENT_UNKNOWN_403);
     }
 
     //Test Stuff

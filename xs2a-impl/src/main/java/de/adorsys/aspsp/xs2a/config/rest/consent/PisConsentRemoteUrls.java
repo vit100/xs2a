@@ -69,6 +69,24 @@ public class PisConsentRemoteUrls implements AspspConsentDataRemoteUrls {
         return consentServiceBaseUrl + "/pis/consent/{payment-id}/authorizations";
     }
 
+    /**
+     * @return Returns URL-string to CMS endpoint that create pis consent authorization cancellation
+     * Method: POST
+     * PathVariables: String paymentId
+     */
+    public String createPisConsentAuthorisationCancellation() {
+        return consentServiceBaseUrl + "/pis/consent/{payment-id}/cancellation-authorisations";
+    }
+
+    /**
+     * @return String authorization ID
+     * Method: GET
+     * PathVariables: String paymentId
+     */
+    public String getCancellationAuthorisationSubResources() {
+        return consentServiceBaseUrl + "/pis/consent/{payment-id}/cancellation-authorisations";
+    }
+
     public String updatePisConsentAuthorisation() {
         return consentServiceBaseUrl + "/pis/consent/authorizations/{authorization-id}";
     }
@@ -95,5 +113,14 @@ public class PisConsentRemoteUrls implements AspspConsentDataRemoteUrls {
     @Override
     public String updateAspspConsentData() {
         return consentServiceBaseUrl + "/pis/consent/{consent-id}/aspsp-consent-data";
+    }
+
+    /**
+     * Returns URL-string to CMS endpoint that updates payment data of consent by consent ID
+     *
+     * @return String
+     */
+    public String updatePisConsentPayment() {
+        return consentServiceBaseUrl + "/pis/consent/{consent-id}/payment";
     }
 }
