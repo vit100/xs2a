@@ -2,6 +2,8 @@ package de.adorsys.aspsp.xs2a.integtest.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.aspsp.xs2a.integtest.model.TestData;
+import de.adorsys.psd2.model.Authorisations;
+import de.adorsys.psd2.model.AuthorisationsList;
 import de.adorsys.psd2.model.TppMessages;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Data
 @Component
@@ -34,6 +37,7 @@ public class Context<T, U> {
     private String accessToken;
     private String paymentId;
     private String authorisationId;
+    private Authorisations authorisationIds;
     private TestData<T, U> testData;
     private ResponseEntity<U> actualResponse;
     //private ResponseEntity<ScaStatusResponse> authorisationResponse;

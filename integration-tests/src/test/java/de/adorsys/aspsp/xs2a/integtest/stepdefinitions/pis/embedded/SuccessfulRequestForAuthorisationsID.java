@@ -16,8 +16,82 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.embedded;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import de.adorsys.aspsp.xs2a.integtest.model.TestData;
+import de.adorsys.aspsp.xs2a.integtest.util.Context;
+import de.adorsys.aspsp.xs2a.integtest.util.PaymentUtils;
+import de.adorsys.psd2.model.Authorisations;
+import de.adorsys.psd2.model.AuthorisationsList;
+import de.adorsys.psd2.model.StartScaprocessResponse;
+import de.adorsys.psd2.model.UpdatePsuAuthenticationResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.util.HashMap;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.io.IOUtils.resourceToString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
 public class SuccessfulRequestForAuthorisationsID {
+
+    @Autowired
+    @Qualifier("xs2a")
     private RestTemplate restTemplate;
+
+    @Autowired
+    private Context context;
+
+    @Autowired
+    private ObjectMapper mapper;
+
+    //  @Given("^PSU wants to initiate a single payment (.*) using the payment service (.*) and the payment product (.*)$")
+    // See SinglePaymentSuccessfulSteps
+
+    // @And("^PSU sends the single payment initiating request and receives the paymentId$")
+    // See GlobalSuccessfulSteps
+
+    // @And("^PSU sends the start authorisation request and receives the authorisationId$")
+    // See GlobalSuccessfulSteps
+
+    public void setAuthorisationIds(){
+        AuthorisationsList idList= new AuthorisationsList();
+        boolean add=idList.add(context.getAuthorisationId());
+        Authorisations testList= new Authorisations();
+        testList.setAuthorisationIds(idList);
+        context.setAuthorisationIds(testList);
+    }
+
+    @When("^PSU sends the successful authorisation IDs data request$")
+    public void sendGetAuthorisationIdsRequest(){
+        HttpEntity entity = PaymentUtils.getHttpEntity(
+            context.getTestData().getRequest(), context.getAccessToken());
+
+        ResponseEntity<Authorisations> response = restTemplate.exchange(
+            context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentId() + "/authorisations/",
+            HttpMethod.GET,
+            entity,
+            Authorisations.class);
+    }
+
+    @Then("^a successful response code and the appropriate list of authorisation Ids are received$")
+    public void aSuccessfulResponseCodeAndTheAppropriateListOfAuthorisationIdsAreReceived(){
+        ResponseEntity<Authorisations> actualResponse = context.getActualResponse();
+        setAuthorisationIds();
+        Authorisations givenResponse=(Authorisations) context.getAuthorisationIds();
+
+        assertThat(actualResponse.getBody().getAuthorisationIds(), equalTo(givenResponse.getAuthorisationIds()));
+
+    }
 }

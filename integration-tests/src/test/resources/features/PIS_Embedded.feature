@@ -27,11 +27,11 @@ Feature: Payment Initiation Service Embedded Approach
             | payments            | sepa-credit-transfers | singlePayInit-wrong-format-request-id.json     |
 #            | payments            | sepa-credit-transfers | singlePayInit-wrong-format-psu-ip-address.json |
 #            | recurring-payments  | sepa-credit-transfers | singlePayInit-wrong-payment-service.json       |
-#            | payments            | sepa-credit-transfers         | singlePayInit-incorrect-syntax.json
-
-
-#    ####################################################################################################################
-#    #                                                                                                                  #
+#            | payment@Then("^a successful response code and the appropriate list of authorisation Ids are received$")
+    public void aSuccessfulResponseCodeAndTheAppropriateListOfAuthorisationIdsAreReceived() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
 #    # Start of Authorisation                                                                                           #
 #    #                                                                                                                  #
 #    ####################################################################################################################
