@@ -151,6 +151,77 @@
         <plugins>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <mkdir dir="target/cucumber-report"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+            <groupId>com.bazaarvoice.maven.plugins</groupId>
+            <artifactId>process-exec-maven-plugin</artifactId>
+            <version>0.7</version>
+            <executions>
+            <!--Start process 1, eg., a dropwizard app dependency-->
+            <execution>
+                <id>AspspProfile-process</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                    <goal>start</goal>
+                </goals>
+                <configuration>
+                    <name>Aspsp-Profile</name>
+                    <workingDir>aspsp-profile</workingDir>
+                    <waitForInterrupt>false</waitForInterrupt>
+                    <arguments>
+                        <argument>java</argument>
+                        <argument>-jar</argument>
+                        <argument>../aspsp-profile-server/aspsp-profile.jar</argument>
+                    </arguments>
+                </configuration>
+            </execution>
+            <execution>
+                <id>switchboard-process</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                    <goal>start</goal>
+                </goals>
+                <configuration>
+                    <name>Aspsp-Mock</name>
+                    <workingDir>aspsp-profile</workingDir>
+                    <waitForInterrupt>false</waitForInterrupt>
+                    <arguments>
+                        <argument>java</argument>
+                        <argument>-jar</argument>
+                        <argument>../aspsp-mock-server/aspsp-mock-server-1.10-SNAPSHOT.jar</argument>
+                    </arguments>
+                </configuration>
+            </execution>
+
+
+            <execution>
+                <id>stop-all</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                    <goal>stop-all</goal>
+                </goals>
+            </execution>
+            </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -172,14 +243,14 @@
                 <executions>
                     <execution>
                         <id>report</id>
-                        <phase>post-integration-test</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>reporting</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <sourceJsonReportDirectory>${project.basedir}/cucumber-report</sourceJsonReportDirectory>
+                    <sourceJsonReportDirectory>${project.build.directory}/cucumber-report</sourceJsonReportDirectory>
                     <generatedHtmlReportDirectory>${project.build.directory}/generated-report</generatedHtmlReportDirectory>
                     <customParameters>
                         <Custom_Parameter>Please check the timestamp above to ensure it is the latest report</Custom_Parameter>
