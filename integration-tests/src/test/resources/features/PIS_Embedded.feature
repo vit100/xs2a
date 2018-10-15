@@ -150,3 +150,9 @@ Feature: Payment Initiation Service Embedded Approach
 #        Examples:
 #            | payment-service                          | authorisation-data               | payment-product         | single-payment
 #            | payments	                               | authWithPsuIdent-successful.json | sepa-credit-transfer    | singlePayInit-successful.json
+
+     ####################################################################################################################
+    #                                                                                                                  #
+    # Get Authorisations                                                                                              #
+    #                                                                                                                  #
+    ####################################################################################################################
