@@ -156,3 +156,12 @@ Feature: Payment Initiation Service Embedded Approach
     # Get Authorisations                                                                                              #
     #                                                                                                                  #
     ####################################################################################################################
+    Scenario Outline: get authorisations (embedded)
+        Given PSU wants to initiate a single payment <single-payment> using the payment service <payment-service> and the payment product <payment-product>
+        And PSU sends the single payment initiating request and receives the paymentId
+        And PSU sends the start authorisation request and receives the authorisationId
+        When PSU sends the successful authorisation IDs data request
+        Then a successful response code and the appropriate list of authorisation Ids are received
+        Examples:
+            | payment-service                          | payment-product         | single-payment                |
+            | payments	                               | sepa-credit-transfers   | singlePayInit-successful.json |
