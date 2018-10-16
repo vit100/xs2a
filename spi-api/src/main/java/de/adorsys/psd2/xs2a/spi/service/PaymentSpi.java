@@ -18,23 +18,37 @@ package de.adorsys.psd2.xs2a.spi.service;
 
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiBulkPayment;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPeriodicPayment;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiSinglePayment;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse.VoidResponse;
 import org.jetbrains.annotations.NotNull;
 
 //TODO javadocs!
-interface PaymentSpi<T, R> extends AuthorisationSpi<T> {
+public interface PaymentSpi<R> {
 
     @NotNull
-    SpiResponse<R> initiatePayment(@NotNull SpiPsuData psuData, @NotNull T payment, @NotNull AspspConsentData initialAspspConsentData);
+    SpiResponse<R> initiateSinglePayment(@NotNull SpiPsuData psuData, @NotNull SpiSinglePayment payment,
+                                         @NotNull AspspConsentData initialAspspConsentData);
 
     @NotNull
-    SpiResponse<VoidResponse> executePaymentWithoutSca(@NotNull SpiPsuData psuData, @NotNull T payment, @NotNull AspspConsentData aspspConsentData);
+    SpiResponse<R> initiateBulkPayment(@NotNull SpiPsuData psuData, @NotNull SpiBulkPayment payment,
+                                       @NotNull AspspConsentData initialAspspConsentData);
 
     @NotNull
-    SpiResponse<T> getPaymentById(@NotNull SpiPsuData psuData, @NotNull T payment, @NotNull AspspConsentData aspspConsentData);
+    SpiResponse<R> initiatePeriodicPayment(@NotNull SpiPsuData psuData, @NotNull SpiPeriodicPayment payment,
+                                           @NotNull AspspConsentData initialAspspConsentData);
 
     @NotNull
-    SpiResponse<SpiTransactionStatus> getPaymentStatusById(@NotNull SpiPsuData psuData, @NotNull T payment, @NotNull AspspConsentData aspspConsentData);
+    SpiResponse<VoidResponse> executePaymentWithoutSca(@NotNull SpiPsuData psuData,
+                                                       @NotNull AspspConsentData aspspConsentData);
+
+    @NotNull
+    SpiResponse<R> getPaymentById(@NotNull SpiPsuData psuData, @NotNull AspspConsentData aspspConsentData);
+
+    @NotNull
+    SpiResponse<SpiTransactionStatus> getPaymentStatusById(@NotNull SpiPsuData psuData,
+                                                           @NotNull AspspConsentData aspspConsentData);
 }

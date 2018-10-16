@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Spi interface to be used for AIS consent initiating and revoking, and authorising process through AuthorisationSpi interface.
  */
-public interface AisConsentSpi extends AuthorisationSpi<SpiAccountConsent> {
+public interface AisConsentSpi extends AuthorisationSpi {
 
     default SpiResponse<VoidResponse> initiateAisConsent(@NotNull SpiPsuData psuData, SpiAccountConsent accountConsent, AspspConsentData initialAspspConsentData) {
         return SpiResponse.<VoidResponse>builder()

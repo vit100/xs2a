@@ -31,57 +31,66 @@ import java.util.List;
 /**
  * Interface, that contains the method for the authorisation flow.
  * To be used in SPI interfaces, that need authorisation functionality.
- *
- * @param <T> business object to be provided during the implementation
  */
-interface AuthorisationSpi<T> {
+public interface AuthorisationSpi {
 
     /**
      * Authorises psu and returns current autorisation status. Used only with embedded SCA Approach.
      *
      * @param psuData          ASPSP identifier(s) of the psu
      * @param password         Psu's password
-     * @param businessObject   generic payment object
-     * @param aspspConsentData Encrypted data that may stored in the consent management system in the consent linked to a request.
-     *                         May be null if consent does not contain such data, or request isn't done from a workflow with a consent
+     * @param aspspConsentData Encrypted data that may stored in the consent management system in the consent linked
+     *                         to a request.
+     *                         May be null if consent does not contain such data, or request isn't done from a
+     *                         workflow with a consent
      * @return success or failure authorization status
      */
-    SpiResponse<SpiAuthorisationStatus> authorisePsu(@NotNull SpiPsuData psuData, String password, T businessObject, AspspConsentData aspspConsentData);
+    SpiResponse<SpiAuthorisationStatus> authorisePsu(@NotNull SpiPsuData psuData, String password,
+                                                     AspspConsentData aspspConsentData);
 
     /**
      * Returns a list of SCA methods for PSU by its login. Used only with embedded SCA Approach.
      *
      * @param psuData          ASPSP identifier(s) of the psu
-     * @param businessObject   generic payment object
-     * @param aspspConsentData Encrypted data that may stored in the consent management system in the consent linked to a request.
-     *                         May be null if consent does not contain such data, or request isn't done from a workflow with a consent
+     * @param aspspConsentData Encrypted data that may stored in the consent management system in the consent linked
+     *                         to a request.
+     *                         May be null if consent does not contain such data, or request isn't done from a
+     *                         workflow with a consent
      * @return a list of SCA methods applicable for specified PSU
      */
-    SpiResponse<List<SpiScaMethod>> requestAvailableScaMethods(@NotNull SpiPsuData psuData, T businessObject, AspspConsentData aspspConsentData);
+    SpiResponse<List<SpiScaMethod>> requestAvailableScaMethods(@NotNull SpiPsuData psuData,
+                                                               AspspConsentData aspspConsentData);
 
     /**
      * Performs strong customer authorisation depending on selected SCA method. Used only with embedded SCA Approach.
      *
      * @param psuData          ASPSP identifier(s) of the psu
      * @param scaMethod        Chosen sca method
-     * @param businessObject   generic payment object
-     * @param aspspConsentData Encrypted data that may stored in the consent management system in the consent linked to a request.
-     *                         May be null if consent does not contain such data, or request isn't done from a workflow with a consent
+     * @param aspspConsentData Encrypted data that may stored in the consent management system in the consent linked
+     *                         to a request.
+     *                         May be null if consent does not contain such data, or request isn't done from a
+     *                         workflow with a consent
      * @return Return a positive or negative response as part of SpiResponse
      */
     @NotNull
-    SpiResponse<SpiAuthorizationCodeResult> requestAuthorisationCode(@NotNull SpiPsuData psuData, @NotNull SpiScaMethod scaMethod, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
+    SpiResponse<SpiAuthorizationCodeResult> requestAuthorisationCode(@NotNull SpiPsuData psuData,
+                                                                     @NotNull SpiScaMethod scaMethod,
+                                                                     @NotNull AspspConsentData aspspConsentData);
 
     /**
-     * Sends authorisation confirmation information (secure code or such) to ASPSP and if case of successful validation executes payment at ASPSP. Used only with embedded SCA Approach.
+     * Sends authorisation confirmation information (secure code or such) to ASPSP and if case of successful
+     * validation executes payment at ASPSP. Used only with embedded SCA Approach.
      *
      * @param psuData            ASPSP identifier(s) of the psu
      * @param spiScaConfirmation payment confirmation information
-     * @param businessObject     generic payment object
-     * @param aspspConsentData   Encrypted data that may stored in the consent management system in the consent linked to a request.
-     *                           May be null if consent does not contain such data, or request isn't done from a workflow with a consent
+     * @param aspspConsentData   Encrypted data that may stored in the consent management system in the consent
+     *                           linked to a request.
+     *                           May be null if consent does not contain such data, or request isn't done from a
+     *                           workflow with a consent
      * @return Return a positive or negative response as part of SpiResponse
      */
     @NotNull
-    SpiResponse<VoidResponse> verifyAuthorisationCodeAndExecuteRequest(@NotNull SpiPsuData psuData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
+    SpiResponse<VoidResponse> verifyAuthorisationCodeAndExecuteRequest(@NotNull SpiPsuData psuData,
+                                                                       @NotNull SpiScaConfirmation spiScaConfirmation
+        , @NotNull AspspConsentData aspspConsentData);
 }

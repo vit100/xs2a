@@ -32,7 +32,8 @@ public class OauthScaPaymentService implements ScaPaymentService {
     }
 
     @Override
-    public List<PaymentInitialisationResponse> createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo, String paymentProduct) {
+    public BulkPaymentInitiationResponse createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo,
+                                                           String paymentProduct, Xs2aPisConsent pisConsent) {
         throw new UnsupportedOperationException("Unsupported operation");
     }
 

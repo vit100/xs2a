@@ -23,7 +23,6 @@ import de.adorsys.aspsp.xs2a.service.consent.AisConsentService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiResponseStatusToXs2aMessageErrorCodeMapper;
 import de.adorsys.psd2.model.ScaStatus;
-import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaMethod;
@@ -99,11 +98,10 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
 
     private UpdateConsentPsuDataResponse proceedPsuAuthenticationStage(UpdateConsentPsuDataReq request) {
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
-        SpiAccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
 
         SpiPsuData psuData = new SpiPsuData(request.getPsuId(), null, null, null);  // TODO get it from XS2A Interface https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
 
-        SpiResponse<SpiAuthorisationStatus> authorisationStatusSpiResponse = aisConsentSpi.authorisePsu(psuData, request.getPassword(), accountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+        SpiResponse<SpiAuthorisationStatus> authorisationStatusSpiResponse = aisConsentSpi.authorisePsu(psuData, request.getPassword(), aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(authorisationStatusSpiResponse.getAspspConsentData());
 
         if (authorisationStatusSpiResponse.getPayload() == SpiAuthorisationStatus.FAILURE) {
@@ -114,7 +112,7 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
         response.setPsuId(request.getPsuId());
         response.setPassword(request.getPassword());
 
-        SpiResponse<List<SpiScaMethod>> spiResponse = aisConsentSpi.requestAvailableScaMethods(psuData, accountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+        SpiResponse<List<SpiScaMethod>> spiResponse = aisConsentSpi.requestAvailableScaMethods(psuData, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(authorisationStatusSpiResponse.getAspspConsentData());
 
         List<SpiScaMethod> availableScaMethods = spiResponse.getPayload();
@@ -123,7 +121,7 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
             if (isMultipleScaMethods(availableScaMethods)) {
                 proceedResponseForMultipleAvailableMethods(response, availableScaMethods);
             } else {
-                proceedResponseForOneAvailableMethod(response, accountConsent, availableScaMethods, request.getConsentId());
+                proceedResponseForOneAvailableMethod(response, availableScaMethods, request.getConsentId());
             }
         } else {
             proceedResponseForNoneAvailableScaMethod(response, request.getConsentId());
@@ -134,11 +132,10 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
 
     private UpdateConsentPsuDataResponse proceedScaMethodSelectionStage(UpdateConsentPsuDataReq request) {
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
-        SpiAccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
         String authenticationMethodId = request.getAuthenticationMethodId();
         SpiPsuData psuData = new SpiPsuData(request.getPsuId(), null, null, null);  // TODO get it from XS2A Interface https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
 
-        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(psuData, SpiScaMethod.valueOf(authenticationMethodId), accountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(psuData, SpiScaMethod.valueOf(authenticationMethodId), aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
@@ -154,11 +151,10 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
 
     private UpdateConsentPsuDataResponse proceedAuthorizationStage(UpdateConsentPsuDataReq request) {
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
-        SpiAccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
 
         SpiPsuData psuData = new SpiPsuData(null, null, null, null);    // TODO get it from XS2A Interface https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
 
-        SpiResponse<VoidResponse> spiResponse = aisConsentSpi.verifyAuthorisationCodeAndExecuteRequest(psuData, aisConsentMapper.mapToSpiScaConfirmation(request), accountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+        SpiResponse<VoidResponse> spiResponse = aisConsentSpi.verifyAuthorisationCodeAndExecuteRequest(psuData, aisConsentMapper.mapToSpiScaConfirmation(request), aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
@@ -179,10 +175,10 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
         response.setResponseLinkType(START_AUTHORISATION_WITH_AUTHENTICATION_METHOD_SELECTION);
     }
 
-    private void proceedResponseForOneAvailableMethod(UpdateConsentPsuDataResponse response, SpiAccountConsent accountConsent, List<SpiScaMethod> availableScaMethods, String consentId) {
+    private void proceedResponseForOneAvailableMethod(UpdateConsentPsuDataResponse response, List<SpiScaMethod> availableScaMethods, String consentId) {
         SpiPsuData psuData = new SpiPsuData(response.getPsuId(), null, null, null); // TODO get it from XS2A Interface https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
 
-        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(psuData, availableScaMethods.get(0), accountConsent, aisConsentDataService.getAspspConsentDataByConsentId(consentId));
+        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(psuData, availableScaMethods.get(0), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {

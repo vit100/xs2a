@@ -24,12 +24,12 @@ import de.adorsys.aspsp.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.mapper.PaymentMapper;
 import de.adorsys.aspsp.xs2a.service.payment.ReadSinglePayment;
 import de.adorsys.aspsp.xs2a.service.payment.ScaPaymentService;
-import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
+import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountReference;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentType;
-import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
+import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,9 +64,8 @@ public class PaymentServiceTest {
     private static final String EXCESSIVE_AMOUNT = "10000";
     private static final Currency CURRENCY = Currency.getInstance("EUR");
     private static final String ALLOWED_PAYMENT_PRODUCT = "sepa-credit-transfers";
-    private final AspspConsentData ASPSP_CONSENT_DATA = new AspspConsentData();
     private static final TppInfo TPP_INFO = getTppInfo();
-
+    private final AspspConsentData ASPSP_CONSENT_DATA = new AspspConsentData();
     private final PeriodicPayment PERIODIC_PAYMENT_OK = getPeriodicPayment(IBAN, AMOUNT);
     private final PeriodicPayment PERIODIC_PAYMENT_NOK_AMOUNT = getPeriodicPayment(IBAN, EXCESSIVE_AMOUNT);
 
@@ -113,21 +112,26 @@ public class PaymentServiceTest {
         when(paymentSpi.getPaymentStatusById(WRONG_PAYMENT_ID, SpiPaymentType.SINGLE, ASPSP_CONSENT_DATA))
             .thenReturn(new SpiResponse<>(null, ASPSP_CONSENT_DATA));
 
-        when(scaPaymentService.createBulkPayment(BULK_PAYMENT_OK, TPP_INFO, ALLOWED_PAYMENT_PRODUCT))
-            .thenReturn(getBulkResponses(getPaymentResponse(RCVD, null), getPaymentResponse(RCVD, null)));
-        when(scaPaymentService.createBulkPayment(getBulkPayment(SINGLE_PAYMENT_NOK_AMOUNT, WRONG_IBAN), TPP_INFO, ALLOWED_PAYMENT_PRODUCT))
-            .thenReturn(getBulkResponses(getPaymentResponse(RCVD, null), getPaymentResponse(RJCT, PAYMENT_FAILED)));
+        //TODO bulk payment
+        //        when(scaPaymentService.createBulkPayment(BULK_PAYMENT_OK, TPP_INFO, ALLOWED_PAYMENT_PRODUCT))
+        //            .thenReturn(getBulkResponses(getPaymentResponse(RCVD, null), getPaymentResponse(RCVD, null)));
+        //        when(scaPaymentService.createBulkPayment(getBulkPayment(SINGLE_PAYMENT_NOK_AMOUNT, WRONG_IBAN),
+        // TPP_INFO, ALLOWED_PAYMENT_PRODUCT))
+        //            .thenReturn(getBulkResponses(getPaymentResponse(RCVD, null), getPaymentResponse(RJCT,
+        // PAYMENT_FAILED)));
 
         when(referenceValidationService.validateAccountReferences(any())).thenReturn(ResponseObject.builder().build());
         when(pisConsentDataService.getAspspConsentDataByPaymentId(anyString())).thenReturn(ASPSP_CONSENT_DATA);
     }
 
-    // TODO Update tests after rearranging order of payment creation with pis consent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/159
+    // TODO Update tests after rearranging order of payment creation with pis consent https://git.adorsys
+    // .de/adorsys/xs2a/aspsp-xs2a/issues/159
     //GetStatus Tests
     @Test
     public void getPaymentStatusById() {
         //When
-        ResponseObject<Xs2aTransactionStatus> response = paymentService.getPaymentStatusById(PAYMENT_ID, PaymentType.SINGLE);
+        ResponseObject<Xs2aTransactionStatus> response = paymentService.getPaymentStatusById(PAYMENT_ID,
+            PaymentType.SINGLE);
         //Then
         assertThat(response.hasError()).isFalse();
         assertThat(response.getBody()).isEqualTo(Xs2aTransactionStatus.ACCP);
@@ -136,7 +140,8 @@ public class PaymentServiceTest {
     @Test
     public void getPaymentStatusById_Failure() {
         //When
-        ResponseObject<Xs2aTransactionStatus> response = paymentService.getPaymentStatusById(WRONG_PAYMENT_ID, PaymentType.SINGLE);
+        ResponseObject<Xs2aTransactionStatus> response = paymentService.getPaymentStatusById(WRONG_PAYMENT_ID,
+            PaymentType.SINGLE);
         //Then
         assertThat(response.hasError()).isTrue();
         assertThat(response.getError().getTppMessage().getMessageErrorCode()).isEqualTo(MessageErrorCode.RESOURCE_UNKNOWN_403);
@@ -148,7 +153,8 @@ public class PaymentServiceTest {
     public void createBulkPayments() {
         BulkPayment payment = BULK_PAYMENT_OK;
         //When
-        ResponseObject<List<PaymentInitialisationResponse>> actualResponse = paymentService.createBulkPayments(payment,TPP_INFO, ALLOWED_PAYMENT_PRODUCT);
+        ResponseObject<List<PaymentInitialisationResponse>> actualResponse =
+            paymentService.createBulkPayments(payment, TPP_INFO, ALLOWED_PAYMENT_PRODUCT);
         //Then
         assertThat(actualResponse.hasError()).isFalse();
         assertThat(actualResponse.getBody().get(0).getPaymentId()).isEqualTo(PAYMENT_ID);
@@ -172,7 +178,8 @@ public class PaymentServiceTest {
 
     private void createBulkFailureTest(BulkPayment payment, MessageErrorCode errorCode) {
         //When
-        ResponseObject<List<PaymentInitialisationResponse>> actualResponse = paymentService.createBulkPayments(payment, TPP_INFO, ALLOWED_PAYMENT_PRODUCT);
+        ResponseObject<List<PaymentInitialisationResponse>> actualResponse =
+            paymentService.createBulkPayments(payment, TPP_INFO, ALLOWED_PAYMENT_PRODUCT);
         //Then
         assertThat(actualResponse.hasError()).isTrue();
         assertThat(actualResponse.getError().getTppMessage().getMessageErrorCode()).isEqualTo(errorCode);
@@ -290,8 +297,7 @@ public class PaymentServiceTest {
         return bulkPayment;
     }
 
-
-    private PaymentInitiationParameters getRequestParameters(){
+    private PaymentInitiationParameters getRequestParameters() {
         PaymentInitiationParameters requestParameters = new PaymentInitiationParameters();
 
         return requestParameters;

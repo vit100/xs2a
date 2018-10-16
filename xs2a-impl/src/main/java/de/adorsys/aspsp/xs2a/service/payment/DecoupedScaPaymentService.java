@@ -21,23 +21,26 @@ import de.adorsys.aspsp.xs2a.domain.consent.Xs2aPisConsent;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-
 @Service
 public class DecoupedScaPaymentService implements ScaPaymentService {
+    
     @Override
-    public PeriodicPaymentInitiationResponse createPeriodicPayment(PeriodicPayment periodicPayment, TppInfo tppInfo, PaymentProduct paymentProduct, Xs2aPisConsent pisConsent) {
+    public PeriodicPaymentInitiationResponse createPeriodicPayment(PeriodicPayment periodicPayment, TppInfo tppInfo,
+                                                                   PaymentProduct paymentProduct,
+                                                                   Xs2aPisConsent pisConsent) {
         throw new UnsupportedOperationException("Unsupported operation");
     }
 
     @Override
-    public List<PaymentInitialisationResponse> createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo, String paymentProduct) {
-        return Collections.emptyList();
+    public BulkPaymentInitiationResponse createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo,
+                                                           String paymentProduct, Xs2aPisConsent pisConsent) {
+        throw new UnsupportedOperationException("Unsupported operation");
     }
 
     @Override
-    public SinglePaymentInitiationResponse createSinglePayment(SinglePayment singlePayment, TppInfo tppInfo, PaymentProduct paymentProduct, Xs2aPisConsent pisConsent) {
+    public SinglePaymentInitiationResponse createSinglePayment(SinglePayment singlePayment, TppInfo tppInfo,
+                                                               PaymentProduct paymentProduct,
+                                                               Xs2aPisConsent pisConsent) {
         throw new UnsupportedOperationException("Unsupported operation");
     }
 }

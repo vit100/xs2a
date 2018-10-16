@@ -171,14 +171,15 @@ public class PaymentService {
 
     private ResponseObject<List<PaymentInitialisationResponse>> processValidPayments(TppInfo tppInfo, String paymentProduct, List<PaymentInitialisationResponse> invalidPayments, BulkPayment bulkPayment) {
         if (CollectionUtils.isNotEmpty(bulkPayment.getPayments())) {
-            List<PaymentInitialisationResponse> paymentResponses = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentProduct);
-            if (paymentResponses.stream()
-                    .anyMatch(pr -> pr.getTransactionStatus() != RJCT)) {
-                paymentResponses.addAll(invalidPayments);
-                return ResponseObject.<List<PaymentInitialisationResponse>>builder()
-                           .body(paymentResponses)
-                           .build();
-            }
+            //TODO bulk payment
+//            List<PaymentInitialisationResponse> paymentResponses = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentProduct);
+//            if (paymentResponses.stream()
+//                    .anyMatch(pr -> pr.getTransactionStatus() != RJCT)) {
+//                paymentResponses.addAll(invalidPayments);
+//                return ResponseObject.<List<PaymentInitialisationResponse>>builder()
+//                           .body(paymentResponses)
+//                           .build();
+//            }
         }
         return ResponseObject.<List<PaymentInitialisationResponse>>builder()
                    .fail(new MessageError(PAYMENT_FAILED))
