@@ -43,6 +43,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -108,7 +109,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        spiSinglePayment.setRemittanceInformationUnstructured(pr.getRemittanceInformationUnstructured());
                        spiSinglePayment.setRemittanceInformationStructured(mapToSpiRemittance(pr.getRemittanceInformationStructured()));
                        spiSinglePayment.setRequestedExecutionDate(pr.getRequestedExecutionDate());
-                       spiSinglePayment.setRequestedExecutionTime(pr.getRequestedExecutionTime());
+                       spiSinglePayment.setRequestedExecutionTime(pr.getRequestedExecutionTime().toLocalDateTime());
                        spiSinglePayment.setPaymentStatus(SpiTransactionStatus.RCVD);
 
                        return spiSinglePayment;
@@ -135,7 +136,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        spiPeriodicPayment.setRemittanceInformationUnstructured(pp.getRemittanceInformationUnstructured());
                        spiPeriodicPayment.setRemittanceInformationStructured(mapToSpiRemittance(pp.getRemittanceInformationStructured()));
                        spiPeriodicPayment.setRequestedExecutionDate(pp.getRequestedExecutionDate());
-                       spiPeriodicPayment.setRequestedExecutionTime(pp.getRequestedExecutionTime());
+                       spiPeriodicPayment.setRequestedExecutionTime(pp.getRequestedExecutionTime().toLocalDateTime());
                        spiPeriodicPayment.setStartDate(pp.getStartDate());
                        spiPeriodicPayment.setExecutionRule(pp.getExecutionRule());
                        spiPeriodicPayment.setEndDate(pp.getEndDate());
@@ -204,7 +205,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        payments.setRemittanceInformationUnstructured(sp.getRemittanceInformationUnstructured());
                        payments.setRemittanceInformationStructured(mapToRemittance(sp.getRemittanceInformationStructured()));
                        payments.setRequestedExecutionDate(sp.getRequestedExecutionDate());
-                       payments.setRequestedExecutionTime(sp.getRequestedExecutionTime());
+                       payments.setRequestedExecutionTime(sp.getRequestedExecutionTime().atOffset(ZoneOffset.UTC));
                        payments.setTransactionStatus(mapToTransactionStatus(spiSinglePayment.getPaymentStatus()));
                        return payments;
                    })
@@ -227,7 +228,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
             payment.setRemittanceInformationUnstructured(sp.getRemittanceInformationUnstructured());
             payment.setRemittanceInformationStructured(mapToRemittance(sp.getRemittanceInformationStructured()));
             payment.setRequestedExecutionDate(sp.getRequestedExecutionDate());
-            payment.setRequestedExecutionTime(sp.getRequestedExecutionTime());
+            payment.setRequestedExecutionTime(sp.getRequestedExecutionTime().atOffset(ZoneOffset.UTC));
             payment.setExecutionRule(sp.getExecutionRule());
             payment.setFrequency(Xs2aFrequencyCode.valueOf(sp.getFrequency()));
             payment.setDayOfExecution(sp.getDayOfExecution());

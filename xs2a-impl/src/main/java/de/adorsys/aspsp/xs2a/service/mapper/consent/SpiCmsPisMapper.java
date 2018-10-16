@@ -54,7 +54,7 @@ public class SpiCmsPisMapper {
         payment.setRemittanceInformationUnstructured(pisPayment.getRemittanceInformationUnstructured());
         payment.setRemittanceInformationStructured(mapToSpiRemittanceStructuredFromCmsRemittance(pisPayment.getRemittanceInformationStructured()));
         payment.setRequestedExecutionDate(pisPayment.getRequestedExecutionDate());
-        payment.setRequestedExecutionTime(pisPayment.getRequestedExecutionTime());
+        payment.setRequestedExecutionTime(pisPayment.getRequestedExecutionTime().toLocalDateTime());
         payment.setUltimateCreditor(pisPayment.getUltimateCreditor());
         payment.setPurposeCode(pisPayment.getPurposeCode());
         payment.setPaymentStatus(SpiTransactionStatus.ACCP);
@@ -75,7 +75,7 @@ public class SpiCmsPisMapper {
         payment.setRemittanceInformationUnstructured(pisPayment.getRemittanceInformationUnstructured());
         payment.setRemittanceInformationStructured(mapToSpiRemittanceStructuredFromCmsRemittance(pisPayment.getRemittanceInformationStructured()));
         payment.setRequestedExecutionDate(pisPayment.getRequestedExecutionDate());
-        payment.setRequestedExecutionTime(pisPayment.getRequestedExecutionTime());
+        payment.setRequestedExecutionTime(pisPayment.getRequestedExecutionTime().toLocalDateTime());
         payment.setUltimateCreditor(pisPayment.getUltimateCreditor());
         payment.setPurposeCode(pisPayment.getPurposeCode());
         payment.setPaymentStatus(SpiTransactionStatus.ACCP);
