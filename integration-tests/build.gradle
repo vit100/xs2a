@@ -6,7 +6,6 @@ group = 'de.adorsys.aspsp'
 repositories {
 
     mavenCentral()
-    jcenter()
     maven {
         url "http://repo.maven.apache.org/maven2"
     }
@@ -24,12 +23,12 @@ dependencies {
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.8.11'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.8.11'
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.16.RELEASE') {
-        exclude(module: 'commons-logging')
     }
 
-    compile group: 'de.adorsys.aspsp', name: 'xs2a-impl', version: '1.8'
+    compile group: 'de.adorsys.aspsp', name: 'xs2a-impl', version: '1.9'
     compile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     compile group: 'de.adorsys.aspsp', name: 'consent-api', version: '1.8'
+    compile group: 'de.adorsys.aspsp', name: 'spi-api', version: '1.9'
     compile group: 'de.adorsys.multibanking', name: 'xs2a-adapter', version: '1.2.1'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
