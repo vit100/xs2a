@@ -18,8 +18,7 @@ package de.adorsys.aspsp.xs2a.web.aspect;
 
 import de.adorsys.aspsp.xs2a.domain.Links;
 import de.adorsys.aspsp.xs2a.domain.ResponseObject;
-import de.adorsys.aspsp.xs2a.domain.pis.PaymentInitialisationResponse;
-import de.adorsys.aspsp.xs2a.domain.pis.PaymentRequestParameters;
+import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.aspsp.xs2a.service.message.MessageService;
 import de.adorsys.aspsp.xs2a.service.profile.AspspProfileServiceWrapper;
@@ -42,24 +41,24 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
     }
 
     @SuppressWarnings("unchecked")
-    protected ResponseObject<?> enrichLink(ResponseObject<?> result, PaymentRequestParameters paymentRequestParameters) {
+    protected ResponseObject<?> enrichLink(ResponseObject<?> result, PaymentInitiationParameters paymentRequestParameters) {
         Object body = result.getBody();
 
         if (EnumSet.of(SINGLE, PERIODIC).contains(paymentRequestParameters.getPaymentType())) {
-            doEnrichLink(paymentRequestParameters, (PaymentInitialisationResponse) body);
+            doEnrichLink(paymentRequestParameters, (PaymentInitiationResponse) body);
         } else {
-            ((List<PaymentInitialisationResponse>) body)
+            ((List<PaymentInitiationResponse>) body)
                 .forEach(r -> doEnrichLink(paymentRequestParameters, r));
         }
         return result;
     }
 
-    private void doEnrichLink(PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private void doEnrichLink(PaymentInitiationParameters paymentRequestParameters, PaymentInitiationResponse body) {
         body.setLinks(buildPaymentLinks(paymentRequestParameters, body));
     }
 
     //TODO encode payment id with base64 encoding and add decoders to every endpoint links lead https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/382
-    private Links buildPaymentLinks(PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private Links buildPaymentLinks(PaymentInitiationParameters paymentRequestParameters, PaymentInitiationResponse body) {
         if (RJCT == body.getTransactionStatus()) {
             return null;
         }
@@ -80,7 +79,7 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
         return links;
     }
 
-    private Links addEmbeddedRelatedLinks(Links links, PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private Links addEmbeddedRelatedLinks(Links links, PaymentInitiationParameters paymentRequestParameters, PaymentInitiationResponse body) {
         String paymentService = paymentRequestParameters.getPaymentType().getValue();
         String paymentId = body.getPaymentId();
         String authorizationId = body.getAuthorizationId();
@@ -97,7 +96,7 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
         return links;
     }
 
-    private Links addRedirectRelatedLinks(Links links, PaymentRequestParameters paymentRequestParameters, PaymentInitialisationResponse body) {
+    private Links addRedirectRelatedLinks(Links links, PaymentInitiationParameters paymentRequestParameters, PaymentInitiationResponse body) {
         String paymentService = paymentRequestParameters.getPaymentType().getValue();
         String paymentId = body.getPaymentId();
         String authorizationId = body.getAuthorizationId();

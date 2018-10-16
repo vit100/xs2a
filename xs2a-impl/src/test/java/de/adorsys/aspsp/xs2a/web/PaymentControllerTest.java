@@ -10,7 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * SLee the License for the specific language governing permissions and
  * limitations under the License.
  */
 
@@ -122,7 +122,6 @@ public class PaymentControllerTest {
         when(paymentService.getPaymentStatusById(WRONG_PAYMENT_ID, PaymentType.SINGLE))
             .thenReturn(ResponseObject.<Xs2aTransactionStatus>builder().fail(new MessageError(
                 new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
-        when(paymentService.createPaymentInitiation(any(), any(), any())).thenReturn(readResponseObject());
     }
 
     @Test

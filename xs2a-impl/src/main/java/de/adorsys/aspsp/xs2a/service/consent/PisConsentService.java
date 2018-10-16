@@ -25,12 +25,16 @@ import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.aspsp.xs2a.service.authorization.pis.PisScaAuthorisationService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
-import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.consent.api.pis.PisPaymentProduct;
+import de.adorsys.psd2.consent.api.pis.PisPaymentType;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,13 +57,35 @@ public class PisConsentService {
     private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
 
-    public ResponseObject createPisConsent(Object payment, Object xs2aResponse, PaymentRequestParameters requestParameters, TppInfo tppInfo) {
+    /**
+     * Creates PIS consent
+     *
+     * @param parameters Payment request parameters to get needed payment info
+     * @return String consentId
+     */
+    // TODO rename method https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/409
+    public CreatePisConsentResponse createPisConsent(PaymentInitiationParameters parameters) {
+        PisConsentRequest request = new PisConsentRequest();
+        request.setPaymentProduct(PisPaymentProduct.getByCode(parameters.getPaymentProduct().getCode()).orElse(null));
+        request.setPaymentType(PisPaymentType.valueOf(parameters.getPaymentType().name()));
+        return consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsent(), request, CreatePisConsentResponse.class).getBody();
+    }
+
+    public void updatePaymentInPisConsent(SinglePayment singlePayment, PaymentInitiationParameters paymentInitiationParameters, String consentId) {
+        PisConsentRequest pisConsentRequest = pisConsentMapper.mapToCmsPisConsentRequest(singlePayment, paymentInitiationParameters.getPaymentProduct());
+        consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentPayment(), HttpMethod.PUT, new HttpEntity<>(pisConsentRequest), Void.class, consentId);
+    }
+
+    /**
+     * @deprecated since 1.8. Will be removed in 1.10
+     * {@link de.adorsys.aspsp.xs2a.service.consent.PisConsentService#createPisConsent(PaymentInitiationParameters)}
+     */
+    @Deprecated
+    public ResponseObject createPisConsent(Object payment, Object xs2aResponse, PaymentInitiationParameters requestParameters, TppInfo tppInfo) {
         CreatePisConsentData consentData = getPisConsentData(payment, xs2aResponse, tppInfo, requestParameters, new AspspConsentData());
 
         PisConsentRequest pisConsentRequest;
-        if (requestParameters.getPaymentType() == SINGLE) {
-            pisConsentRequest = pisConsentMapper.mapToCmsPisConsentRequestForSinglePayment(consentData);
-        } else if (requestParameters.getPaymentType() == PERIODIC) {
+        if (requestParameters.getPaymentType() == PERIODIC) {
             pisConsentRequest = pisConsentMapper.mapToCmsPisConsentRequestForPeriodicPayment(consentData);
         } else {
             pisConsentRequest = pisConsentMapper.mapToCmsPisConsentRequestForBulkPayment(consentData);
@@ -94,7 +120,7 @@ public class PisConsentService {
         return response;
     }
 
-    private <T> Object createPisAuthorisationForImplicitApproach(T response, PaymentType paymentType) {
+    private Object createPisAuthorisationForImplicitApproach(Object response, PaymentType paymentType) {
         if (EnumSet.of(SINGLE, PERIODIC).contains(paymentType)) {
             PaymentInitialisationResponse resp = (PaymentInitialisationResponse) response;
             return pisScaAuthorisationService.createConsentAuthorisation(resp.getPaymentId(), paymentType)
@@ -116,7 +142,7 @@ public class PisConsentService {
         return response;
     }
 
-    private CreatePisConsentData getPisConsentData(Object payment, Object xs2aResponse, TppInfo tppInfo, PaymentRequestParameters requestParameters, AspspConsentData aspspConsentData) {
+    private CreatePisConsentData getPisConsentData(Object payment, Object xs2aResponse, TppInfo tppInfo, PaymentInitiationParameters requestParameters, AspspConsentData aspspConsentData) {
         CreatePisConsentData pisConsentData;
         if (requestParameters.getPaymentType() == SINGLE) {
             SinglePayment singlePayment = (SinglePayment) payment;

@@ -26,17 +26,24 @@ import de.adorsys.aspsp.xs2a.domain.code.Xs2aPurposeCode;
 import de.adorsys.aspsp.xs2a.domain.consent.Xs2aAuthenticationObject;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiXs2aAccountMapper;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiAmount;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
-import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
-import de.adorsys.aspsp.xs2a.spi.domain.payment.*;
+import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiBulkPayment;
+import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPaymentInitialisationResponse;
+import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiPeriodicPayment;
+import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiSinglePayment;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiAmount;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
+import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiAddress;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiChallengeData;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentType;
+import de.adorsys.psd2.xs2a.spi.domain.payment.SpiRemittance;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,6 +55,12 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
     // TODO fix high amount of different objects as members denotes a high coupling https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/322
     private final ObjectMapper objectMapper;
     private final SpiXs2aAccountMapper spiXs2aAccountMapper;
+
+    private static MessageErrorCode[] apply(List<String> codes) {
+        return codes.stream()
+                   .map(MessageErrorCode::valueOf)
+                   .toArray(MessageErrorCode[]::new);
+    }
 
     public SpiBulkPayment mapToSpiBulkPayment(BulkPayment bulkPayment) {
         return Optional.ofNullable(bulkPayment)
@@ -71,7 +84,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                    .orElse(null);
     }
 
-    public SpiTransactionStatus mapToSpiTransactionStatus(Xs2aTransactionStatus xs2aTransactionStatus) {
+    private SpiTransactionStatus mapToSpiTransactionStatus(Xs2aTransactionStatus xs2aTransactionStatus) {
         return Optional.ofNullable(xs2aTransactionStatus)
                    .map(ts -> SpiTransactionStatus.valueOf(ts.name()))
                    .orElse(null);
@@ -96,7 +109,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        spiSinglePayment.setRemittanceInformationUnstructured(pr.getRemittanceInformationUnstructured());
                        spiSinglePayment.setRemittanceInformationStructured(mapToSpiRemittance(pr.getRemittanceInformationStructured()));
                        spiSinglePayment.setRequestedExecutionDate(pr.getRequestedExecutionDate());
-                       spiSinglePayment.setRequestedExecutionTime(pr.getRequestedExecutionTime());
+                       spiSinglePayment.setRequestedExecutionTime(pr.getRequestedExecutionTime().toLocalDateTime());
                        spiSinglePayment.setPaymentStatus(SpiTransactionStatus.RCVD);
 
                        return spiSinglePayment;
@@ -123,7 +136,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        spiPeriodicPayment.setRemittanceInformationUnstructured(pp.getRemittanceInformationUnstructured());
                        spiPeriodicPayment.setRemittanceInformationStructured(mapToSpiRemittance(pp.getRemittanceInformationStructured()));
                        spiPeriodicPayment.setRequestedExecutionDate(pp.getRequestedExecutionDate());
-                       spiPeriodicPayment.setRequestedExecutionTime(pp.getRequestedExecutionTime());
+                       spiPeriodicPayment.setRequestedExecutionTime(pp.getRequestedExecutionTime().toLocalDateTime());
                        spiPeriodicPayment.setStartDate(pp.getStartDate());
                        spiPeriodicPayment.setExecutionRule(pp.getExecutionRule());
                        spiPeriodicPayment.setEndDate(pp.getEndDate());
@@ -148,7 +161,6 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        initialisationResponse.setTransactionFees(spiXs2aAccountMapper.mapToXs2aAmount(pir.getSpiTransactionFees()));
                        initialisationResponse.setTransactionFeeIndicator(pir.isSpiTransactionFeeIndicator());
                        initialisationResponse.setPsuMessage(pir.getPsuMessage());
-                       initialisationResponse.setTppRedirectPreferred(pir.isTppRedirectPreferred());
                        initialisationResponse.setScaMethods(mapToAuthenticationObjects(pir.getScaMethods()));
                        initialisationResponse.setChallengeData(mapToChallengeData(pir.getChallengeData()));
                        initialisationResponse.setTppMessages(mapToMessageErrorCodes(pir.getTppMessages()));
@@ -169,7 +181,6 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
         response.setScaMethods(null); //Not Present in 1.1 payment entity
         response.setPsuMessage(null);
         response.setLinks(null); //Not Present in 1.1 payment entity
-        response.setTppRedirectPreferred(false); //Not Present in 1.1 payment entity
         return response;
     }
 
@@ -194,7 +205,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        payments.setRemittanceInformationUnstructured(sp.getRemittanceInformationUnstructured());
                        payments.setRemittanceInformationStructured(mapToRemittance(sp.getRemittanceInformationStructured()));
                        payments.setRequestedExecutionDate(sp.getRequestedExecutionDate());
-                       payments.setRequestedExecutionTime(sp.getRequestedExecutionTime());
+                       payments.setRequestedExecutionTime(sp.getRequestedExecutionTime().atOffset(ZoneOffset.UTC));
                        payments.setTransactionStatus(mapToTransactionStatus(spiSinglePayment.getPaymentStatus()));
                        return payments;
                    })
@@ -217,7 +228,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
             payment.setRemittanceInformationUnstructured(sp.getRemittanceInformationUnstructured());
             payment.setRemittanceInformationStructured(mapToRemittance(sp.getRemittanceInformationStructured()));
             payment.setRequestedExecutionDate(sp.getRequestedExecutionDate());
-            payment.setRequestedExecutionTime(sp.getRequestedExecutionTime());
+            payment.setRequestedExecutionTime(sp.getRequestedExecutionTime().atOffset(ZoneOffset.UTC));
             payment.setExecutionRule(sp.getExecutionRule());
             payment.setFrequency(Xs2aFrequencyCode.valueOf(sp.getFrequency()));
             payment.setDayOfExecution(sp.getDayOfExecution());
@@ -246,15 +257,13 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
         return spiXs2aAccountMapper.mapToXs2aAccountReference(spiSinglePayments.get(0).getDebtorAccount());
     }
 
-    private Xs2aAuthenticationObject[] mapToAuthenticationObjects(String[] authObjects) { //NOPMD TODO review and check PMD assertion https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/115
+    private Xs2aAuthenticationObject[] mapToAuthenticationObjects(List<String> authObjects) { //NOPMD TODO review and check PMD assertion https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/115
         return new Xs2aAuthenticationObject[]{};//TODO Fill in th Linx
     }
 
-    private MessageErrorCode[] mapToMessageErrorCodes(String[] messageCodes) { //NOPMD TODO review and check PMD assertion https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/115
+    private MessageErrorCode[] mapToMessageErrorCodes(List<String> messageCodes) { //NOPMD TODO review and check PMD assertion https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/115
         return Optional.ofNullable(messageCodes)
-                   .map(codes -> Arrays.stream(codes)
-                                     .map(MessageErrorCode::valueOf)
-                                     .toArray(MessageErrorCode[]::new))
+                   .map(PaymentMapper::apply)
                    .orElseGet(() -> new MessageErrorCode[]{});
     }
 
@@ -306,9 +315,7 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
         return Optional.ofNullable(creditorAddress)
                    .map(a -> {
                        Xs2aAddress address = new Xs2aAddress();
-                       Xs2aCountryCode code = new Xs2aCountryCode();
-                       code.setCode(Optional.ofNullable(a.getCountry()).orElse(null));
-                       address.setCountry(code);
+                       address.setCountry(new Xs2aCountryCode(a.getCountry()));
                        address.setPostalCode(a.getPostalCode());
                        address.setCity(a.getCity());
                        address.setStreet(a.getStreet());

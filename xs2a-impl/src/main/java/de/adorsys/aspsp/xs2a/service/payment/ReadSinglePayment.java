@@ -17,7 +17,7 @@
 package de.adorsys.aspsp.xs2a.service.payment;
 
 import de.adorsys.aspsp.xs2a.domain.pis.SinglePayment;
-import de.adorsys.aspsp.xs2a.spi.domain.SpiResponse;
+import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.aspsp.xs2a.spi.domain.payment.SpiSinglePayment;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ import static de.adorsys.aspsp.xs2a.domain.pis.PaymentType.SINGLE;
 public class ReadSinglePayment extends ReadPayment<SinglePayment> {
     @Override
     public SinglePayment getPayment(String paymentId, String paymentProduct) {
-        SpiResponse<SpiSinglePayment> spiResponse = paymentSpi.getSinglePaymentById(paymentMapper.mapToSpiPaymentType(SINGLE), paymentProduct, paymentId, pisConsentDataService.getAspspConsentDataByPaymentId(paymentId));
+        SpiResponse<SpiSinglePayment> spiResponse = paymentSpi.getSinglePaymentById(paymentMapper.mapToSpiPaymentType(SINGLE), paymentProduct, paymentId, pisConsentDataService.getAspspConsentDataByConsentId(paymentId));
         pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
         SpiSinglePayment singlePayment = spiResponse.getPayload();
         return paymentMapper.mapToSinglePayment(singlePayment);

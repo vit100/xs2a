@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -312,7 +312,6 @@ public class CmsExecutor {
             "authority id", "authority name", "Germany", "Organisation",
             "Organisation unit", "Nuremberg", "Bayern", "Redirect URI",
             "Nok redirect URI"));
-        request.setAspspConsentData("zzzzzzzz".getBytes());
         return request;
     }
 
@@ -338,7 +337,7 @@ public class CmsExecutor {
         payment.setRemittanceInformationUnstructured("Ref. Number TELEKOM-1222");
         payment.setRemittanceInformationStructured(buildCmsRemittance("Ref Number Merchant", "reference type", "reference issuer"));
         payment.setRequestedExecutionDate(LocalDate.of(2020, 1, 1));
-        payment.setRequestedExecutionTime(LocalDateTime.parse("2020-01-01T15:30:35.035Z",
+        payment.setRequestedExecutionTime(OffsetDateTime.parse("2020-01-01T15:30:35.035Z",
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")));
         payment.setUltimateCreditor("Telekom");
         payment.setPurposeCode("BCENECEQ");

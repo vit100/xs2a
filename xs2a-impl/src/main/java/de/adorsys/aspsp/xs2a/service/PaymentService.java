@@ -19,25 +19,34 @@ package de.adorsys.aspsp.xs2a.service;
 import de.adorsys.aspsp.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.aspsp.xs2a.domain.MessageErrorCode;
 import de.adorsys.aspsp.xs2a.domain.ResponseObject;
+import de.adorsys.aspsp.xs2a.domain.TppInfo;
 import de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus;
+import de.adorsys.aspsp.xs2a.domain.consent.Xs2aPisConsent;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 import de.adorsys.aspsp.xs2a.exception.MessageError;
+import de.adorsys.aspsp.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.consent.PisConsentService;
 import de.adorsys.aspsp.xs2a.service.mapper.PaymentMapper;
+import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
+import de.adorsys.aspsp.xs2a.service.payment.CreatePeriodicPaymentService;
+import de.adorsys.aspsp.xs2a.service.payment.CreateSinglePaymentService;
 import de.adorsys.aspsp.xs2a.service.payment.ReadPayment;
 import de.adorsys.aspsp.xs2a.service.payment.ScaPaymentService;
-import de.adorsys.aspsp.xs2a.spi.domain.SpiResponse;
-import de.adorsys.aspsp.xs2a.spi.domain.common.SpiTransactionStatus;
-import de.adorsys.aspsp.xs2a.spi.domain.consent.AspspConsentData;
 import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
+import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static de.adorsys.aspsp.xs2a.domain.MessageErrorCode.*;
 import static de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus.RJCT;
@@ -54,7 +63,10 @@ public class PaymentService {
     private final AccountReferenceValidationService referenceValidationService;
     private final PisConsentService pisConsentService;
     private final PisConsentDataService pisConsentDataService;
-
+    private final TppService tppService;
+    private final CreateSinglePaymentService createSinglePaymentService;
+    private final CreatePeriodicPaymentService createPeriodicPaymentService;
+    private final Xs2aPisConsentMapper xs2aPisConsentMapper;
 
     /**
      * Initiates a payment though "payment service" corresponding service method
@@ -62,20 +74,34 @@ public class PaymentService {
      * @param payment Payment information
      * @return Response containing information about created payment or corresponding error
      */
-    public ResponseObject createPayment(Object payment, PaymentRequestParameters requestParameters, String psuId) {
-        ResponseObject response;
-        TppInfo tppInfo = paymentMapper.mapToTppInfo(requestParameters);
-        if (requestParameters.getPaymentType() == SINGLE) {
-            response = createPaymentInitiation((SinglePayment) payment, tppInfo, requestParameters.getPaymentProduct().getCode());
-        } else if (requestParameters.getPaymentType() == PaymentType.PERIODIC) {
-            response = initiatePeriodicPayment((PeriodicPayment) payment, tppInfo, requestParameters.getPaymentProduct().getCode());
-        } else {
-            response = createBulkPayments((BulkPayment) payment, tppInfo, requestParameters.getPaymentProduct().getCode());
+    public ResponseObject createPayment(Object payment, PaymentInitiationParameters paymentInitiationParameters) {
+        Xs2aPisConsent pisConsent = null;
+        // TODO remove 'if' statement after create implementation of bulk payment https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/429
+        if (EnumSet.of(SINGLE, PERIODIC).contains(paymentInitiationParameters.getPaymentType())) {
+            pisConsent = xs2aPisConsentMapper.mapToXs2aPisConsent(pisConsentService.createPisConsent(paymentInitiationParameters));
+            if (StringUtils.isBlank(pisConsent.getConsentId())) {
+                return ResponseObject.builder()
+                           .fail(new MessageError(CONSENT_UNKNOWN_400))
+                           .build();
+            }
         }
-        if (!response.hasError()) {
-            response = pisConsentService.createPisConsent(payment, response.getBody(), requestParameters, tppInfo);
-            getAspspConsentDataFromResponseObject(response, requestParameters.getPaymentType())
-                .ifPresent(pisConsentDataService::updateConsentData);
+
+        ResponseObject response;
+        TppInfo tppInfo = tppService.getTppInfo();
+        tppInfo.setRedirectUri(paymentInitiationParameters.getTppRedirectUri());
+        tppInfo.setNokRedirectUri(paymentInitiationParameters.getTppNokRedirectUri());
+
+        if (paymentInitiationParameters.getPaymentType() == SINGLE) {
+            return createSinglePaymentService.createPayment((SinglePayment) payment, paymentInitiationParameters, tppInfo, pisConsent);
+        } else if (paymentInitiationParameters.getPaymentType() == PERIODIC) {
+            return createPeriodicPaymentService.createPayment((PeriodicPayment) payment, paymentInitiationParameters, tppInfo, pisConsent);
+        } else {
+            response = createBulkPayments((BulkPayment) payment, tppInfo, paymentInitiationParameters.getPaymentProduct().getCode());
+        }
+        if (!response.hasError() && paymentHasNoTppMessages(response, paymentInitiationParameters.getPaymentType())) {//TODO Refactor this https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
+            response = pisConsentService.createPisConsent(payment, response.getBody(), paymentInitiationParameters, tppInfo);
+            getAspspConsentDataFromResponseObject(response, paymentInitiationParameters.getPaymentType())
+                .ifPresent(pisConsentDataService::updateAspspConsentData);
 
         }
         return response;
@@ -89,31 +115,14 @@ public class PaymentService {
      * @return Information about the status of a payment
      */
     public ResponseObject<Xs2aTransactionStatus> getPaymentStatusById(String paymentId, PaymentType paymentType) {
-        SpiResponse<SpiTransactionStatus> spiResponse = paymentSpi.getPaymentStatusById(paymentId, paymentMapper.mapToSpiPaymentType(paymentType), pisConsentDataService.getConsentDataByPaymentId(paymentId));
-        pisConsentDataService.updateConsentData(spiResponse.getAspspConsentData());
+        SpiResponse<SpiTransactionStatus> spiResponse = paymentSpi.getPaymentStatusById(paymentId, paymentMapper.mapToSpiPaymentType(paymentType), pisConsentDataService.getAspspConsentDataByPaymentId(paymentId));
+        pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
         Xs2aTransactionStatus transactionStatus = paymentMapper.mapToTransactionStatus(spiResponse.getPayload());
         return Optional.ofNullable(transactionStatus)
                    .map(tr -> ResponseObject.<Xs2aTransactionStatus>builder().body(tr).build())
-                   .orElseGet(() -> ResponseObject.<Xs2aTransactionStatus>builder()
-                                        .fail(new MessageError(RESOURCE_UNKNOWN_403))
-                                        .build());
-    }
-
-    /**
-     * Initiates periodic payment
-     *
-     * @param periodicPayment Periodic payment information
-     * @param paymentProduct  The addressed payment product
-     * @return Response containing information about created periodic payment or corresponding error
-     */
-    public ResponseObject<PaymentInitialisationResponse> initiatePeriodicPayment(PeriodicPayment periodicPayment, TppInfo tppInfo, String paymentProduct) {
-        return validatePayment(periodicPayment, periodicPayment.areValidExecutionAndPeriodDates())
-                   .map(e -> ResponseObject.<PaymentInitialisationResponse>builder()
-                                 .body(paymentMapper.mapToPaymentInitResponseFailedPayment(periodicPayment, e))
-                                 .build())
-                   .orElse(ResponseObject.<PaymentInitialisationResponse>builder()
-                               .body(scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentProduct))
-                               .build());
+                   .orElseGet(ResponseObject.<Xs2aTransactionStatus>builder()
+                                  .fail(new MessageError(RESOURCE_UNKNOWN_403))
+                                  ::build);
     }
 
     /**
@@ -142,23 +151,6 @@ public class PaymentService {
     }
 
     /**
-     * Initiates a single payment
-     *
-     * @param singlePayment  Single payment information
-     * @param paymentProduct The addressed payment product
-     * @return Response containing information about created single payment or corresponding error
-     */
-    public ResponseObject<PaymentInitialisationResponse> createPaymentInitiation(SinglePayment singlePayment, TppInfo tppInfo, String paymentProduct) {
-        return validatePayment(singlePayment, singlePayment.isValidExecutionDateAndTime())
-                   .map(e -> ResponseObject.<PaymentInitialisationResponse>builder()
-                                 .body(paymentMapper.mapToPaymentInitResponseFailedPayment(singlePayment, e))
-                                 .build())
-                   .orElseGet(() -> ResponseObject.<PaymentInitialisationResponse>builder()
-                                        .body(scaPaymentService.createSinglePayment(singlePayment, tppInfo, paymentProduct))
-                                        .build());
-    }
-
-    /**
      * Retrieves payment from ASPSP by its ASPSP identifier, product and payment type
      *
      * @param paymentType type of payment (payments, bulk-payments, periodic-payments)
@@ -171,9 +163,9 @@ public class PaymentService {
         return payment.map(p -> ResponseObject.builder()
                                     .body(p)
                                     .build())
-                   .orElseGet(() -> ResponseObject.builder()
-                                        .fail(new MessageError(RESOURCE_UNKNOWN_403))
-                                        .build());
+                   .orElseGet(ResponseObject.builder()
+                                  .fail(new MessageError(RESOURCE_UNKNOWN_403))
+                                  ::build);
     }
 
     private ResponseObject<List<PaymentInitialisationResponse>> processValidPayments(TppInfo tppInfo, String paymentProduct, List<PaymentInitialisationResponse> invalidPayments, BulkPayment bulkPayment) {
@@ -199,21 +191,42 @@ public class PaymentService {
                    : Optional.of(EXECUTION_DATE_INVALID);
     }
 
+    //TODO Refactor and remove this method https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
     private Optional<AspspConsentData> getAspspConsentDataFromResponseObject(ResponseObject responseObject, PaymentType paymentType) {
         if (paymentType == SINGLE ||
                 paymentType == PERIODIC) {
 
             PaymentInitialisationResponse paymentInitialisationResponse = (PaymentInitialisationResponse) responseObject.getBody();//TODO Refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
-            return Optional.of(new AspspConsentData(paymentInitialisationResponse.getAspspConsentData().getAspspConsentData(), paymentInitialisationResponse.getPisConsentId()));
+            AspspConsentData aspspConsentData = paymentInitialisationResponse.getAspspConsentData();
+            return Optional.of(new AspspConsentData(Optional.ofNullable(aspspConsentData).map(AspspConsentData::getAspspConsentData).orElse(null), paymentInitialisationResponse.getPisConsentId()));
         } else if (paymentType == BULK) {
 
             List<PaymentInitialisationResponse> paymentInitialisationResponseList = (List<PaymentInitialisationResponse>) responseObject.getBody();//TODO Refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
             if (CollectionUtils.isNotEmpty(paymentInitialisationResponseList)) {
                 PaymentInitialisationResponse paymentInitialisationResponse = paymentInitialisationResponseList.get(0);
-                return Optional.of(new AspspConsentData(paymentInitialisationResponse.getAspspConsentData().getAspspConsentData(), paymentInitialisationResponse.getPisConsentId()));
+                AspspConsentData aspspConsentData = paymentInitialisationResponse.getAspspConsentData();
+                return Optional.of(new AspspConsentData(Optional.ofNullable(aspspConsentData).map(AspspConsentData::getAspspConsentData).orElse(null), paymentInitialisationResponse.getPisConsentId()));
             }
         }
 
         return Optional.empty();
+    }
+
+    //TODO remove response object casting https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/428
+    private <T> boolean paymentHasNoTppMessages(ResponseObject<T> responseObject, PaymentType paymentType) {
+        switch (paymentType) {
+            case SINGLE:
+            case PERIODIC:
+                PaymentInitialisationResponse paymentInitialisationResponse = (PaymentInitialisationResponse) responseObject.getBody();
+                return paymentInitialisationResponse.getTppMessages() == null;
+            case BULK:
+                List<PaymentInitialisationResponse> bulkPaymentResponse = (List<PaymentInitialisationResponse>) responseObject.getBody();
+                List<PaymentInitialisationResponse> responsesWithoutErrors = bulkPaymentResponse.stream()
+                                                                                 .filter(r -> r.getTppMessages() == null)
+                                                                                 .collect(Collectors.toList());
+                return CollectionUtils.isNotEmpty(responsesWithoutErrors);
+            default:
+                return false;
+        }
     }
 }
