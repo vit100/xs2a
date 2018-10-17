@@ -53,7 +53,7 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
      */
     @Override
     public ResponseObject<SinglePaymentInitiationResponse> createPayment(SinglePayment singlePayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisConsent pisConsent) {
-        SinglePaymentInitiationResponse response = scaPaymentService.createSinglePayment(singlePayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisConsent);
+        SinglePaymentInitiationResponse response = scaPaymentService.createSinglePayment(singlePayment, paymentInitiationParameters.getPaymentProduct(), pisConsent.getConsentId());
         response.setPisConsentId(pisConsent.getConsentId());
 
         singlePayment.setPaymentId(response.getPaymentId());

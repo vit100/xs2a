@@ -21,10 +21,12 @@ import de.adorsys.aspsp.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.authorization.pis.PisAuthorisationService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.SpiCmsPisMapper;
 import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
-import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
+import de.adorsys.psd2.xs2a.spi.service.PaymentAuthorizationSpi;
+import de.adorsys.psd2.xs2a.spi.service.PaymentSpi;
 import org.springframework.stereotype.Service;
 
 import static de.adorsys.psd2.consent.api.CmsScaStatus.FINALISED;
@@ -32,21 +34,21 @@ import static de.adorsys.psd2.consent.api.CmsScaStatus.FINALISED;
 @Service("SCAMETHODSELECTED")
 public class ScaMethodSelectedStage extends ScaStage<UpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, UpdatePisConsentPsuDataResponse> {
 
-    public ScaMethodSelectedStage(PaymentSpi paymentSpi, PisAuthorisationService pisAuthorisationService, SpiCmsPisMapper spiCmsPisMapper, PisConsentDataService pisConsentDataService) {
-        super(paymentSpi, pisAuthorisationService, spiCmsPisMapper, pisConsentDataService);
+    public ScaMethodSelectedStage(PaymentSpi paymentSpi, PaymentAuthorizationSpi authorisationSpi, PisAuthorisationService pisAuthorisationService, SpiCmsPisMapper spiCmsPisMapper, PisConsentDataService pisConsentDataService) {
+        super(paymentSpi, authorisationSpi, pisAuthorisationService, spiCmsPisMapper, pisConsentDataService);
     }
 
     @Override
     public UpdatePisConsentPsuDataResponse apply(UpdatePisConsentPsuDataRequest request, GetPisConsentAuthorisationResponse response) {
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentDataByPaymentId(request.getPaymentId());
-        aspspConsentData = paymentSpi.applyStrongUserAuthorisation(
+        SpiPsuData psuData = new SpiPsuData(null, null, null, null);
+        aspspConsentData = authorisationSpi.verifyAuthorisationCode(
+            psuData,
             spiCmsPisMapper.buildSpiScaConfirmation(
                     request,
                     response.getConsentId()),
             aspspConsentData
             ).getAspspConsentData();
-        pisConsentDataService.updateAspspConsentData(aspspConsentData);
-        aspspConsentData = paymentSpi.executePayment(response.getPaymentType(), response.getPayments(), aspspConsentData).getAspspConsentData();
         pisConsentDataService.updateAspspConsentData(aspspConsentData);
         request.setScaStatus(FINALISED); // TODO check the paymentSpi result first https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/338
         return pisAuthorisationService.doUpdatePisConsentAuthorisation(request);

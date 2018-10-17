@@ -39,7 +39,7 @@ import java.util.Set;
 
 @Data
 @ApiModel(description = "Payment Initialisation Request", value = "SinglePayments")
-public class SinglePayment implements AccountReferenceCollector {
+public class SinglePayment extends AbstractPayment implements AccountReferenceCollector {
 
     private String paymentId;
 
@@ -107,14 +107,15 @@ public class SinglePayment implements AccountReferenceCollector {
     private Xs2aTransactionStatus transactionStatus;
 
     @JsonIgnore
-    public boolean isValidExecutionDateAndTime() { //TODO Should be removed with https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/167
+    public boolean isValidExecutionDateAndTime() {
+        //TODO Should be removed with https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/167
         return Optional.ofNullable(this.requestedExecutionDate)
-                   .map(d -> d.isEqual(LocalDate.now()) || d.isAfter(LocalDate.now()))
-                   .orElse(true)
-                   &&
-                   Optional.ofNullable(this.requestedExecutionTime)
-                       .map(d -> d.isAfter(LocalDate.now().atTime(0, 0).atOffset(this.requestedExecutionTime.getOffset())))
-                       .orElse(true);
+            .map(d -> d.isEqual(LocalDate.now()) || d.isAfter(LocalDate.now()))
+            .orElse(true)
+            &&
+            Optional.ofNullable(this.requestedExecutionTime)
+                .map(d -> d.isAfter(LocalDate.now().atTime(0, 0).atOffset(this.requestedExecutionTime.getOffset())))
+                .orElse(true);
     }
 
     @JsonIgnore

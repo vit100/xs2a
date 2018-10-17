@@ -17,15 +17,17 @@
 package de.adorsys.aspsp.xs2a.service.authorization;
 
 import de.adorsys.aspsp.xs2a.config.factory.ScaStage;
-import de.adorsys.aspsp.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.authorization.pis.PisAuthorisationService;
+import de.adorsys.aspsp.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.SpiCmsPisMapper;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaMethod;
-import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
-import de.adorsys.aspsp.xs2a.spi.service.PaymentSpi;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaMethod;
+import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
+import de.adorsys.psd2.xs2a.spi.service.PaymentAuthorizationSpi;
+import de.adorsys.psd2.xs2a.spi.service.PaymentSpi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,16 +35,27 @@ import static de.adorsys.psd2.consent.api.CmsScaStatus.SCAMETHODSELECTED;
 
 @Slf4j
 @Service("PSUAUTHENTICATED")
-public class ScaAuthenticatedStage extends ScaStage<UpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, UpdatePisConsentPsuDataResponse> {
+public class ScaAuthenticatedStage extends ScaStage<UpdatePisConsentPsuDataRequest,
+    GetPisConsentAuthorisationResponse, UpdatePisConsentPsuDataResponse> {
 
-    public ScaAuthenticatedStage(PaymentSpi paymentSpi, PisAuthorisationService pisAuthorisationService, SpiCmsPisMapper spiCmsPisMapper, PisConsentDataService pisConsentDataService) {
-        super(paymentSpi, pisAuthorisationService, spiCmsPisMapper, pisConsentDataService);
+    public ScaAuthenticatedStage(PaymentSpi paymentSpi, PaymentAuthorizationSpi authorisationSpi,
+                                 PisAuthorisationService pisAuthorisationService, SpiCmsPisMapper spiCmsPisMapper,
+                                 PisConsentDataService pisConsentDataService) {
+        super(paymentSpi, authorisationSpi, pisAuthorisationService, spiCmsPisMapper, pisConsentDataService);
     }
 
     @Override
-    public UpdatePisConsentPsuDataResponse apply(UpdatePisConsentPsuDataRequest request, GetPisConsentAuthorisationResponse pisConsentAuthorisationResponse) {
-        AspspConsentData aspspConsentData = paymentSpi.performStrongUserAuthorisation(request.getPsuId(), getMethod(request.getAuthenticationMethodId()), pisConsentDataService.getAspspConsentDataByPaymentId(request.getPaymentId())).getAspspConsentData();
+    public UpdatePisConsentPsuDataResponse apply(UpdatePisConsentPsuDataRequest request,
+                                                 GetPisConsentAuthorisationResponse pisConsentAuthorisationResponse) {
+        // TODO get it from XS2A Interface https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
+        SpiPsuData psuData = new SpiPsuData(request.getPsuId(), null, null, null);
+        SpiScaMethod method = getMethod(request.getAuthenticationMethodId());
+        AspspConsentData aspspConsentData =
+            pisConsentDataService.getAspspConsentDataByPaymentId(request.getPaymentId());
+
+        aspspConsentData = authorisationSpi.requestAuthorisationCode(psuData, method, aspspConsentData).getAspspConsentData();
         pisConsentDataService.updateAspspConsentData(aspspConsentData);
+
         request.setScaStatus(SCAMETHODSELECTED);
         return pisAuthorisationService.doUpdatePisConsentAuthorisation(request);
     }

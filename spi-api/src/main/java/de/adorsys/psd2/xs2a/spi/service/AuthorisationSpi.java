@@ -32,7 +32,7 @@ import java.util.List;
  * Interface, that contains the method for the authorisation flow.
  * To be used in SPI interfaces, that need authorisation functionality.
  */
-public interface AuthorisationSpi {
+interface AuthorisationSpi {
 
     /**
      * Authorises psu and returns current autorisation status. Used only with embedded SCA Approach.
@@ -90,7 +90,7 @@ public interface AuthorisationSpi {
      * @return Return a positive or negative response as part of SpiResponse
      */
     @NotNull
-    SpiResponse<VoidResponse> verifyAuthorisationCodeAndExecuteRequest(@NotNull SpiPsuData psuData,
-                                                                       @NotNull SpiScaConfirmation spiScaConfirmation
+    SpiResponse<VoidResponse> verifyAuthorisationCode(@NotNull SpiPsuData psuData,
+                                                      @NotNull SpiScaConfirmation spiScaConfirmation
         , @NotNull AspspConsentData aspspConsentData);
 }

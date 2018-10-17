@@ -16,17 +16,14 @@
 
 package de.adorsys.aspsp.xs2a.service.payment;
 
-import de.adorsys.aspsp.xs2a.domain.TppInfo;
-import de.adorsys.aspsp.xs2a.domain.consent.Xs2aPisConsent;
 import de.adorsys.aspsp.xs2a.domain.pis.*;
 
 public interface ScaPaymentService {
-    PeriodicPaymentInitiationResponse createPeriodicPayment(PeriodicPayment periodicPayment, TppInfo tppInfo,
-                                                            PaymentProduct paymentProduct, Xs2aPisConsent pisConsent);
+    PeriodicPaymentInitiationResponse createPeriodicPayment(PeriodicPayment periodicPayment,
+                                                            PaymentProduct paymentProduct, String consentId);
 
-    BulkPaymentInitiationResponse createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo, String paymentProduct,
-                                                    Xs2aPisConsent pisConsent);
+    BulkPaymentInitiationResponse createBulkPayment(BulkPayment bulkPayment, String paymentProduct, String consentId);
 
-    SinglePaymentInitiationResponse createSinglePayment(SinglePayment singlePayment, TppInfo tppInfo,
-                                                        PaymentProduct paymentProduct, Xs2aPisConsent pisConsent);
+    SinglePaymentInitiationResponse createSinglePayment(SinglePayment singlePayment, PaymentProduct paymentProduct,
+                                                        String consentId);
 }

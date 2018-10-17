@@ -53,7 +53,7 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
      */
     @Override
     public ResponseObject<PeriodicPaymentInitiationResponse> createPayment(PeriodicPayment periodicPayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisConsent pisConsent) {
-        PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisConsent);
+        PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, paymentInitiationParameters.getPaymentProduct(), pisConsent.getConsentId());
         response.setPisConsentId(pisConsent.getConsentId());
 
         periodicPayment.setPaymentId(response.getPaymentId());
