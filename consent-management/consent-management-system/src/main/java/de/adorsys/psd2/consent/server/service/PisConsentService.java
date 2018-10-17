@@ -89,6 +89,7 @@ public class PisConsentService {
      * @param consentId String representation of pis consent identifier
      * @return Response containing full information about pis consent
      */
+    @Transactional
     public Optional<PisConsentResponse> getConsentById(String consentId) {
         return getPisConsentById(consentId)
                    .flatMap(pisConsentMapper::mapToPisConsentResponse);
@@ -113,6 +114,7 @@ public class PisConsentService {
      * @param consentId id of the consent
      * @return Response containing aspsp consent data
      */
+    @Transactional
     public Optional<PisConsentAspspDataResponse> getAspspConsentDataByConsentId(String consentId) {
         return getPisConsentById(consentId)
                    .map(this::prepareAspspConsentData);
@@ -124,6 +126,7 @@ public class PisConsentService {
      * @param paymentId id of the payment
      * @return Response containing aspsp consent data
      */
+    @Transactional
     public Optional<PisConsentAspspDataResponse> getAspspConsentDataByPaymentId(String paymentId) {
         return pisPaymentDataRepository.findByPaymentId(paymentId)
                    .map(PisPaymentData::getConsent)
@@ -163,6 +166,7 @@ public class PisConsentService {
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
 
+    @Transactional
     public Optional<UpdatePisConsentPsuDataResponse> updateConsentAuthorization(String authorizationId, UpdatePisConsentPsuDataRequest request, CmsAuthorisationType authorizationType) {
         Optional<PisConsentAuthorization> pisConsentAuthorisationOptional = pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(
             authorizationId, authorizationType);
@@ -194,6 +198,7 @@ public class PisConsentService {
         pisConsentById.ifPresent(pisConsent -> pisPaymentDataRepository.save(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent)));
     }
 
+    @Transactional
     public Optional<GetPisConsentAuthorisationResponse> getPisConsentAuthorizationById(String authorizationId, CmsAuthorisationType authorizationType) {
         return pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(authorizationId, authorizationType)
                    .map(pisConsentMapper::mapToGetPisConsentAuthorizationResponse);
