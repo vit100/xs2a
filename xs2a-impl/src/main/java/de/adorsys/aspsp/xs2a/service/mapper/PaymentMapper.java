@@ -43,6 +43,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +110,9 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        spiSinglePayment.setRemittanceInformationUnstructured(pr.getRemittanceInformationUnstructured());
                        spiSinglePayment.setRemittanceInformationStructured(mapToSpiRemittance(pr.getRemittanceInformationStructured()));
                        spiSinglePayment.setRequestedExecutionDate(pr.getRequestedExecutionDate());
-                       spiSinglePayment.setRequestedExecutionTime(pr.getRequestedExecutionTime().toLocalDateTime());
+                       spiSinglePayment.setRequestedExecutionTime(Optional.ofNullable(pr.getRequestedExecutionTime())
+                                                                      .map(OffsetDateTime::toLocalDateTime)
+                                                                      .orElse(null));
                        spiSinglePayment.setPaymentStatus(SpiTransactionStatus.RCVD);
 
                        return spiSinglePayment;
@@ -136,7 +139,9 @@ public class PaymentMapper { // NOPMD TODO fix large amount of methods in Paymen
                        spiPeriodicPayment.setRemittanceInformationUnstructured(pp.getRemittanceInformationUnstructured());
                        spiPeriodicPayment.setRemittanceInformationStructured(mapToSpiRemittance(pp.getRemittanceInformationStructured()));
                        spiPeriodicPayment.setRequestedExecutionDate(pp.getRequestedExecutionDate());
-                       spiPeriodicPayment.setRequestedExecutionTime(pp.getRequestedExecutionTime().toLocalDateTime());
+                       spiPeriodicPayment.setRequestedExecutionTime(Optional.ofNullable(pp.getRequestedExecutionTime())
+                                                                        .map(OffsetDateTime::toLocalDateTime)
+                                                                        .orElse(null));
                        spiPeriodicPayment.setStartDate(pp.getStartDate());
                        spiPeriodicPayment.setExecutionRule(pp.getExecutionRule());
                        spiPeriodicPayment.setEndDate(pp.getEndDate());
