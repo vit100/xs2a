@@ -26,7 +26,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -78,9 +77,8 @@ public class PisConsent {
     private CmsConsentStatus consentStatus;
 
     @Lob
-    @Column(name = "aspsp_consent_data")
-    @Type(type = "org.hibernate.type.BinaryType")
     @JsonIgnore
+    @Column(name = "aspsp_consent_data")
     private byte[] aspspConsentData;
 
     public void addPaymentsData(List<PisPaymentData> pisPaymentsData) {
