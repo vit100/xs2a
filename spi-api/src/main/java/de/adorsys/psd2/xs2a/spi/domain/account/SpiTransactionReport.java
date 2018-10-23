@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.api.pis.authorisation;
+package de.adorsys.psd2.xs2a.spi.domain.account;
 
-import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
-import de.adorsys.psd2.xs2a.core.profile.PaymentType;
-import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import lombok.Data;
+import lombok.Value;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@Data
-public class GetPisConsentAuthorisationResponse {
-    private String psuId;
-    private ScaStatus scaStatus;
-    private String consentId;
-    private String password;
-    private List<PisPayment> payments;
-    private PaymentType paymentType;
-    private PaymentProduct paymentProduct;
+/**
+ * Transaction report of Spi layer to be used as a container for account reference, transactions and balances
+ */
+@Value
+public class SpiTransactionReport {
+    @NotNull
+    private SpiAccountReference accountReference;
+    @NotNull
+    private List<SpiTransaction> transactions;
+    @Nullable
+    private List<SpiAccountBalance> balances;
 }

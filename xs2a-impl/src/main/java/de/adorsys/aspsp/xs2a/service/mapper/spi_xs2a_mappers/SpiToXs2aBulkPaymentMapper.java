@@ -16,37 +16,40 @@
 
 package de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers;
 
+import de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus;
 import de.adorsys.aspsp.xs2a.domain.pis.BulkPayment;
 import de.adorsys.aspsp.xs2a.domain.pis.SinglePayment;
-import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiBulkPayment;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiSinglePayment;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class Xs2aToSpiBulkPaymentMapper {
-    private final Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper;
-    private final Xs2aToSpiAccountReferenceMapper xs2aToSpiAccountReferenceMapper;
+public class SpiToXs2aBulkPaymentMapper {
+    private final SpiToXs2aAccountReferenceMapper spiToXs2aAccountReferenceMapper;
+    private final SpiToXs2aSinglePaymentMapper spiToXs2aSinglePaymentMapper;
 
-    public SpiBulkPayment mapToSpiBulkPayment(BulkPayment payment, PaymentProduct paymentProduct) {
-        SpiBulkPayment bulk = new SpiBulkPayment();
+    public BulkPayment mapToXs2aBulkPayment(@NotNull SpiBulkPayment payment) {
+        BulkPayment bulk = new BulkPayment();
         bulk.setPaymentId(payment.getPaymentId());
         bulk.setBatchBookingPreferred(payment.getBatchBookingPreferred());
-        bulk.setDebtorAccount(xs2aToSpiAccountReferenceMapper.mapToSpiAccountReference(payment.getDebtorAccount()));
-        bulk.setPaymentProduct(paymentProduct);
         bulk.setRequestedExecutionDate(payment.getRequestedExecutionDate());
-        bulk.setPayments(mapToListSpiSinglePayment(payment.getPayments(), paymentProduct));
+        bulk.setDebtorAccount(spiToXs2aAccountReferenceMapper.mapToXs2aAccountReference(payment.getDebtorAccount()).orElse(null));
+        bulk.setTransactionStatus(Xs2aTransactionStatus.getByValue(payment.getPaymentStatus().getName()));
+        bulk.setPayments(mapToListXs2aSinglePayments(payment.getPayments()));
         return bulk;
     }
 
-    private List<SpiSinglePayment> mapToListSpiSinglePayment(List<SinglePayment> payments, PaymentProduct paymentProduct) {
-        return payments.stream()
-                   .map(p -> xs2aToSpiSinglePaymentMapper.mapToSpiSinglePayment(p, paymentProduct))
-                   .collect(Collectors.toList());
+    private List<SinglePayment> mapToListXs2aSinglePayments(List<SpiSinglePayment> payments) {
+        return Optional.ofNullable(payments)
+                   .map(p -> p.stream().map(spiToXs2aSinglePaymentMapper::mapToXs2aSinglePayment).collect(Collectors.toList()))
+                   .orElseGet(Collections::emptyList);
     }
 }
