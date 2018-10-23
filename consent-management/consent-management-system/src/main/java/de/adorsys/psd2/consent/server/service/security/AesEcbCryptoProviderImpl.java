@@ -19,6 +19,7 @@ package de.adorsys.psd2.consent.server.service.security;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -64,11 +65,13 @@ public class AesEcbCryptoProviderImpl implements CryptoProvider {
             byte[] decryptedData = cipher.doFinal(data);
 
             return Optional.of(new DecryptedData(decryptedData));
-
+        } catch (BadPaddingException e) {
+            log.error("Error decryption data. Wrong password");
         } catch (GeneralSecurityException e) {
             log.error("Error decryption data: {}", e);
-            return Optional.empty();
         }
+
+        return Optional.empty();
     }
 
     private SecretKey getSecretKey(String password) throws InvalidKeySpecException, NoSuchAlgorithmException {

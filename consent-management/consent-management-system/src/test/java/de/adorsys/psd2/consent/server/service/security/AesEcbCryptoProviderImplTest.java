@@ -52,6 +52,27 @@ public class AesEcbCryptoProviderImplTest {
         encryptionDecryptionTest(SERVER_KEY_80);
     }
 
+    @Test
+    public void encryptionDecryptionTest_wrong_password() {
+        // Given
+        String consentKey = RandomStringUtils.random(16, true, true);
+        String externalId = UUID.randomUUID().toString();
+        String data = externalId + "_" + consentKey;
+        String correctPassword = "correct_password";
+        String wrongPassword = "wrong_password";
+
+        // When
+        Optional<EncryptedData> encryptData = aesGcmCryptoProvider.encryptData(data.getBytes(), correctPassword);
+
+        // Then
+        assertThat(encryptData.isPresent()).isTrue();
+        assertThat(encryptData.get().getData().length > 0).isTrue();
+
+        // When
+        Optional<DecryptedData> decryptData = aesGcmCryptoProvider.decryptData(encryptData.get().getData(), wrongPassword);
+        assertThat(decryptData.isPresent()).isFalse();
+    }
+
     private void encryptionDecryptionTest(String password) {
         // Given
         String consentKey = RandomStringUtils.random(16, true, true);
