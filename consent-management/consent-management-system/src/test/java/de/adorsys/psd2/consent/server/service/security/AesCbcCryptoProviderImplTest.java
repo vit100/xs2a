@@ -30,32 +30,46 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AesCbcCryptoProviderImplTest {
-    private final String SERVER_KEY = "mvLBiZsiTbGwrfJB";
+    private final String SERVER_KEY_16 = "mvLBiZsiTbGwrfJB";
+    private final String SERVER_KEY_3 = "mvL";
+    private final String SERVER_KEY_80 = "mvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJB";
 
     @InjectMocks
     AesCbcCryptoProviderImpl aesGcmCryptoProvider;
 
     @Test
-    public void encryptionDecryptionTest() {
+    public void encryptionDecryptionTest_password_16char() {
+        encryptionDecryptionTest(SERVER_KEY_16);
+    }
 
+    @Test
+    public void encryptionDecryptionTest_password_3char() {
+        encryptionDecryptionTest(SERVER_KEY_3);
+    }
+
+    @Test
+    public void encryptionDecryptionTest_password_80char() {
+        encryptionDecryptionTest(SERVER_KEY_80);
+    }
+
+    private void encryptionDecryptionTest(String password) {
         // Given
         String consentKey = RandomStringUtils.random(16, true, true);
         String externalId = UUID.randomUUID().toString();
         String data = externalId + "_" + consentKey;
 
         // When
-        Optional<String> encryptData = aesGcmCryptoProvider.encryptText(data, SERVER_KEY);
+        Optional<EncryptedData> encryptData = aesGcmCryptoProvider.encryptData(data.getBytes(), password);
 
         // Then
         assertThat(encryptData.isPresent()).isTrue();
-        assertThat(encryptData.get()).isNotBlank();
+        assertThat(encryptData.get().getData().length > 0).isTrue();
 
         // When
-        Optional<String> decryptData = aesGcmCryptoProvider.decryptText(encryptData.get(), SERVER_KEY);
+        Optional<DecryptedData> decryptData = aesGcmCryptoProvider.decryptData(encryptData.get().getData(), password);
 
         assertThat(decryptData.isPresent()).isTrue();
-        assertThat(decryptData.get()).isNotBlank();
-        assertThat(decryptData.get()).isEqualTo(data);
-
+        assertThat(decryptData.get().getData().length > 0).isTrue();
+        assertThat(new String(decryptData.get().getData())).isEqualTo(data);
     }
 }

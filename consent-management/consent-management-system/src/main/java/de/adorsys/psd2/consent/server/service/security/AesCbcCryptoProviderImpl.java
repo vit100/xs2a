@@ -20,56 +20,63 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 import java.security.Key;
-import java.util.Base64;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class AesCbcCryptoProviderImpl implements CryptoProvider {
-    private static final String METHOD = "AES/CBC/PKCS5Padding";
-    private static IvParameterSpec VECTOR = new IvParameterSpec("1234567812345678".getBytes());
+    private static final String METHOD = "AES/ECB/PKCS5Padding";
+    private static final String SKF_ALGORITHM = "PBKDF2WithHmacSHA256";
 
     @Override
-    public Optional<String> encryptText(String text, String password) {
+    public Optional<EncryptedData> encryptData(byte[] data, String password) {
         try {
-            Key secretKey = new SecretKeySpec(password.getBytes(), "AES");
+            Key secretKey = getSecretKey(password);
 
             Cipher cipher = Cipher.getInstance(METHOD);
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, VECTOR);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte[] encryptedData = cipher.doFinal(data);
 
-            byte[] encryptedData = cipher.doFinal(text.getBytes());
-            String encodedData = Base64.getEncoder().encodeToString(encryptedData);
-
-            return Optional.of(encodedData);
+            return Optional.of(new EncryptedData(encryptedData));
 
         } catch (GeneralSecurityException e) {
-            log.error("Error encryption data {}" + e);
+            log.error("Error encryption data: {}", e);
             return Optional.empty();
         }
     }
 
     @Override
-    public Optional<String> decryptText(String encryptedText, String password) {
+    public Optional<DecryptedData> decryptData(byte[] data, String password) {
         try {
-            byte[] decodedKey = Base64.getDecoder().decode(encryptedText);
+            Key secretKey = getSecretKey(password);
 
-            Key key = new SecretKeySpec(password.getBytes(), "AES");
             Cipher cipher = Cipher.getInstance(METHOD);
-            cipher.init(Cipher.DECRYPT_MODE, key, VECTOR);
-            byte[] decryptedData = cipher.doFinal(decodedKey);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            byte[] decryptedData = cipher.doFinal(data);
 
-            String encodedData = new String(decryptedData);
-
-            return Optional.of(encodedData);
+            return Optional.of(new DecryptedData(decryptedData));
 
         } catch (GeneralSecurityException e) {
-            log.error("Error decryption data {}" + e);
+            log.error("Error decryption data: {}", e);
             return Optional.empty();
         }
+    }
+
+    private SecretKey getSecretKey(String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        byte[] salt = new byte[16];
+        SecretKeyFactory factory = SecretKeyFactory.getInstance(SKF_ALGORITHM);
+        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+        SecretKey secretKey = factory.generateSecret(keySpec);
+        return new SecretKeySpec(secretKey.getEncoded(), "AES");
     }
 }
 

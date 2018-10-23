@@ -16,9 +16,9 @@
 
 package de.adorsys.psd2.consent.server.service.security;
 
-import java.util.Optional;
+import lombok.Value;
 
-public interface CryptoProvider {
-    Optional<EncryptedData> encryptData(byte[] data, String password);
-    Optional<DecryptedData> decryptData(byte[] data, String password);
+@Value
+public class EncryptedData {
+    private byte[] data;
 }
