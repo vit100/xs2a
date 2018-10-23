@@ -21,22 +21,14 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class AesEcbCryptoProviderImpl implements CryptoProvider {
     private static final String METHOD = "AES/ECB/PKCS5Padding";
-    private static final String SKF_ALGORITHM = "PBKDF2WithHmacSHA256";
 
     @Override
     public Optional<EncryptedData> encryptData(byte[] data, String password) {
@@ -73,13 +65,4 @@ public class AesEcbCryptoProviderImpl implements CryptoProvider {
 
         return Optional.empty();
     }
-
-    private SecretKey getSecretKey(String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        byte[] salt = new byte[16];
-        SecretKeyFactory factory = SecretKeyFactory.getInstance(SKF_ALGORITHM);
-        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
-        SecretKey secretKey = factory.generateSecret(keySpec);
-        return new SecretKeySpec(secretKey.getEncoded(), "AES");
-    }
 }
-
