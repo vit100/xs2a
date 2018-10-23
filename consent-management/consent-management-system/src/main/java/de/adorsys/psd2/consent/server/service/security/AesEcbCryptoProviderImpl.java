@@ -33,7 +33,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class AesCbcCryptoProviderImpl implements CryptoProvider {
+public class AesEcbCryptoProviderImpl implements CryptoProvider {
     private static final String METHOD = "AES/ECB/PKCS5Padding";
     private static final String SKF_ALGORITHM = "PBKDF2WithHmacSHA256";
 

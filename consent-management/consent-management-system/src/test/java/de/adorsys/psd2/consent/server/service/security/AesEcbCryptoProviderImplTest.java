@@ -29,13 +29,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class AesCbcCryptoProviderImplTest {
+public class AesEcbCryptoProviderImplTest {
     private final String SERVER_KEY_16 = "mvLBiZsiTbGwrfJB";
     private final String SERVER_KEY_3 = "mvL";
     private final String SERVER_KEY_80 = "mvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJBmvLBiZsiTbGwrfJB";
 
     @InjectMocks
-    AesCbcCryptoProviderImpl aesGcmCryptoProvider;
+    AesEcbCryptoProviderImpl aesGcmCryptoProvider;
 
     @Test
     public void encryptionDecryptionTest_password_16char() {
