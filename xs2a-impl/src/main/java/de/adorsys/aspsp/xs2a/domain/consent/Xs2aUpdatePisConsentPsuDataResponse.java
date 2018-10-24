@@ -17,7 +17,7 @@
 package de.adorsys.aspsp.xs2a.domain.consent;
 
 import de.adorsys.aspsp.xs2a.domain.Links;
-import de.adorsys.psd2.consent.api.CmsScaMethod;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -26,16 +26,22 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Xs2aUpdatePisConsentPsuDataResponse {
-    private String scaStatus;
-    private String psuMessage;
     private String paymentId;
     private String authorisationId;
-    private List<CmsScaMethod> availableScaMethods;
-    private Links links = new Links();
-    private Xs2aChosenScaMethod chosenScaMethod;
 
-    public Xs2aUpdatePisConsentPsuDataResponse(String scaStatus, List<CmsScaMethod> availableScaMethods) {
+    private ScaStatus scaStatus;
+    private List<Xs2aAuthenticationObject> availableScaMethods;
+    private Xs2aAuthenticationObject chosenScaMethod;
+    private Links links = new Links();
+
+    private String psuMessage;
+
+    public Xs2aUpdatePisConsentPsuDataResponse(ScaStatus scaStatus, List<Xs2aAuthenticationObject> availableScaMethods) {
         this.scaStatus = scaStatus;
         this.availableScaMethods = availableScaMethods;
+    }
+
+    public Xs2aUpdatePisConsentPsuDataResponse(ScaStatus scaStatus) {
+        this.scaStatus = scaStatus;
     }
 }

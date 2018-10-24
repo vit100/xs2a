@@ -18,7 +18,6 @@ package de.adorsys.aspsp.xs2a.web.aspect;
 
 import de.adorsys.aspsp.xs2a.domain.Links;
 import de.adorsys.aspsp.xs2a.domain.ResponseObject;
-import de.adorsys.aspsp.xs2a.domain.consent.Xs2aChosenScaMethod;
 import de.adorsys.aspsp.xs2a.domain.consent.Xs2aUpdatePisConsentPsuDataResponse;
 import de.adorsys.aspsp.xs2a.service.message.MessageService;
 import de.adorsys.aspsp.xs2a.service.profile.AspspProfileServiceWrapper;
@@ -52,7 +51,7 @@ public class UpdatePisConsentPsuDataAspect extends AbstractLinkAspect<PaymentCon
             } else if (isScaStatusMethodSelected(request.getAuthenticationMethodId(), request.getScaStatus())) {
 
                 links.setAuthoriseTransaction(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorizationId()));
-                body.setChosenScaMethod(getChosenScaMethod(request.getAuthenticationMethodId()));
+             //   body.setChosenScaMethod(getChosenScaMethod(request.getAuthenticationMethodId()));
             } else if (isScaStatusFinalised(request.getScaAuthenticationData(), request.getScaStatus())) {
 
                 links.setScaStatus(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorizationId()));
@@ -72,13 +71,13 @@ public class UpdatePisConsentPsuDataAspect extends AbstractLinkAspect<PaymentCon
         return links;
     }
 
-    private Xs2aChosenScaMethod getChosenScaMethod(String authenticationMethodId) {
+  /*  private Xs2aChosenScaMethod getChosenScaMethod(String authenticationMethodId) {
         Xs2aChosenScaMethod method = new Xs2aChosenScaMethod();
         method.setAuthenticationMethodId(authenticationMethodId);
         method.setAuthenticationType(authenticationMethodId);
         return method;
     }
-
+*/
     private String buildAuthorisationLink(String paymentService, String paymentId, String authorisationId) {
         return buildPath(PSU_AUTHORISATION_URL, paymentService, paymentId, authorisationId);
     }

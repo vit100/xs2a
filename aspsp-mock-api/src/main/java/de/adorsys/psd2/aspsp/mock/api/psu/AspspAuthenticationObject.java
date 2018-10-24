@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.aspspmockserver.domain.pis.authorisation;
+package de.adorsys.psd2.aspsp.mock.api.psu;
 
-import de.adorsys.aspsp.aspspmockserver.domain.AuthenticationObject;
-import de.adorsys.aspsp.aspspmockserver.domain.ScaStatus;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
-public class UpdatePisConsentPsuDataResponse {
-    private ScaStatus scaStatus;
-    private AuthenticationObject chosenScaMethod;
-    private List<AuthenticationObject> availableScaMethods;
-
-    public UpdatePisConsentPsuDataResponse(ScaStatus scaStatus) {
-        this.scaStatus = scaStatus;
-    }
+@RequiredArgsConstructor
+public class AspspAuthenticationObject {
+    private final AspspAuthenticationType authenticationType;
+    private final String authenticationMethodId;
+    private String authenticationVersion;
+    private String name;
+    private String explanation;
 }

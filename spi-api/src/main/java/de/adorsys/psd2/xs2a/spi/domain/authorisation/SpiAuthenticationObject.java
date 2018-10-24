@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.aspspmockserver.domain;
+package de.adorsys.psd2.xs2a.spi.domain.authorisation;
 
-public enum ScaMethod {
-    SMS_OTP,
-    CHIP_OTP,
-    PHOTO_OTP,
-    PUSH_OTP
+import lombok.Data;
+
+@Data
+public class SpiAuthenticationObject {
+    private SpiAuthenticationType authenticationType;
+    private String authenticationMethodId;
+    private String authenticationVersion;
+    private String name;
+    private String explanation;
 }

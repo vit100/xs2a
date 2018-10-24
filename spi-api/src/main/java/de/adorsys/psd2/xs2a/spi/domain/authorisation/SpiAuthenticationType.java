@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.xs2a.spi.domain.authorisation;
 
-public enum SpiScaMethod {
+public enum SpiAuthenticationType {
     SMS_OTP,
     CHIP_OTP,
     PHOTO_OTP,

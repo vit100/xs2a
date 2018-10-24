@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package de.adorsys.aspsp.xs2a.service.authorization.ais.stage;
 
@@ -25,12 +26,12 @@ import de.adorsys.aspsp.xs2a.service.consent.AisConsentService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiResponseStatusToXs2aMessageErrorCodeMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
-import de.adorsys.psd2.consent.api.CmsScaMethod;
+import de.adorsys.psd2.consent.api.CmsAuthenticationType;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaMethod;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationType;
 import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
@@ -67,10 +68,10 @@ public class AisScaStartAuthorisationStageTest {
     private static final MessageErrorCode SCA_METHOD_UNKNOWN_ERROR_CODE = MessageErrorCode.SCA_METHOD_UNKNOWN;
     private static final SpiPsuData SPI_PSU_DATA = new SpiPsuData(PSU_ID, null, null, null);
     private static final AspspConsentData ASPSP_CONSENT_DATA = new AspspConsentData();
-    private static final List<SpiScaMethod> MULTIPLE_SPI_SCA_METHODS = Arrays.asList(SpiScaMethod.SMS_OTP, SpiScaMethod.PHOTO_OTP);
-    private static final List<CmsScaMethod> MULTIPLE_CMS_SCA_METHODS = Arrays.asList(CmsScaMethod.SMS_OTP, CmsScaMethod.PHOTO_OTP);
-    private static final List<SpiScaMethod> ONE_SPI_SCA_METHOD = Collections.singletonList(SpiScaMethod.SMS_OTP);
-    private static final List<SpiScaMethod> NONE_SPI_SCA_METHOD = Collections.emptyList();
+    private static final List<SpiAuthenticationType> MULTIPLE_SPI_SCA_METHODS = Arrays.asList(SpiAuthenticationType.SMS_OTP, SpiAuthenticationType.PHOTO_OTP);
+    private static final List<CmsAuthenticationType> MULTIPLE_CMS_SCA_METHODS = Arrays.asList(CmsAuthenticationType.SMS_OTP, CmsAuthenticationType.PHOTO_OTP);
+    private static final List<SpiAuthenticationType> ONE_SPI_SCA_METHOD = Collections.singletonList(SpiAuthenticationType.SMS_OTP);
+    private static final List<SpiAuthenticationType> NONE_SPI_SCA_METHOD = Collections.emptyList();
 
     @InjectMocks
     private AisScaStartAuthorisationStage scaStartAuthorisationStage;
@@ -155,7 +156,7 @@ public class AisScaStartAuthorisationStageTest {
         when(aisConsentSpi.requestAvailableScaMethods(SPI_PSU_DATA, accountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(ONE_SPI_SCA_METHOD));
 
-        SpiScaMethod scaMethod = ONE_SPI_SCA_METHOD.get(0);
+        SpiAuthenticationType scaMethod = ONE_SPI_SCA_METHOD.get(0);
 
         when(aisConsentSpi.requestAuthorisationCode(SPI_PSU_DATA, scaMethod, accountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(new SpiAuthorizationCodeResult()));
@@ -177,7 +178,7 @@ public class AisScaStartAuthorisationStageTest {
         when(aisConsentSpi.requestAvailableScaMethods(SPI_PSU_DATA, accountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(ONE_SPI_SCA_METHOD));
 
-        SpiScaMethod scaMethod = ONE_SPI_SCA_METHOD.get(0);
+        SpiAuthenticationType scaMethod = ONE_SPI_SCA_METHOD.get(0);
 
         when(aisConsentSpi.requestAuthorisationCode(SPI_PSU_DATA, scaMethod, accountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildErrorSpiResponse(new SpiAuthorizationCodeResult()));
@@ -223,3 +224,4 @@ public class AisScaStartAuthorisationStageTest {
                    .fail(RESPONSE_STATUS);
     }
 }
+*/

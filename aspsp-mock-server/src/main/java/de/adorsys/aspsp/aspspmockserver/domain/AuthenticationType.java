@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.aspspmockserver.domain.pis.authorisation;
+package de.adorsys.aspsp.aspspmockserver.domain;
 
-import de.adorsys.aspsp.aspspmockserver.domain.AuthenticationObject;
-import de.adorsys.aspsp.aspspmockserver.domain.ScaStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-import java.util.List;
-
-@Data
-@AllArgsConstructor
-public class UpdatePisConsentPsuDataResponse {
-    private ScaStatus scaStatus;
-    private AuthenticationObject chosenScaMethod;
-    private List<AuthenticationObject> availableScaMethods;
-
-    public UpdatePisConsentPsuDataResponse(ScaStatus scaStatus) {
-        this.scaStatus = scaStatus;
-    }
+public enum AuthenticationType {
+    SMS_OTP,
+    CHIP_OTP,
+    PHOTO_OTP,
+    PUSH_OTP
 }

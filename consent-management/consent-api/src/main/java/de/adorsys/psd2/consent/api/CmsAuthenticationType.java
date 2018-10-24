@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.aspsp.mock.api.psu;
+package de.adorsys.psd2.consent.api;
 
-public enum AspspScaMethod {
+public enum CmsAuthenticationType {
     SMS_OTP,
     CHIP_OTP,
     PHOTO_OTP,

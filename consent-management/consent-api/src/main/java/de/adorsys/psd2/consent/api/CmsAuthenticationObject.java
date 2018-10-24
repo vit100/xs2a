@@ -16,9 +16,13 @@
 
 package de.adorsys.psd2.consent.api;
 
-public enum CmsScaMethod {
-    SMS_OTP,
-    CHIP_OTP,
-    PHOTO_OTP,
-    PUSH_OTP
+import lombok.Data;
+
+@Data
+public class CmsAuthenticationObject {
+    private CmsAuthenticationType authenticationType;
+    private String authenticationMethodId;
+    private String authenticationVersion;
+    private String name;
+    private String explanation;
 }

@@ -16,19 +16,20 @@
 
 package de.adorsys.aspsp.xs2a.service.authorization.pis.stage;
 
+import de.adorsys.aspsp.xs2a.domain.consent.Xs2aUpdatePisConsentPsuDataResponse;
 import de.adorsys.aspsp.xs2a.service.authorization.pis.PisAuthorisationService;
 import de.adorsys.aspsp.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.consent.SpiCmsPisMapper;
+import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aAuthenticationObjectMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiBulkPaymentMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPeriodicPaymentMapper;
 import de.adorsys.aspsp.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiSinglePaymentMapper;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaMethod;
 import de.adorsys.psd2.xs2a.spi.domain.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
@@ -39,20 +40,21 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.*;
 
 
 @Service("PIS_STARTED")
-public class PisScaStartAuthorisationStage extends PisScaStage<UpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, UpdatePisConsentPsuDataResponse> {
+public class PisScaStartAuthorisationStage extends PisScaStage<UpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, Xs2aUpdatePisConsentPsuDataResponse> {
 
-    public PisScaStartAuthorisationStage(PisAuthorisationService pisAuthorisationService, PaymentAuthorisationSpi paymentAuthorisationSpi, SpiCmsPisMapper spiCmsPisMapper, PisConsentDataService pisConsentDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper) {
-        super(pisAuthorisationService, paymentAuthorisationSpi, spiCmsPisMapper, pisConsentDataService, cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
+    public PisScaStartAuthorisationStage(PisAuthorisationService pisAuthorisationService, PaymentAuthorisationSpi paymentAuthorisationSpi, SpiCmsPisMapper spiCmsPisMapper, PisConsentDataService pisConsentDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper) {
+        super(pisAuthorisationService, paymentAuthorisationSpi, spiCmsPisMapper, pisConsentDataService, cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper, spiToXs2aAuthenticationObjectMapper);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public UpdatePisConsentPsuDataResponse apply(UpdatePisConsentPsuDataRequest request, GetPisConsentAuthorisationResponse pisConsentAuthorisationResponse) {
+    public Xs2aUpdatePisConsentPsuDataResponse apply(UpdatePisConsentPsuDataRequest request, GetPisConsentAuthorisationResponse pisConsentAuthorisationResponse) {
         PaymentType paymentType = pisConsentAuthorisationResponse.getPaymentType();
 
         SpiPayment payment = mapToSpiPayment(pisConsentAuthorisationResponse.getPayments(), paymentType);
@@ -67,15 +69,15 @@ public class PisScaStartAuthorisationStage extends PisScaStage<UpdatePisConsentP
         pisConsentDataService.updateAspspConsentData(aspspConsentData);
 
         if (SpiAuthorisationStatus.FAILURE == authorisationStatusSpiResponse.getPayload()) {
-            return new UpdatePisConsentPsuDataResponse(FAILED);
+            return new Xs2aUpdatePisConsentPsuDataResponse(FAILED);
         }
-        SpiResponse<List<SpiScaMethod>> listAvailableScaMethodResponse = paymentAuthorisationSpi.requestAvailableScaMethods(psuData, payment, aspspConsentData);
+        SpiResponse<List<SpiAuthenticationObject>> listAvailableScaMethodResponse = paymentAuthorisationSpi.requestAvailableScaMethods(psuData, payment, aspspConsentData);
 
         aspspConsentData = listAvailableScaMethodResponse.getAspspConsentData();
         pisConsentDataService.updateAspspConsentData(aspspConsentData);
-        List<SpiScaMethod> spiScaMethods = listAvailableScaMethodResponse.getPayload();
+        List<SpiAuthenticationObject> spiAuthenticationObjects = listAvailableScaMethodResponse.getPayload();
 
-        if (CollectionUtils.isEmpty(spiScaMethods)) {
+        if (CollectionUtils.isEmpty(spiAuthenticationObjects)) {
             PaymentSpi paymentSpi = getPaymentService(paymentType);
             SpiResponse<SpiResponse.VoidResponse> executePaymentResponse = paymentSpi.executePaymentWithoutSca(psuData, payment, aspspConsentData);
 
@@ -84,29 +86,29 @@ public class PisScaStartAuthorisationStage extends PisScaStage<UpdatePisConsentP
             request.setScaStatus(FINALISED);
             return pisAuthorisationService.doUpdatePisConsentAuthorisation(request);
 
-        } else if (isSingleScaMethod(spiScaMethods)) {
-            aspspConsentData = paymentAuthorisationSpi.requestAuthorisationCode(psuData, spiScaMethods.get(0), payment, aspspConsentData).getAspspConsentData();
+        } else if (isSingleScaMethod(spiAuthenticationObjects)) {
+            aspspConsentData = paymentAuthorisationSpi.requestAuthorisationCode(psuData, spiAuthenticationObjects.get(0), payment, aspspConsentData).getAspspConsentData();
 
             pisConsentDataService.updateAspspConsentData(aspspConsentData);
             request.setScaStatus(SCAMETHODSELECTED);
-            request.setAuthenticationMethodId(spiScaMethods.get(0).name());
+            request.setAuthenticationMethodId(spiAuthenticationObjects.get(0).getAuthenticationMethodId());
             return pisAuthorisationService.doUpdatePisConsentAuthorisation(request);
 
-        } else if (isMultipleScaMethods(spiScaMethods)) {
+        } else if (isMultipleScaMethods(spiAuthenticationObjects)) {
             request.setScaStatus(PSUAUTHENTICATED);
-            UpdatePisConsentPsuDataResponse response = pisAuthorisationService.doUpdatePisConsentAuthorisation(request);
-            response.setAvailableScaMethods(spiCmsPisMapper.mapToCmsScaMethods(spiScaMethods));
+            Xs2aUpdatePisConsentPsuDataResponse response = pisAuthorisationService.doUpdatePisConsentAuthorisation(request);
+            response.setAvailableScaMethods(spiAuthenticationObjects.stream().map(spiToXs2aAuthenticationObjectMapper::mapToXs2aAuthenticationObject).collect(Collectors.toList()));
             return response;
 
         }
-        return new UpdatePisConsentPsuDataResponse(FAILED);
+        return new Xs2aUpdatePisConsentPsuDataResponse(FAILED);
     }
 
-    private boolean isSingleScaMethod(List<SpiScaMethod> spiScaMethods) {
-        return spiScaMethods.size() == 1;
+    private boolean isSingleScaMethod(List<SpiAuthenticationObject> spiAuthenticationObjects) {
+        return spiAuthenticationObjects.size() == 1;
     }
 
-    private boolean isMultipleScaMethods(List<SpiScaMethod> spiScaMethods) {
-        return spiScaMethods.size() > 1;
+    private boolean isMultipleScaMethods(List<SpiAuthenticationObject> spiAuthenticationObjects) {
+        return spiAuthenticationObjects.size() > 1;
     }
 }

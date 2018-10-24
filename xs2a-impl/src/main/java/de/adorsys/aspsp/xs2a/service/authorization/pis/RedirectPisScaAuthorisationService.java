@@ -52,7 +52,7 @@ public class RedirectPisScaAuthorisationService implements PisScaAuthorisationSe
      */
     @Override
     public Optional<Xs2aUpdatePisConsentPsuDataResponse> updateConsentPsuData(UpdatePisConsentPsuDataRequest request) {
-        return pisConsentMapper.mapToXs2aUpdatePisConsentPsuDataResponse(authorisationService.updatePisConsentAuthorisation(request));
+        return Optional.ofNullable(authorisationService.updatePisConsentAuthorisation(request));
     }
 
     /**

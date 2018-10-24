@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.api.pis.authorisation;
 
-import de.adorsys.psd2.consent.api.CmsScaMethod;
+import de.adorsys.psd2.consent.api.CmsAuthenticationObject;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +27,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdatePisConsentPsuDataResponse {
     private ScaStatus scaStatus;
-    private CmsScaMethod chosenScaMethod;
-    private List<CmsScaMethod> availableScaMethods;
+    private CmsAuthenticationObject chosenScaMethod;
+    private List<CmsAuthenticationObject> availableScaMethods;
 
     public UpdatePisConsentPsuDataResponse(ScaStatus scaStatus) {
         this.scaStatus = scaStatus;

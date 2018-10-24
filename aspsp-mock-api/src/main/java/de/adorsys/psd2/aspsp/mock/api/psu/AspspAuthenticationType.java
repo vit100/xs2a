@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.xs2a.domain.consent;
+package de.adorsys.psd2.aspsp.mock.api.psu;
 
-import lombok.Data;
-
-@Data
-public class Xs2aChosenScaMethod {
-
-    private String authenticationType;
-    private String authenticationMethodId;
-
+public enum AspspAuthenticationType {
+    SMS_OTP,
+    CHIP_OTP,
+    PHOTO_OTP,
+    PUSH_OTP
 }

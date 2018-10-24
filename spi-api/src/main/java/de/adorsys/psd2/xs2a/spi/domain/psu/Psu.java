@@ -18,7 +18,7 @@ package de.adorsys.psd2.xs2a.spi.domain.psu;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountDetails;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaMethod;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
@@ -38,7 +38,7 @@ public class Psu {
     private String password;
     private List<SpiAccountDetails> accountDetailsList;
     private List<String> permittedPaymentProducts;
-    private List<SpiScaMethod> scaMethods;
+    private List<SpiAuthenticationType> scaMethods;
 
     @JsonIgnore
     public boolean isValid() {

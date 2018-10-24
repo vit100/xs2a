@@ -18,7 +18,8 @@ package de.adorsys.aspsp.aspspmockserver.web;
 
 import de.adorsys.aspsp.aspspmockserver.service.PsuService;
 import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountDetails;
-import de.adorsys.psd2.aspsp.mock.api.psu.AspspScaMethod;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspAuthenticationObject;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspAuthenticationType;
 import de.adorsys.psd2.aspsp.mock.api.psu.Psu;
 import org.junit.Before;
 import org.junit.Test;
@@ -164,7 +165,7 @@ public class PsuControllerTest {
     }
 
     private Psu getPsu(String psuId, String email, List<AspspAccountDetails> details, List<String> products) {
-        return new Psu(ASPSP_PSU_ID, email, PSU_ID, PSU_PASSWORD, details, products, Collections.singletonList(AspspScaMethod.SMS_OTP));
+        return new Psu(ASPSP_PSU_ID, email, PSU_ID, PSU_PASSWORD, details, products, Collections.singletonList(new AspspAuthenticationObject(AspspAuthenticationType.SMS_OTP, "SMS_OTP")));
     }
 
     private List<AspspAccountDetails> getDetails(boolean isEmpty) {

@@ -16,10 +16,10 @@
 
 package de.adorsys.aspsp.xs2a.service.mapper.consent;
 
-import de.adorsys.psd2.consent.api.CmsScaMethod;
+import de.adorsys.psd2.consent.api.CmsAuthenticationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaMethod;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -45,13 +45,13 @@ public class SpiCmsPisMapper {
         return paymentConfirmation;
     }
 
-    public List<CmsScaMethod> mapToCmsScaMethods(List<SpiScaMethod> spiScaMethods) {
-        return spiScaMethods.stream()
+    public List<CmsAuthenticationType> mapToCmsScaMethods(List<SpiAuthenticationType> spiAuthenticationTypes) {
+        return spiAuthenticationTypes.stream()
                    .map(this::mapToCmsScaMethod)
                    .collect(Collectors.toList());
     }
 
-    private CmsScaMethod mapToCmsScaMethod(@NotNull SpiScaMethod spiScaMethod) {
-        return CmsScaMethod.valueOf(spiScaMethod.name());
+    private CmsAuthenticationType mapToCmsScaMethod(@NotNull SpiAuthenticationType spiAuthenticationType) {
+        return CmsAuthenticationType.valueOf(spiAuthenticationType.name());
     }
 }

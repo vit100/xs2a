@@ -20,7 +20,7 @@ import de.adorsys.aspsp.aspspmockserver.domain.ConfirmationType;
 import de.adorsys.aspsp.aspspmockserver.exception.ApiError;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
 import de.adorsys.psd2.aspsp.mock.api.consent.AspspConsentStatus;
-import de.adorsys.psd2.aspsp.mock.api.psu.AspspScaMethod;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspAuthenticationType;
 import de.adorsys.psd2.aspsp.mock.api.psu.Tan;
 import de.adorsys.psd2.aspsp.mock.api.psu.TanStatus;
 import freemarker.template.Configuration;
@@ -66,7 +66,7 @@ public class TanConfirmationService {
      * @param scaMethodSelected Sca method selected by PSU
      * @return true if PSU was found and Authorisation request sent successfully
      */
-    public boolean sendUserAuthRequestWithPreSelectedScaMethod(String psuId, AspspScaMethod scaMethodSelected) {
+    public boolean sendUserAuthRequestWithPreSelectedScaMethod(String psuId, AspspAuthenticationType scaMethodSelected) {
         return accountService.getPsuByPsuId(psuId)
                    .map(psu -> {
                        if (psu.getScaMethods().contains(scaMethodSelected)) {
