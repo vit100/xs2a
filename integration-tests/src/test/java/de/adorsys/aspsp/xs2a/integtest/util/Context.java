@@ -37,7 +37,6 @@ public class Context<T, U> {
     private String accessToken;
     private String paymentId;
     private String authorisationId;
-    private Authorisations authorisationIds;
     private TestData<T, U> testData;
     private ResponseEntity<U> actualResponse;
     //private ResponseEntity<ScaStatusResponse> authorisationResponse;
