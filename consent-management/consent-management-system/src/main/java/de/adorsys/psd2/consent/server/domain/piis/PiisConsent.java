@@ -17,6 +17,7 @@
 package de.adorsys.psd2.consent.server.domain.piis;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
 import de.adorsys.psd2.consent.server.domain.ConsentType;
 import de.adorsys.psd2.consent.server.domain.TppInfo;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
@@ -78,6 +79,11 @@ public class PiisConsent {
     @CollectionTable(name = "piis_account_reference", joinColumns = @JoinColumn(name = "consent_id"))
     @ApiModelProperty(value = "List of accounts", required = true)
     private List<PiisAccountReference> accounts = new ArrayList<>();
+
+    @Column(name = "tpp_access_type", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    @ApiModelProperty(value = "Type of the tpp access: SINGLE_TPP or ALL_TPP.", required = true, example = "ALL_TPP")
+    private PiisConsentTppAccessType tppAccessType;
 
     @Lob
     @JsonIgnore

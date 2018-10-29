@@ -40,4 +40,7 @@ public class CreatePiisConsentRequest {
 
     @ApiModelProperty(value = "Consent`s expiration date. The content is the local ASPSP date in ISODate Format", required = true, example = "2020-10-10")
     private LocalDate validUntil;
+
+    @ApiModelProperty(value = "Type of the tpp access: SINGLE_TPP or ALL_TPP.", required = true, example = "ALL_TPP")
+    private PiisConsentTppAccessType tppAccessType;
 }

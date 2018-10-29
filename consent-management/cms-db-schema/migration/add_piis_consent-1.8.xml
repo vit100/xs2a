@@ -51,6 +51,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="tpp_info_id" type="BIGINT"/>
+            <column name="tpp_access_type" type="VARCHAR(15)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
     </changeSet>

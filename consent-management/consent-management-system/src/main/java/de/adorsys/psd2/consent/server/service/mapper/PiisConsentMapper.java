@@ -43,6 +43,7 @@ public class PiisConsentMapper {
         consent.setPsuId(request.getPsuId());
         consent.setTppInfo(tppInfoMapper.mapToTppInfo(request.getTppInfo()));
         consent.setAccounts(mapToPiisAccountReferenceList(request.getAccounts()));
+        consent.setTppAccessType(request.getTppAccessType());
         return consent;
     }
 
