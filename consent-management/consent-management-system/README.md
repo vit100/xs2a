@@ -52,6 +52,9 @@ This value should be decremented each time the TPP of PSU requests any consent r
 - An endpoint to update the PIS consent aspsp data.
 - An endpoint to update the PIS consent status by its external identifier.
 
+##PIIS
+- An endpoint to create PIIS consent
+
 ## CORS
 By default, allow credentials, all origins and all headers are disabled.
 You can override CORS settings by changing values in `application.properties`
