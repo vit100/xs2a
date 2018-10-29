@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.server.service;
 
+import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
 import de.adorsys.psd2.consent.api.piis.CreatePiisConsentRequest;
 import de.adorsys.psd2.consent.server.domain.piis.PiisConsent;
 import de.adorsys.psd2.consent.server.repository.PiisConsentRepository;
@@ -25,8 +26,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
+import java.util.EnumSet;
 import java.util.Optional;
 import java.util.UUID;
+
+import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
+import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.VALID;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +55,31 @@ public class PiisConsentService {
         return saved.getId() != null
                    ? Optional.ofNullable(saved.getExternalId())
                    : Optional.empty();
+    }
+
+    /**
+     * Get PIIS aspsp consent data by id
+     *
+     * @param consentId id of the consent
+     * @return Response containing aspsp consent data
+     */
+    public Optional<CmsAspspConsentDataBase64> getAspspConsentData(String consentId) {
+        return getActualPiisConsent(consentId)
+                   .map(this::getConsentAspspData);
+    }
+
+    private CmsAspspConsentDataBase64 getConsentAspspData(PiisConsent consent) {
+        CmsAspspConsentDataBase64 response = new CmsAspspConsentDataBase64();
+        String aspspConsentDataBase64 = Optional.ofNullable(consent.getAspspConsentData())
+                                            .map(bytes -> Base64.getEncoder().encodeToString(bytes))
+                                            .orElse(null);
+        response.setAspspConsentDataBase64(aspspConsentDataBase64);
+        response.setConsentId(consent.getExternalId());
+        return response;
+    }
+
+    private Optional<PiisConsent> getActualPiisConsent(String consentId) {
+        return Optional.ofNullable(consentId)
+                   .flatMap(c -> piisConsentRepository.findByExternalIdAndConsentStatusIn(consentId, EnumSet.of(RECEIVED, VALID)));
     }
 }
