@@ -38,7 +38,7 @@ public class PiisConsentService {
     /**
      * Create PIIS consent
      *
-     * @param request request for creating AIS consent
+     * @param request request for creating PIIS consent
      * @return consent id if the consent was created
      */
     @Transactional
