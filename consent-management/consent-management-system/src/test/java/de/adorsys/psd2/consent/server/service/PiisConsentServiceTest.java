@@ -16,10 +16,15 @@
 
 package de.adorsys.psd2.consent.server.service;
 
+import de.adorsys.psd2.consent.api.AccountInfo;
 import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
+import de.adorsys.psd2.consent.api.piis.CreatePiisConsentRequest;
+import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
 import de.adorsys.psd2.consent.server.domain.piis.PiisConsent;
 import de.adorsys.psd2.consent.server.repository.PiisConsentRepository;
+import de.adorsys.psd2.consent.server.service.mapper.PiisConsentMapper;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,38 +34,71 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.EnumSet;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
 import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.VALID;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PiisConsentServiceTest {
-    @InjectMocks
-    private PiisConsentService piisConsentService;
+    private static final long CONSENT_ID = 1;
+    private static final String EXTERNAL_CONSENT_ID = "5bcf664f-68ce-498d-9a93-fe0cce32f6b6";
+    private static final String PSU_ID = "PSU-ID-1";
+    private static final String APSPS_CONSENT_DATA = "Test Data";
+
     @Mock
     private PiisConsentRepository piisConsentRepository;
+    @Mock
+    private PiisConsentMapper piisConsentMapper;
 
-    private PiisConsent piisConsent;
-    private final String EXTERNAL_CONSENT_ID = "4b112130-6a96-4941-a220-2da8a4af2c65";
-    private final String APSPS_CONSENT_DATA = "Test Data";
-    private final String PSU_ID = "6843514564";
+    @InjectMocks
+    private PiisConsentService piisConsentService;
 
     @Before
     public void setUp() {
-        piisConsent = buildConsent();
+        when(piisConsentMapper.mapToPiisConsent(getCreatePiisConsentRequest(), ConsentStatus.RECEIVED))
+            .thenReturn(getConsent());
+    }
+
+    @Test
+    public void createConsent_Success() {
+        when(piisConsentRepository.save(any(PiisConsent.class))).thenReturn(getConsent());
+
+        // Given
+        CreatePiisConsentRequest request = getCreatePiisConsentRequest();
+
+        // When
+        Optional<String> actual = piisConsentService.createConsent(request);
+
+        // Then
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(StringUtils.isNotEmpty(actual.get())).isTrue();
+    }
+
+    @Test
+    public void createConsent_Failure() {
+        when(piisConsentRepository.save(any(PiisConsent.class))).thenReturn(getConsent(null));
+
+        // Given
+        CreatePiisConsentRequest request = getCreatePiisConsentRequest();
+
+        // When
+        Optional<String> actual = piisConsentService.createConsent(request);
+
+        // Then
+        assertThat(actual.isPresent()).isFalse();
     }
 
     @Test
     public void getAspspConsentData() {
         // When
-        when(piisConsentRepository.findByExternalIdAndConsentStatusIn(EXTERNAL_CONSENT_ID, EnumSet.of(RECEIVED, VALID))).thenReturn(Optional.ofNullable(piisConsent));
+        when(piisConsentRepository.findByExternalIdAndConsentStatusIn(EXTERNAL_CONSENT_ID, EnumSet.of(RECEIVED, VALID)))
+            .thenReturn(Optional.ofNullable(getConsent()));
         // Then
         Optional<CmsAspspConsentDataBase64> aspspConsentData = piisConsentService.getAspspConsentData(EXTERNAL_CONSENT_ID);
         // Assert
@@ -70,15 +108,32 @@ public class PiisConsentServiceTest {
         assertEquals(new String(decode), APSPS_CONSENT_DATA);
     }
 
-    private PiisConsent buildConsent() {
+    private PiisConsent getConsent() {
+        return getConsent(CONSENT_ID);
+    }
+
+    private PiisConsent getConsent(Long id) {
         PiisConsent piisConsent = new PiisConsent();
-        piisConsent.setExternalId(UUID.randomUUID().toString());
-        piisConsent.setRequestDateTime(LocalDateTime.now().minusMinutes(5));
-        piisConsent.setPsuId(PSU_ID);
-        piisConsent.setConsentStatus(ConsentStatus.RECEIVED);
-        piisConsent.setAspspConsentData(APSPS_CONSENT_DATA.getBytes());
+        piisConsent.setId(id);
+        piisConsent.setExternalId(EXTERNAL_CONSENT_ID);
+        piisConsent.setRequestDateTime(LocalDateTime.now());
         piisConsent.setExpireDate(LocalDate.now().plusDays(100));
+        piisConsent.setAspspConsentData(APSPS_CONSENT_DATA.getBytes());
+        piisConsent.setPsuId(PSU_ID);
         return piisConsent;
+    }
+
+    private CreatePiisConsentRequest getCreatePiisConsentRequest() {
+        CreatePiisConsentRequest request = new CreatePiisConsentRequest();
+        request.setPsuId(PSU_ID);
+        request.setAccounts(getAccountInfoList());
+        request.setValidUntil(LocalDate.now());
+        request.setTppAccessType(PiisConsentTppAccessType.ALL_TPP);
+        return request;
+    }
+
+    private List<AccountInfo> getAccountInfoList() {
+        return Collections.singletonList(new AccountInfo("DE89370400440532013000", "USD"));
     }
 
     private byte[] decode(String s) {
