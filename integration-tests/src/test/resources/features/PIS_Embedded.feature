@@ -43,6 +43,29 @@ Feature: Payment Initiation Service - Embedded approach
 #            | recurring-payments        | startAuth-wrong-payment-service.json   |
 
 
+
+
+      ####################################################################################################################
+    #                                                                                                                  #
+    # Get Payment Initiation Authorisation Sub Ressources Request                                                      #
+    #                                                                                                                  #
+    ####################################################################################################################
+
+    Scenario Outline: Errorful Get of a list of AuthorisationIds
+        Given PSU wants to initiate a single payment <single-payment> using the payment service <payment-service> and the payment product <payment-product>
+        And   PSU sends the single payment initiation request and receives the paymentId
+        And   PSU sends the start authorisation request and receives the authorisationId
+        And   PSU prepares the errorful data <listAuthorisationId> with the payment service <payment-service>
+        When  PSU sends the errorful request for a list of authorisation subressources
+        Then  an error response code and the appropriate error response are received
+        Examples:
+            | single-payment                    | payment-service | payment-product        | listAuthorisationId                    |
+            | singlePayInit-successful.json     | payments        | sepa-credit-transfer   | startAuth-no-request-id.json           |
+            | singlePayInit-successful.json     | payments        | sepa-credit-transfer   | startAuth-wrong-format-request-id.json |
+            | singlePayInit-successful.json     | payments        | sepa-credit-transfer   | startAuth-wrong-payment-service.json   |
+            | singlePayInit-successful.json     | payments        | sepa-credit-transfer   | startAuth-not-existing-paymentId.json  |
+
+
     ####################################################################################################################
     #                                                                                                                  #
     # Update of the identification data of PSU                                                                         #
