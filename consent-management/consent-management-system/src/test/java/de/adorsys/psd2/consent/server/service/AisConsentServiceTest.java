@@ -56,7 +56,6 @@ public class AisConsentServiceTest {
     @Mock
     private AisConsentRepository aisConsentRepository;
 
-
     private AisConsent aisConsent;
     private final long CONSENT_ID = 1;
     private final String EXTERNAL_CONSENT_ID = "4b112130-6a96-4941-a220-2da8a4af2c65";

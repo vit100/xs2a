@@ -42,10 +42,10 @@ public class PiisConsentController {
     @ApiOperation(value = "Create consent for given psu id and accesses.")
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Created", response = String.class),
-        @ApiResponse(code = 204, message = "No Content")})
+        @ApiResponse(code = 400, message = "Bad request")})
     public ResponseEntity<CreatePiisConsentResponse> createConsent(@RequestBody CreatePiisConsentRequest request) {
         return piisConsentService.createConsent(request)
                    .map(consentId -> new ResponseEntity<>(new CreatePiisConsentResponse(consentId), HttpStatus.CREATED))
-                   .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+                   .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }

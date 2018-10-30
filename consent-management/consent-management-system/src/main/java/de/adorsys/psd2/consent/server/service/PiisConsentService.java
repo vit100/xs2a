@@ -21,7 +21,6 @@ import de.adorsys.psd2.consent.api.piis.CreatePiisConsentRequest;
 import de.adorsys.psd2.consent.server.domain.piis.PiisConsent;
 import de.adorsys.psd2.consent.server.repository.PiisConsentRepository;
 import de.adorsys.psd2.consent.server.service.mapper.PiisConsentMapper;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +48,7 @@ public class PiisConsentService {
      */
     @Transactional
     public Optional<String> createConsent(CreatePiisConsentRequest request) {
-        PiisConsent consent = piisConsentMapper.mapToPiisConsent(request, ConsentStatus.RECEIVED);
+        PiisConsent consent = piisConsentMapper.mapToPiisConsent(request, RECEIVED);
         consent.setExternalId(UUID.randomUUID().toString());
         PiisConsent saved = piisConsentRepository.save(consent);
         return saved.getId() != null
