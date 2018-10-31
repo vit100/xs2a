@@ -43,6 +43,18 @@ Feature: Payment Initiation Service - Embedded approach
 #            | recurring-payments        | startAuth-wrong-payment-service.json   |
 
 
+    Scenario Outline: Successful Get of SCA-Status "started" by AuthorisationID
+        Given   PSU sends the single payment initiation request and receives the paymentId
+        And     PSU sends the start authorisation request and receives the authorisationId
+        And     PSU prepares successful Get Request using <request-data>
+        When    PSU sends his Get Request
+        Then    PSU checks if the correct SCA status is received
+            Examples:
+                |request-data                                        |
+                |getSCA-successful-by-AuthID-started.json            |
+
+
+
     ####################################################################################################################
     #                                                                                                                  #
     # Update of the identification data of PSU                                                                         #
