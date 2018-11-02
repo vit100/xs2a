@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,11 +67,5 @@ public class PiisConsentMapper {
 
                        return piisAccountReference;
                    }).orElse(null);
-    }
-
-    private Currency getCurrencyByString(String currency) {
-        return Optional.ofNullable(currency)
-                   .map(Currency::getInstance)
-                   .orElse(null);
     }
 }
