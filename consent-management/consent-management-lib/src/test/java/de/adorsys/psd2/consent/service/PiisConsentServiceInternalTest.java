@@ -16,9 +16,15 @@
 
 package de.adorsys.psd2.consent.service;
 
+import de.adorsys.psd2.consent.aspsp.api.piis.CreatePiisConsentRequest;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.piis.PiisConsent;
 import de.adorsys.psd2.consent.repository.PiisConsentRepository;
+import de.adorsys.psd2.consent.service.mapper.PiisConsentMapper;
+import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,6 +33,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class PiisConsentServiceInternalTest {
@@ -37,15 +50,60 @@ public class PiisConsentServiceInternalTest {
 
     @Mock
     private PiisConsentRepository piisConsentRepository;
+    @Mock
+    private PiisConsentMapper piisConsentMapper;
 
     @InjectMocks
     private PiisConsentServiceInternal piisConsentServiceInternal;
 
-    private PiisConsent getConsent() {
-        return getConsent(CONSENT_ID);
+    @Before
+    public void setUp() {
+        when(piisConsentMapper.mapToPiisConsent(any(), eq(ConsentStatus.RECEIVED)))
+            .thenReturn(getConsent(ConsentStatus.RECEIVED));
     }
 
-    private PiisConsent getConsent(Long id) {
+    @Test
+    public void createConsent_Success() {
+        when(piisConsentRepository.save(any(PiisConsent.class)))
+            .thenReturn(getConsent(ConsentStatus.RECEIVED));
+
+        // Given
+        CreatePiisConsentRequest request = getCreatePiisConsentRequest();
+
+        // When
+        Optional<String> actual = piisConsentServiceInternal.createConsent(request);
+
+        // Then
+        assertThat(actual.isPresent()).isTrue();
+        String id = actual.get();
+        assertThat(StringUtils.isNotBlank(id)).isTrue();
+    }
+
+    @Test
+    public void createConsent_Failure() {
+        when(piisConsentRepository.save(any(PiisConsent.class)))
+            .thenReturn(getConsent(null, ConsentStatus.RECEIVED));
+
+        // Given
+        CreatePiisConsentRequest request = getCreatePiisConsentRequest();
+
+        // When
+        Optional<String> actual = piisConsentServiceInternal.createConsent(request);
+
+        // Then
+        assertThat(actual.isPresent()).isFalse();
+    }
+
+    private CreatePiisConsentRequest getCreatePiisConsentRequest() {
+        return new CreatePiisConsentRequest();
+    }
+
+
+    private PiisConsent getConsent(ConsentStatus status) {
+        return getConsent(CONSENT_ID, status);
+    }
+
+    private PiisConsent getConsent(Long id, ConsentStatus status) {
         PiisConsent piisConsent = new PiisConsent();
         piisConsent.setId(id);
         piisConsent.setExternalId(EXTERNAL_CONSENT_ID);
@@ -53,6 +111,7 @@ public class PiisConsentServiceInternalTest {
         piisConsent.setExpireDate(LocalDate.now().plusDays(100));
         piisConsent.setAspspConsentData(APSPS_CONSENT_DATA.getBytes());
         piisConsent.setPsuData(getPsuData());
+        piisConsent.setConsentStatus(status);
         return piisConsent;
     }
 
