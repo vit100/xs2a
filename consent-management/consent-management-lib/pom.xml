@@ -34,6 +34,7 @@
 
     <dependencies>
 
+        <!-- project dependencies -->
         <dependency>
             <groupId>de.adorsys.psd2</groupId>
             <artifactId>consent-xs2a-api</artifactId>
@@ -44,12 +45,6 @@
             <groupId>de.adorsys.psd2</groupId>
             <artifactId>consent-aspsp-api</artifactId>
             <version>1.11-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${apache.commons-lang3.version}</version>
         </dependency>
 
         <dependency>
@@ -64,11 +59,15 @@
             <version>1.11-SNAPSHOT</version>
         </dependency>
 
+        <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- other dependencies -->
+
+        <!-- TODO needs to be here? -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -79,6 +78,18 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+            <version>5.1.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${apache.commons-lang3.version}</version>
         </dependency>
 
         <!-- test dependencies -->
