@@ -45,8 +45,11 @@ public class PaymentConfirmationController {
         @ApiResponse(code = 400, message = "Bad request")
     })
     public ResponseEntity<Void> generateAndSendTan(@PathVariable("psu-id") String psuId, @PathVariable("sca-method-selected") String authenticationMethodId) {
-        return tanConfirmationService.sendUserAuthRequestWithPreSelectedScaMethod(psuId, authenticationMethodId)
-                   ? ResponseEntity.ok().build()
+        TanHolder tanHolder = tanConfirmationService.sendUserAuthRequestWithPreSelectedScaMethod(psuId, authenticationMethodId);
+        return tanHolder.isSent()
+                   ? ResponseEntity.ok()
+                         .header("tanNumber", tanHolder.getTanNumber())
+                         .build()
                    : ResponseEntity.badRequest().build();
     }
 

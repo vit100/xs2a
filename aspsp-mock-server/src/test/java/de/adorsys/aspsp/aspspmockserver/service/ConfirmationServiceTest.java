@@ -19,6 +19,7 @@ package de.adorsys.aspsp.aspspmockserver.service;
 import de.adorsys.aspsp.aspspmockserver.domain.ConfirmationType;
 import de.adorsys.aspsp.aspspmockserver.repository.PsuRepository;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
+import de.adorsys.aspsp.aspspmockserver.web.TanHolder;
 import de.adorsys.psd2.aspsp.mock.api.psu.AspspAuthenticationObject;
 import de.adorsys.psd2.aspsp.mock.api.psu.Psu;
 import de.adorsys.psd2.aspsp.mock.api.psu.Tan;
@@ -99,7 +100,8 @@ public class ConfirmationServiceTest {
     @Test
     public void generateAndSendTanForPsuByName_Failure() {
         //When
-        boolean actualResult = tanConfirmationService.generateAndSendTanForPsuById(WRONG_PSU_ID);
+        TanHolder tanHolder = tanConfirmationService.generateAndSendTanForPsuById(WRONG_PSU_ID);
+        boolean actualResult = tanHolder.isSent();
 
         //Then
         assertThat(actualResult).isFalse();

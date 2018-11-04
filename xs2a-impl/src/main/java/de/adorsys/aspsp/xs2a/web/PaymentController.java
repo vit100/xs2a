@@ -84,7 +84,7 @@ public class PaymentController implements PaymentApi {
         return response.hasError()
                    ? responseMapper.ok(response)
                    : responseMapper.ok(ResponseObject.builder().body(paymentModelMapperPsd2.mapToGetPaymentResponse12(response.getBody(), PaymentType.getByValue(paymentService).get(),
-                                                                                                                      PaymentProduct.SEPA)).build());
+            PaymentProduct.SEPA)).build());
     }
 
     @Override
@@ -169,6 +169,9 @@ public class PaymentController implements PaymentApi {
     @Override
     public ResponseEntity updatePaymentPsuData(String paymentService, String paymentId, String authorisationId, UUID xRequestID, Object body, String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType, String psUCorporateID, String psUCorporateIDType, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
+
+        // TODO pass tan number
+
         return responseMapper.ok(consentService.updatePisConsentPsuData(consentModelMapper.mapToPisUpdatePsuData(psuData, paymentId, authorisationId, paymentService, (HashMap) body)), consentModelMapper::mapToUpdatePsuAuthenticationResponse);
     }
 }

@@ -31,6 +31,7 @@ public class Xs2aUpdatePisConsentPsuDataResponse {
     private String psuMessage;
     private String paymentId;
     private String authorisationId;
+    private String tanNumber;
 
     private ScaStatus scaStatus;
     private List<Xs2aAuthenticationObject> availableScaMethods;

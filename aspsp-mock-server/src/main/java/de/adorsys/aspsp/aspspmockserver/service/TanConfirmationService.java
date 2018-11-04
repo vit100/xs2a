@@ -19,8 +19,10 @@ package de.adorsys.aspsp.aspspmockserver.service;
 import de.adorsys.aspsp.aspspmockserver.domain.ConfirmationType;
 import de.adorsys.aspsp.aspspmockserver.exception.ApiError;
 import de.adorsys.aspsp.aspspmockserver.repository.TanRepository;
+import de.adorsys.aspsp.aspspmockserver.web.TanHolder;
 import de.adorsys.psd2.aspsp.mock.api.consent.AspspConsentStatus;
 import de.adorsys.psd2.aspsp.mock.api.psu.AspspAuthenticationObject;
+import de.adorsys.psd2.aspsp.mock.api.psu.Psu;
 import de.adorsys.psd2.aspsp.mock.api.psu.Tan;
 import de.adorsys.psd2.aspsp.mock.api.psu.TanStatus;
 import freemarker.template.Configuration;
@@ -67,18 +69,19 @@ public class TanConfirmationService {
      * @param authenticationMethodId An Id of Sca method selected by PSU
      * @return true if PSU was found and Authorisation request sent successfully
      */
-    public boolean sendUserAuthRequestWithPreSelectedScaMethod(String psuId, String authenticationMethodId) {
-        return accountService.getPsuByPsuId(psuId)
-                   .map(psu -> {
-                       Optional<AspspAuthenticationObject> scaMethod = psu.getScaMethods().stream()
-                                                                           .filter(m -> authenticationMethodId.equals(m.getAuthenticationMethodId()))
-                                                                           .findFirst();
-                       if (scaMethod.isPresent()) {
-                           return generateAndSendTanForPsuById(psuId);
-                       }
-                       return false;
-                   })
-                   .orElse(false);
+    public TanHolder sendUserAuthRequestWithPreSelectedScaMethod(String psuId, String authenticationMethodId) {
+        Optional<Psu> psuByPsuId = accountService.getPsuByPsuId(psuId);
+        if (!psuByPsuId.isPresent()) {
+            return new TanHolder(false);
+        }
+        Psu psu = psuByPsuId.get();
+        Optional<AspspAuthenticationObject> scaMethod = psu.getScaMethods().stream()
+                                                            .filter(m -> authenticationMethodId.equals(m.getAuthenticationMethodId()))
+                                                            .findFirst();
+        if (scaMethod.isPresent()) {
+            return generateAndSendTanForPsuById(psuId);
+        }
+        return new TanHolder(false);
     }
 
     /**
@@ -87,10 +90,10 @@ public class TanConfirmationService {
      * @param psuId PSU id
      * @return true if psu was found and new Tan was sent successfully, otherwise return false
      */
-    public boolean generateAndSendTanForPsuById(String psuId) {
+    public TanHolder generateAndSendTanForPsuById(String psuId) {
         return accountService.getPsuByPsuId(psuId)
                    .map(psu -> createAndSendTan(psu.getPsuId(), psu.getEmail()))
-                   .orElse(false);
+                   .orElseGet(() -> new TanHolder(false));
     }
 
     /**
@@ -133,7 +136,7 @@ public class TanConfirmationService {
                    .orElse(false);
     }
 
-    private boolean createAndSendTan(String psuId, String email) {
+    private TanHolder createAndSendTan(String psuId, String email) {
         changeOldTansToInvalid(psuId);
         Tan tan = new Tan(psuId, generateTanNumber());
         tan = tanRepository.save(tan);
@@ -170,10 +173,10 @@ public class TanConfirmationService {
         return RandomStringUtils.random(6, true, true);
     }
 
-    private boolean sendTanNumberOnEmail(String email, String tanNumber) {
+    private TanHolder sendTanNumberOnEmail(String email, String tanNumber) {
         if (emailSender == null) {
             log.warn("Email properties has not been set");
-            return false;
+            return new TanHolder(false);
         }
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
@@ -186,10 +189,10 @@ public class TanConfirmationService {
 
             emailSender.send(mail.getMimeMessage());
             log.info("Generated Tan: {}", tanNumber);
-            return true;
+            return new TanHolder(tanNumber);
         } catch (MessagingException e) {
             log.warn("Problem with creating or sanding email: {}", e);
-            return false;
+            return new TanHolder(false);
         }
     }
 

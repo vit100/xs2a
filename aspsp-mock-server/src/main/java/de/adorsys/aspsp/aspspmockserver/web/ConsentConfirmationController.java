@@ -42,8 +42,11 @@ public class ConsentConfirmationController {
         @ApiResponse(code = 400, message = "Bad request")
     })
     public ResponseEntity generateAndSendTan(@PathVariable("psu-id") String psuId) {
-        return tanConfirmationService.generateAndSendTanForPsuById(psuId)
-                   ? ResponseEntity.ok().build()
+        TanHolder tanHolder = tanConfirmationService.generateAndSendTanForPsuById(psuId);
+        return tanHolder.isSent()
+                   ? ResponseEntity.ok()
+                         .header("tanNumber", tanHolder.getTanNumber())
+                         .build()
                    : ResponseEntity.badRequest().build();
     }
 

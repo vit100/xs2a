@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -106,9 +107,16 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
     @NotNull
     public SpiResponse<SpiAuthorizationCodeResult> requestAuthorisationCode(@NotNull SpiPsuData psuData, @NotNull String authenticationMethodId, @NotNull SpiPayment payment, @NotNull AspspConsentData aspspConsentData) {
         try {
-            aspspRestTemplate.exchange(aspspRemoteUrls.getGenerateTanConfirmation(), HttpMethod.POST, null, Void.class, psuData.getPsuId(), authenticationMethodId);
+            ResponseEntity<Void> response = aspspRestTemplate.exchange(aspspRemoteUrls.getGenerateTanConfirmation(), HttpMethod.POST, null, Void.class, psuData.getPsuId(), authenticationMethodId);
+
+            SpiAuthorizationCodeResult result = new SpiAuthorizationCodeResult("");
+            HttpHeaders headers = response.getHeaders();
+            if (headers.containsKey("tanNumber")) {
+                result = new SpiAuthorizationCodeResult(headers.getFirst("tanNumber"));
+            }
 
             return SpiResponse.<SpiAuthorizationCodeResult>builder()
+                       .payload(result)
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                        .success();
 

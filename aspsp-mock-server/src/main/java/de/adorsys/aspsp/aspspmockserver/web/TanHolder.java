@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.spi.domain.authorisation;
+package de.adorsys.aspsp.aspspmockserver.web;
 
 import lombok.Value;
 
 @Value
-public class SpiAuthorizationCodeResult {
-    // TODO clarify body of this object https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/410
+public class TanHolder {
     private String tanNumber;
+    private boolean sent;
+
+    public TanHolder(String tanNumber) {
+        this.tanNumber = tanNumber;
+        this.sent = true;
+    }
+
+    public TanHolder(boolean sent) {
+        this.tanNumber = null;
+        this.sent = sent;
+    }
 }
