@@ -87,6 +87,7 @@ public class PisScaAuthenticatedStage extends PisScaStage<UpdatePisConsentPsuDat
         Xs2aUpdatePisConsentPsuDataResponse response = new Xs2aUpdatePisConsentPsuDataResponse(SCAMETHODSELECTED);
         response.setPsuId(psuData.getPsuId());
         response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(chosenScaMethod));
+        response.setTanNumber(spiResponse.getPayload().getTanNumber());
         return response;
     }
 }

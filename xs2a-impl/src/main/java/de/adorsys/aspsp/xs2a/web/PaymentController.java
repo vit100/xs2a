@@ -18,6 +18,7 @@ package de.adorsys.aspsp.xs2a.web;
 
 import de.adorsys.aspsp.xs2a.domain.ResponseObject;
 import de.adorsys.aspsp.xs2a.domain.Xs2aTransactionStatus;
+import de.adorsys.aspsp.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
 import de.adorsys.aspsp.xs2a.domain.pis.CancelPaymentResponse;
 import de.adorsys.aspsp.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.aspsp.xs2a.exception.MessageError;
@@ -35,10 +36,14 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 import static de.adorsys.aspsp.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
@@ -170,8 +175,25 @@ public class PaymentController implements PaymentApi {
     public ResponseEntity updatePaymentPsuData(String paymentService, String paymentId, String authorisationId, UUID xRequestID, Object body, String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType, String psUCorporateID, String psUCorporateIDType, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
 
-        // TODO pass tan number
+        ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> updatePisConsentPsuDataResponse = consentService.updatePisConsentPsuData(consentModelMapper.mapToPisUpdatePsuData(psuData, paymentId, authorisationId, paymentService, (HashMap) body));
+        ResponseEntity<?> responseEntity = responseMapper.ok(updatePisConsentPsuDataResponse, consentModelMapper::mapToUpdatePsuAuthenticationResponse);
 
-        return responseMapper.ok(consentService.updatePisConsentPsuData(consentModelMapper.mapToPisUpdatePsuData(psuData, paymentId, authorisationId, paymentService, (HashMap) body)), consentModelMapper::mapToUpdatePsuAuthenticationResponse);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            String tanNumber = Optional.ofNullable(updatePisConsentPsuDataResponse.getBody())
+                                   .map(Xs2aUpdatePisConsentPsuDataResponse::getTanNumber)
+                                   .orElse(null);
+
+            if (StringUtils.isNotBlank(tanNumber)) {
+                HttpHeaders headers = responseEntity.getHeaders();
+
+                HttpHeaders updatedHeaders = new HttpHeaders();
+                updatedHeaders.putAll(headers);
+                updatedHeaders.put("Tan-Number", Collections.singletonList(tanNumber));
+
+                responseEntity = new ResponseEntity<>(responseEntity.getBody(), updatedHeaders, responseEntity.getStatusCode());
+            }
+        }
+
+        return responseEntity;
     }
 }

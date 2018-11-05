@@ -191,7 +191,7 @@ public class TanConfirmationService {
             log.info("Generated Tan: {}", tanNumber);
             return new TanHolder(tanNumber);
         } catch (MessagingException e) {
-            log.warn("Problem with creating or sanding email: {}", e);
+            log.warn("Problem with creating or sending email: {}", e);
             return new TanHolder(false);
         }
     }

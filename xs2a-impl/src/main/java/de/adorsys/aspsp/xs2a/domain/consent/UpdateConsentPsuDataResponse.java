@@ -45,6 +45,8 @@ public class UpdateConsentPsuDataResponse {
 
     private MessageErrorCode errorCode;
 
+    private String tanNumber;
+
     public UpdateConsentPsuDataResponse(ScaStatus scaStatus) {
         this.scaStatus = scaStatus;
     }
