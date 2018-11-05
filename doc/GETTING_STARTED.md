@@ -93,11 +93,12 @@ $ cd consent-management/cms-db-schema
 $ cp liquibase.example.properties liquibase.properties
 $ mvn liquibase:update
 ```
+**WARNING:**  `For encryption\decryption aspsp data we use secret server key ('SERVER_KEY') which reads from Environment variables.` 
 
 Now, once PostgreSQL-server is running on port `5432` you may run consent-management-system server:
 ```bash
 $ cd consent-management/consent-management-system
-$ mvn spring-boot:run
+$ SERVER_KEY=mySecretKey mvn spring-boot:run
 ```
 Open a browser on page [http://localhost:38080/swagger-ui.html](http://localhost:38080/swagger-ui.html)
 
