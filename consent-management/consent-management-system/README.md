@@ -23,6 +23,9 @@ Some of these parameters you can obtain after installing and running PostgreSQL 
 - Create a database with default settings, add the name of the database to your application.properties file instead of "yourDatabaseName"
 ```
 
+**WARNING:**  `For encryption\decryption aspsp data we use secret server key ('server_key') which reads from Environment variables.  
+So, before start project you need to create environment variables and put value, as example:  'server_key=mySecretKey'` 
+
 To run consent-management-system app from command line:
 
 1. Without test data
