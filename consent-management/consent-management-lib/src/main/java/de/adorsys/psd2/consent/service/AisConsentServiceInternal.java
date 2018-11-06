@@ -29,6 +29,7 @@ import de.adorsys.psd2.consent.repository.AspspConsentDataRepository;
 import de.adorsys.psd2.consent.service.mapper.AisConsentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.security.DecryptedData;
+import de.adorsys.psd2.consent.service.security.EncryptedData;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -176,8 +177,17 @@ public class AisConsentServiceInternal implements AisConsentService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<String> saveAspspConsentDataInAisConsent(String encryptedConsentId, CmsAspspConsentDataBase64 request) {
-        return getActualAisConsent(encryptedConsentId)
-                   .flatMap(cons -> saveAspspConsentDataInAisConsent(request, cons, encryptedConsentId));
+        Optional<AisConsent> consent = getActualAisConsent(encryptedConsentId);
+        Optional<EncryptedData> encryptedConsentData = securityDataService.encryptConsentData(encryptedConsentId, request.getAspspConsentDataBase64());
+
+        if (consent.isPresent()
+                && encryptedConsentData.isPresent()) {
+
+            updateConsentData(consent.get().getExternalId(), encryptedConsentData.get().getData());
+            return Optional.of(encryptedConsentId);
+        }
+
+        return Optional.empty();
     }
 
     /**
@@ -271,14 +281,7 @@ public class AisConsentServiceInternal implements AisConsentService {
                    .orElseGet(() -> new CmsAspspConsentDataBase64(encryptedConsentId, null));
     }
 
-    private Optional<String> saveAspspConsentDataInAisConsent(CmsAspspConsentDataBase64 request, AisConsent consent, String encryptedConsentId) {
-        return securityDataService.encryptConsentData(encryptedConsentId, request.getAspspConsentDataBase64())
-                   .map(encr -> updateAndSaveAspspConsentData(consent, encr.getData()))
-                   .map(a -> encryptedConsentId);
-    }
-
-    private AspspConsentDataEntity updateAndSaveAspspConsentData(AisConsent consent, byte[] consentData) {
-        String externalId = consent.getExternalId();
+    private AspspConsentDataEntity updateConsentData(String externalId, byte[] consentData) {
         AspspConsentDataEntity aspspConsentDataEntity = aspspConsentDataRepository
                                                             .findByConsentId(externalId)
                                                             .orElseGet(() -> new AspspConsentDataEntity(externalId));
