@@ -46,6 +46,12 @@
         </dependency>
 
         <dependency>
+            <groupId>de.adorsys.psd2</groupId>
+            <artifactId>aspsp-profile-remote</artifactId>
+            <version>1.11-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-parameter-names</artifactId>
         </dependency>
