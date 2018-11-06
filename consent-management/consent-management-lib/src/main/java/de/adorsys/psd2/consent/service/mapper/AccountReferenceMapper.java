@@ -21,7 +21,9 @@ import de.adorsys.psd2.consent.domain.AccountReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +38,12 @@ public class AccountReferenceMapper {
                                                        ref.getMsisdn(),
                                                        ref.getCurrency())
                    ).orElse(null);
+    }
+
+    List<AccountReference> mapToAccountReferences(List<CmsAccountReference> cmsAccountReferences) {
+        return cmsAccountReferences.stream()
+                   .map(this::mapToAccountReference)
+                   .collect(Collectors.toList());
     }
 
     AccountReference mapToAccountReference(CmsAccountReference cmsAccountReference) {

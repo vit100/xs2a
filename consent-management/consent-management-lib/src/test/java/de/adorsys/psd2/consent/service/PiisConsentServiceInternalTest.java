@@ -109,7 +109,6 @@ public class PiisConsentServiceInternalTest {
         piisConsent.setExternalId(EXTERNAL_CONSENT_ID);
         piisConsent.setRequestDateTime(LocalDateTime.now());
         piisConsent.setExpireDate(LocalDate.now().plusDays(100));
-        piisConsent.setAspspConsentData(APSPS_CONSENT_DATA.getBytes());
         piisConsent.setPsuData(getPsuData());
         piisConsent.setConsentStatus(status);
         return piisConsent;
