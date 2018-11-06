@@ -41,6 +41,7 @@ public class PiisConsentMapper {
         consent.setTppInfo(tppInfoMapper.mapToTppInfo(request.getTppInfo()));
         consent.setAccounts(accountReferenceMapper.mapToAccountReferences(request.getAccounts()));
         consent.setTppAccessType(request.getTppAccessType());
+        consent.setAllowedFrequencyPerDay(request.getAllowedFrequencyPerDay());
         return consent;
     }
 }
