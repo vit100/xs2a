@@ -41,6 +41,7 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,7 +74,7 @@ public class PaymentServiceTest {
             .thenReturn(true);
         when(paymentRepository.exists(WRONG_PAYMENT_ID))
             .thenReturn(false);
-        when(accountService.getPsuIdByIban(IBAN)).thenReturn(Optional.of(getAccountDetails().get(0).getId()));
+        when(accountService.getPsuIdByIban(IBAN)).thenReturn(Optional.of(getAccountDetails().get(0).getResourceId()));
         when(accountService.getAccountsByIban(IBAN)).thenReturn(getAccountDetails());
         when(accountService.getAccountsByIban(WRONG_IBAN)).thenReturn(null);
         when(paymentMapper.mapToAspspPayment(any(), any())).thenReturn(new AspspPayment());
@@ -129,7 +130,7 @@ public class PaymentServiceTest {
     @Test
     public void addBulkPayments_Success() {
         List<AspspPayment> payments = Collections.singletonList(getAspspPayment(AMOUNT_TO_TRANSFER));
-        when(paymentMapper.mapToAspspPaymentList(any())).thenReturn(payments);
+        when(paymentMapper.mapToAspspPaymentList(any(), anyString())).thenReturn(payments);
         when(paymentRepository.save(anyListOf(AspspPayment.class))).thenReturn(payments);
         when(paymentMapper.mapToAspspSinglePaymentList(anyListOf(AspspPayment.class)))
             .thenReturn(Collections.singletonList(getAspspSinglePayment(AMOUNT_TO_TRANSFER)));
@@ -150,7 +151,7 @@ public class PaymentServiceTest {
 
     @Test
     public void addBulkPayments_Failure_InsufficientFunds() {
-        when(paymentMapper.mapToAspspPaymentList(any()))
+        when(paymentMapper.mapToAspspPaymentList(any(), anyString()))
             .thenReturn(Arrays.asList(getAspspPayment(AMOUNT_TO_TRANSFER), getAspspPayment(EXCEEDING_AMOUNT_TO_TRANSFER)));
 
         //Given
@@ -276,6 +277,6 @@ public class PaymentServiceTest {
 
     private AspspAccountReference getReference() {
         AspspAccountDetails details = getAccountDetails().get(0);
-        return new AspspAccountReference(details.getIban(), null, null, null, null, details.getCurrency());
+        return new AspspAccountReference(details.getResourceId(), details.getIban(), null, null, null, null, details.getCurrency());
     }
 }

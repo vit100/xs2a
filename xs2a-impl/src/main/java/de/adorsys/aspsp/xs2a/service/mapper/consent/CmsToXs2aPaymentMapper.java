@@ -78,6 +78,7 @@ public class CmsToXs2aPaymentMapper {
 
     public BulkPayment mapToBulkPayment(List<PisPayment> payments) {
         BulkPayment bulk = new BulkPayment();
+        bulk.setPaymentId(payments.get(0).getPaymentId());
         bulk.setBatchBookingPreferred(false);
         bulk.setDebtorAccount(mapToXs2aAccountReference(payments.get(0).getDebtorAccount()));
         bulk.setRequestedExecutionDate(payments.get(0).getRequestedExecutionDate());
@@ -104,6 +105,7 @@ public class CmsToXs2aPaymentMapper {
     private Xs2aAccountReference mapToXs2aAccountReference(CmsAccountReference reference) {
         return Optional.ofNullable(reference)
                    .map(ref -> new Xs2aAccountReference(
+                       ref.getResourceId(),
                        ref.getIban(),
                        ref.getBban(),
                        ref.getPan(),
