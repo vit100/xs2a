@@ -43,7 +43,8 @@
     <changeSet author="ssh@adorsys.com.ua" id="2018-11-07-3">
         <comment>Copy existing aspsp_consent_data from pis_consent into aspsp_consent_data table</comment>
 
-        <sql>INSERT INTO aspsp_consent_data (consent_id, data)
+        <sql>
+            INSERT INTO aspsp_consent_data (consent_id, data)
             SELECT external_id, aspsp_consent_data
             FROM pis_consent
         </sql>
