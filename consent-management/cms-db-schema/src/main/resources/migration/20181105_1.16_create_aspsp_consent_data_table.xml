@@ -23,7 +23,7 @@
         <comment>Create table aspsp_consent_data</comment>
 
         <createTable tableName="aspsp_consent_data">
-            <column name="consent_id" type="VARCHAR(40)">
+            <column name="consent_id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="data" type="BLOB"/>
