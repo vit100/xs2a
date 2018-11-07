@@ -32,7 +32,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +45,6 @@ public class PiisConsentServiceInternalTest {
     private static final long CONSENT_ID = 1;
     private static final String EXTERNAL_CONSENT_ID = "5bcf664f-68ce-498d-9a93-fe0cce32f6b6";
     private static final String PSU_ID = "PSU-ID-1";
-    private static final String APSPS_CONSENT_DATA = "Test Data";
 
     @Mock
     private PiisConsentRepository piisConsentRepository;
@@ -116,9 +114,5 @@ public class PiisConsentServiceInternalTest {
 
     private PsuData getPsuData() {
         return new PsuData(PSU_ID, null, null, null);
-    }
-
-    private byte[] decode(String s) {
-        return Base64.getDecoder().decode(s);
     }
 }

@@ -30,7 +30,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -52,31 +52,26 @@ public class PiisConsentControllerTest {
 
     @Test
     public void createConsent_Success() {
-        //Given
-        ResponseEntity<CreatePiisConsentResponse> expected =
-            new ResponseEntity<>(new CreatePiisConsentResponse(CONSENT_ID), HttpStatus.CREATED);
-
         //When
         ResponseEntity<CreatePiisConsentResponse> actual =
             piisConsentController.createConsent(getCreatePiisConsentRequest());
 
         //Then
-        assertEquals(actual, expected);
+        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(actual.getBody().getConsentId()).isEqualTo(CONSENT_ID);
     }
 
     @Test
     public void createConsent_Failure() {
         when(cmsAspspPiisService.createConsent(getCreatePiisConsentRequest())).thenReturn(Optional.empty());
 
-        //Given
-        ResponseEntity<CreatePiisConsentResponse> expected = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
         //When
         ResponseEntity<CreatePiisConsentResponse> actual =
             piisConsentController.createConsent(getCreatePiisConsentRequest());
 
         //Then
-        assertEquals(actual, expected);
+        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(actual.getBody()).isNull();
     }
 
     private CreatePiisConsentRequest getCreatePiisConsentRequest() {
