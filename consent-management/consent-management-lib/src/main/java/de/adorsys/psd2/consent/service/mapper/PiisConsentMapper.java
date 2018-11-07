@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +35,11 @@ public class PiisConsentMapper {
     public PiisConsent mapToPiisConsent(@NotNull CreatePiisConsentRequest request, @NotNull ConsentStatus consentStatus) {
         PiisConsent consent = new PiisConsent();
         consent.setConsentStatus(consentStatus);
-        consent.setRequestDateTime(LocalDateTime.now());
+        consent.setRequestDateTime(OffsetDateTime.now());
         consent.setExpireDate(request.getValidUntil());
         consent.setPsuData(psuDataMapper.mapToPsuData(request.getPsuData()));
         consent.setTppInfo(tppInfoMapper.mapToTppInfo(request.getTppInfo()));
-        consent.setAccounts(accountReferenceMapper.mapToAccountReferences(request.getAccounts()));
+        consent.setAccounts(accountReferenceMapper.mapToAccountReferenceEntityList(request.getAccounts()));
         consent.setTppAccessType(request.getTppAccessType());
         consent.setAllowedFrequencyPerDay(request.getAllowedFrequencyPerDay());
         return consent;

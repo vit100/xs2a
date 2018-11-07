@@ -31,7 +31,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -107,7 +107,7 @@ public class PiisConsentServiceInternalTest {
         PiisConsent piisConsent = new PiisConsent();
         piisConsent.setId(id);
         piisConsent.setExternalId(EXTERNAL_CONSENT_ID);
-        piisConsent.setRequestDateTime(LocalDateTime.now());
+        piisConsent.setRequestDateTime(OffsetDateTime.now());
         piisConsent.setExpireDate(LocalDate.now().plusDays(100));
         piisConsent.setPsuData(getPsuData());
         piisConsent.setConsentStatus(status);
