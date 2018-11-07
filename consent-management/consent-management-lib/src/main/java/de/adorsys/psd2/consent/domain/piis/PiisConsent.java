@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.domain.piis;
 
 import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
-import de.adorsys.psd2.consent.domain.AccountReference;
+import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.TppInfo;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
@@ -27,7 +27,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class PiisConsent {
 
     @Column(name = "request_date_time", nullable = false)
     @ApiModelProperty(value = "Date of the last request for this consent. The content is the local ASPSP date in ISODate Format", required = true, example = "2018-10-25T15:30:35.035Z")
-    private LocalDateTime requestDateTime;
+    private OffsetDateTime requestDateTime;
 
     @Column(name = "last_action_date")
     @ApiModelProperty(value = "Date of the last action for this consent. The content is the local ASPSP date in ISODate Format", example = "2018-05-04")
@@ -75,10 +75,10 @@ public class PiisConsent {
     private ConsentStatus consentStatus;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "piis_consent_account_reference",
+    @JoinTable(name = "piis_consent_acc_reference",
         joinColumns = @JoinColumn(name = "piis_consent_id"),
         inverseJoinColumns = @JoinColumn(name = "account_reference_id"))
-    private List<AccountReference> accounts = new ArrayList<>();
+    private List<AccountReferenceEntity> accounts = new ArrayList<>();
 
     @Column(name = "tpp_access_type", nullable = false)
     @Enumerated(value = EnumType.STRING)

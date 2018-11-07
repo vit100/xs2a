@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.service.mapper;
 
 import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
-import de.adorsys.psd2.consent.domain.AccountReference;
+import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AccountReferenceMapper {
-    CmsAccountReference mapToCmsAccountReference(AccountReference accountReference) {
-        return Optional.ofNullable(accountReference)
+    CmsAccountReference mapToCmsAccountReference(AccountReferenceEntity accountReferenceEntity) {
+        return Optional.ofNullable(accountReferenceEntity)
                    .map(ref -> new CmsAccountReference(null,
                                                        ref.getIban(),
                                                        ref.getBban(),
@@ -40,24 +40,24 @@ public class AccountReferenceMapper {
                    ).orElse(null);
     }
 
-    List<AccountReference> mapToAccountReferences(List<CmsAccountReference> cmsAccountReferences) {
+    List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<CmsAccountReference> cmsAccountReferences) {
         return cmsAccountReferences.stream()
-                   .map(this::mapToAccountReference)
+                   .map(this::mapToAccountReferenceEntity)
                    .collect(Collectors.toList());
     }
 
-    AccountReference mapToAccountReference(CmsAccountReference cmsAccountReference) {
+    AccountReferenceEntity mapToAccountReferenceEntity(CmsAccountReference cmsAccountReference) {
         return Optional.ofNullable(cmsAccountReference)
                    .map(ref -> {
-                       AccountReference accountReference = new AccountReference();
-                       accountReference.setIban(cmsAccountReference.getIban());
-                       accountReference.setBban(cmsAccountReference.getBban());
-                       accountReference.setPan(cmsAccountReference.getPan());
-                       accountReference.setMaskedPan(cmsAccountReference.getMaskedPan());
-                       accountReference.setMsisdn(cmsAccountReference.getMsisdn());
-                       accountReference.setCurrency(cmsAccountReference.getCurrency());
+                       AccountReferenceEntity accountReferenceEntity = new AccountReferenceEntity();
+                       accountReferenceEntity.setIban(cmsAccountReference.getIban());
+                       accountReferenceEntity.setBban(cmsAccountReference.getBban());
+                       accountReferenceEntity.setPan(cmsAccountReference.getPan());
+                       accountReferenceEntity.setMaskedPan(cmsAccountReference.getMaskedPan());
+                       accountReferenceEntity.setMsisdn(cmsAccountReference.getMsisdn());
+                       accountReferenceEntity.setCurrency(cmsAccountReference.getCurrency());
 
-                       return accountReference;
+                       return accountReferenceEntity;
                    }).orElse(null);
     }
 }
