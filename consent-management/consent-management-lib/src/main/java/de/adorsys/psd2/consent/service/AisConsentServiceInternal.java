@@ -178,16 +178,17 @@ public class AisConsentServiceInternal implements AisConsentService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<String> saveAspspConsentDataInAisConsent(String encryptedConsentId, CmsAspspConsentDataBase64 request) {
         Optional<AisConsent> consent = getActualAisConsent(encryptedConsentId);
-        Optional<EncryptedData> encryptedConsentData = securityDataService.encryptConsentData(encryptedConsentId, request.getAspspConsentDataBase64());
-
-        if (consent.isPresent()
-                && encryptedConsentData.isPresent()) {
-
-            updateConsentData(consent.get().getExternalId(), encryptedConsentData.get().getData());
-            return Optional.of(encryptedConsentId);
+        if (!consent.isPresent()) {
+            return Optional.empty();
         }
 
-        return Optional.empty();
+        Optional<EncryptedData> encryptedConsentData = securityDataService.encryptConsentData(encryptedConsentId, request.getAspspConsentDataBase64());
+        if (!encryptedConsentData.isPresent()) {
+            return Optional.empty();
+        }
+
+        updateConsentData(consent.get().getExternalId(), encryptedConsentData.get().getData());
+        return Optional.of(encryptedConsentId);
     }
 
     /**

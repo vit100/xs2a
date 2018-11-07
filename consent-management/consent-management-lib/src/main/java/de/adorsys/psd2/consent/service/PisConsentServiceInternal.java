@@ -194,16 +194,17 @@ public class PisConsentServiceInternal implements PisConsentService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<String> updateAspspConsentDataInPisConsent(String encryptedConsentId, CmsAspspConsentDataBase64 request) {
         Optional<PisConsent> consent = getActualPisConsent(encryptedConsentId);
-        Optional<EncryptedData> encryptedConsentData = securityDataService.encryptConsentData(encryptedConsentId, request.getAspspConsentDataBase64());
-
-        if (consent.isPresent()
-                && encryptedConsentData.isPresent()) {
-
-            updateConsentData(consent.get().getExternalId(), encryptedConsentData.get().getData());
-            return Optional.of(encryptedConsentId);
+        if(!consent.isPresent()) {
+            return Optional.empty();
         }
 
-        return Optional.empty();
+        Optional<EncryptedData> encryptedConsentData = securityDataService.encryptConsentData(encryptedConsentId, request.getAspspConsentDataBase64());
+        if (!encryptedConsentData.isPresent()) {
+            return Optional.empty();
+        }
+
+        updateConsentData(consent.get().getExternalId(), encryptedConsentData.get().getData());
+        return Optional.of(encryptedConsentId);
     }
 
     /**
