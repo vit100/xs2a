@@ -17,23 +17,33 @@
 package de.adorsys.aspsp.xs2a.config.cache;
 
 import com.google.common.cache.CacheBuilder;
-import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.guava.GuavaCache;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @EnableCaching
 @Configuration
 public class CacheConfig {
     public final static String ASPSP_PROFILE_CACHE = "aspspProfileCash";
+    public final static String SCA_METHODS_CACHE = "scaMethodCash";
 
     @Bean
-    public Cache cacheOne() {
-        return new GuavaCache(ASPSP_PROFILE_CACHE, CacheBuilder.newBuilder()
-                                                       .expireAfterWrite(60, TimeUnit.SECONDS)
-                                                       .build());
+    public CacheManager cacheManager() {
+        SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
+        GuavaCache profileCache = new GuavaCache(ASPSP_PROFILE_CACHE, CacheBuilder.newBuilder()
+                                                                    .expireAfterWrite(60, TimeUnit.SECONDS)
+                                                                    .build());
+
+        GuavaCache scaMethodsCache = new GuavaCache(SCA_METHODS_CACHE, CacheBuilder.newBuilder()
+                                                                    .expireAfterWrite(60, TimeUnit.SECONDS)
+                                                                    .build());
+        simpleCacheManager.setCaches(Arrays.asList(profileCache, scaMethodsCache));
+        return simpleCacheManager;
     }
 }
