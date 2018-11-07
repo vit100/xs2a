@@ -19,7 +19,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet author="ssh@adorsys.com.ua" id="2018-11-05-1">
+    <changeSet author="ssh@adorsys.com.ua" id="2018-11-07-1">
         <comment>Create table aspsp_consent_data</comment>
 
         <createTable tableName="aspsp_consent_data">
@@ -30,7 +30,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="ssh@adorsys.com.ua" id="2018-11-05-2">
+    <changeSet author="ssh@adorsys.com.ua" id="2018-11-07-2">
         <comment>Copy existing aspsp_consent_data from ais_consent into aspsp_consent_data table</comment>
 
         <sql>
@@ -40,7 +40,7 @@
         </sql>
     </changeSet>
 
-    <changeSet author="ssh@adorsys.com.ua" id="2018-11-05-3">
+    <changeSet author="ssh@adorsys.com.ua" id="2018-11-07-3">
         <comment>Copy existing aspsp_consent_data from pis_consent into aspsp_consent_data table</comment>
 
         <sql>INSERT INTO aspsp_consent_data (consent_id, data)
@@ -49,7 +49,7 @@
         </sql>
     </changeSet>
 
-    <changeSet author="ssh@adorsys.com.ua" id="2018-11-05-4">
+    <changeSet author="ssh@adorsys.com.ua" id="2018-11-07-4">
         <comment>Drop aspsp_consent_data columns in pis_consent and ais_consent</comment>
 
         <dropColumn columnName="aspsp_consent_data" tableName="pis_consent"/>
