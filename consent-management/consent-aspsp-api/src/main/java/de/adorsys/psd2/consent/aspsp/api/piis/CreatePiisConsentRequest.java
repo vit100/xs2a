@@ -30,7 +30,7 @@ import java.util.List;
 @ApiModel(description = "Piis consent request", value = "PiisConsentRequest")
 public class CreatePiisConsentRequest {
 
-    @ApiModelProperty(value = "Corresponding PSU", required = true)
+    @ApiModelProperty(value = "Corresponding PSU")
     private PsuIdData psuData;
 
     @ApiModelProperty(value = "Tpp for which the consent will be created. If the property is omitted, the consent will be created for all TPPs")

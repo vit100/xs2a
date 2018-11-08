@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,9 @@ public class PiisConsentMapper {
         consent.setConsentStatus(consentStatus);
         consent.setRequestDateTime(OffsetDateTime.now());
         consent.setExpireDate(request.getValidUntil());
-        consent.setPsuData(psuDataMapper.mapToPsuData(request.getPsuData()));
+        consent.setPsuData(Optional.ofNullable(request.getPsuData())
+                               .map(psuDataMapper::mapToPsuData)
+                               .orElse(null));
         consent.setTppInfo(tppInfoMapper.mapToTppInfo(request.getTppInfo()));
         consent.setAccounts(accountReferenceMapper.mapToAccountReferenceEntityList(request.getAccounts()));
         PiisConsentTppAccessType accessType = request.getTppInfo() != null
