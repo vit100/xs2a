@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
+import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
 import de.adorsys.psd2.consent.aspsp.api.piis.CreatePiisConsentRequest;
 import de.adorsys.psd2.consent.domain.piis.PiisConsent;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
@@ -40,7 +41,10 @@ public class PiisConsentMapper {
         consent.setPsuData(psuDataMapper.mapToPsuData(request.getPsuData()));
         consent.setTppInfo(tppInfoMapper.mapToTppInfo(request.getTppInfo()));
         consent.setAccounts(accountReferenceMapper.mapToAccountReferenceEntityList(request.getAccounts()));
-        consent.setTppAccessType(request.getTppAccessType());
+        PiisConsentTppAccessType accessType = request.getTppInfo() != null
+                                                  ? PiisConsentTppAccessType.SINGLE_TPP
+                                                  : PiisConsentTppAccessType.ALL_TPP;
+        consent.setTppAccessType(accessType);
         consent.setAllowedFrequencyPerDay(request.getAllowedFrequencyPerDay());
         return consent;
     }

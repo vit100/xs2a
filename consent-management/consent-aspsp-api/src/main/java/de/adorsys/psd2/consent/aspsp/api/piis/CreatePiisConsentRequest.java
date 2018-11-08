@@ -17,7 +17,6 @@
 package de.adorsys.psd2.consent.aspsp.api.piis;
 
 import de.adorsys.psd2.consent.api.CmsTppInfo;
-import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import io.swagger.annotations.ApiModel;
@@ -40,11 +39,8 @@ public class CreatePiisConsentRequest {
     @ApiModelProperty(value = "Accounts for which the consent is created")
     private List<AccountReference> accounts;
 
-    @ApiModelProperty(value = "Consent`s expiration date. The content is the local ASPSP date in ISODate Format", required = true, example = "2020-10-10")
+    @ApiModelProperty(value = "Consent`s expiration date. The content is the local ASPSP date in ISODate Format", example = "2020-10-10")
     private LocalDate validUntil;
-
-    @ApiModelProperty(value = "Type of the tpp access: SINGLE_TPP or ALL_TPP.", required = true, example = "ALL_TPP")
-    private PiisConsentTppAccessType tppAccessType;
 
     @ApiModelProperty(value = "Maximum frequency for an access per day. For a once-off access, this attribute is set to 1", required = true, example = "4")
     private int allowedFrequencyPerDay;
