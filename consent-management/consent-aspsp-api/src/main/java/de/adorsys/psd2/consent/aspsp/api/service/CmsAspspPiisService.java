@@ -16,16 +16,54 @@
 
 package de.adorsys.psd2.consent.aspsp.api.service;
 
-import de.adorsys.psd2.consent.aspsp.api.piis.CreatePiisConsentRequest;
+import de.adorsys.psd2.consent.api.CmsTppInfo;
+import de.adorsys.psd2.consent.aspsp.api.piis.PiisConsent;
+import de.adorsys.psd2.xs2a.core.profile.AccountReference;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface CmsAspspPiisService {
     /**
-     * Create PIIS consent
+     * Creates new PIIS consent
      *
-     * @param request request for creating PIIS consent
-     * @return consent id if the consent was created
+     * @param psuIdData              PSU credentials data
+     * @param cmsTppInfo             TPP for which the consent will be created. If the value is omitted, consent will be created for all TPPs.
+     * @param accounts               List of accounts for which the consent is created
+     * @param validUntil             Consent's expiration date
+     * @param allowedFrequencyPerDay Maximum frequency for an access per day
+     * @return Consent id if the consent was created
      */
-    Optional<String> createConsent(CreatePiisConsentRequest request);
+    Optional<String> createConsent(@NotNull PsuIdData psuIdData, @Nullable CmsTppInfo cmsTppInfo, @NotNull List<AccountReference> accounts, @NotNull LocalDate validUntil, int allowedFrequencyPerDay);
+
+    /**
+     * Returns a list of PIIS Consent objects by PSU ID
+     *
+     * @param psuIdData PSU credentials data
+     * @return List of PIIS Consent objects corresponding to the given PSU
+     */
+    @NotNull
+    List<PiisConsent> getConsentsForPsu(@NotNull PsuIdData psuIdData);
+
+    /**
+     * Revokes PIIS Consent object by its ID. Consent gets status "Revoked by ASPSP".
+     *
+     * @param psuIdData PSU credentials data
+     * @param consentId ID of Consent
+     * @return <code>true</code> if consent was found and revoked. <code>false</code> otherwise.
+     */
+    boolean revokeConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId);
+
+    /**
+     * Blocks PIIS Consent object by its ID. Consent gets status "Terminated by ASPSP".
+     *
+     * @param psuIdData PSU credentials data
+     * @param consentId ID of Consent
+     * @return <code>true</code> if consent was found and blocked. <code>false</code> otherwise.
+     */
+    boolean blockConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId);
 }

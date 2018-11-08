@@ -77,7 +77,7 @@ public class AccountReferenceMapper {
                    }).orElse(null);
     }
 
-    List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<AccountReference> cmsAccountReferences) {
+    public List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<AccountReference> cmsAccountReferences) {
         return cmsAccountReferences.stream()
                    .map(this::mapToAccountReferenceEntity)
                    .collect(Collectors.toList());
