@@ -17,8 +17,9 @@
 package de.adorsys.psd2.consent.service.mapper;
 
 import de.adorsys.psd2.consent.api.piis.CmsPiisValidationInfo;
+import de.adorsys.psd2.consent.aspsp.api.piis.PiisConsent;
 import de.adorsys.psd2.consent.domain.TppInfo;
-import de.adorsys.psd2.consent.domain.piis.PiisConsent;
+import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -33,20 +34,20 @@ public class PiisConsentMapper {
     private final PsuDataMapper psuDataMapper;
     private final AccountReferenceMapper accountReferenceMapper;
 
-    public List<CmsPiisValidationInfo> mapToListCmsPiisValidationInfo(List<PiisConsent> consents) {
+    public List<CmsPiisValidationInfo> mapToListCmsPiisValidationInfo(List<PiisConsentEntity> consents) {
         return consents.stream()
                    .map(this::mapToCmsPiisValidationInfo)
                    .collect(Collectors.toList());
     }
 
-    private CmsPiisValidationInfo mapToCmsPiisValidationInfo(PiisConsent piisConsent) {
+    private CmsPiisValidationInfo mapToCmsPiisValidationInfo(PiisConsentEntity piisConsentEntity) {
         CmsPiisValidationInfo info = new CmsPiisValidationInfo();
-        info.setConsentId(piisConsent.getExternalId());
-        info.setExpireDate(piisConsent.getExpireDate());
-        info.setConsentStatus(piisConsent.getConsentStatus());
-        info.setPiisConsentTppAccessType(piisConsent.getTppAccessType());
-        info.setTppInfoId(Optional.ofNullable(piisConsent.getTppInfo()).map(TppInfo::getAuthorisationNumber).orElse(null));
-        info.setFrequencyPerDay(piisConsent.getAllowedFrequencyPerDay());
+        info.setConsentId(piisConsentEntity.getExternalId());
+        info.setExpireDate(piisConsentEntity.getExpireDate());
+        info.setConsentStatus(piisConsentEntity.getConsentStatus());
+        info.setPiisConsentTppAccessType(piisConsentEntity.getTppAccessType());
+        info.setTppInfoId(Optional.ofNullable(piisConsentEntity.getTppInfo()).map(TppInfo::getAuthorisationNumber).orElse(null));
+        info.setFrequencyPerDay(piisConsentEntity.getAllowedFrequencyPerDay());
         return info;
     }
 
