@@ -56,6 +56,27 @@ public class AccountReferenceMapper {
                    }).orElse(null);
     }
 
+    public List<AccountReference> mapToAccountReferenceList(List<AccountReferenceEntity> accountReferenceEntities) {
+        return accountReferenceEntities.stream()
+                   .map(this::mapToAccountReferenceEntity)
+                   .collect(Collectors.toList());
+    }
+
+    private AccountReference mapToAccountReferenceEntity(AccountReferenceEntity accountReferenceEntity) {
+        return Optional.ofNullable(accountReferenceEntity)
+                   .map(ref -> {
+                       AccountReference accountReference = new AccountReference();
+                       accountReference.setIban(ref.getIban());
+                       accountReference.setBban(ref.getBban());
+                       accountReference.setPan(ref.getPan());
+                       accountReference.setMaskedPan(ref.getMaskedPan());
+                       accountReference.setMsisdn(ref.getMsisdn());
+                       accountReference.setCurrency(ref.getCurrency());
+
+                       return accountReference;
+                   }).orElse(null);
+    }
+
     List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<AccountReference> cmsAccountReferences) {
         return cmsAccountReferences.stream()
                    .map(this::mapToAccountReferenceEntity)

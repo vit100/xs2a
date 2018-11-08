@@ -16,16 +16,10 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
-import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
-import de.adorsys.psd2.consent.aspsp.api.piis.CreatePiisConsentRequest;
-import de.adorsys.psd2.consent.domain.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.consent.aspsp.api.piis.PiisConsent;
+import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-
-import java.time.OffsetDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,21 +28,17 @@ public class PiisConsentMapper {
     private final PsuDataMapper psuDataMapper;
     private final AccountReferenceMapper accountReferenceMapper;
 
-    public PiisConsent mapToPiisConsent(@NotNull CreatePiisConsentRequest request, @NotNull ConsentStatus consentStatus) {
-        PiisConsent consent = new PiisConsent();
-        consent.setConsentStatus(consentStatus);
-        consent.setRequestDateTime(OffsetDateTime.now());
-        consent.setExpireDate(request.getValidUntil());
-        consent.setPsuData(Optional.ofNullable(request.getPsuData())
-                               .map(psuDataMapper::mapToPsuData)
-                               .orElse(null));
-        consent.setTppInfo(tppInfoMapper.mapToTppInfo(request.getTppInfo()));
-        consent.setAccounts(accountReferenceMapper.mapToAccountReferenceEntityList(request.getAccounts()));
-        PiisConsentTppAccessType accessType = request.getTppInfo() != null
-                                                  ? PiisConsentTppAccessType.SINGLE_TPP
-                                                  : PiisConsentTppAccessType.ALL_TPP;
-        consent.setTppAccessType(accessType);
-        consent.setAllowedFrequencyPerDay(request.getAllowedFrequencyPerDay());
-        return consent;
+    public PiisConsent mapToPiisConsent(PiisConsentEntity piisConsentEntity) {
+        return new PiisConsent(piisConsentEntity.getExternalId(),
+                               piisConsentEntity.isRecurringIndicator(),
+                               piisConsentEntity.getRequestDateTime(),
+                               piisConsentEntity.getLastActionDate(),
+                               piisConsentEntity.getExpireDate(),
+                               psuDataMapper.mapToPsuIdData(piisConsentEntity.getPsuData()),
+                               tppInfoMapper.mapToCmsTppInfo(piisConsentEntity.getTppInfo()),
+                               piisConsentEntity.getConsentStatus(),
+                               accountReferenceMapper.mapToAccountReferenceList(piisConsentEntity.getAccounts()),
+                               piisConsentEntity.getTppAccessType(),
+                               piisConsentEntity.getAllowedFrequencyPerDay());
     }
 }

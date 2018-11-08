@@ -17,28 +17,31 @@
 package de.adorsys.psd2.consent.aspsp.api.piis;
 
 import de.adorsys.psd2.consent.api.CmsTppInfo;
+import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
+import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Data
-@ApiModel(description = "Piis consent request", value = "PiisConsentRequest")
-
-public class CreatePiisConsentRequest {
-    @ApiModelProperty(value = "Tpp for which the consent will be created. If the property is omitted, the consent will be created for all TPPs")
+@NoArgsConstructor
+@AllArgsConstructor
+public class PiisConsent {
+    private String id;
+    private boolean recurringIndicator;
+    private OffsetDateTime requestDateTime;
+    private LocalDate lastActionDate;
+    private LocalDate expireDate;
+    private PsuIdData psuData;
     private CmsTppInfo tppInfo;
-
-    @ApiModelProperty(value = "Accounts for which the consent is created")
+    private ConsentStatus consentStatus;
     private List<AccountReference> accounts;
-
-    @ApiModelProperty(value = "Consent`s expiration date. The content is the local ASPSP date in ISODate Format", example = "2020-10-10")
-    private LocalDate validUntil;
-
-    @ApiModelProperty(value = "Maximum frequency for an access per day. For a once-off access, this attribute is set to 1", required = true, example = "4")
+    private PiisConsentTppAccessType tppAccessType;
     private int allowedFrequencyPerDay;
 }
-
