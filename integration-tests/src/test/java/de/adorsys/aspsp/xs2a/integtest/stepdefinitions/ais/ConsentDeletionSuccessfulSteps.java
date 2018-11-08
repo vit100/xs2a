@@ -24,9 +24,11 @@ import de.adorsys.aspsp.xs2a.integtest.model.TestData;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
 import de.adorsys.aspsp.xs2a.integtest.util.Context;
+import de.adorsys.aspsp.xs2a.integtest.util.HttpEntityUtils;
 import de.adorsys.psd2.model.Consents;
 import de.adorsys.psd2.model.ConsentsResponse201;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
@@ -59,7 +61,11 @@ public class ConsentDeletionSuccessfulSteps {
 
     @When("^PSU deletes consent$")
     public void initiateDeletion () {
-        testService.sendRestCall(HttpMethod.DELETE, context.getBaseUrl() + "/" + context.getConsentId());
+        HttpEntity entity = HttpEntityUtils.getHttpEntity(
+            context.getTestData().getRequest(), context.getAccessToken());
+
+        testService.sendRestCall(HttpMethod.DELETE, context.getBaseUrl() + "/" + context.getConsentId(), entity);
+       // testService.sendRestCall(HttpMethod.DELETE, context.getBaseUrl() + "/" + context.getConsentId());
     }
 
     @Then("^a successful response code and the appropriate messages get returned$")
