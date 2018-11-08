@@ -16,17 +16,39 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
-import de.adorsys.psd2.consent.aspsp.api.piis.PiisConsent;
-import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
+import de.adorsys.psd2.consent.api.piis.CmsPiisValidationInfo;
+import de.adorsys.psd2.consent.domain.TppInfo;
+import de.adorsys.psd2.consent.domain.piis.PiisConsent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Component
 @RequiredArgsConstructor
 public class PiisConsentMapper {
     private final TppInfoMapper tppInfoMapper;
     private final PsuDataMapper psuDataMapper;
     private final AccountReferenceMapper accountReferenceMapper;
+
+    public List<CmsPiisValidationInfo> mapToListCmsPiisValidationInfo(List<PiisConsent> consents) {
+        return consents.stream()
+                   .map(this::mapToCmsPiisValidationInfo)
+                   .collect(Collectors.toList());
+    }
+
+    private CmsPiisValidationInfo mapToCmsPiisValidationInfo(PiisConsent piisConsent) {
+        CmsPiisValidationInfo info = new CmsPiisValidationInfo();
+        info.setConsentId(piisConsent.getExternalId());
+        info.setExpireDate(piisConsent.getExpireDate());
+        info.setConsentStatus(piisConsent.getConsentStatus());
+        info.setPiisConsentTppAccessType(piisConsent.getTppAccessType());
+        info.setTppInfoId(Optional.ofNullable(piisConsent.getTppInfo()).map(TppInfo::getAuthorisationNumber).orElse(null));
+        info.setFrequencyPerDay(piisConsent.getAllowedFrequencyPerDay());
+        return info;
+    }
 
     public PiisConsent mapToPiisConsent(PiisConsentEntity piisConsentEntity) {
         return new PiisConsent(piisConsentEntity.getExternalId(),
