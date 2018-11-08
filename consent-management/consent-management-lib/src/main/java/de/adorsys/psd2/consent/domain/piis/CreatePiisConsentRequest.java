@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.aspsp.api.piis;
+package de.adorsys.psd2.consent.domain.piis;
 
 import de.adorsys.psd2.consent.api.CmsTppInfo;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;

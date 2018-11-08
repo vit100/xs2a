@@ -16,10 +16,10 @@
 
 package de.adorsys.psd2.consent.web.aspsp;
 
-import de.adorsys.psd2.consent.aspsp.api.piis.CreatePiisConsentRequest;
-import de.adorsys.psd2.consent.aspsp.api.piis.CreatePiisConsentResponse;
 import de.adorsys.psd2.consent.aspsp.api.piis.PiisConsent;
 import de.adorsys.psd2.consent.aspsp.api.service.CmsAspspPiisService;
+import de.adorsys.psd2.consent.domain.piis.CreatePiisConsentRequest;
+import de.adorsys.psd2.consent.domain.piis.CreatePiisConsentResponse;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -74,24 +74,15 @@ public class CmsAspspPiisController {
         return new ResponseEntity<>(cmsAspspPiisService.getConsentsForPsu(psuIdData), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/consent/{consent-id}/block")
-    @ApiOperation(value = "Blocks PIIS Consent object by its ID")
+    @PutMapping(path = "/consent/{consent-id}/terminate")
+    @ApiOperation(value = "Terminates PIIS Consent object by its ID")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Boolean.class),
         @ApiResponse(code = 404, message = "Not Found")})
-    public ResponseEntity<Boolean> blockConsent(
+    public ResponseEntity<Boolean> terminateConsent(
         @ApiParam(name = "consent-id", value = "The account consent identification assigned to the created account consent.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
-        @PathVariable("consent-id") String consentId,
-        @ApiParam(value = "Client ID of the PSU in the ASPSP client interface. Might be mandated in the ASPSP's documentation. Is not contained if an OAuth2 based authentication was performed in a pre-step or an OAuth2 based SCA was performed in an preceeding AIS service in the same session. ")
-        @RequestHeader(value = "psu-id", required = false) String psuId,
-        @ApiParam(value = "Type of the PSU-ID, needed in scenarios where PSUs have several PSU-IDs as access possibility. ")
-        @RequestHeader(value = "psu-id-type", required = false) String psuIdType,
-        @ApiParam(value = "Might be mandated in the ASPSP's documentation. Only used in a corporate context. ")
-        @RequestHeader(value = "psu-corporate-id", required = false) String psuCorporateId,
-        @ApiParam(value = "Might be mandated in the ASPSP's documentation. Only used in a corporate context. ")
-        @RequestHeader(value = "psu-corporate-id-type", required = false) String psuCorporateIdType) {
-        PsuIdData psuIdData = getPsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
-        return new ResponseEntity<>(cmsAspspPiisService.blockConsent(psuIdData, consentId), HttpStatus.OK);
+        @PathVariable("consent-id") String consentId) {
+        return new ResponseEntity<>(cmsAspspPiisService.terminateConsent(consentId), HttpStatus.OK);
     }
 
     @PutMapping(path = "/consent/{consent-id}/revoke")

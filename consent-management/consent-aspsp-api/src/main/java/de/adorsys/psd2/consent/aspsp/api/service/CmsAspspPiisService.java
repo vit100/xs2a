@@ -59,11 +59,10 @@ public interface CmsAspspPiisService {
     boolean revokeConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId);
 
     /**
-     * Blocks PIIS Consent object by its ID. Consent gets status "Terminated by ASPSP".
+     * Terminates PIIS Consent object by its ID. Consent gets status "Terminated by ASPSP".
      *
-     * @param psuIdData PSU credentials data
      * @param consentId ID of Consent
-     * @return <code>true</code> if consent was found and blocked. <code>false</code> otherwise.
+     * @return <code>true</code> if consent was found and terminated. <code>false</code> otherwise.
      */
-    boolean blockConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId);
+    boolean terminateConsent(@NotNull String consentId);
 }

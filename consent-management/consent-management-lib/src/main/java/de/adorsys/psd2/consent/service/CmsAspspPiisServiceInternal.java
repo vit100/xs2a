@@ -83,7 +83,7 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
 
     @Override
     @Transactional
-    public boolean blockConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId) {
+    public boolean terminateConsent(@NotNull String consentId) {
         return changeConsentStatus(consentId, TERMINATED_BY_ASPSP);
     }
 
