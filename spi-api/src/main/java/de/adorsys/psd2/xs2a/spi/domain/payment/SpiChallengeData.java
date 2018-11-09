@@ -17,13 +17,25 @@
 package de.adorsys.psd2.xs2a.spi.domain.payment;
 
 import lombok.Value;
+import org.apache.commons.lang3.StringUtils;
 
 @Value
 public class SpiChallengeData {
     private byte[] image;
     private String data;
     private String imageLink;
-    private int otpMaxLength;
-    private SpiOtpFormat spiOtpFormat;
+    private Integer otpMaxLength;
+    private SpiOtpFormat otpFormat;
     private String additionalInformation;
+
+    public boolean isEmpty() {
+        return image == null
+                   && StringUtils.isEmpty(data)
+                   && StringUtils.isEmpty(imageLink)
+                   && otpMaxLength == null
+                   && otpFormat == null
+                   && StringUtils.isEmpty(additionalInformation);
+
+    }
+
 }
