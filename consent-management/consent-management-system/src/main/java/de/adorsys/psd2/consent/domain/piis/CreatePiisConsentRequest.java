@@ -27,7 +27,6 @@ import java.util.List;
 
 @Data
 @ApiModel(description = "Piis consent request", value = "PiisConsentRequest")
-
 public class CreatePiisConsentRequest {
     @ApiModelProperty(value = "Tpp for which the consent will be created. If the property is omitted, the consent will be created for all TPPs")
     private CmsTppInfo tppInfo;
