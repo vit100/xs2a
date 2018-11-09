@@ -54,7 +54,7 @@ public class PisScaAuthenticatedStage extends PisScaStage<UpdatePisConsentPsuDat
         PaymentType paymentType = pisConsentAuthorisationResponse.getPaymentType();
         SpiPayment payment = mapToSpiPayment(pisConsentAuthorisationResponse.getPayments(), paymentType);
         String authenticationMethodId = request.getAuthenticationMethodId();
-        Xs2aChallengeData challengeData = null;
+
 
         PsuIdData psuData = request.getPsuData();
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentDataByPaymentId(request.getPaymentId());
@@ -63,14 +63,7 @@ public class PisScaAuthenticatedStage extends PisScaStage<UpdatePisConsentPsuDat
         aspspConsentData = spiResponse.getAspspConsentData();
         pisConsentDataService.updateAspspConsentData(aspspConsentData);
         SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
-        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-            challengeData = new Xs2aChallengeData(authorizationCodeResult.getImage(),
-                authorizationCodeResult.getData(),
-                authorizationCodeResult.getImageLink(),
-                authorizationCodeResult.getOtpMaxLength(),
-                spiToXs2aOtpFormatMapper.mapToOtpFormat(authorizationCodeResult.getOtpFormat()),
-                authorizationCodeResult.getAdditionalInformation());
-        }
+        Xs2aChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
 
         if (spiResponse.hasError()) {
             return new Xs2aUpdatePisConsentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
@@ -100,5 +93,17 @@ public class PisScaAuthenticatedStage extends PisScaStage<UpdatePisConsentPsuDat
         response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(chosenScaMethod));
         response.setChallengeData(challengeData);
         return response;
+    }
+
+    private Xs2aChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
+        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
+            return new Xs2aChallengeData(authorizationCodeResult.getChallengeData().getImage(),
+                                         authorizationCodeResult.getChallengeData().getData(),
+                                         authorizationCodeResult.getChallengeData().getImageLink(),
+                                         authorizationCodeResult.getChallengeData().getOtpMaxLength(),
+                                         spiToXs2aOtpFormatMapper.mapToOtpFormat(authorizationCodeResult.getChallengeData().getOtpFormat()),
+                                         authorizationCodeResult.getChallengeData().getAdditionalInformation());
+        }
+        return null;
     }
 }

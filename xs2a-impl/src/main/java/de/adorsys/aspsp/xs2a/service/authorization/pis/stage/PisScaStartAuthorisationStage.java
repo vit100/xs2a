@@ -102,7 +102,7 @@ public class PisScaStartAuthorisationStage extends PisScaStage<UpdatePisConsentP
             Xs2aUpdatePisConsentPsuDataResponse response = new Xs2aUpdatePisConsentPsuDataResponse(SCAMETHODSELECTED);
             response.setPsuId(psuData.getPsuId());
             response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(chosenMethod));
-            response.setChallengeData(getChallengeData(authCodeResponse.getPayload()));
+            response.setChallengeData(mapToChallengeData(authCodeResponse.getPayload()));
             return response;
 
         } else if (isMultipleScaMethods(spiScaMethods)) {
@@ -114,14 +114,14 @@ public class PisScaStartAuthorisationStage extends PisScaStage<UpdatePisConsentP
         return new Xs2aUpdatePisConsentPsuDataResponse(FAILED);
     }
 
-    private Xs2aChallengeData getChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
+    private Xs2aChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
         if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-            return new Xs2aChallengeData(authorizationCodeResult.getImage(),
-                authorizationCodeResult.getData(),
-                authorizationCodeResult.getImageLink(),
-                authorizationCodeResult.getOtpMaxLength(),
-                spiToXs2aOtpFormatMapper.mapToOtpFormat(authorizationCodeResult.getOtpFormat()),
-                authorizationCodeResult.getAdditionalInformation());
+          return new Xs2aChallengeData(authorizationCodeResult.getChallengeData().getImage(),
+                authorizationCodeResult.getChallengeData().getData(),
+                authorizationCodeResult.getChallengeData().getImageLink(),
+                authorizationCodeResult.getChallengeData().getOtpMaxLength(),
+                spiToXs2aOtpFormatMapper.mapToOtpFormat(authorizationCodeResult.getChallengeData().getOtpFormat()),
+                authorizationCodeResult.getChallengeData().getAdditionalInformation());
         }
         return null;
     }

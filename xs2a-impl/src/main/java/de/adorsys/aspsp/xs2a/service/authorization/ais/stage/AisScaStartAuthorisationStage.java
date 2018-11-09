@@ -119,16 +119,8 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
     private UpdateConsentPsuDataResponse createResponseForOneAvailableMethod(SpiAccountConsent accountConsent, PsuIdData psuData, SpiAuthenticationObject scaMethod, String consentId) {
         SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(psuDataMapper.mapToSpiPsuData(psuData), scaMethod.getAuthenticationMethodId(), accountConsent, aisConsentDataService.getAspspConsentDataByConsentId(consentId));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
-        Xs2aChallengeData challengeData = null;
         SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
-        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-            challengeData = new Xs2aChallengeData(authorizationCodeResult.getImage(),
-                authorizationCodeResult.getData(),
-                authorizationCodeResult.getImageLink(),
-                authorizationCodeResult.getOtpMaxLength(),
-                spiToXs2aOtpFormatMapper.mapToOtpFormat(authorizationCodeResult.getOtpFormat()),
-                authorizationCodeResult.getAdditionalInformation());
-        }
+        Xs2aChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
 
         if (spiResponse.hasError()) {
             UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
@@ -151,5 +143,17 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         response.setScaStatus(ScaStatus.FAILED);
         response.setErrorCode(MessageErrorCode.SCA_METHOD_UNKNOWN);
         return response;
+    }
+
+    private Xs2aChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
+        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
+            return new Xs2aChallengeData(authorizationCodeResult.getChallengeData().getImage(),
+                                         authorizationCodeResult.getChallengeData().getData(),
+                                         authorizationCodeResult.getChallengeData().getImageLink(),
+                                         authorizationCodeResult.getChallengeData().getOtpMaxLength(),
+                                         spiToXs2aOtpFormatMapper.mapToOtpFormat(authorizationCodeResult.getChallengeData().getOtpFormat()),
+                                         authorizationCodeResult.getChallengeData().getAdditionalInformation());
+        }
+        return null;
     }
 }
