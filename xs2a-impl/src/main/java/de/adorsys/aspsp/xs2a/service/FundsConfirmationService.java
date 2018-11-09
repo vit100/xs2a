@@ -39,7 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Currency;
 import java.util.List;
+import java.util.Optional;
 
 import static de.adorsys.aspsp.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
 
@@ -75,7 +77,9 @@ public class FundsConfirmationService {
                            .build();
             }
 
-            List<CmsPiisValidationInfo> response = piisConsentService.getPiisConsentListByAccountIdentifier(request.getPsuAccount().getCurrency(), selector, selector.getAccountReferenceValue(request.getPsuAccount()));
+            Currency currency = Optional.ofNullable(request.getPsuAccount().getCurrency())
+                                    .orElseGet(request.getInstructedAmount()::getCurrency);
+            List<CmsPiisValidationInfo> response = piisConsentService.getPiisConsentListByAccountIdentifier(currency, selector, selector.getAccountReferenceValue(request.getPsuAccount()));
             ResponseObject<String> validationResult = piisConsentValidationService.validatePiisConsentData(response);
 
             if (validationResult.hasError()) {
