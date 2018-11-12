@@ -51,7 +51,7 @@ public class AccountAspect extends AbstractLinkAspect<AccountController> {
     }
 
     @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.AccountService.getAccountList(..)) && args(consentId, withBalance)", returning = "result", argNames = "result,consentId,withBalance")
-    public ResponseObject<Map<String, List<Xs2aAccountDetails>>> getAccountDetailsListAspect(ResponseObject<Map<String, List<Xs2aAccountDetails>>> result, String consentId, boolean withBalance) {
+    public ResponseObject<Map<String, List<Xs2aAccountDetails>>> getAccountListAspect(ResponseObject<Map<String, List<Xs2aAccountDetails>>> result, String consentId, boolean withBalance) {
         if (!result.hasError()) {
             Map<String, List<Xs2aAccountDetails>> accountDetails = result.getBody();
             setLinksToAccounts(accountDetails, withBalance);
