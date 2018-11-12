@@ -119,14 +119,13 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
     private UpdateConsentPsuDataResponse createResponseForOneAvailableMethod(SpiAccountConsent accountConsent, PsuIdData psuData, SpiAuthenticationObject scaMethod, String consentId) {
         SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(psuDataMapper.mapToSpiPsuData(psuData), scaMethod.getAuthenticationMethodId(), accountConsent, aisConsentDataService.getAspspConsentDataByConsentId(consentId));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
-        SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
-        Xs2aChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
 
         if (spiResponse.hasError()) {
             UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
             response.setErrorCode(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()));
             return response;
         }
+        Xs2aChallengeData challengeData = mapToChallengeData(spiResponse.getPayload());
 
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
         response.setPsuId(psuData.getPsuId());

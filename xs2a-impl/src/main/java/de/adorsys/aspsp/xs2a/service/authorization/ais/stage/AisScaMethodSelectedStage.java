@@ -70,12 +70,11 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
 
         SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(psuDataMapper.mapToSpiPsuData(request.getPsuData()), authenticationMethodId, spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
-        SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
-        Xs2aChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
 
         if (spiResponse.hasError()) {
             return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()));
         }
+
 
         SpiResponse<List<SpiAuthenticationObject>> spiScaMethodsResponse = aisConsentSpi.requestAvailableScaMethods(psuDataMapper.mapToSpiPsuData(request.getPsuData()), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
@@ -89,10 +88,11 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
                                                       .filter(a -> authenticationMethodId.equals(a.getAuthenticationMethodId()))
                                                       .findFirst()
                                                       .orElse(null);
-
         if (chosenScaMethod == null) {
             return new UpdateConsentPsuDataResponse(MessageErrorCode.SCA_METHOD_UNKNOWN);
         }
+
+        Xs2aChallengeData challengeData = mapToChallengeData(spiResponse.getPayload());
 
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
         response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(chosenScaMethod));

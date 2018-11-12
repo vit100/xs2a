@@ -37,7 +37,7 @@ import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
 
@@ -54,49 +54,39 @@ public class PisScaAuthenticatedStage extends PisScaStage<UpdatePisConsentPsuDat
         PaymentType paymentType = pisConsentAuthorisationResponse.getPaymentType();
         SpiPayment payment = mapToSpiPayment(pisConsentAuthorisationResponse.getPayments(), paymentType);
         String authenticationMethodId = request.getAuthenticationMethodId();
-
-
         PsuIdData psuData = request.getPsuData();
+
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentDataByPaymentId(request.getPaymentId());
 
         SpiResponse<SpiAuthorizationCodeResult> spiResponse = paymentAuthorisationSpi.requestAuthorisationCode(xs2aToSpiPsuDataMapper.mapToSpiPsuData(psuData), authenticationMethodId, payment, aspspConsentData);
-        aspspConsentData = spiResponse.getAspspConsentData();
-        pisConsentDataService.updateAspspConsentData(aspspConsentData);
-        SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
-        Xs2aChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
 
         if (spiResponse.hasError()) {
             return new Xs2aUpdatePisConsentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
         }
 
-        SpiResponse<List<SpiAuthenticationObject>> availableScaMethodsResponse = paymentAuthorisationSpi.requestAvailableScaMethods(xs2aToSpiPsuDataMapper.mapToSpiPsuData(psuData), payment, aspspConsentData);
-        pisConsentDataService.updateAspspConsentData(availableScaMethodsResponse.getAspspConsentData());
+        pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
+        SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
 
-        if (availableScaMethodsResponse.hasError()) {
-            return new Xs2aUpdatePisConsentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
-        }
+        Optional<SpiAuthenticationObject> spiAuthenticationObject = Optional.ofNullable(authorizationCodeResult)
+                                                                        .map(SpiAuthorizationCodeResult::getSelectedScaMethod);
 
-        List<SpiAuthenticationObject> availableScaMethods = availableScaMethodsResponse.getPayload();
-        SpiAuthenticationObject chosenScaMethod = availableScaMethods.stream()
-                                                      .filter(a -> authenticationMethodId.equals(a.getAuthenticationMethodId()))
-                                                      .findFirst()
-                                                      .orElse(null);
-
-        if (chosenScaMethod == null) {
+        if (!spiAuthenticationObject.isPresent()) {
             ErrorHolder errorHolder = ErrorHolder.builder(MessageErrorCode.SCA_METHOD_UNKNOWN)
                                           .build();
             return new Xs2aUpdatePisConsentPsuDataResponse(errorHolder);
         }
 
+        Xs2aChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
+
         Xs2aUpdatePisConsentPsuDataResponse response = new Xs2aUpdatePisConsentPsuDataResponse(SCAMETHODSELECTED);
         response.setPsuId(psuData.getPsuId());
-        response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(chosenScaMethod));
+        response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(spiAuthenticationObject.get()));
         response.setChallengeData(challengeData);
         return response;
     }
 
     private Xs2aChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
-        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
+        if (authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
             return new Xs2aChallengeData(authorizationCodeResult.getChallengeData().getImage(),
                                          authorizationCodeResult.getChallengeData().getData(),
                                          authorizationCodeResult.getChallengeData().getImageLink(),

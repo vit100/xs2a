@@ -93,6 +93,11 @@ public class PisScaStartAuthorisationStage extends PisScaStage<UpdatePisConsentP
         } else if (isSingleScaMethod(spiScaMethods)) {
             SpiAuthenticationObject chosenMethod = spiScaMethods.get(0);
             SpiResponse<SpiAuthorizationCodeResult> authCodeResponse = paymentAuthorisationSpi.requestAuthorisationCode(psuData, chosenMethod.getAuthenticationMethodId(), payment, aspspConsentData);
+
+            if (authCodeResponse.hasError()) {
+                return new Xs2aUpdatePisConsentPsuDataResponse(spiErrorMapper.mapToErrorHolder(authCodeResponse));
+            }
+
             pisConsentDataService.updateAspspConsentData(authCodeResponse.getAspspConsentData());
 
             if (authCodeResponse.hasError()) {
