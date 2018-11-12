@@ -57,8 +57,6 @@ public class CmsAspspPiisControllerTest {
             .thenReturn(Optional.of(CONSENT_ID));
         when(cmsAspspPiisService.getConsentsForPsu(buildPsuIdData(PSU_ID))).thenReturn(buildPiisConsentList());
         when(cmsAspspPiisService.getConsentsForPsu(buildPsuIdData(WRONG_PSU_ID))).thenReturn(Collections.emptyList());
-        when(cmsAspspPiisService.revokeConsent(any(), eq(CONSENT_ID))).thenReturn(true);
-        when(cmsAspspPiisService.revokeConsent(any(), eq(WRONG_CONSENT_ID))).thenReturn(false);
         when(cmsAspspPiisService.terminateConsent(eq(CONSENT_ID))).thenReturn(true);
         when(cmsAspspPiisService.terminateConsent(eq(WRONG_CONSENT_ID))).thenReturn(false);
     }
@@ -112,34 +110,12 @@ public class CmsAspspPiisControllerTest {
         assertThat(actual.getBody().isEmpty()).isTrue();
     }
 
-    @Test
-    public void revokeConsent_Success() {
-        //When
-        ResponseEntity<Boolean> actual =
-            cmsAspspPiisController.revokeConsent(CONSENT_ID, PSU_ID, null, null, null);
-
-        //Then
-        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(actual.getBody()).isTrue();
-    }
-
-    @Test
-    public void revokeConsent_Failure() {
-        //When
-        ResponseEntity<Boolean> actual =
-            cmsAspspPiisController.revokeConsent(WRONG_CONSENT_ID, PSU_ID, null, null, null);
-
-        //Then
-        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(actual.getBody()).isFalse();
-    }
-
 
     @Test
     public void terminateConsent_Success() {
         //When
         ResponseEntity<Boolean> actual =
-            cmsAspspPiisController.revokeConsent(CONSENT_ID, PSU_ID, null, null, null);
+            cmsAspspPiisController.terminateConsent(CONSENT_ID);
 
         //Then
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);

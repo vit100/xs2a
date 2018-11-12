@@ -35,7 +35,6 @@ public enum ConsentStatus {
     REJECTED("rejected"),
     VALID("valid"),
     REVOKED_BY_PSU("revokedByPsu"),
-    REVOKED_BY_ASPSP("revokedByAspsp"),
     EXPIRED("expired"),
     TERMINATED_BY_TPP("terminatedByTpp"),
     TERMINATED_BY_ASPSP("terminatedByAspsp");

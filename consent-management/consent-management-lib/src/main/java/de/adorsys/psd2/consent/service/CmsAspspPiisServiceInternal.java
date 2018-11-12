@@ -26,7 +26,6 @@ import de.adorsys.psd2.consent.service.mapper.AccountReferenceMapper;
 import de.adorsys.psd2.consent.service.mapper.PiisConsentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.*;
+import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
+import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.TERMINATED_BY_ASPSP;
 
 @Service
 @RequiredArgsConstructor
@@ -77,14 +77,17 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
 
     @Override
     @Transactional
-    public boolean revokeConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId) {
-        return changeConsentStatus(consentId, REVOKED_BY_ASPSP);
-    }
-
-    @Override
-    @Transactional
     public boolean terminateConsent(@NotNull String consentId) {
-        return changeConsentStatus(consentId, TERMINATED_BY_ASPSP);
+        Optional<PiisConsentEntity> entityOptional = piisConsentRepository.findByExternalId(consentId);
+
+        if (!entityOptional.isPresent()) {
+            return false;
+        }
+
+        PiisConsentEntity entity = entityOptional.get();
+        entity.setLastActionDate(LocalDate.now());
+        entity.setConsentStatus(TERMINATED_BY_ASPSP);
+        return piisConsentRepository.save(entity) != null;
     }
 
     private PiisConsentEntity buildPiisConsent(PsuIdData psuIdData,
@@ -105,21 +108,5 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
         consent.setTppAccessType(accessType);
         consent.setAllowedFrequencyPerDay(allowedFrequencyPerDay);
         return consent;
-    }
-
-    private boolean changeConsentStatus(String consentId, ConsentStatus status) {
-        return getPiisConsentById(consentId)
-                   .map(con -> updateConsentStatus(con, status))
-                   .orElse(false);
-    }
-
-    private Optional<PiisConsentEntity> getPiisConsentById(String consentId) {
-        return piisConsentRepository.findByExternalId(consentId);
-    }
-
-    private boolean updateConsentStatus(PiisConsentEntity consent, ConsentStatus status) {
-        consent.setLastActionDate(LocalDate.now());
-        consent.setConsentStatus(status);
-        return piisConsentRepository.save(consent) != null;
     }
 }

@@ -143,29 +143,6 @@ public class CmsAspspPiisServiceInternalTest {
     }
 
     @Test
-    public void revokeConsent_Success() {
-        ArgumentCaptor<PiisConsentEntity> argumentCaptor = ArgumentCaptor.forClass(PiisConsentEntity.class);
-
-        // When
-        boolean actual = cmsAspspPiisServiceInternal.revokeConsent(buildPsuIdData(), CONSENT_EXTERNAL_ID);
-
-        // Then
-        assertThat(actual).isTrue();
-        verify(piisConsentRepository).save(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().getConsentStatus()).isEqualTo(ConsentStatus.REVOKED_BY_ASPSP);
-    }
-
-    @Test
-    public void revokeConsent_Failure_WrongConsentId() {
-        // When
-        boolean actual = cmsAspspPiisServiceInternal.revokeConsent(buildPsuIdData(), CONSENT_EXTERNAL_ID_WRONG);
-
-        // Then
-        assertThat(actual).isFalse();
-        verify(piisConsentRepository, never()).save(any(PiisConsentEntity.class));
-    }
-
-    @Test
     public void terminateConsent_Success() {
         ArgumentCaptor<PiisConsentEntity> argumentCaptor = ArgumentCaptor.forClass(PiisConsentEntity.class);
 

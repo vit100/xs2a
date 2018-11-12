@@ -50,15 +50,6 @@ public interface CmsAspspPiisService {
     List<PiisConsent> getConsentsForPsu(@NotNull PsuIdData psuIdData);
 
     /**
-     * Revokes PIIS Consent object by its ID. Consent gets status "Revoked by ASPSP".
-     *
-     * @param psuIdData PSU credentials data
-     * @param consentId ID of Consent
-     * @return <code>true</code> if consent was found and revoked. <code>false</code> otherwise.
-     */
-    boolean revokeConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId);
-
-    /**
      * Terminates PIIS Consent object by its ID. Consent gets status "Terminated by ASPSP".
      *
      * @param consentId ID of Consent
