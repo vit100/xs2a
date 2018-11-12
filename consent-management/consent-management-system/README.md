@@ -61,7 +61,9 @@ This value should be decremented each time the TPP of PSU requests any consent r
 - An endpoint to update the PIS consent status by its external identifier.
 
 ## PIIS:
-- An endpoint to create PIIS consent
+- An endpoint to create PIIS consent.
+- An endpoint to retrieve PIIS consents by PSU.
+- An endpoint to terminate PIIS consent by its external identifier.
 
 ## CORS
 By default, allow credentials, all origins and all headers are disabled.
