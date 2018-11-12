@@ -26,55 +26,65 @@ import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
 import de.adorsys.aspsp.xs2a.integtest.util.Context;
 import de.adorsys.aspsp.xs2a.integtest.util.HttpEntityUtils;
 import de.adorsys.psd2.model.Consents;
-import de.adorsys.psd2.model.ConsentsResponse201;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.client.RestTemplate;
+
 import java.io.IOException;
 import java.util.HashMap;
 
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+
 
 @FeatureFileSteps
 public class ConsentDeletionSuccessfulSteps {
 
 
     @Autowired
-    private Context<Consents, ConsentsResponse201> context;
+    private Context<Consents, Void> context;
 
 
     @Autowired
     private TestService testService;
 
+    @Autowired
+    @Qualifier("xs2a")
+    private RestTemplate restTemplate;
 
-    //    @Given("^PSU sends the single payment initiation request and receives the paymentId$")
-    //    See Global Successful Steps
+
+    //@Given("^PSU wants to create a consent (.*)$")
+    //    See ConsentRequestSuccessfulSteps
 
     @Given ("^PSU wants to delete the consent (.*)$")
     public void loadTestData(String dataFileName) throws IOException {
-        testService.parseJson("/data-input/ais/consent/deletion/" + dataFileName, new TypeReference<TestData<HashMap, ConsentsResponse201 >>() {
+        testService.parseJson("/data-input/ais/consent/deletion/" + dataFileName, new TypeReference<TestData<HashMap, Void >>() {
         });
     }
 
     @When("^PSU deletes consent$")
     public void initiateDeletion () {
-        HttpEntity entity = HttpEntityUtils.getHttpEntity(
+        HttpEntity entity = HttpEntityUtils.getHttpEntityWithoutBody(
             context.getTestData().getRequest(), context.getAccessToken());
+        ResponseEntity<Void> response = restTemplate.exchange(
+            context.getBaseUrl() + "/consents/" + context.getConsentId(),
+            HttpMethod.DELETE,
+            entity,
+            Void.class);
+        context.setActualResponse(response);
 
-        testService.sendRestCall(HttpMethod.DELETE, context.getBaseUrl() + "/" + context.getConsentId(), entity);
-       // testService.sendRestCall(HttpMethod.DELETE, context.getBaseUrl() + "/" + context.getConsentId());
     }
 
     @Then("^a successful response code and the appropriate messages get returned$")
     public void checkResponse() {
-    ResponseEntity<ConsentsResponse201> actualResponse = context.getActualResponse();
-    ConsentsResponse201 givenResponseBody = context.getTestData().getResponse().getBody();
+    ResponseEntity<Void> actualResponse = context.getActualResponse();
 
         assertThat(actualResponse.getStatusCode(), equalTo(context.getTestData().getResponse().getHttpStatus()));
-        assertThat(actualResponse.getBody().getConsentStatus(), equalTo(givenResponseBody.getConsentStatus()));
     }
 
 
