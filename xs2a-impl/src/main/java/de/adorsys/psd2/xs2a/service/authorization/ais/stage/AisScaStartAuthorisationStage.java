@@ -18,9 +18,9 @@ package de.adorsys.psd2.xs2a.service.authorization.ais.stage;
 
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
-import de.adorsys.psd2.xs2a.domain.Xs2aChallengeData;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
@@ -29,7 +29,6 @@ import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiResponseStatusToXs2aMessageErrorCodeMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aAuthenticationObjectMapper;
-import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aOtpFormatMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
@@ -54,9 +53,8 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
                                          Xs2aAisConsentMapper aisConsentMapper,
                                          SpiResponseStatusToXs2aMessageErrorCodeMapper messageErrorCodeMapper,
                                          Xs2aToSpiPsuDataMapper psuDataMapper,
-                                         SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper,
-                                         SpiToXs2aOtpFormatMapper spiToXs2aOtpFormatMapper) {
-        super(aisConsentService, aisConsentDataService, aisConsentSpi, aisConsentMapper, messageErrorCodeMapper, psuDataMapper, spiToXs2aAuthenticationObjectMapper, spiToXs2aOtpFormatMapper);
+                                         SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper) {
+        super(aisConsentService, aisConsentDataService, aisConsentSpi, aisConsentMapper, messageErrorCodeMapper, psuDataMapper, spiToXs2aAuthenticationObjectMapper);
     }
 
     /**
@@ -125,7 +123,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
             response.setErrorCode(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()));
             return response;
         }
-        Xs2aChallengeData challengeData = mapToChallengeData(spiResponse.getPayload());
+        ChallengeData challengeData = mapToChallengeData(spiResponse.getPayload());
 
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
         response.setPsuId(psuData.getPsuId());
@@ -144,14 +142,9 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         return response;
     }
 
-    private Xs2aChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
+    private ChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
         if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-            return new Xs2aChallengeData(authorizationCodeResult.getChallengeData().getImage(),
-                                         authorizationCodeResult.getChallengeData().getData(),
-                                         authorizationCodeResult.getChallengeData().getImageLink(),
-                                         authorizationCodeResult.getChallengeData().getOtpMaxLength(),
-                                         spiToXs2aOtpFormatMapper.mapToOtpFormat(authorizationCodeResult.getChallengeData().getOtpFormat()),
-                                         authorizationCodeResult.getChallengeData().getAdditionalInformation());
+            return authorizationCodeResult.getChallengeData();
         }
         return null;
     }

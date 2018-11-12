@@ -20,8 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import de.adorsys.psd2.xs2a.domain.OtpFormat;
-import de.adorsys.psd2.xs2a.domain.Xs2aChallengeData;
+import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
+import de.adorsys.psd2.xs2a.core.sca.OtpFormat;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.*;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
@@ -258,10 +258,10 @@ public class ConsentModelMapper {
                        .orElse(ScaStatus.FAILED));
     }
 
-    private ChallengeData mapToChallengeData(Xs2aChallengeData xs2aChallengeData) {
+    private de.adorsys.psd2.model.ChallengeData mapToChallengeData(ChallengeData xs2aChallengeData) {
         return Optional.ofNullable(xs2aChallengeData)
             .map(cd -> {
-                    ChallengeData challengeData = new ChallengeData()
+                    de.adorsys.psd2.model.ChallengeData challengeData = new de.adorsys.psd2.model.ChallengeData()
                         .additionalInformation(cd.getAdditionalInformation())
                         .image(cd.getImage())
                         .imageLink(cd.getImageLink())
@@ -272,10 +272,10 @@ public class ConsentModelMapper {
                 }).orElse(null);
     }
 
-    private ChallengeData.OtpFormatEnum mapToOtpFormat(OtpFormat otpFormat) {
+    private de.adorsys.psd2.model.ChallengeData.OtpFormatEnum mapToOtpFormat(OtpFormat otpFormat) {
         return Optional.ofNullable(otpFormat)
             .map(OtpFormat::getValue)
-            .map(ChallengeData.OtpFormatEnum::fromValue)
+            .map(de.adorsys.psd2.model.ChallengeData.OtpFormatEnum::fromValue)
             .orElse(null);
     }
 

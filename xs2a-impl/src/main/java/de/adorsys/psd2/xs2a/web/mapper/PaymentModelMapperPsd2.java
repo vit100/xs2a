@@ -21,7 +21,7 @@ import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import de.adorsys.psd2.xs2a.domain.Xs2aChallengeData;
+import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aChosenScaMethod;
 import de.adorsys.psd2.xs2a.domain.pis.*;
@@ -194,16 +194,17 @@ public class PaymentModelMapperPsd2 {
                    }).orElse(null);
     }
 
-    private ChallengeData mapToChallengeData(Xs2aChallengeData xs2aChallengeData) {
-        return Optional.ofNullable(xs2aChallengeData)
+    private de.adorsys.psd2.model.ChallengeData mapToChallengeData(ChallengeData challengeData) {
+        return Optional.ofNullable(challengeData)
                    .map(xs2aChallenge -> {
-                       ChallengeData psd2Challenge = new ChallengeData();
-                       psd2Challenge.setImage(xs2aChallengeData.getImage());
-                       psd2Challenge.setData(xs2aChallengeData.getData());
-                       psd2Challenge.setImageLink(xs2aChallengeData.getImageLink());
-                       psd2Challenge.setOtpMaxLength(xs2aChallengeData.getOtpMaxLength());
-                       psd2Challenge.setOtpFormat(ChallengeData.OtpFormatEnum.fromValue(xs2aChallengeData.getOtpFormat().getValue()));
-                       psd2Challenge.setAdditionalInformation(xs2aChallengeData.getAdditionalInformation());
+                       de.adorsys.psd2.model.ChallengeData psd2Challenge = new de.adorsys.psd2.model.ChallengeData();
+                       psd2Challenge.setImage(challengeData.getImage());
+                       psd2Challenge.setData(challengeData.getData());
+                       psd2Challenge.setImageLink(challengeData.getImageLink());
+                       psd2Challenge.setOtpMaxLength(challengeData.getOtpMaxLength());
+                       psd2Challenge.setOtpFormat(de.adorsys.psd2.model.ChallengeData.OtpFormatEnum.fromValue(
+                           challengeData.getOtpFormat().getValue()));
+                       psd2Challenge.setAdditionalInformation(challengeData.getAdditionalInformation());
                        return psd2Challenge;
                    })
                    .orElse(null);
