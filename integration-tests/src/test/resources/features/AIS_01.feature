@@ -81,7 +81,8 @@ Feature: Account Information Service
 
     @ignore
     Scenario Outline: Errorful deletion of consent with no consent-id (redirect)
-        Given PSU wants to delete the consent <consent-resource> without consent id
+        Given PSU wants to create a consent <consent-resource>
+        When PSU sends the create consent request
         When PSU deletes consent
         Then an error response code is displayed and an appropriate error response is shown
         Examples:
