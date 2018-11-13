@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.CmsTppInfo;
 import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
 import de.adorsys.psd2.consent.aspsp.api.piis.PiisConsent;
 import de.adorsys.psd2.consent.aspsp.api.service.CmsAspspPiisService;
@@ -28,6 +27,7 @@ import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,11 +56,11 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
     @Override
     @Transactional
     public Optional<String> createConsent(@NotNull PsuIdData psuIdData,
-                                          @Nullable CmsTppInfo cmsTppInfo,
+                                          @Nullable TppInfo tppInfo,
                                           @NotNull List<AccountReference> accounts,
                                           @NotNull LocalDate validUntil,
                                           int allowedFrequencyPerDay) {
-        PiisConsentEntity consent = buildPiisConsent(psuIdData, cmsTppInfo, accounts, validUntil, allowedFrequencyPerDay);
+        PiisConsentEntity consent = buildPiisConsent(psuIdData, tppInfo, accounts, validUntil, allowedFrequencyPerDay);
         consent.setExternalId(UUID.randomUUID().toString());
         PiisConsentEntity saved = piisConsentRepository.save(consent);
         return saved.getId() != null
@@ -91,7 +91,7 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
     }
 
     private PiisConsentEntity buildPiisConsent(PsuIdData psuIdData,
-                                               CmsTppInfo cmsTppInfo,
+                                               TppInfo tppInfo,
                                                List<AccountReference> accounts,
                                                LocalDate validUntil,
                                                int allowedFrequencyPerDay) {
@@ -100,9 +100,9 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
         consent.setRequestDateTime(OffsetDateTime.now());
         consent.setExpireDate(validUntil);
         consent.setPsuData(psuDataMapper.mapToPsuData(psuIdData));
-        consent.setTppInfo(tppInfoMapper.mapToTppInfo(cmsTppInfo));
+        consent.setTppInfo(tppInfoMapper.mapToTppInfoEntity(tppInfo));
         consent.setAccounts(accountReferenceMapper.mapToAccountReferenceEntityList(accounts));
-        PiisConsentTppAccessType accessType = cmsTppInfo != null
+        PiisConsentTppAccessType accessType = tppInfo != null
                                                   ? PiisConsentTppAccessType.SINGLE_TPP
                                                   : PiisConsentTppAccessType.ALL_TPP;
         consent.setTppAccessType(accessType);

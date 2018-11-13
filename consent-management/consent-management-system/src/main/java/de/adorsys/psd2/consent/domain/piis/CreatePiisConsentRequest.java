@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.domain.piis;
 
-import de.adorsys.psd2.consent.api.CmsTppInfo;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,7 +29,7 @@ import java.util.List;
 @ApiModel(description = "Piis consent request", value = "PiisConsentRequest")
 public class CreatePiisConsentRequest {
     @ApiModelProperty(value = "Tpp for which the consent will be created. If the property is omitted, the consent will be created for all TPPs")
-    private CmsTppInfo tppInfo;
+    private TppInfo tppInfo;
 
     @ApiModelProperty(value = "Accounts for which the consent is created")
     private List<AccountReference> accounts;

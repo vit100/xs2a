@@ -16,11 +16,11 @@
 
 package de.adorsys.psd2.consent.aspsp.api.piis;
 
-import de.adorsys.psd2.consent.api.CmsTppInfo;
 import de.adorsys.psd2.consent.api.piis.PiisConsentTppAccessType;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,7 +39,7 @@ public class PiisConsent {
     private LocalDate lastActionDate;
     private LocalDate expireDate;
     private PsuIdData psuData;
-    private CmsTppInfo tppInfo;
+    private TppInfo tppInfo;
     private ConsentStatus consentStatus;
     private List<AccountReference> accounts;
     private PiisConsentTppAccessType tppAccessType;
