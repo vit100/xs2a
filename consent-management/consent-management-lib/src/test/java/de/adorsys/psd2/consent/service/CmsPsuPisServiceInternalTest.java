@@ -207,7 +207,7 @@ public class CmsPsuPisServiceInternalTest {
     @Test
     public void updatePaymentStatus_Success() {
         // When
-        boolean actualResult = cmsPsuPisServiceInternal.updatePaymentStatus(PAYMENT_ID, TransactionStatus.CANC);
+        boolean actualResult = cmsPsuPisServiceInternal.updatePaymentStatus(PAYMENT_ID, TransactionStatus.RCVD);
 
         // Then
         assertTrue(actualResult);
@@ -279,7 +279,7 @@ public class CmsPsuPisServiceInternalTest {
         PisPaymentData pisPaymentData = new PisPaymentData();
         pisPaymentData.setPaymentId(PAYMENT_ID);
         pisPaymentData.setConsent(buildPisConsent());
-        pisPaymentData.setTransactionStatus(TransactionStatus.ACCP);
+        pisPaymentData.setTransactionStatus(TransactionStatus.RCVD);
         pisPaymentData.setDebtorAccount(buildAccountReference());
         pisPaymentData.setCreditorAccount(buildAccountReference());
         pisPaymentData.setAmount(new BigDecimal("1000"));

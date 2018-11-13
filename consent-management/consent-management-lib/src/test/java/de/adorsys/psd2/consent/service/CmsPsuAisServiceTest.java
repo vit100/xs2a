@@ -39,12 +39,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
-import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.VALID;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -95,7 +92,8 @@ public class CmsPsuAisServiceTest {
         when(aisConsentAuthorizationRepository.save(aisConsentAuthorization)).thenReturn(aisConsentAuthorization);
         when(aisConsentAuthorizationRepository.findByExternalId(AUTHORISATION_ID)).thenReturn(Optional.of(aisConsentAuthorization));
         when(aisConsentAuthorizationRepository.findByExternalId(AUTHORISATION_ID_NOT_EXIST)).thenReturn(Optional.empty());
-        when(aisConsentRepository.findByExternalIdAndConsentStatusIn(EXTERNAL_CONSENT_ID, EnumSet.of(RECEIVED, VALID))).thenReturn(Optional.of(aisConsent));
+        when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID)).thenReturn(Optional.of(aisConsent));
+        when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID_NOT_EXIST)).thenReturn(Optional.empty());
         when(aisConsentRepository.findByPsuDataPsuId(PSU_ID)).thenReturn(aisConsents);
         when(psuDataRepository.save(psuData)).thenReturn(psuData);
         when(securityDataService.decryptId(EXTERNAL_CONSENT_ID)).thenReturn(Optional.of(EXTERNAL_CONSENT_ID));
@@ -109,6 +107,7 @@ public class CmsPsuAisServiceTest {
     private AisConsentAuthorization buildAisConsentAuthorisation() {
         AisConsentAuthorization aisConsentAuthorization = new AisConsentAuthorization();
         aisConsentAuthorization.setExternalId(AUTHORISATION_ID);
+        aisConsentAuthorization.setScaStatus(ScaStatus.RECEIVED);
         return aisConsentAuthorization;
     }
 
@@ -252,6 +251,7 @@ public class CmsPsuAisServiceTest {
         aisConsent.setExpireDate(LocalDate.now().plusDays(1));
         aisConsent.setLastActionDate(LocalDate.now());
         aisConsent.setPsuData(psuData);
+        aisConsent.setConsentStatus(ConsentStatus.RECEIVED);
         return aisConsent;
     }
 

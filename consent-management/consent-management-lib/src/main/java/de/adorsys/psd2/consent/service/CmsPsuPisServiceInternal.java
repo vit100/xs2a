@@ -86,6 +86,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                               .map(auth -> auth.getConsent().getPayments().get(0).getPaymentId())
                               .map(id -> validateGivenData(id, paymentId, psuIdData))
                               .orElse(false);
+
         return isValid && updateAuthorisationStatusAndSaveAuthorization(pisConsentAuthorization.get(), status);
     }
 
@@ -115,6 +116,9 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private boolean updateAuthorisationStatusAndSaveAuthorization(PisConsentAuthorization pisConsentAuthorization, ScaStatus status) {
+        if (pisConsentAuthorization.getScaStatus().isFinalisedStatus()) {
+            return false;
+        }
         pisConsentAuthorization.setScaStatus(status);
         return Optional.ofNullable(pisConsentAuthorizationRepository.save(pisConsentAuthorization))
                    .isPresent();
@@ -129,7 +133,8 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private boolean updateStatusInPaymentDataList(List<PisPaymentData> dataList, TransactionStatus status) {
         for (PisPaymentData pisPaymentData : dataList) {
             pisPaymentData.setTransactionStatus(status);
-            if (pisPaymentDataRepository.save(pisPaymentData) == null) {
+            if (pisPaymentData.getTransactionStatus().isFinalisedStatus()
+                    || pisPaymentDataRepository.save(pisPaymentData) == null) {
                 return false;
             }
         }
