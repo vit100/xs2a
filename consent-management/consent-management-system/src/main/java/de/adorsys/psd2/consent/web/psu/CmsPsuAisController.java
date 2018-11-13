@@ -32,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(path = "psu-api/v1/ais/consent")
 @Api(value = "psu-api/v1/ais/consent", tags = "PSU AIS, Consents", description = "Provides access to consent management system for PSU AIS")
-public class CmsPsuAisConsentController {
+public class CmsPsuAisController {
     private final CmsPsuAisService cmsPsuAisService;
 
     @PutMapping(path = "/{consent-id}/update-psu-data")
