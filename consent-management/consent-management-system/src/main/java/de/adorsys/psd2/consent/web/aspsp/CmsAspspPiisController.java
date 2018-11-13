@@ -31,12 +31,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "aspsp-api/v1/piis")
-@Api(value = "aspsp-api/v1/piis/consent", tags = "ASPSP PIIS, Consents", description = "Test controller for cms-aspsp-api providing access to PIIS consents")
+@RequestMapping(path = "aspsp-api/v1/piis/consents")
+@Api(value = "aspsp-api/v1/piis/consents", tags = "ASPSP PIIS, Consents", description = "Test controller for cms-aspsp-api providing access to PIIS consents")
 public class CmsAspspPiisController {
     private final CmsAspspPiisService cmsAspspPiisService;
 
-    @PostMapping(path = "/consent")
+    @PostMapping(path = "/")
     @ApiOperation(value = "Creates new PIIS consent")
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Created", response = String.class),
@@ -56,7 +56,7 @@ public class CmsAspspPiisController {
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping(path = "/consents")
+    @GetMapping(path = "/")
     @ApiOperation(value = "Returns a list of PIIS Consent objects by PSU ID")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
@@ -74,7 +74,7 @@ public class CmsAspspPiisController {
         return new ResponseEntity<>(cmsAspspPiisService.getConsentsForPsu(psuIdData), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/consent/{consent-id}/terminate")
+    @DeleteMapping(path = "/{consent-id}")
     @ApiOperation(value = "Terminates PIIS Consent object by its ID")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Boolean.class),
