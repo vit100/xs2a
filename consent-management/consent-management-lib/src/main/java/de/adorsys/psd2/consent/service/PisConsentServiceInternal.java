@@ -248,6 +248,10 @@ public class PisConsentServiceInternal implements PisConsentService {
         if (pisConsentAuthorisationOptional.isPresent()) {
             PisConsentAuthorization consentAuthorization = pisConsentAuthorisationOptional.get();
 
+            if (consentAuthorization.getScaStatus().isFinalisedStatus()) {
+                return Optional.empty();
+            }
+
             if (SCAMETHODSELECTED == request.getScaStatus()) {
                 String chosenMethod = request.getAuthenticationMethodId();
                 if (StringUtils.isNotBlank(chosenMethod)) {

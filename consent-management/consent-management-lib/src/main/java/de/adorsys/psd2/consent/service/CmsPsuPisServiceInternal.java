@@ -130,13 +130,13 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                    .orElse(false);
     }
 
-    private boolean updateStatusInPaymentDataList(List<PisPaymentData> dataList, TransactionStatus status) {
+    private boolean updateStatusInPaymentDataList(List<PisPaymentData> dataList, TransactionStatus givenStatus) {
         for (PisPaymentData pisPaymentData : dataList) {
-            pisPaymentData.setTransactionStatus(status);
-            if (pisPaymentData.getTransactionStatus().isFinalisedStatus()
-                    || pisPaymentDataRepository.save(pisPaymentData) == null) {
+            if (pisPaymentData.getTransactionStatus().isFinalisedStatus()) {
                 return false;
             }
+            pisPaymentData.setTransactionStatus(givenStatus);
+            pisPaymentDataRepository.save(pisPaymentData);
         }
         return true;
     }
