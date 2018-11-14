@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper;
+package de.adorsys.psd2.xs2a.web.mapper;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.psd2.model.*;
@@ -25,7 +26,6 @@ import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.*;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
-import de.adorsys.psd2.xs2a.web.mapper.CoreObjectsMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -152,27 +152,27 @@ public class ConsentModelMapper {
     private AccountAccess mapToAccountAccessDomain(Xs2aAccountAccess accountAccess) {
         return Optional.ofNullable(accountAccess)
                    .map(access -> {
-                            AccountAccess mappedAccountAccess = new AccountAccess();
-                            mappedAccountAccess.setAccounts(new ArrayList<>(access.getAccounts()));
-                            mappedAccountAccess.setBalances(new ArrayList<>(access.getBalances()));
-                            mappedAccountAccess.setTransactions(new ArrayList<>(access.getTransactions()));
-                            mappedAccountAccess.setAvailableAccounts(
-                                AccountAccess.AvailableAccountsEnum.fromValue(
-                                    Optional.ofNullable(access.getAvailableAccounts())
-                                        .map(Xs2aAccountAccessType::getDescription)
-                                        .orElse(null)
-                                )
-                            );
-                            mappedAccountAccess.setAllPsd2(
-                                AccountAccess.AllPsd2Enum.fromValue(
-                                    Optional.ofNullable(access.getAllPsd2())
-                                        .map(Xs2aAccountAccessType::getDescription)
-                                        .orElse(null)
-                                )
-                            );
+                           AccountAccess mappedAccountAccess = new AccountAccess();
+                           mappedAccountAccess.setAccounts(new ArrayList<>(access.getAccounts()));
+                           mappedAccountAccess.setBalances(new ArrayList<>(access.getBalances()));
+                           mappedAccountAccess.setTransactions(new ArrayList<>(access.getTransactions()));
+                           mappedAccountAccess.setAvailableAccounts(
+                               AccountAccess.AvailableAccountsEnum.fromValue(
+                                   Optional.ofNullable(access.getAvailableAccounts())
+                                       .map(Xs2aAccountAccessType::getDescription)
+                                       .orElse(null)
+                               )
+                           );
+                           mappedAccountAccess.setAllPsd2(
+                               AccountAccess.AllPsd2Enum.fromValue(
+                                   Optional.ofNullable(access.getAllPsd2())
+                                       .map(Xs2aAccountAccessType::getDescription)
+                                       .orElse(null)
+                               )
+                           );
 
-                            return mappedAccountAccess;
-                        }
+                           return mappedAccountAccess;
+                       }
                    )
                    .orElse(null);
     }
@@ -254,27 +254,29 @@ public class ConsentModelMapper {
                    .chosenScaMethod(mapToChosenScaMethod(response.getChosenScaMethod()))
                    .challengeData(mapToChallengeData(response.getChallengeData()))
                    .scaStatus(Optional.ofNullable(response.getScaStatus())
-                                  .map(s -> ScaStatus.fromValue(s.getValue()))
-                                  .orElse(ScaStatus.FAILED));
+                       .map(s -> ScaStatus.fromValue(s.getValue()))
+                       .orElse(ScaStatus.FAILED));
     }
 
-    private de.adorsys.psd2.model.ChallengeData mapToChallengeData(ChallengeData challengeData) {
-        return Optional.ofNullable(challengeData)
-                   .map(cd -> new de.adorsys.psd2.model.ChallengeData()
-                                  .image(cd.getImage())
-                                  .data(cd.getData())
-                                  .imageLink(cd.getImageLink())
-                                  .otpMaxLength(cd.getOtpMaxLength())
-                                  .otpFormat(mapToOtpFormat(cd.getOtpFormat()))
-                                  .additionalInformation(cd.getAdditionalInformation())
-                   ).orElse(null);
+    private de.adorsys.psd2.model.ChallengeData mapToChallengeData(ChallengeData xs2aChallengeData) {
+        return Optional.ofNullable(xs2aChallengeData)
+            .map(cd -> {
+                    de.adorsys.psd2.model.ChallengeData challengeData = new de.adorsys.psd2.model.ChallengeData()
+                        .additionalInformation(cd.getAdditionalInformation())
+                        .image(cd.getImage())
+                        .imageLink(cd.getImageLink())
+                        .otpFormat(mapToOtpFormat(cd.getOtpFormat()))
+                        .otpMaxLength(cd.getOtpMaxLength())
+                        .data(cd.getData());
+                    return challengeData;
+                }).orElse(null);
     }
 
     private de.adorsys.psd2.model.ChallengeData.OtpFormatEnum mapToOtpFormat(OtpFormat otpFormat) {
         return Optional.ofNullable(otpFormat)
-                   .map(OtpFormat::getValue)
-                   .map(de.adorsys.psd2.model.ChallengeData.OtpFormatEnum::fromValue)
-                   .orElse(null);
+            .map(OtpFormat::getValue)
+            .map(de.adorsys.psd2.model.ChallengeData.OtpFormatEnum::fromValue)
+            .orElse(null);
     }
 
     private ScaMethods getAvailableScaMethods(List<Xs2aAuthenticationObject> availableScaMethods) {
