@@ -16,7 +16,7 @@ Feature: Account Information Service
             | consent-all-accounts-successful.json |
 
     Scenario Outline: Failed consent request creation (redirect)
-        Given PSU wants to create an erroful consent <consent-resource>
+        Given PSU wants to create an errorful consent <consent-resource>
         When PSU sends the create consent request with error
         Then an error response code is displayed and an appropriate error response is shown
         Examples:
@@ -68,20 +68,24 @@ Feature: Account Information Service
             | consent-resource                 |
             | consent-deletion-successful.json |
 
-    @ignore
+
     Scenario Outline: Errorful deletion of consent (redirect)
-        Given PSU created a consent resource <consent-id>
+        Given PSU wants to create a consent <consent-id>
+        And PSU sends the create consent request
         And PSU wants to delete the consent <consent-resource>
-        When PSU deletes consent
+        When PSU sends the consent deletion request with errors
         Then an error response code is displayed and an appropriate error response is shown
         Examples:
-            | consent-id                   | consent-resource                              |
-            | consents-create-consent.json | consent-deletion-no-request-id.json           |
-            | consents-create-consent.json | consent-deletion-wrong-format-request-id.json |
+            | consent-id                            | consent-resource                              |
+            | consent-dedicated-successful.json     | consent-deletion-no-request-id.json           |
+            | consent-dedicated-successful.json     | consent-deletion-wrong-format-request-id.json |
+            | consent-dedicated-successful.json     | consent-deletion-no-consent.json              |
+            | consents-create-expired-consent.json  | consent-deletion-with-expired-consent.json    |
+
 
     @ignore
     Scenario Outline: Errorful deletion of consent with no consent-id (redirect)
-        Given PSU wants to create a consent <consent-resource>
+        Given PSU wants to create an errorful consent <consent-resource>
         When PSU sends the create consent request
         When PSU deletes consent
         Then an error response code is displayed and an appropriate error response is shown
@@ -253,7 +257,7 @@ Feature: Account Information Service
             | transactions-create-consent.json | 42fb4cc3-91cb-45ba-9159-b87acf6d8add | transactionList-successful.json |
 
     @ignore
-    Scenario Outline: Read transaction list erroful
+    Scenario Outline: Read transaction list errorful
         Given PSU already has an existing consent <consent-id>
         And account id <account-id>
         And wants to read all transactions using <transaction-resource>

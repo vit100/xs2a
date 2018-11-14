@@ -54,7 +54,7 @@ public class ConsentRequestErrorfulSteps {
     @Autowired
     private ObjectMapper mapper;
 
-    @Given("^PSU wants to create an erroful consent (.*)$")
+    @Given("^PSU wants to create an errorful consent (.*)$")
     public void loadTestData(String dataFileName) throws IOException {
 
         TestData<Consents, TppMessages> data = mapper.readValue(
