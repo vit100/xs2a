@@ -25,6 +25,7 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.core.tpp.TppRole;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
@@ -33,6 +34,7 @@ import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisConsentService;
+import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
@@ -74,6 +76,7 @@ public class PaymentServiceTest {
     private static final AspspConsentData ASPSP_CONSENT_DATA = new AspspConsentData(new byte[0], "Some Consent ID");
     private static final PsuIdData PSU_ID_DATA = new PsuIdData(null, null, null, null);
     private static final SpiPsuData SPI_PSU_DATA = new SpiPsuData(null, null, null, null);
+    private static final RequestHolder REQUEST_HOLDER = new RequestHolder();
 
     private final SinglePayment SINGLE_PAYMENT_OK = getSinglePayment(IBAN, AMOUNT);
 
@@ -113,6 +116,8 @@ public class PaymentServiceTest {
     private Xs2aToSpiPsuDataMapper psuDataMapper;
     @Mock
     private PisPsuDataService pisPsuDataService;
+    @Mock
+    private Xs2aEventService xs2aEventService;
 
     @Before
     public void setUp() {
@@ -149,7 +154,7 @@ public class PaymentServiceTest {
     @Test
     public void createBulkPayments() {
         //When
-        ResponseObject<BulkPaymentInitiationResponse> actualResponse = paymentService.createPayment(BULK_PAYMENT_OK, getBulkPaymentInitiationParameters());
+        ResponseObject<BulkPaymentInitiationResponse> actualResponse = paymentService.createPayment(null, BULK_PAYMENT_OK, getBulkPaymentInitiationParameters());
         //Then
         assertThat(actualResponse.hasError()).isFalse();
         assertThat(actualResponse.getBody().getPaymentId()).isEqualTo(PAYMENT_ID);
@@ -163,7 +168,7 @@ public class PaymentServiceTest {
             .thenReturn(PSU_ID_DATA);
 
         // When
-        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(PaymentType.SINGLE, PAYMENT_ID);
+        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(null, PaymentType.SINGLE, PAYMENT_ID);
 
         // Then
         assertThat(actual.getBody()).isNotNull();
@@ -177,7 +182,7 @@ public class PaymentServiceTest {
             .thenReturn(PSU_ID_DATA);
 
         // When
-        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(PaymentType.SINGLE, PAYMENT_ID);
+        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(null, PaymentType.SINGLE, PAYMENT_ID);
 
         // Then
         assertThat(actual.getBody()).isNotNull();

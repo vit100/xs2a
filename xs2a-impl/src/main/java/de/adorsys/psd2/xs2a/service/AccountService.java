@@ -18,6 +18,8 @@ package de.adorsys.psd2.xs2a.service;
 
 import de.adorsys.psd2.consent.api.ActionStatus;
 import de.adorsys.psd2.consent.api.TypeAccess;
+import de.adorsys.psd2.consent.api.event.EventType;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.Xs2aBookingStatus;
@@ -27,6 +29,7 @@ import de.adorsys.psd2.xs2a.domain.consent.Xs2aAccountAccess;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
+import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
@@ -68,17 +71,20 @@ public class AccountService {
     private final TppService tppService;
     private final AspspProfileServiceWrapper aspspProfileService;
     private final AisConsentDataService aisConsentDataService;
+    private final Xs2aEventService xs2aEventService;
 
     /**
      * Gets AccountDetails list based on accounts in provided AIS-consent, depending on withBalance variable and
      * AccountAccess in AIS-consent Balances are passed along with AccountDetails.
      *
-     * @param consentId   String representing an AccountConsent identification
+     * @param requestHolder Information about the incoming request
      * @param consentId   String representing an AccountConsent identification
      * @param withBalance boolean representing if the responded AccountDetails should contain
      * @return List of AccountDetails with Balances if requested and granted by consent
      */
-    public ResponseObject<Map<String, List<Xs2aAccountDetails>>> getAccountList(String consentId, boolean withBalance) {
+    public ResponseObject<Map<String, List<Xs2aAccountDetails>>> getAccountList(RequestHolder requestHolder, String consentId, boolean withBalance) {
+        xs2aEventService.recordAisEvent(consentId, requestHolder, EventType.GET_ACCOUNT_LIST);
+
         ResponseObject<AccountConsent> accountConsentResponse = consentService.getValidatedConsent(consentId, withBalance);
         if (accountConsentResponse.hasError()) {
             return ResponseObject.<Map<String, List<Xs2aAccountDetails>>>builder()
@@ -120,12 +126,15 @@ public class AccountService {
      * withBalance variable and
      * AccountAccess in AIS-consent Balances are passed along with AccountDetails.
      *
+     * @param requestHolder Information about the incoming request
      * @param consentId   String representing an AccountConsent identification
      * @param accountId   String representing a PSU`s Account at ASPSP
      * @param withBalance boolean representing if the responded AccountDetails should contain
      * @return AccountDetails based on accountId with Balances if requested and granted by consent
      */
-    public ResponseObject<Xs2aAccountDetails> getAccountDetails(String consentId, String accountId, boolean withBalance) {
+    public ResponseObject<Xs2aAccountDetails> getAccountDetails(RequestHolder requestHolder, String consentId, String accountId, boolean withBalance) {
+        xs2aEventService.recordAisEvent(consentId, requestHolder, EventType.GET_ACCOUNT_DETAILS);
+
         ResponseObject<AccountConsent> accountConsentResponse = consentService.getValidatedConsent(consentId, withBalance);
         if (accountConsentResponse.hasError()) {
             return ResponseObject.<Xs2aAccountDetails>builder()
@@ -176,11 +185,14 @@ public class AccountService {
     /**
      * Gets Balances Report based on consentId and accountId
      *
+     * @param requestHolder Information about the incoming request
      * @param consentId String representing an AccountConsent identification
      * @param accountId String representing a PSU`s Account at ASPSP
      * @return Balances Report based on consentId and accountId
      */
-    public ResponseObject<Xs2aBalancesReport> getBalancesReport(String consentId, String accountId) {
+    public ResponseObject<Xs2aBalancesReport> getBalancesReport(RequestHolder requestHolder, String consentId, String accountId) {
+        xs2aEventService.recordAisEvent(consentId, requestHolder, EventType.GET_BALANCES);
+
         ResponseObject<AccountConsent> accountConsentResponse = consentService.getValidatedConsent(consentId);
 
         if (accountConsentResponse.hasError()) {
@@ -234,6 +246,7 @@ public class AccountService {
      * "dateFrom" and "dateTo".  The ASPSP might add balance information, if transaction lists without balances are
      * not supported.     *
      *
+     * @param requestHolder Information about the incoming request
      * @param accountId     String representing a PSU`s Account at ASPSP
      * @param withBalance   boolean representing if the responded AccountDetails should contain. Not applicable since
      *                      v1.1
@@ -245,10 +258,11 @@ public class AccountService {
      * @return TransactionsReport filled with appropriate transaction arrays Booked and Pending. For v1.1 balances
      * sections is added
      */
-    public ResponseObject<Xs2aTransactionsReport> getTransactionsReportByPeriod(String consentId, String accountId,
+    public ResponseObject<Xs2aTransactionsReport> getTransactionsReportByPeriod(RequestHolder requestHolder, String consentId, String accountId,
                                                                                 boolean withBalance, LocalDate dateFrom,
                                                                                 LocalDate dateTo,
                                                                                 Xs2aBookingStatus bookingStatus) {
+        xs2aEventService.recordAisEvent(consentId, requestHolder, EventType.GET_TRANSACTION_REPORT);
         ResponseObject<AccountConsent> accountConsentResponse = consentService.getValidatedConsent(consentId,
             withBalance);
         if (accountConsentResponse.hasError()) {
@@ -320,14 +334,16 @@ public class AccountService {
      * dateFrom/dateTo variables
      * Checks if all transactions are related to accounts set in AccountConsent Transactions section
      *
+     * @param requestHolder Information about the incoming request
      * @param consentId     String representing an AccountConsent identification
      * @param accountId     String representing a PSU`s Account at
      * @param transactionId String representing the ASPSP identification of transaction
      * @return AccountReport filled with appropriate transaction arrays Booked and Pending. For v1.1 balances
      * sections is added
      */
-    public ResponseObject<Xs2aAccountReport> getAccountReportByTransactionId(String consentId, String accountId,
+    public ResponseObject<Xs2aAccountReport> getAccountReportByTransactionId(RequestHolder requestHolder, String consentId, String accountId,
                                                                              String transactionId) {
+        xs2aEventService.recordAisEvent(consentId, requestHolder, EventType.GET_ACCOUNT_REPORT);
         ResponseObject<AccountConsent> accountConsentResponse = consentService.getValidatedConsent(consentId);
         if (accountConsentResponse.hasError()) {
             return ResponseObject.<Xs2aAccountReport>builder()

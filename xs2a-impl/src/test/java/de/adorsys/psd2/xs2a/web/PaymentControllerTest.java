@@ -25,6 +25,7 @@ import de.adorsys.psd2.xs2a.component.JsonConverter;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
@@ -36,6 +37,7 @@ import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.web.mapper.PaymentModelMapperPsd2;
 import de.adorsys.psd2.xs2a.web.mapper.PaymentModelMapperXs2a;
+import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +54,7 @@ import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_403;
 import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -87,25 +90,28 @@ public class PaymentControllerTest {
     private AspspProfileServiceWrapper aspspProfileService;
     @Mock
     private AccountReferenceValidationService referenceValidationService;
+    @Mock
+    private RequestHolderMapper requestHolderMapper;
 
     @Before
     public void setUp() {
-        when(paymentService.getPaymentById(SINGLE, CORRECT_PAYMENT_ID))
+        when(paymentService.getPaymentById(any(), eq(SINGLE), eq(CORRECT_PAYMENT_ID)))
             .thenReturn(ResponseObject.builder().body(getXs2aPayment()).build());
-        when(paymentService.getPaymentById(SINGLE, WRONG_PAYMENT_ID))
+        when(paymentService.getPaymentById(any(), eq(SINGLE), eq(WRONG_PAYMENT_ID)))
             .thenReturn(ResponseObject.builder().fail(new MessageError(
                 new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
         when(aspspProfileService.getPisRedirectUrlToAspsp())
             .thenReturn(REDIRECT_LINK);
         when(referenceValidationService.validateAccountReferences(any()))
             .thenReturn(ResponseObject.builder().build());
+        when(requestHolderMapper.mapToRequestHolder(any(), any())).thenReturn(new RequestHolder());
     }
 
     @Before
     public void setUpPaymentServiceMock() {
-        when(paymentService.getPaymentStatusById(PaymentType.SINGLE, CORRECT_PAYMENT_ID))
+        when(paymentService.getPaymentStatusById(any(), eq(PaymentType.SINGLE), eq(CORRECT_PAYMENT_ID)))
             .thenReturn(ResponseObject.<TransactionStatus>builder().body(TransactionStatus.ACCP).build());
-        when(paymentService.getPaymentStatusById(PaymentType.SINGLE, WRONG_PAYMENT_ID))
+        when(paymentService.getPaymentStatusById(any(), eq(PaymentType.SINGLE), eq(WRONG_PAYMENT_ID)))
             .thenReturn(ResponseObject.<TransactionStatus>builder().fail(new MessageError(
                 new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
     }
@@ -210,7 +216,7 @@ public class PaymentControllerTest {
     public void cancelPayment_WithoutAuthorisation_Success() {
         when(responseMapper.ok(any()))
             .thenReturn(new ResponseEntity<>(getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.CANC), HttpStatus.OK));
-        when(paymentService.cancelPayment(any(), any())).thenReturn(getCancelPaymentResponseObject(false));
+        when(paymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(false));
 
         // Given
         PaymentType paymentType = PaymentType.SINGLE;
@@ -232,7 +238,7 @@ public class PaymentControllerTest {
     public void cancelPayment_WithAuthorisation_Success() {
         when(responseMapper.accepted(any()))
             .thenReturn(new ResponseEntity<>(getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.ACTC), HttpStatus.ACCEPTED));
-        when(paymentService.cancelPayment(any(), any())).thenReturn(getCancelPaymentResponseObject(true));
+        when(paymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(true));
 
         // Given
         PaymentType paymentType = PaymentType.SINGLE;

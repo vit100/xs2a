@@ -30,6 +30,7 @@ import de.adorsys.psd2.xs2a.domain.code.Xs2aPurposeCode;
 import de.adorsys.psd2.xs2a.service.AccountService;
 import de.adorsys.psd2.xs2a.service.mapper.AccountModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
+import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,12 +74,15 @@ public class AccountControllerTest {
     private ResponseMapper responseMapper;
     @Mock
     private AccountModelMapper accountModelMapper;
+    @Mock
+    private RequestHolderMapper requestHolderMapper;
 
     @Before
     public void setUp() throws Exception {
-        when(accountService.getAccountList(anyString(), anyBoolean())).thenReturn(getXs2aAccountDetailsList());
-        when(accountService.getBalancesReport(anyString(), anyString())).thenReturn(getBalanceReport());
-        when(accountService.getAccountDetails(anyString(), any(), anyBoolean())).thenReturn(getXs2aAccountDetails());
+        when(accountService.getAccountList(any(), anyString(), anyBoolean())).thenReturn(getXs2aAccountDetailsList());
+        when(accountService.getBalancesReport(any(), anyString(), anyString())).thenReturn(getBalanceReport());
+        when(accountService.getAccountDetails(any(), anyString(), any(), anyBoolean())).thenReturn(getXs2aAccountDetails());
+        when(requestHolderMapper.mapToRequestHolder(any(), any())).thenReturn(new RequestHolder());
     }
 
     @Test

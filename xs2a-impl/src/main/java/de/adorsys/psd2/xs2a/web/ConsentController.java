@@ -19,6 +19,7 @@ package de.adorsys.psd2.xs2a.web;
 import de.adorsys.psd2.api.ConsentApi;
 import de.adorsys.psd2.model.Consents;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.CreateConsentAuthorizationResponse;
@@ -30,6 +31,7 @@ import de.adorsys.psd2.xs2a.service.ConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.ConsentModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.web.mapper.AuthorisationMapper;
+import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
@@ -52,6 +55,8 @@ public class ConsentController implements ConsentApi {
     private final AccountReferenceValidationService referenceValidationService;
     private final ConsentModelMapper consentModelMapper;
     private final AuthorisationMapper authorisationMapper;
+    private final HttpServletRequest httpServletRequest;
+    private final RequestHolderMapper requestHolderMapper;
 
     @Override
     public ResponseEntity createConsent(UUID xRequestID, Consents body, String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType, String psUCorporateID, String psUCorporateIDType, Boolean tpPRedirectPreferred, String tpPRedirectURI, String tpPNokRedirectURI, Boolean tpPExplicitAuthorisationPreferred, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
@@ -69,8 +74,9 @@ public class ConsentController implements ConsentApi {
                                         .fail(accountReferenceValidationResponse.getError())
                                         .build();
         } else {
+            RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
             PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
-            createConsentResponse = consentService.createAccountConsentsWithResponse(createConsent, psuData, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred));
+            createConsentResponse = consentService.createAccountConsentsWithResponse(requestHolder, createConsent, psuData, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred));
         }
 
         return responseMapper.created(createConsentResponse, consentModelMapper::mapToConsentsResponse201);
@@ -78,22 +84,25 @@ public class ConsentController implements ConsentApi {
 
     @Override
     public ResponseEntity getConsentStatus(String consentId, UUID xRequestID, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        return responseMapper.ok(consentService.getAccountConsentsStatusById(consentId), consentModelMapper::mapToConsentStatusResponse200);
+        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
+        return responseMapper.ok(consentService.getAccountConsentsStatusById(requestHolder, consentId), consentModelMapper::mapToConsentStatusResponse200);
     }
 
     @Override
     public ResponseEntity startConsentAuthorisation(String consentId, UUID xRequestID, String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType, String psUCorporateID, String psUCorporateIDType, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
+        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
         ResponseObject<CreateConsentAuthorizationResponse> consentAuthorizationWithResponse =
-            consentService.createConsentAuthorizationWithResponse(psuData, consentId);
+            consentService.createConsentAuthorizationWithResponse(requestHolder, psuData, consentId);
         return responseMapper.created(consentAuthorizationWithResponse, authorisationMapper::mapToStartScaProcessResponse);
     }
 
     @Override
     public ResponseEntity updateConsentsPsuData(String consentId, String authorisationId, UUID xRequestID, Object body, String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType, String psUCorporateID, String psUCorporateIDType, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
+        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID, body);
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
         UpdateConsentPsuDataReq updatePsuDataRequest = consentModelMapper.mapToUpdatePsuData(psuData, consentId, authorisationId, (HashMap) body);
-        return responseMapper.ok(consentService.updateConsentPsuData(updatePsuDataRequest), consentModelMapper::mapToUpdatePsuAuthenticationResponse);
+        return responseMapper.ok(consentService.updateConsentPsuData(requestHolder, updatePsuDataRequest), consentModelMapper::mapToUpdatePsuAuthenticationResponse);
     }
 
     @Override
@@ -108,12 +117,14 @@ public class ConsentController implements ConsentApi {
 
     @Override
     public ResponseEntity getConsentInformation(String consentId, UUID xRequestID, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        return responseMapper.ok(consentService.getAccountConsentById(consentId), consentModelMapper::mapToConsentInformationResponse200Json);
+        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
+        return responseMapper.ok(consentService.getAccountConsentById(requestHolder, consentId), consentModelMapper::mapToConsentInformationResponse200Json);
     }
 
     @Override
     public ResponseEntity deleteConsent(String consentId, UUID xRequestID, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        ResponseObject<Void> response = consentService.deleteAccountConsentsById(consentId);
+        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
+        ResponseObject<Void> response = consentService.deleteAccountConsentsById(requestHolder, consentId);
         return responseMapper.delete(response);
     }
 }

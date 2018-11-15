@@ -18,12 +18,14 @@ package de.adorsys.psd2.xs2a.web;
 
 import com.google.gson.Gson;
 import de.adorsys.psd2.model.ConfirmationOfFunds;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationResponse;
 import de.adorsys.psd2.xs2a.service.AccountReferenceValidationService;
 import de.adorsys.psd2.xs2a.service.FundsConfirmationService;
 import de.adorsys.psd2.xs2a.service.mapper.FundsConfirmationModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
+import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,11 +58,14 @@ public class FundsConfirmationControllerTest {
     private FundsConfirmationModelMapper fundsConfirmationModelMapper;
     @Mock
     private AccountReferenceValidationService referenceValidationService;
+    @Mock
+    private RequestHolderMapper requestHolderMapper;
 
     @Before
     public void setUp() {
-        when(fundsConfirmationService.fundsConfirmation(any())).thenReturn(readResponseObject());
+        when(fundsConfirmationService.fundsConfirmation(any(), any())).thenReturn(readResponseObject());
         when(referenceValidationService.validateAccountReferences(any())).thenReturn(ResponseObject.builder().build());
+        when(requestHolderMapper.mapToRequestHolder(any(), any())).thenReturn(new RequestHolder());
     }
 
     @Test

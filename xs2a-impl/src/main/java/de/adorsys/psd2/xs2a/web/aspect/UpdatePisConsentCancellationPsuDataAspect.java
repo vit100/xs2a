@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.web.aspect;
 
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.Links;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
@@ -38,8 +39,8 @@ public class UpdatePisConsentCancellationPsuDataAspect extends AbstractLinkAspec
         super(aspspProfileService, messageService);
     }
 
-    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updatePisConsentCancellationPsuData(..)) && args(request)", returning = "result", argNames = "result,request")
-    public ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> updatePisConsentCancellationAuthorizationAspect(ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> result, Xs2aUpdatePisConsentPsuDataRequest request) {
+    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updatePisConsentCancellationPsuData(..)) && args(requestHolder, request)", returning = "result", argNames = "result,requestHolder,request")
+    public ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> updatePisConsentCancellationAuthorizationAspect(ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> result, RequestHolder requestHolder, Xs2aUpdatePisConsentPsuDataRequest request) {
         if (!result.hasError()) {
             Xs2aUpdatePisConsentPsuDataResponse body = result.getBody();
             Links links = buildLink(request);

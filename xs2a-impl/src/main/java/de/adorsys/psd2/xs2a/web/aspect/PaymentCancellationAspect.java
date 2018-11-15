@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.web.aspect;
 
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.domain.Links;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
 import de.adorsys.psd2.xs2a.service.message.MessageService;
@@ -34,8 +35,8 @@ public class PaymentCancellationAspect extends AbstractLinkAspect<PaymentControl
         super(aspspProfileService, messageService);
     }
 
-    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.PaymentService.cancelPayment(..)) && args(paymentType,paymentId)", returning = "result", argNames = "result,paymentType,paymentId")
-    public ResponseObject<CancelPaymentResponse> cancelPayment(ResponseObject<CancelPaymentResponse> result, PaymentType paymentType, String paymentId) {
+    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.PaymentService.cancelPayment(..)) && args(requestHolder, paymentType, paymentId)", returning = "result", argNames = "result,requestHolder,paymentType,paymentId")
+    public ResponseObject<CancelPaymentResponse> cancelPayment(ResponseObject<CancelPaymentResponse> result, RequestHolder requestHolder, PaymentType paymentType, String paymentId) {
         if (!result.hasError()) {
             CancelPaymentResponse response = result.getBody();
             response.setLinks(buildCancellationLinks(response.isStartAuthorisationRequired(), paymentType, paymentId));

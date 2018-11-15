@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.service;
 
+import de.adorsys.psd2.consent.api.event.EventType;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
@@ -24,6 +25,7 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
+import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
 import de.adorsys.psd2.xs2a.domain.pis.*;
@@ -31,6 +33,7 @@ import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisConsentService;
+import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
@@ -79,14 +82,19 @@ public class PaymentService {
     private final AspspProfileServiceWrapper profileService;
     private final CancelPaymentService cancelPaymentService;
     private final SpiErrorMapper spiErrorMapper;
+    private final Xs2aEventService xs2aEventService;
 
     /**
      * Initiates a payment though "payment service" corresponding service method
      *
+     * @param requestHolder Information about the incoming request
      * @param payment Payment information
+     * @param paymentInitiationParameters Parameters for payment initiation
      * @return Response containing information about created payment or corresponding error
      */
-    public ResponseObject createPayment(Object payment, PaymentInitiationParameters paymentInitiationParameters) {
+    public ResponseObject createPayment(RequestHolder requestHolder, Object payment, PaymentInitiationParameters paymentInitiationParameters) {
+        xs2aEventService.recordEvent(requestHolder, EventType.CREATE_PAYMENT);
+
         TppInfo tppInfo = tppService.getTppInfo();
         tppInfo.setRedirectUri(paymentInitiationParameters.getTppRedirectUri());
         tppInfo.setNokRedirectUri(paymentInitiationParameters.getTppNokRedirectUri());
@@ -109,11 +117,13 @@ public class PaymentService {
     /**
      * Retrieves payment from ASPSP by its ASPSP identifier, product and payment type
      *
+     * @param requestHolder Information about the incoming request
      * @param paymentType type of payment (payments, bulk-payments, periodic-payments)
      * @param paymentId   ASPSP identifier of the payment
      * @return Response containing information about payment or corresponding error
      */
-    public ResponseObject getPaymentById(PaymentType paymentType, String paymentId) {
+    public ResponseObject getPaymentById(RequestHolder requestHolder, PaymentType paymentType, String paymentId) {
+        xs2aEventService.recordPisEvent(paymentId, requestHolder, EventType.GET_PAYMENT);
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
 
         ReadPaymentService<PaymentInformationResponse> readPaymentService = readPaymentFactory.getService(paymentType.getValue());
@@ -132,11 +142,14 @@ public class PaymentService {
     /**
      * Retrieves payment status from ASPSP
      *
+     * @param requestHolder Information about the incoming request
      * @param paymentType The addressed payment category Single, Periodic or Bulk
      * @param paymentId   String representation of payment primary ASPSP identifier
      * @return Information about the status of a payment
      */
-    public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentId) {
+    public ResponseObject<TransactionStatus> getPaymentStatusById(RequestHolder requestHolder, PaymentType paymentType, String paymentId) {
+        xs2aEventService.recordPisEvent(paymentId, requestHolder, EventType.GET_PAYMENT_STATUS);
+
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentDataByPaymentId(paymentId);
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
 
@@ -178,11 +191,14 @@ public class PaymentService {
     /**
      * Cancels payment by its ASPSP identifier and payment type
      *
+     * @param requestHolder Information about the incoming request
      * @param paymentType type of payment (payments, bulk-payments, periodic-payments)
      * @param paymentId   ASPSP identifier of the payment
      * @return Response containing information about cancelled payment or corresponding error
      */
-    public ResponseObject<CancelPaymentResponse> cancelPayment(PaymentType paymentType, String paymentId) {
+    public ResponseObject<CancelPaymentResponse> cancelPayment(RequestHolder requestHolder, PaymentType paymentType, String paymentId) {
+        xs2aEventService.recordPisEvent(paymentId, requestHolder, EventType.CANCEL_PAYMENT);
+
         // we need to get decrypted payment ID
         String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(paymentId);
 
