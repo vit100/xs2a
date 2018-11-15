@@ -17,13 +17,13 @@
 package de.adorsys.psd2.xs2a.service.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.OtpFormat;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.*;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.web.mapper.CoreObjectsMapper;
 import lombok.RequiredArgsConstructor;
@@ -226,8 +226,8 @@ public class ConsentModelMapper {
         return updatePsuData;
     }
 
-    public UpdatePisConsentPsuDataRequest mapToPisUpdatePsuData(PsuIdData psuData, String paymentId, String authorisationId, String paymentService, Map body) {
-        UpdatePisConsentPsuDataRequest request = new UpdatePisConsentPsuDataRequest();
+    public Xs2aUpdatePisConsentPsuDataRequest mapToPisUpdatePsuData(PsuIdData psuData, String paymentId, String authorisationId, String paymentService, Map body) {
+        Xs2aUpdatePisConsentPsuDataRequest request = new Xs2aUpdatePisConsentPsuDataRequest();
         request.setPsuData(psuData);
         request.setPaymentId(paymentId);
         request.setAuthorizationId(authorisationId);
@@ -254,29 +254,29 @@ public class ConsentModelMapper {
                    .chosenScaMethod(mapToChosenScaMethod(response.getChosenScaMethod()))
                    .challengeData(mapToChallengeData(response.getChallengeData()))
                    .scaStatus(Optional.ofNullable(response.getScaStatus())
-                       .map(s -> ScaStatus.fromValue(s.getValue()))
-                       .orElse(ScaStatus.FAILED));
+                                  .map(s -> ScaStatus.fromValue(s.getValue()))
+                                  .orElse(ScaStatus.FAILED));
     }
 
     private de.adorsys.psd2.model.ChallengeData mapToChallengeData(ChallengeData xs2aChallengeData) {
         return Optional.ofNullable(xs2aChallengeData)
-            .map(cd -> {
-                    de.adorsys.psd2.model.ChallengeData challengeData = new de.adorsys.psd2.model.ChallengeData()
-                        .additionalInformation(cd.getAdditionalInformation())
-                        .image(cd.getImage())
-                        .imageLink(cd.getImageLink())
-                        .otpFormat(mapToOtpFormat(cd.getOtpFormat()))
-                        .otpMaxLength(cd.getOtpMaxLength())
-                        .data(cd.getData());
-                    return challengeData;
-                }).orElse(null);
+                   .map(cd -> {
+                       de.adorsys.psd2.model.ChallengeData challengeData = new de.adorsys.psd2.model.ChallengeData()
+                                                                               .additionalInformation(cd.getAdditionalInformation())
+                                                                               .image(cd.getImage())
+                                                                               .imageLink(cd.getImageLink())
+                                                                               .otpFormat(mapToOtpFormat(cd.getOtpFormat()))
+                                                                               .otpMaxLength(cd.getOtpMaxLength())
+                                                                               .data(cd.getData());
+                       return challengeData;
+                   }).orElse(null);
     }
 
     private de.adorsys.psd2.model.ChallengeData.OtpFormatEnum mapToOtpFormat(OtpFormat otpFormat) {
         return Optional.ofNullable(otpFormat)
-            .map(OtpFormat::getValue)
-            .map(de.adorsys.psd2.model.ChallengeData.OtpFormatEnum::fromValue)
-            .orElse(null);
+                   .map(OtpFormat::getValue)
+                   .map(de.adorsys.psd2.model.ChallengeData.OtpFormatEnum::fromValue)
+                   .orElse(null);
     }
 
     private ScaMethods getAvailableScaMethods(List<Xs2aAuthenticationObject> availableScaMethods) {
