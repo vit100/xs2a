@@ -111,6 +111,7 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
 
             return SpiResponse.<SpiAuthorizationCodeResult>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                       // TODO We need to return real payload data from ASPSP https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/489
                        .payload(getDefaultSpiAuthorizationCodeResult())
                        .success();
 
