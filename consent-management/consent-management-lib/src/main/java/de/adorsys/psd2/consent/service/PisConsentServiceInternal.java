@@ -39,6 +39,7 @@ import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -245,15 +246,12 @@ public class PisConsentServiceInternal implements PisConsentService {
         Optional<PisConsentAuthorization> pisConsentAuthorisationOptional = pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(
             authorizationId, CmsAuthorisationType.CREATED);
 
+        if (pisConsentAuthorisationOptional.isPresent()) {
+            ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisConsentAuthorisationOptional.get());
+            return Optional.of(new UpdatePisConsentPsuDataResponse(scaStatus));
+        }
 
-
-
-        pisConsentAuthorisationOptional.ifPresent(pisConsentAuthorization -> doUpdateConsentAuthorisation(request, pisConsentAuthorization));
-
-
-
-
-        return pisConsentAuthorisationOptional.map(p -> new UpdatePisConsentPsuDataResponse(p.getScaStatus()));
+        return Optional.empty();
     }
 
     /**
@@ -268,8 +266,13 @@ public class PisConsentServiceInternal implements PisConsentService {
     public Optional<UpdatePisConsentPsuDataResponse> updateConsentCancellationAuthorisation(String cancellationId, UpdatePisConsentPsuDataRequest request) {
         Optional<PisConsentAuthorization> pisConsentAuthorisationOptional = pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(
             cancellationId, CmsAuthorisationType.CANCELLED);
-        pisConsentAuthorisationOptional.ifPresent(pisConsentAuthorization -> doUpdateConsentAuthorisation(request, pisConsentAuthorization));
-        return pisConsentAuthorisationOptional.map(p -> new UpdatePisConsentPsuDataResponse(p.getScaStatus()));
+
+        if (pisConsentAuthorisationOptional.isPresent()) {
+            ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisConsentAuthorisationOptional.get());
+            return Optional.of(new UpdatePisConsentPsuDataResponse(scaStatus));
+        }
+
+        return Optional.empty();
     }
 
     /**
@@ -406,9 +409,9 @@ public class PisConsentServiceInternal implements PisConsentService {
         return pisConsentAuthorizationRepository.save(consentAuthorization);
     }
 
-    private void doUpdateConsentAuthorisation(UpdatePisConsentPsuDataRequest request, PisConsentAuthorization pisConsentAuthorisation) {
+    private ScaStatus doUpdateConsentAuthorisation(UpdatePisConsentPsuDataRequest request, PisConsentAuthorization pisConsentAuthorisation) {
         if (pisConsentAuthorisation.getScaStatus().isFinalisedStatus()) {
-            return Optional.empty();
+            return pisConsentAuthorisation.getScaStatus();
         }
 
         if (SCAMETHODSELECTED == request.getScaStatus()) {
@@ -418,6 +421,7 @@ public class PisConsentServiceInternal implements PisConsentService {
             }
         }
         pisConsentAuthorisation.setScaStatus(request.getScaStatus());
-        pisConsentAuthorizationRepository.save(pisConsentAuthorisation);
+        PisConsentAuthorization saved = pisConsentAuthorizationRepository.save(pisConsentAuthorisation);
+        return saved.getScaStatus();
     }
 }
