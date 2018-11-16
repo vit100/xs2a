@@ -24,12 +24,14 @@ import de.adorsys.psd2.consent.service.mapper.EventMapper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CmsAspspEventServiceInternal implements CmsAspspEventService {
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
