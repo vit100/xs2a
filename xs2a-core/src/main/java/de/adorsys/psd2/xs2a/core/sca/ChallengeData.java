@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Value;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Value
@@ -45,12 +46,12 @@ public class ChallengeData {
 
     @JsonIgnore
     public boolean isEmpty() {
-        return image == null
-                   && StringUtils.isEmpty(data)
-                   && StringUtils.isEmpty(imageLink)
+        return ArrayUtils.isEmpty(image)
+                   && StringUtils.isBlank(data)
+                   && StringUtils.isBlank(imageLink)
                    && otpMaxLength == null
                    && otpFormat == null
-                   && StringUtils.isEmpty(additionalInformation);
+                   && StringUtils.isBlank(additionalInformation);
 
     }
 
