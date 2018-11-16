@@ -59,25 +59,25 @@ public class SpiResponseTest {
     @Test(expected = IllegalArgumentException.class)
     public void constructor_should_fail_without_payload() {
         //noinspection ConstantConditions
-        new SpiResponse<Object>(null, SOME_ASPSP_CONSENT_DATA);
+        new SpiResponse<>(null, SOME_ASPSP_CONSENT_DATA);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructor_should_fail_without_aspsp_consent_data() {
         //noinspection ConstantConditions
-        new SpiResponse<Object>(SOME_PAYLOAD, null);
+        new SpiResponse<>(SOME_PAYLOAD, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void second_constructor_should_fail_without_aspsp_consent_data() {
         //noinspection ConstantConditions
-        new SpiResponse<Object>(SOME_PAYLOAD, null, SOME_STATUS, null);
+        new SpiResponse<>(SOME_PAYLOAD, null, SOME_STATUS, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void second_constructor_should_fail_without_payload() {
         //noinspection ConstantConditions
-        new SpiResponse<Object>(null, SOME_ASPSP_CONSENT_DATA, SOME_STATUS, null);
+        new SpiResponse<>(null, SOME_ASPSP_CONSENT_DATA, SOME_STATUS, null);
     }
 
     @Test
