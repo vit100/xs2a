@@ -32,7 +32,7 @@ import java.util.Currency;
 @ApiModel(description = "Account access", value = "AccountAccess")
 public class AccountAccess {
 
-    @Column(name = "resource_id", nullable = false)
+    @Column(name = "resource_id")
     @ApiModelProperty(value = "RESOURCE-ID: This identification is denoting the addressed account.")
     private String resourceId;
 
