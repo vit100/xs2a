@@ -117,8 +117,8 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisCons
     }
 
     private ChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
-        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-          return authorizationCodeResult.getChallengeData();
+        if (authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
+            return authorizationCodeResult.getChallengeData();
         }
         return null;
     }
