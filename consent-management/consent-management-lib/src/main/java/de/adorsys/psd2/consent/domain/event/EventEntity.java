@@ -31,8 +31,8 @@ public class EventEntity {
     @SequenceGenerator(name = "event_generator", sequenceName = "event_id_seq")
     private Long id;
 
-    @Column(name = "date_time", nullable = false)
-    private OffsetDateTime dateTime;
+    @Column(name = "event_timestamp", nullable = false)
+    private OffsetDateTime timestamp;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tpp_info_id", nullable = false)

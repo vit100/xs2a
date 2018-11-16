@@ -27,8 +27,8 @@ import java.util.UUID;
 @Data
 @ApiModel(description = "Event")
 public class CmsEvent {
-    @ApiModelProperty(value = "Event date", example = "2018-11-15T12:00:00Z")
-    private OffsetDateTime dateTime;
+    @ApiModelProperty(value = "Event timestamp", example = "2018-11-15T12:00:00Z")
+    private OffsetDateTime timestamp;
     private TppInfo tppInfo;
     @ApiModelProperty(value = "Tpp's ip address", example = "ip")
     private String tppIpAddress;

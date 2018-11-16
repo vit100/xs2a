@@ -38,7 +38,7 @@ public class CmsAspspEventServiceInternal implements CmsAspspEventService {
 
     @Override
     public List<CmsEvent> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end) {
-        List<EventEntity> eventEntity = eventRepository.findByDateTimeBetween(start, end);
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetween(start, end);
         return eventMapper.mapToCmsEventList(eventEntity);
     }
 }

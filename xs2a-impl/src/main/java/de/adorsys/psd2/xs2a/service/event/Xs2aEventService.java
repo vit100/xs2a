@@ -77,7 +77,7 @@ public class Xs2aEventService {
 
     private CmsEvent buildCmsEvent(RequestHolder requestHolder, EventType eventType) {
         CmsEvent event = new CmsEvent();
-        event.setDateTime(OffsetDateTime.now());
+        event.setTimestamp(OffsetDateTime.now());
         event.setTppInfo(tppService.getTppInfo());
         event.setTppIpAddress(requestHolder.getIp());
         event.setRequestId(requestHolder.getRequestId());

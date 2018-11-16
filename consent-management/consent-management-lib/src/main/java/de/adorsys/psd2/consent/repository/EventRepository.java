@@ -23,5 +23,5 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface EventRepository extends CrudRepository<EventEntity, Long> {
-    List<EventEntity> findByDateTimeBetween(OffsetDateTime from, OffsetDateTime to);
+    List<EventEntity> findByTimestampBetween(OffsetDateTime from, OffsetDateTime to);
 }

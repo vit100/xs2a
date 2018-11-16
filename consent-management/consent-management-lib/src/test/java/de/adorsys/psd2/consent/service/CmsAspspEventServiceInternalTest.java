@@ -52,7 +52,7 @@ public class CmsAspspEventServiceInternalTest {
 
         when(eventMapper.mapToCmsEventList(any()))
             .thenReturn(Collections.singletonList(buildCmsEvent(between)));
-        when(eventRepository.findByDateTimeBetween(start, end))
+        when(eventRepository.findByTimestampBetween(start, end))
             .thenReturn(Collections.singletonList(buildEventEntity(between)));
 
         // Given
@@ -66,15 +66,15 @@ public class CmsAspspEventServiceInternalTest {
         assertThat(events.get(0)).isEqualTo(expected);
     }
 
-    private CmsEvent buildCmsEvent(OffsetDateTime dateTime) {
+    private CmsEvent buildCmsEvent(OffsetDateTime timestamp) {
         CmsEvent event = new CmsEvent();
-        event.setDateTime(dateTime);
+        event.setTimestamp(timestamp);
         return event;
     }
 
-    private EventEntity buildEventEntity(OffsetDateTime dateTime) {
+    private EventEntity buildEventEntity(OffsetDateTime timestamp) {
         EventEntity eventEntity = new EventEntity();
-        eventEntity.setDateTime(dateTime);
+        eventEntity.setTimestamp(timestamp);
         return eventEntity;
     }
 }

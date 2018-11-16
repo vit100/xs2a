@@ -42,7 +42,7 @@ public class EventMapper {
 
     public EventEntity mapToEventEntity(@NotNull CmsEvent cmsEvent) {
         EventEntity eventEntity = new EventEntity();
-        eventEntity.setDateTime(cmsEvent.getDateTime());
+        eventEntity.setTimestamp(cmsEvent.getTimestamp());
         eventEntity.setTppInfo(tppInfoMapper.mapToTppInfoEntity(cmsEvent.getTppInfo()));
         eventEntity.setTppIpAddress(cmsEvent.getTppIpAddress());
         eventEntity.setConsentId(cmsEvent.getConsentId());
@@ -57,7 +57,7 @@ public class EventMapper {
 
     private CmsEvent mapToCmsEvent(@NotNull EventEntity eventEntity) {
         CmsEvent cmsEvent = new CmsEvent();
-        cmsEvent.setDateTime(eventEntity.getDateTime());
+        cmsEvent.setTimestamp(eventEntity.getTimestamp());
         cmsEvent.setTppInfo(tppInfoMapper.mapToTppInfo(eventEntity.getTppInfo()));
         cmsEvent.setTppIpAddress(eventEntity.getTppIpAddress());
         cmsEvent.setConsentId(eventEntity.getConsentId());
