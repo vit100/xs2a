@@ -30,6 +30,7 @@ import java.util.Currency;
 @Data
 @Embeddable
 @ApiModel(description = "Account access", value = "AccountAccess")
+//TODO refactor class and change DB scheme https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/491
 public class AccountAccess {
 
     @Column(name = "resource_id")
