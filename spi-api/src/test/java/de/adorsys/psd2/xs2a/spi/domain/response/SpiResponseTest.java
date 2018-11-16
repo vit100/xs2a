@@ -19,6 +19,9 @@ package de.adorsys.psd2.xs2a.spi.domain.response;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class SpiResponseTest {
 
     private static final AspspConsentData SOME_ASPSP_CONSENT_DATA =
@@ -77,9 +80,11 @@ public class SpiResponseTest {
         new SpiResponse<Object>(null, SOME_ASPSP_CONSENT_DATA, SOME_STATUS, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void second_constructor_should_fail_without_status() {
+    @Test
+    public void second_constructor_without_status_defaults_to_error() {
         //noinspection ConstantConditions
-        new SpiResponse<Object>(SOME_PAYLOAD, SOME_ASPSP_CONSENT_DATA, null, null);
+        SpiResponse<Object> spiResponse = new SpiResponse<>(SOME_PAYLOAD, SOME_ASPSP_CONSENT_DATA, null, null);
+        assertTrue(spiResponse.hasError());
+        assertFalse(spiResponse.isSuccessful());
     }
 }

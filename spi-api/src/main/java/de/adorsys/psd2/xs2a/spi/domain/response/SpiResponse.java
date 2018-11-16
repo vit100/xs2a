@@ -47,7 +47,6 @@ public class SpiResponse<T> {
     /**
      * A status of execution result. Is used to provide correct answer to TPP.
      */
-    @NotNull
     private SpiResponseStatus responseStatus;
 
     /**
@@ -69,7 +68,7 @@ public class SpiResponse<T> {
      *         - Optional messages to be provided to the TPP.
      */
     public SpiResponse(@NotNull T payload, @NotNull AspspConsentData aspspConsentData,
-                       @NotNull SpiResponseStatus responseStatus, List<String> messages
+                       SpiResponseStatus responseStatus, List<String> messages
                       ) {
         //noinspection ConstantConditions - we cannot be sure that @NotNull annotation will be processed be external developer
         if (payload == null) {
