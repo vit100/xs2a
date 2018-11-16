@@ -28,9 +28,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @RestController
@@ -46,14 +44,13 @@ public class CmsAspspEventController {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
     public ResponseEntity<List<CmsEvent>> getEventsForDates(
-        @ApiParam(value = "Start date", example = "2010-01-01T00:00:00", required = true)
+        @ApiParam(value = "Start date", example = "2010-01-01T00:00:00Z", required = true)
         @RequestHeader(value = "start-date")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-        @ApiParam(value = "End date", example = "2030-01-01T00:00:00", required = true)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime start,
+        @ApiParam(value = "End date", example = "2030-01-01T00:00:00Z", required = true)
         @RequestHeader(value = "end-date")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
-        ZoneOffset currentOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-        List<CmsEvent> events = cmsAspspEventService.getEventsForPeriod(start.atOffset(currentOffset), end.atOffset(currentOffset));
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime end) {
+        List<CmsEvent> events = cmsAspspEventService.getEventsForPeriod(start, end);
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 }
