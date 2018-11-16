@@ -27,7 +27,7 @@
     <include relativeToChangelogFile="true" file="migration/0005-add-column-authorization-type.xml"/>
     <include relativeToChangelogFile="true" file="migration/0006-change-pis-tpp-info.xml"/>
     <include relativeToChangelogFile="true" file="migration/0007-remove-not-null-constraint-ultimate-debtor.xml"/>
-    <include relativeToChangelogFile="true" file="migration/0008-add-account-access-resource-id.xml"/>
+    <include relativeToChangelogFile="true" file="migration/0008-add-account-reference-resource-id.xml"/>
     <include relativeToChangelogFile="true" file="migration/0009-create-psu-data-table.xml"/>
     <include relativeToChangelogFile="true" file="migration/0010-add-fk-constraints-for-psu-id-columns.xml"/>
     <include relativeToChangelogFile="true" file="migration/0011-remove-password-column-from-ais-consent-authorization.xml"/>
