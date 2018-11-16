@@ -80,8 +80,6 @@ public class Xs2aEventService {
         event.setDateTime(OffsetDateTime.now());
         event.setTppInfo(tppService.getTppInfo());
         event.setTppIpAddress(requestHolder.getIp());
-        event.setConsentId(null);
-        event.setPaymentId(null);
         event.setRequestId(requestHolder.getRequestId());
 
         CmsEventPayload cmsEventPayload = new CmsEventPayload();
