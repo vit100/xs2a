@@ -82,7 +82,9 @@ public class SpiResponse<T> {
         this.payload = payload;
         this.aspspConsentData = aspspConsentData;
         this.responseStatus = responseStatus;
-        this.messages.addAll(messages);
+        if (CollectionUtils.isNotEmpty(messages)) {
+            this.messages.addAll(messages);
+        }
     }
 
     public SpiResponse(@NotNull T payload, @NotNull AspspConsentData aspspConsentData) {
