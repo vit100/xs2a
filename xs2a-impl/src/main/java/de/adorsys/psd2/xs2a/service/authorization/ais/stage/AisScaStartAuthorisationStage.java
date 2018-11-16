@@ -76,17 +76,17 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
 
         if (authorisationStatusSpiResponse.hasError()) {
             if (authorisationStatusSpiResponse.getPayload() == SpiAuthorisationStatus.FAILURE) {
-                return createFailedResponse(MessageErrorCode.PSU_CREDENTIALS_INVALID);
+                return createFailedResponse(MessageErrorCode.PSU_CREDENTIALS_INVALID, authorisationStatusSpiResponse.getMessages());
             }
 
-            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(authorisationStatusSpiResponse.getResponseStatus()));
+            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(authorisationStatusSpiResponse.getResponseStatus()), authorisationStatusSpiResponse.getMessages());
         }
 
         SpiResponse<List<SpiAuthenticationObject>> spiResponse = aisConsentSpi.requestAvailableScaMethods(psuDataMapper.mapToSpiPsuData(psuData), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
-            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()));
+            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()), spiResponse.getMessages());
         }
 
         List<SpiAuthenticationObject> availableScaMethods = spiResponse.getPayload();
@@ -119,11 +119,11 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
-            UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
-            response.setErrorCode(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()));
-            return response;
+            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()), spiResponse.getMessages());
         }
-        ChallengeData challengeData = mapToChallengeData(spiResponse.getPayload());
+
+        SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
+        ChallengeData challengeData = authorizationCodeResult.getChallengeData();
 
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
         response.setPsuId(psuData.getPsuId());
@@ -140,12 +140,5 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         response.setScaStatus(ScaStatus.FAILED);
         response.setErrorCode(MessageErrorCode.SCA_METHOD_UNKNOWN);
         return response;
-    }
-
-    private ChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
-        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-            return authorizationCodeResult.getChallengeData();
-        }
-        return null;
     }
 }

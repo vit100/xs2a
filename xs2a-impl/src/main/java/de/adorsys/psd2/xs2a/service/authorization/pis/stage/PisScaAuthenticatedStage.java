@@ -38,8 +38,6 @@ import de.adorsys.psd2.xs2a.spi.service.PaymentCancellationSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
 
 @Service("PIS_PSUAUTHENTICATED")
@@ -67,28 +65,20 @@ public class PisScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisConsentPs
 
         SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
 
-        Optional<SpiAuthenticationObject> spiAuthenticationObject = Optional.ofNullable(authorizationCodeResult)
-                                                                        .map(SpiAuthorizationCodeResult::getSelectedScaMethod);
-
-        if (!spiAuthenticationObject.isPresent()) {
+        if (authorizationCodeResult.isEmpty()) {
             ErrorHolder errorHolder = ErrorHolder.builder(MessageErrorCode.SCA_METHOD_UNKNOWN)
                                           .build();
             return new Xs2aUpdatePisConsentPsuDataResponse(errorHolder);
         }
 
-        ChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
+        SpiAuthenticationObject spiAuthenticationObject = authorizationCodeResult.getSelectedScaMethod();
+        ChallengeData challengeData = authorizationCodeResult.getChallengeData();
 
         Xs2aUpdatePisConsentPsuDataResponse response = new Xs2aUpdatePisConsentPsuDataResponse(SCAMETHODSELECTED);
         response.setPsuId(psuData.getPsuId());
-        response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(spiAuthenticationObject.get()));
+        response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(spiAuthenticationObject));
         response.setChallengeData(challengeData);
         return response;
     }
 
-    private ChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
-        if (authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-            return authorizationCodeResult.getChallengeData();
-        }
-        return null;
-    }
 }

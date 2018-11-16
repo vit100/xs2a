@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.service.authorization.ais.stage;
 
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
@@ -34,8 +33,6 @@ import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_TRANSACTION_AUTHORISATION;
 
@@ -70,27 +67,13 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
-            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()));
+            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()), spiResponse.getMessages());
         }
 
+        SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
 
-        SpiResponse<List<SpiAuthenticationObject>> spiScaMethodsResponse = aisConsentSpi.requestAvailableScaMethods(psuDataMapper.mapToSpiPsuData(request.getPsuData()), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
-        aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
-
-        if (spiScaMethodsResponse.hasError()) {
-            return createFailedResponse(messageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()));
-        }
-
-        List<SpiAuthenticationObject> availableScaMethods = spiScaMethodsResponse.getPayload();
-        SpiAuthenticationObject chosenScaMethod = availableScaMethods.stream()
-                                                      .filter(a -> authenticationMethodId.equals(a.getAuthenticationMethodId()))
-                                                      .findFirst()
-                                                      .orElse(null);
-        if (chosenScaMethod == null) {
-            return new UpdateConsentPsuDataResponse(MessageErrorCode.SCA_METHOD_UNKNOWN);
-        }
-
-        ChallengeData challengeData = mapToChallengeData(spiResponse.getPayload());
+        SpiAuthenticationObject chosenScaMethod = authorizationCodeResult.getSelectedScaMethod();
+        ChallengeData challengeData = authorizationCodeResult.getChallengeData();
 
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
         response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(chosenScaMethod));
@@ -100,10 +83,4 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         return response;
     }
 
-    private ChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
-        if (authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
-            return authorizationCodeResult.getChallengeData();
-        }
-        return null;
-    }
 }

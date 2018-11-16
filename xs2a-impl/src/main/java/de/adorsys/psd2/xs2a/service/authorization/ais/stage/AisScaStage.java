@@ -28,6 +28,7 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapp
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -43,10 +44,15 @@ public abstract class AisScaStage<T, R> implements Function<T, R> {
     protected final Xs2aToSpiPsuDataMapper psuDataMapper;
     protected final SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper;
 
-    UpdateConsentPsuDataResponse createFailedResponse(MessageErrorCode errorCode) {
+    UpdateConsentPsuDataResponse createFailedResponse(MessageErrorCode errorCode, List<String> messages) {
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
         response.setErrorCode(errorCode);
         response.setScaStatus(ScaStatus.FAILED);
+        response.setPsuMessage(buildPsuMessage(messages));
         return response;
+    }
+
+    private String buildPsuMessage(List<String> messages) {
+        return String.join(", ", messages);
     }
 }

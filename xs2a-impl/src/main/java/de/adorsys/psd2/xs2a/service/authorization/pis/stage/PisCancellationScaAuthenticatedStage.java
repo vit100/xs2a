@@ -39,8 +39,6 @@ import de.adorsys.psd2.xs2a.spi.service.PaymentCancellationSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
 
 @Service("PIS_CANC_PSUAUTHENTICATED")
@@ -60,7 +58,6 @@ public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdate
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentDataByPaymentId(request.getPaymentId());
 
         SpiResponse<SpiAuthorizationCodeResult> spiResponse = paymentCancellationSpi.requestAuthorisationCode(xs2aToSpiPsuDataMapper.mapToSpiPsuData(psuData), authenticationMethodId, payment, aspspConsentData);
-
         pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
@@ -69,20 +66,18 @@ public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdate
 
         SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
 
-        Optional<SpiAuthenticationObject> spiAuthenticationObject = Optional.ofNullable(authorizationCodeResult)
-                                                                        .map(SpiAuthorizationCodeResult::getSelectedScaMethod);
-
-        if (!spiAuthenticationObject.isPresent()) {
+        if (authorizationCodeResult.isEmpty()) {
             ErrorHolder errorHolder = ErrorHolder.builder(MessageErrorCode.SCA_METHOD_UNKNOWN)
                                           .build();
             return new Xs2aUpdatePisConsentPsuDataResponse(errorHolder);
         }
 
+        SpiAuthenticationObject spiAuthenticationObject = authorizationCodeResult.getSelectedScaMethod();
         ChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
 
         Xs2aUpdatePisConsentPsuDataResponse response = new Xs2aUpdatePisConsentPsuDataResponse(SCAMETHODSELECTED);
         response.setPsuId(psuData.getPsuId());
-        response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(spiAuthenticationObject.get()));
+        response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(spiAuthenticationObject));
         response.setChallengeData(challengeData);
         return response;
     }
