@@ -32,8 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "api/v1/event")
-@Api(value = "api/v1/event", tags = "Events", description = "Provides access to the consent management system for Events")
+@RequestMapping(path = "api/v1/events")
+@Api(value = "api/v1/events", tags = "Events", description = "Provides access to the consent management system for Events")
 public class EventController {
     private final EventService eventService;
 
@@ -41,7 +41,7 @@ public class EventController {
     @ApiOperation(value = "Creates new event")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
-        @ApiResponse(code = 404, message = "Not Found")})
+        @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<Boolean> recordEvent(@RequestBody CmsEvent cmsEvent) {
         return new ResponseEntity<>(eventService.recordEvent(cmsEvent), HttpStatus.OK);
     }

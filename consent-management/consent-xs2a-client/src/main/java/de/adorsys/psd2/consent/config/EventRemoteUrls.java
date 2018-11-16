@@ -30,6 +30,6 @@ public class EventRemoteUrls {
      * @return String
      */
     public String createEvent() {
-        return consentServiceBaseUrl + "/event/";
+        return consentServiceBaseUrl + "/events/";
     }
 }

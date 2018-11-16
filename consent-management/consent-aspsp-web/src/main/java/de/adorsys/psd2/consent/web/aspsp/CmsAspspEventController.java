@@ -20,6 +20,7 @@ import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.aspsp.api.CmsAspspEventService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,27 +28,32 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "aspsp-api/v1")
-@Api(value = "aspsp-api/v1/event", tags = "ASPSP Events", description = "Provides access to the consent management system for ASPSP Events")
+@RequestMapping(path = "aspsp-api/v1/events")
+@Api(value = "aspsp-api/v1/events", tags = "ASPSP Events", description = "Provides access to the consent management system for ASPSP Events")
 public class CmsAspspEventController {
     private final CmsAspspEventService cmsAspspEventService;
 
-    @GetMapping(path = "/events")
+    @GetMapping(path = "/")
     @ApiOperation(value = "Returns a list of Event objects between two dates")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
     public ResponseEntity<List<CmsEvent>> getEventsForDates(
         @ApiParam(value = "Start date", example = "2010-01-01T00:00:00", required = true)
-        @RequestHeader(value = "start-date") String start,
+        @RequestHeader(value = "start-date")
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
         @ApiParam(value = "End date", example = "2030-01-01T00:00:00", required = true)
-        @RequestHeader(value = "end-date") String end) {
-        return new ResponseEntity<>(cmsAspspEventService.getEventsForPeriod(LocalDateTime.parse(start).atOffset(ZoneOffset.UTC), LocalDateTime.parse(end).atOffset(ZoneOffset.UTC)), HttpStatus.OK);
+        @RequestHeader(value = "end-date")
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        ZoneOffset currentOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        List<CmsEvent> events = cmsAspspEventService.getEventsForPeriod(start.atOffset(currentOffset), end.atOffset(currentOffset));
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 }
