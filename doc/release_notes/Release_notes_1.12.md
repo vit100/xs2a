@@ -10,6 +10,10 @@ i.e. online-banking system. This module can be used in any setup of CMS (embedde
 * consent-aspsp-web is used to provide other endpoints available for banking systems.
 This module can be used in any setup of CMS (embedded and standalone).
 
+## Payment cancellation is added
+A PSU may want to cancel the payment. The flow of payment cancellation for embedded and redirect approaches was added.
+SPI Developer needs to implement PaymentCancellationSpi in order to support it.
+
 ## Return full SCA Object from SPI during request to send TAN
 By invoking `requestAuthorisationCode` method SPI developer now obliged
 to return full SCA Authentification Object for choosen SCA Method.
