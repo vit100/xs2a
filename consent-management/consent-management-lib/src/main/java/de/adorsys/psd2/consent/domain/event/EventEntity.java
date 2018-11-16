@@ -38,7 +38,7 @@ public class EventEntity {
     @JoinColumn(name = "tpp_info_id", nullable = false)
     private TppInfoEntity tppInfo;
 
-    @Column(name = "tpp_ip_address")
+    @Column(name = "tpp_ip_address", nullable = false)
     private String tppIpAddress;
 
     @Column(name = "consent_id")
