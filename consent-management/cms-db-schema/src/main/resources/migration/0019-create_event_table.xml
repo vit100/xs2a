@@ -50,7 +50,7 @@
             <column name="payload" type="${blob.type}">
                 <constraints nullable="false"/>
             </column>
-            <column name="event_type" type="VARCHAR(50)">
+            <column name="event_type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
