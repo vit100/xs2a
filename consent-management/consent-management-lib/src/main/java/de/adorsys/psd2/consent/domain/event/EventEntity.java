@@ -41,7 +41,7 @@ public class EventEntity {
     private String paymentId;
 
     @Lob
-    @Column(name = "payload", nullable = false)
+    @Column(name = "payload")
     private byte[] payload;
 
     @Column(name = "event_origin", nullable = false)
