@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.api.event;
+package de.adorsys.psd2.xs2a.domain.event;
 
-import io.swagger.annotations.ApiModelProperty;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import lombok.Data;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Data
-public class CmsEventPayload {
-    @ApiModelProperty(value = "Request uri", example = "/v1/payments/sepa-credit-transfers")
+public class RequestEventPayload {
+    private TppInfo tppInfo;
+    private String tppIp;
+    private UUID requestId;
     private String uri;
-    @ApiModelProperty(value = "Request headers")
     private Map<String, String> headers;
-    @ApiModelProperty(value = "Request body")
     private Object body;
 }

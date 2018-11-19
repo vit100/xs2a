@@ -16,12 +16,12 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
-import de.adorsys.psd2.consent.api.event.EventType;
 import de.adorsys.psd2.consent.aspsp.api.CmsAspspEventService;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
 import de.adorsys.psd2.consent.repository.EventRepository;
 import de.adorsys.psd2.consent.service.mapper.EventMapper;
+import de.adorsys.psd2.xs2a.core.event.Event;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -38,26 +38,26 @@ public class CmsAspspEventServiceInternal implements CmsAspspEventService {
     private final EventMapper eventMapper;
 
     @Override
-    public List<CmsEvent> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end) {
+    public List<Event> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end) {
         List<EventEntity> eventEntity = eventRepository.findByTimestampBetween(start, end);
-        return eventMapper.mapToCmsEventList(eventEntity);
+        return eventMapper.mapToEventList(eventEntity);
     }
 
     @Override
-    public List<CmsEvent> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String consentId) {
+    public List<Event> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String consentId) {
         List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndConsentId(start, end, consentId);
-        return eventMapper.mapToCmsEventList(eventEntity);
+        return eventMapper.mapToEventList(eventEntity);
     }
 
     @Override
-    public List<CmsEvent> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String paymentId) {
+    public List<Event> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String paymentId) {
         List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndPaymentId(start, end, paymentId);
-        return eventMapper.mapToCmsEventList(eventEntity);
+        return eventMapper.mapToEventList(eventEntity);
     }
 
     @Override
-    public List<CmsEvent> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventType eventType) {
+    public List<Event> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventType eventType) {
         List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndEventType(start, end, eventType);
-        return eventMapper.mapToCmsEventList(eventEntity);
+        return eventMapper.mapToEventList(eventEntity);
     }
 }

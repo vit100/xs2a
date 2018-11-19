@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.web.aspsp;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.aspsp.api.CmsAspspEventService;
+import de.adorsys.psd2.xs2a.core.event.Event;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,14 +43,14 @@ public class CmsAspspEventController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
-    public ResponseEntity<List<CmsEvent>> getEventsForDates(
+    public ResponseEntity<List<Event>> getEventsForDates(
         @ApiParam(value = "Start date", example = "2010-01-01T00:00:00Z", required = true)
         @RequestHeader(value = "start-date")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime start,
         @ApiParam(value = "End date", example = "2030-01-01T00:00:00Z", required = true)
         @RequestHeader(value = "end-date")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime end) {
-        List<CmsEvent> events = cmsAspspEventService.getEventsForPeriod(start, end);
+        List<Event> events = cmsAspspEventService.getEventsForPeriod(start, end);
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 }

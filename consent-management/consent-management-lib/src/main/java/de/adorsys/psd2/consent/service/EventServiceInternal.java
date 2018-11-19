@@ -16,12 +16,12 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.api.service.EventService;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
 import de.adorsys.psd2.consent.repository.EventRepository;
 import de.adorsys.psd2.consent.service.mapper.EventMapper;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
+import de.adorsys.psd2.xs2a.core.event.Event;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class EventServiceInternal implements EventService {
 
     @Override
     @Transactional
-    public boolean recordEvent(@NotNull CmsEvent event) {
+    public boolean recordEvent(@NotNull Event event) {
         String consentId = decryptId(event.getConsentId());
         event.setConsentId(consentId);
 

@@ -16,10 +16,9 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
-import de.adorsys.psd2.consent.api.event.CmsEventPayload;
 import de.adorsys.psd2.consent.component.JsonConverter;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
+import de.adorsys.psd2.xs2a.core.event.Event;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -30,36 +29,37 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class EventMapper {
-    private final TppInfoMapper tppInfoMapper;
     private final JsonConverter jsonConverter;
 
-    public List<CmsEvent> mapToCmsEventList(@NotNull List<EventEntity> eventEntities) {
+    public List<Event> mapToEventList(@NotNull List<EventEntity> eventEntities) {
         return eventEntities.stream()
-                   .map(this::mapToCmsEvent)
+                   .map(this::mapToEvent)
                    .collect(Collectors.toList());
     }
 
-    public EventEntity mapToEventEntity(@NotNull CmsEvent cmsEvent) {
+    public EventEntity mapToEventEntity(@NotNull Event event) {
         EventEntity eventEntity = new EventEntity();
-        eventEntity.setTimestamp(cmsEvent.getTimestamp());
-        eventEntity.setConsentId(cmsEvent.getConsentId());
-        eventEntity.setPaymentId(cmsEvent.getPaymentId());
-        byte[] payload = jsonConverter.toJsonBytes(cmsEvent.getPayload())
+        eventEntity.setTimestamp(event.getTimestamp());
+        eventEntity.setConsentId(event.getConsentId());
+        eventEntity.setPaymentId(event.getPaymentId());
+        byte[] payload = jsonConverter.toJsonBytes(event.getPayload())
                              .orElse(null);
         eventEntity.setPayload(payload);
-        // eventEntity.setEventType(cmsEvent.getEventType()); TODO stop using CmsEvent
+        eventEntity.setEventOrigin(event.getEventOrigin());
+        eventEntity.setEventType(event.getEventType());
         return eventEntity;
     }
 
-    private CmsEvent mapToCmsEvent(@NotNull EventEntity eventEntity) {
-        CmsEvent cmsEvent = new CmsEvent();
-        cmsEvent.setTimestamp(eventEntity.getTimestamp());
-        cmsEvent.setConsentId(eventEntity.getConsentId());
-        cmsEvent.setPaymentId(eventEntity.getPaymentId());
-        CmsEventPayload payload = jsonConverter.toObject(eventEntity.getPayload(), CmsEventPayload.class)
-                                      .orElse(null);
-        cmsEvent.setPayload(payload);
-        // cmsEvent.setEventType(eventEntity.getEventType()); TODO stop using CmsEvent
-        return cmsEvent;
+    private Event mapToEvent(@NotNull EventEntity eventEntity) {
+        Event event = new Event();
+        event.setTimestamp(eventEntity.getTimestamp());
+        event.setConsentId(eventEntity.getConsentId());
+        event.setPaymentId(eventEntity.getPaymentId());
+        Object payload = jsonConverter.toObject(eventEntity.getPayload(), Object.class)
+                             .orElse(null);
+        event.setPayload(payload);
+        event.setEventOrigin(eventEntity.getEventOrigin());
+        event.setEventType(eventEntity.getEventType());
+        return event;
     }
 }

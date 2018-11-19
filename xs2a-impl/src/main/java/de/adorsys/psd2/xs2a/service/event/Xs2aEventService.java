@@ -16,79 +16,88 @@
 
 package de.adorsys.psd2.xs2a.service.event;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
-import de.adorsys.psd2.consent.api.event.CmsEventPayload;
-import de.adorsys.psd2.consent.api.event.EventType;
+import de.adorsys.psd2.consent.api.service.EventService;
+import de.adorsys.psd2.xs2a.core.event.Event;
+import de.adorsys.psd2.xs2a.core.event.EventOrigin;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.domain.RequestHolder;
+import de.adorsys.psd2.xs2a.domain.event.RequestEventPayload;
 import de.adorsys.psd2.xs2a.service.TppService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class Xs2aEventService {
     private final TppService tppService;
-    private final de.adorsys.psd2.consent.api.service.EventService eventService;
+    private final EventService eventService;
 
     /**
-     * Records new AIS event in the CMS for given consent id, request and event type
+     * Records TPP request to AIS in form of event for given consent id, request and event type
      *
      * @param consentId     Consent id that will be recorded along with the event
      * @param requestHolder Information about the incoming request
-     * @param eventType     Type of event
+     * @param eventType     Type of the event
      */
-    public void recordAisEvent(String consentId, RequestHolder requestHolder, EventType eventType) {
-        CmsEvent event = buildCmsEvent(requestHolder, eventType);
+    public void recordAisTppRequest(String consentId, RequestHolder requestHolder, EventType eventType) {
+        Event event = buildTppEvent(requestHolder, eventType);
         event.setConsentId(consentId);
 
-        // TODO check whether request has been recorded https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/490
-        eventService.recordEvent(event);
+        recordEventInCms(event);
     }
 
     /**
-     * Records new PIS event in the CMS for given payment id, request and event type
+     * Records TPP request to PIS in form of event for given payment id, request and event type
      *
      * @param paymentId     Payment id that will be recorded along with the event
      * @param requestHolder Information about the incoming request
-     * @param eventType     Type of event
+     * @param eventType     Type of the event
      */
-    public void recordPisEvent(String paymentId, RequestHolder requestHolder, EventType eventType) {
-        CmsEvent event = buildCmsEvent(requestHolder, eventType);
+    public void recordPisTppRequest(String paymentId, RequestHolder requestHolder, EventType eventType) {
+        Event event = buildTppEvent(requestHolder, eventType);
         event.setPaymentId(paymentId);
 
-        // TODO check whether request has been recorded https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/490
-        eventService.recordEvent(event);
+        recordEventInCms(event);
     }
 
     /**
-     * Records new event in the CMS for given request and event type
+     * Records generic TPP request in form of event for given request and event type
      *
      * @param requestHolder Information about the incoming request
      * @param eventType     Type of event
      */
-    public void recordEvent(RequestHolder requestHolder, EventType eventType) {
-        CmsEvent event = buildCmsEvent(requestHolder, eventType);
+    public void recordTppRequest(RequestHolder requestHolder, EventType eventType) {
+        Event event = buildTppEvent(requestHolder, eventType);
 
-        // TODO check whether request has been recorded https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/490
-        eventService.recordEvent(event);
+        recordEventInCms(event);
     }
 
-    private CmsEvent buildCmsEvent(RequestHolder requestHolder, EventType eventType) {
-        CmsEvent event = new CmsEvent();
+    private void recordEventInCms(Event event) {
+        boolean recorded = eventService.recordEvent(event);
+        if (!recorded) {
+            log.error("Couldn't record event from TPP request: {}", event);
+        }
+    }
+
+    private Event buildTppEvent(RequestHolder requestHolder, EventType eventType) {
+        Event event = new Event();
         event.setTimestamp(OffsetDateTime.now());
-        event.setTppInfo(tppService.getTppInfo());
-        event.setTppIpAddress(requestHolder.getIp());
-        event.setRequestId(requestHolder.getRequestId());
-
-        CmsEventPayload cmsEventPayload = new CmsEventPayload();
-        cmsEventPayload.setUri(requestHolder.getUri());
-        cmsEventPayload.setBody(requestHolder.getBody());
-        cmsEventPayload.setHeaders(requestHolder.getHeaders());
-
-        event.setPayload(cmsEventPayload);
+        event.setEventOrigin(EventOrigin.TPP);
         event.setEventType(eventType);
+
+        RequestEventPayload requestPayload = new RequestEventPayload();
+        requestPayload.setTppInfo(tppService.getTppInfo());
+        requestPayload.setTppIp(requestHolder.getIp());
+        requestPayload.setRequestId(requestHolder.getRequestId());
+        requestPayload.setUri(requestHolder.getUri());
+        requestPayload.setBody(requestHolder.getBody());
+        requestPayload.setHeaders(requestHolder.getHeaders());
+        event.setPayload(requestPayload);
+
         return event;
     }
 }

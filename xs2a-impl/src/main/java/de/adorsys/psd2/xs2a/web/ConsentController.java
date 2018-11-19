@@ -30,8 +30,8 @@ import de.adorsys.psd2.xs2a.service.AccountReferenceValidationService;
 import de.adorsys.psd2.xs2a.service.ConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.web.mapper.AuthorisationMapper;
-import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import de.adorsys.psd2.xs2a.web.mapper.ConsentModelMapper;
+import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +74,7 @@ public class ConsentController implements ConsentApi {
                                         .fail(accountReferenceValidationResponse.getError())
                                         .build();
         } else {
-            RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
+            RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID, body);
             PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
             createConsentResponse = consentService.createAccountConsentsWithResponse(requestHolder, createConsent, psuData, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred));
         }

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.api.service;
+package de.adorsys.psd2.xs2a.core.event;
 
-import de.adorsys.psd2.xs2a.core.event.Event;
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
 
-public interface EventService {
-    /**
-     * Records new Event in the CMS
-     *
-     * @param event Event to be recorded
-     * @return <code>true</code> if the event was recorded. <code>false</code> otherwise.
-     */
-    boolean recordEvent(@NotNull Event event);
+import java.time.OffsetDateTime;
+
+@Data
+public class Event {
+    private Long id;
+    private OffsetDateTime timestamp;
+    private String consentId;
+    private String paymentId;
+    private Object payload;
+    private EventOrigin eventOrigin;
+    private EventType eventType;
 }

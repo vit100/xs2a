@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.aspsp.api;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
-import de.adorsys.psd2.consent.api.event.EventType;
+import de.adorsys.psd2.xs2a.core.event.Event;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.OffsetDateTime;
@@ -31,7 +31,7 @@ public interface CmsAspspEventService {
      * @param end   Last date of the period
      * @return List of Event objects, recorded in given time period
      */
-    List<CmsEvent> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end);
+    List<Event> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end);
 
     /**
      * Returns a list of Event objects, recorded in given time period
@@ -41,7 +41,7 @@ public interface CmsAspspEventService {
      * @param consentId Id of the consent
      * @return List of Event objects, recorded in given time period
      */
-    List<CmsEvent> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String consentId);
+    List<Event> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String consentId);
 
     /**
      * Returns a list of Event objects, recorded in given time period
@@ -51,7 +51,7 @@ public interface CmsAspspEventService {
      * @param paymentId Id of the payment
      * @return List of Event objects, recorded in given time period
      */
-    List<CmsEvent> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String paymentId);
+    List<Event> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String paymentId);
 
     /**
      * Returns a list of Event objects, recorded in given time period
@@ -61,6 +61,6 @@ public interface CmsAspspEventService {
      * @param eventType The searched type of the events
      * @return List of Event objects, recorded in given time period
      */
-    List<CmsEvent> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventType eventType);
+    List<Event> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventType eventType);
 
 }

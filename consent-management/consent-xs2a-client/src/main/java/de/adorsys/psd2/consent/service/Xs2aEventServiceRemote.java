@@ -16,9 +16,9 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.api.service.EventService;
 import de.adorsys.psd2.consent.config.EventRemoteUrls;
+import de.adorsys.psd2.xs2a.core.event.Event;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,7 +33,7 @@ public class Xs2aEventServiceRemote implements EventService {
     private final EventRemoteUrls eventRemoteUrls;
 
     @Override
-    public boolean recordEvent(@NotNull CmsEvent cmsEvent) {
-        return consentRestTemplate.postForEntity(eventRemoteUrls.createEvent(), cmsEvent, Boolean.class).getBody();
+    public boolean recordEvent(@NotNull Event event) {
+        return consentRestTemplate.postForEntity(eventRemoteUrls.createEvent(), event, Boolean.class).getBody();
     }
 }

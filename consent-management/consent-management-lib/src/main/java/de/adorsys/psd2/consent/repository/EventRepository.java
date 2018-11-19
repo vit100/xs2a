@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.repository;
 
-import de.adorsys.psd2.consent.api.event.EventType;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.OffsetDateTime;

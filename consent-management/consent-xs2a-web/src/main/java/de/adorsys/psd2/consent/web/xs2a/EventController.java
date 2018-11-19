@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.web.xs2a;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.api.service.EventService;
+import de.adorsys.psd2.xs2a.core.event.Event;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -42,7 +42,7 @@ public class EventController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Boolean> recordEvent(@RequestBody CmsEvent cmsEvent) {
-        return new ResponseEntity<>(eventService.recordEvent(cmsEvent), HttpStatus.OK);
+    public ResponseEntity<Boolean> recordEvent(@RequestBody Event event) {
+        return new ResponseEntity<>(eventService.recordEvent(event), HttpStatus.OK);
     }
 }

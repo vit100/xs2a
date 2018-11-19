@@ -16,10 +16,10 @@
 
 package de.adorsys.psd2.xs2a.service;
 
-import de.adorsys.psd2.consent.api.event.EventType;
 import de.adorsys.psd2.consent.api.piis.CmsPiisValidationInfo;
 import de.adorsys.psd2.consent.api.service.PiisConsentService;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
@@ -64,11 +64,11 @@ public class FundsConfirmationService {
      * Checks if the account balance is sufficient for requested operation
      *
      * @param requestHolder Information about the incoming request
-     * @param request Contains the requested balanceAmount in order to comparing with available balanceAmount on account
+     * @param request       Contains the requested balanceAmount in order to comparing with available balanceAmount on account
      * @return Response with result 'true' if there are enough funds on the account, 'false' if not
      */
     public ResponseObject<FundsConfirmationResponse> fundsConfirmation(RequestHolder requestHolder, FundsConfirmationRequest request) {
-        xs2aEventService.recordEvent(requestHolder, EventType.CONFIRM_FUNDS);
+        xs2aEventService.recordTppRequest(requestHolder, EventType.CONFIRM_FUNDS_REQUEST_RECEIVED);
 
         String consentId = null;
 

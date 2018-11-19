@@ -16,11 +16,11 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
 import de.adorsys.psd2.consent.repository.EventRepository;
 import de.adorsys.psd2.consent.service.mapper.EventMapper;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
+import de.adorsys.psd2.xs2a.core.event.Event;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +60,7 @@ public class EventServiceInternalTest {
     @Test
     public void recordEvent() {
         // Given
-        CmsEvent event = new CmsEvent();
+        Event event = new Event();
 
         // When
         boolean actual = eventServiceInternal.recordEvent(event);

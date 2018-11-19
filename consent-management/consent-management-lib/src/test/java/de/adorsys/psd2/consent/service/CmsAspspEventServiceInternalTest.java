@@ -16,10 +16,10 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
 import de.adorsys.psd2.consent.repository.EventRepository;
 import de.adorsys.psd2.consent.service.mapper.EventMapper;
+import de.adorsys.psd2.xs2a.core.event.Event;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -50,24 +50,24 @@ public class CmsAspspEventServiceInternalTest {
         OffsetDateTime between = OffsetDateTime.parse("2018-11-10T00:00:00Z");
         OffsetDateTime end = OffsetDateTime.parse("2018-12-01T00:00:00Z");
 
-        when(eventMapper.mapToCmsEventList(any()))
+        when(eventMapper.mapToEventList(any()))
             .thenReturn(Collections.singletonList(buildCmsEvent(between)));
         when(eventRepository.findByTimestampBetween(start, end))
             .thenReturn(Collections.singletonList(buildEventEntity(between)));
 
         // Given
-        CmsEvent expected = buildCmsEvent(between);
+        Event expected = buildCmsEvent(between);
 
         // When
-        List<CmsEvent> events = cmsAspspEventServiceInternal.getEventsForPeriod(start, end);
+        List<Event> events = cmsAspspEventServiceInternal.getEventsForPeriod(start, end);
 
         // Then
         assertThat(events.isEmpty()).isFalse();
         assertThat(events.get(0)).isEqualTo(expected);
     }
 
-    private CmsEvent buildCmsEvent(OffsetDateTime timestamp) {
-        CmsEvent event = new CmsEvent();
+    private Event buildCmsEvent(OffsetDateTime timestamp) {
+        Event event = new Event();
         event.setTimestamp(timestamp);
         return event;
     }
