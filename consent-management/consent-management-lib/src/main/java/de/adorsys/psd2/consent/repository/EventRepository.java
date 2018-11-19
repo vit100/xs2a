@@ -17,6 +17,7 @@
 package de.adorsys.psd2.consent.repository;
 
 import de.adorsys.psd2.consent.domain.event.EventEntity;
+import de.adorsys.psd2.xs2a.core.event.EventOrigin;
 import de.adorsys.psd2.xs2a.core.event.EventType;
 import org.springframework.data.repository.CrudRepository;
 
@@ -31,4 +32,6 @@ public interface EventRepository extends CrudRepository<EventEntity, Long> {
     List<EventEntity> findByTimestampBetweenAndPaymentId(OffsetDateTime from, OffsetDateTime to, String paymentId);
 
     List<EventEntity> findByTimestampBetweenAndEventType(OffsetDateTime from, OffsetDateTime to, EventType eventType);
+
+    List<EventEntity> findByTimestampBetweenAndEventOrigin(OffsetDateTime from, OffsetDateTime to, EventOrigin eventOrigin);
 }
