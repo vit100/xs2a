@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.domain.event;
 
-import de.adorsys.psd2.consent.api.event.EventType;
-import de.adorsys.psd2.consent.domain.TppInfoEntity;
+import de.adorsys.psd2.xs2a.core.event.EventOrigin;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -31,15 +31,8 @@ public class EventEntity {
     @SequenceGenerator(name = "event_generator", sequenceName = "event_id_seq")
     private Long id;
 
-    @Column(name = "event_timestamp", nullable = false)
+    @Column(name = "timestamp", nullable = false)
     private OffsetDateTime timestamp;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tpp_info_id", nullable = false)
-    private TppInfoEntity tppInfo;
-
-    @Column(name = "tpp_ip_address", nullable = false)
-    private String tppIpAddress;
 
     @Column(name = "consent_id")
     private String consentId;
@@ -47,12 +40,13 @@ public class EventEntity {
     @Column(name = "payment_id")
     private String paymentId;
 
-    @Column(name = "request_id", nullable = false)
-    private String requestId;
-
     @Lob
     @Column(name = "payload", nullable = false)
     private byte[] payload;
+
+    @Column(name = "event_origin", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private EventOrigin eventOrigin;
 
     @Column(name = "event_type", nullable = false)
     @Enumerated(value = EnumType.STRING)
