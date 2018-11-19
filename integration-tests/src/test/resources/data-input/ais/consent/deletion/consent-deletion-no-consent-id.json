@@ -8,11 +8,11 @@
     }
   },
   "response": {
-    "code": "400",
+    "code": "404",
     "header": {},
-    "body": {
+    "body": [{
       "category": "ERROR",
-      "code": "FORMAT_ERROR"
-    }
+      "code": "PRODUCT_UNKNOWN"
+    }]
   }
 }

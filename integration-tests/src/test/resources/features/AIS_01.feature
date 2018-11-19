@@ -79,8 +79,8 @@ Feature: Account Information Service
             | consent-id                            | consent-resource                              |
             | consent-dedicated-successful.json     | consent-deletion-no-request-id.json           |
             | consent-dedicated-successful.json     | consent-deletion-wrong-format-request-id.json |
-            | consent-dedicated-successful.json     | consent-deletion-no-consent.json              |
-            | consents-create-expired-consent.json  | consent-deletion-with-expired-consent.json    |
+            | consent-dedicated-successful.json     | consent-deletion-no-consent-id.json              |
+           # | consents-create-expired-consent.json  | consent-deletion-with-expired-consent.json    |
 
 
     @ignore

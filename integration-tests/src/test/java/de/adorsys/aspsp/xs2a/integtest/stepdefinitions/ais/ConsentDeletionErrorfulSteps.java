@@ -84,6 +84,8 @@ public class ConsentDeletionErrorfulSteps {
             context.handleRequestError(rex);
         }
 
+
+
     }
 
     //@Then("^an error response code is displayed and an appropriate error response is shown$")

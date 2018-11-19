@@ -9,9 +9,9 @@
   "response": {
     "code": "400",
     "header": {},
-    "body": {
+    "body": [{
       "category": "ERROR",
       "code": "FORMAT_ERROR"
-    }
+    }]
   }
 }
