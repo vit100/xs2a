@@ -18,6 +18,7 @@ package de.adorsys.psd2.consent.aspsp.api;
 
 import de.adorsys.psd2.consent.api.event.CmsEvent;
 import de.adorsys.psd2.consent.api.event.EventType;
+import de.adorsys.psd2.xs2a.core.event.EventOrigin;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.OffsetDateTime;
@@ -34,33 +35,42 @@ public interface CmsAspspEventService {
     List<CmsEvent> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end);
 
     /**
-     * Returns a list of Event objects, recorded in given time period
+     * Returns a list of Event objects, recorded in given time period and with the given consentId
      *
      * @param start     First date of the period
      * @param end       Last date of the period
      * @param consentId Id of the consent
-     * @return List of Event objects, recorded in given time period
+     * @return List of Event objects, recorded in given time period and with a given consentId
      */
     List<CmsEvent> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String consentId);
 
     /**
-     * Returns a list of Event objects, recorded in given time period
+     * Returns a list of Event objects, recorded in given time period and with the given paymentId
      *
      * @param start     First date of the period
      * @param end       Last date of the period
      * @param paymentId Id of the payment
-     * @return List of Event objects, recorded in given time period
+     * @return List of Event objects, recorded in given time period and with a given paymentId
      */
     List<CmsEvent> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String paymentId);
 
     /**
-     * Returns a list of Event objects, recorded in given time period
+     * Returns a list of Event objects of the specific type, recorded in given time period
      *
      * @param start     First date of the period
      * @param end       Last date of the period
      * @param eventType The searched type of the events
-     * @return List of Event objects, recorded in given time period
+     * @return List of Event objects, recorded in given time period and of a specific type
      */
     List<CmsEvent> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventType eventType);
 
+    /**
+     * Returns a list of Event objects from a specific origin, recorded in given time period
+     *
+     * @param start       First date of the period
+     * @param end         Last date of the period
+     * @param eventOrigin The searched origin of the events
+     * @return List of Event objects, recorded in given time period and from a specific origin
+     */
+    List<CmsEvent> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventOrigin eventOrigin);
 }
