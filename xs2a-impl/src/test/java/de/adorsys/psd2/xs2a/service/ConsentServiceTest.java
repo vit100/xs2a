@@ -196,7 +196,10 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder().success());
+            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .payload(SpiResponse.voidResponse())
+                            .aspspConsentData(ASPSP_CONSENT_DATA)
+                            .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
             REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
@@ -217,7 +220,10 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder().success());
+            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .aspspConsentData(ASPSP_CONSENT_DATA)
+                            .payload(SpiResponse.voidResponse())
+                            .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
             REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
@@ -267,7 +273,10 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder().success());
+            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .aspspConsentData(ASPSP_CONSENT_DATA)
+                            .payload(SpiResponse.voidResponse())
+                            .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
             REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
@@ -288,7 +297,10 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder().success());
+            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .aspspConsentData(ASPSP_CONSENT_DATA)
+                            .payload(SpiResponse.voidResponse())
+                            .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
             REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
@@ -309,7 +321,10 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder().success());
+            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .aspspConsentData(ASPSP_CONSENT_DATA)
+                            .payload(SpiResponse.voidResponse())
+                            .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
             REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
@@ -372,7 +387,10 @@ public class ConsentServiceTest {
     public void deleteAccountConsentsById_Success() {
         //When:
         when(aisConsentSpi.revokeAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder().success());
+            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .payload(SpiResponse.voidResponse())
+                            .aspspConsentData(ASPSP_CONSENT_DATA)
+                            .success());
 
         ResponseObject response = consentService.deleteAccountConsentsById(REQUEST_HOLDER, CONSENT_ID);
         //Than:
@@ -398,7 +416,10 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder().success());
+            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .payload(SpiResponse.voidResponse())
+                            .aspspConsentData(ASPSP_CONSENT_DATA)
+                            .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
             REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
