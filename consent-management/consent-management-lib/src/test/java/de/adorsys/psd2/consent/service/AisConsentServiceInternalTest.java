@@ -80,6 +80,8 @@ public class AisConsentServiceInternalTest {
     private static final String EXTERNAL_CONSENT_ID_NOT_EXIST = "4b112130-6a96-4941-a220-2da8a4af2c63";
     private static final PsuIdData PSU_ID_DATA = new PsuIdData("psu-id-1", null, null, null);
     private static final byte[] ENCRYPTED_CONSENT_DATA = "test data".getBytes();
+    private static final String FINALISED_CONSENT_ID = "9b112130-6a96-4941-a220-2da8a4af2c65";
+
 
     @Before
     public void setUp() {
@@ -92,6 +94,7 @@ public class AisConsentServiceInternalTest {
         when(securityDataService.encryptConsentData(EXTERNAL_CONSENT_ID, cmsAspspConsentDataBase64.getAspspConsentDataBase64()))
             .thenReturn(Optional.of(new EncryptedData(ENCRYPTED_CONSENT_DATA)));
         when(aspspConsentDataRepository.findByConsentId(eq(EXTERNAL_CONSENT_ID))).thenReturn(Optional.empty());
+
     }
 
     @Test
@@ -179,6 +182,20 @@ public class AisConsentServiceInternalTest {
         assertFalse(consentId_notExists.isPresent());
     }
 
+    @Test
+    public void updateConsentStatusById_UpdateFinalisedStatus_Fail() {
+        //Given
+        AisConsent finalisedConsent = buildFinalisedConsent();
+        when(securityDataService.decryptId(FINALISED_CONSENT_ID)).thenReturn(Optional.of(FINALISED_CONSENT_ID));
+        when(aisConsentRepository.findByExternalId(FINALISED_CONSENT_ID)).thenReturn(Optional.of(finalisedConsent));
+
+        //When
+        boolean result = aisConsentService.updateConsentStatusById(FINALISED_CONSENT_ID, ConsentStatus.EXPIRED);
+
+        //Then
+        assertFalse(result);
+    }
+
     private AisConsent buildConsent() {
         AisConsent aisConsent = new AisConsent();
         aisConsent.setId(CONSENT_ID);
@@ -229,5 +246,14 @@ public class AisConsentServiceInternalTest {
         consentData.setConsentId(EXTERNAL_CONSENT_ID);
         consentData.setData(ENCRYPTED_CONSENT_DATA);
         return consentData;
+    }
+
+    private AisConsent buildFinalisedConsent() {
+        AisConsent aisConsent = new AisConsent();
+        aisConsent.setId(CONSENT_ID);
+        aisConsent.setExternalId(EXTERNAL_CONSENT_ID);
+        aisConsent.setExpireDate(LocalDate.now());
+        aisConsent.setConsentStatus(ConsentStatus.REJECTED);
+        return aisConsent;
     }
 }
