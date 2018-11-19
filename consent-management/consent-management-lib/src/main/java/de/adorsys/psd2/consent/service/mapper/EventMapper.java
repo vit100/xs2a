@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,30 +42,24 @@ public class EventMapper {
     public EventEntity mapToEventEntity(@NotNull CmsEvent cmsEvent) {
         EventEntity eventEntity = new EventEntity();
         eventEntity.setTimestamp(cmsEvent.getTimestamp());
-        eventEntity.setTppInfo(tppInfoMapper.mapToTppInfoEntity(cmsEvent.getTppInfo()));
-        eventEntity.setTppIpAddress(cmsEvent.getTppIpAddress());
         eventEntity.setConsentId(cmsEvent.getConsentId());
         eventEntity.setPaymentId(cmsEvent.getPaymentId());
-        eventEntity.setRequestId(cmsEvent.getRequestId().toString());
         byte[] payload = jsonConverter.toJsonBytes(cmsEvent.getPayload())
                              .orElse(null);
         eventEntity.setPayload(payload);
-        eventEntity.setEventType(cmsEvent.getEventType());
+        // eventEntity.setEventType(cmsEvent.getEventType()); TODO stop using CmsEvent
         return eventEntity;
     }
 
     private CmsEvent mapToCmsEvent(@NotNull EventEntity eventEntity) {
         CmsEvent cmsEvent = new CmsEvent();
         cmsEvent.setTimestamp(eventEntity.getTimestamp());
-        cmsEvent.setTppInfo(tppInfoMapper.mapToTppInfo(eventEntity.getTppInfo()));
-        cmsEvent.setTppIpAddress(eventEntity.getTppIpAddress());
         cmsEvent.setConsentId(eventEntity.getConsentId());
         cmsEvent.setPaymentId(eventEntity.getPaymentId());
-        cmsEvent.setRequestId(UUID.fromString(eventEntity.getRequestId()));
         CmsEventPayload payload = jsonConverter.toObject(eventEntity.getPayload(), CmsEventPayload.class)
                                       .orElse(null);
         cmsEvent.setPayload(payload);
-        cmsEvent.setEventType(eventEntity.getEventType());
+        // cmsEvent.setEventType(eventEntity.getEventType()); TODO stop using CmsEvent
         return cmsEvent;
     }
 }
