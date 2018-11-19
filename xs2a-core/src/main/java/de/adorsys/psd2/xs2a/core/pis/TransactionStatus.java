@@ -55,7 +55,7 @@ public enum TransactionStatus {
     }
 
     @JsonCreator
-    public static TransactionStatus fromValue(String transactionStatus) {
+    public static TransactionStatus getByValue(String transactionStatus) {
         return container.get(transactionStatus.trim().toLowerCase());
     }
 
