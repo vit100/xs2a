@@ -21,8 +21,8 @@ import de.adorsys.psd2.consent.domain.event.EventEntity;
 import de.adorsys.psd2.consent.repository.EventRepository;
 import de.adorsys.psd2.consent.service.mapper.EventMapper;
 import de.adorsys.psd2.xs2a.core.event.Event;
-import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.event.EventOrigin;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -63,8 +63,8 @@ public class CmsAspspEventServiceInternal implements CmsAspspEventService {
     }
 
     @Override
-    public List<CmsEvent> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventOrigin eventOrigin) {
+    public List<Event> getEventsForPeriodAndEventOrigin(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventOrigin eventOrigin) {
         List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndEventOrigin(start, end, eventOrigin);
-        return eventMapper.mapToCmsEventList(eventEntity);
+        return eventMapper.mapToEventList(eventEntity);
     }
 }

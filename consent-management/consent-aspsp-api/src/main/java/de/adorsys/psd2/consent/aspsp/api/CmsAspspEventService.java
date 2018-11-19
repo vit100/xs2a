@@ -17,8 +17,8 @@
 package de.adorsys.psd2.consent.aspsp.api;
 
 import de.adorsys.psd2.xs2a.core.event.Event;
-import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.event.EventOrigin;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.OffsetDateTime;
@@ -72,5 +72,5 @@ public interface CmsAspspEventService {
      * @param eventOrigin The searched origin of the events
      * @return List of Event objects, recorded in given time period and from a specific origin
      */
-    List<Event> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventOrigin eventOrigin);
+    List<Event> getEventsForPeriodAndEventOrigin(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventOrigin eventOrigin);
 }
