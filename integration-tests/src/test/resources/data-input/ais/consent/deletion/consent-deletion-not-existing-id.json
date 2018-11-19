@@ -10,14 +10,9 @@
   "response": {
     "code": "404",
     "header": {},
-    "body": {
-      "transactionStatus": "",
-      "tppMessages": [
-        {
-          "category": "ERROR",
-          "code": "CONSENT_UNKNOWN_400"
-        }
-      ]
-    }
+    "body": [{
+      "category": "ERROR",
+      "code": "CONSENT_UNKNOWN_400"
+    }]
   }
 }
