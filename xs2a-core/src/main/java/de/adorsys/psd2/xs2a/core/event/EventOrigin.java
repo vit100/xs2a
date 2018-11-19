@@ -17,7 +17,7 @@
 package de.adorsys.psd2.xs2a.core.event;
 
 /**
- * Contains information about the origin of Event.
+ * Contains information about the origin of the event.
  */
 public enum EventOrigin {
     /**
