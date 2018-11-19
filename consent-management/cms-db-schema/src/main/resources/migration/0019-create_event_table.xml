@@ -40,10 +40,8 @@
             </column>
             <column name="consent_id" type="VARCHAR(255)"/>
             <column name="payment_id" type="VARCHAR(255)"/>
-            <column name="payload" type="${blob.type}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="event_origin" type="VARCHAR(255)">
+            <column name="payload" type="${blob.type}"/>
+            <column name="event_origin" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="event_type" type="VARCHAR(255)">
