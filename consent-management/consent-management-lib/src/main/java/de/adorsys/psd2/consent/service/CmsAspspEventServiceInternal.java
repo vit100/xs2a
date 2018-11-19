@@ -17,6 +17,7 @@
 package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.event.CmsEvent;
+import de.adorsys.psd2.consent.api.event.EventType;
 import de.adorsys.psd2.consent.aspsp.api.CmsAspspEventService;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
 import de.adorsys.psd2.consent.repository.EventRepository;
@@ -39,6 +40,24 @@ public class CmsAspspEventServiceInternal implements CmsAspspEventService {
     @Override
     public List<CmsEvent> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end) {
         List<EventEntity> eventEntity = eventRepository.findByTimestampBetween(start, end);
+        return eventMapper.mapToCmsEventList(eventEntity);
+    }
+
+    @Override
+    public List<CmsEvent> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String consentId) {
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndConsentId(start, end, consentId);
+        return eventMapper.mapToCmsEventList(eventEntity);
+    }
+
+    @Override
+    public List<CmsEvent> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String paymentId) {
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndPaymentId(start, end, paymentId);
+        return eventMapper.mapToCmsEventList(eventEntity);
+    }
+
+    @Override
+    public List<CmsEvent> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventType eventType) {
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndEventType(start, end, eventType);
         return eventMapper.mapToCmsEventList(eventEntity);
     }
 }
