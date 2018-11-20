@@ -27,8 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class EventServiceInternal implements EventService {
@@ -52,8 +50,11 @@ public class EventServiceInternal implements EventService {
     }
 
     private String decryptId(String encryptedId) {
-        return Optional.ofNullable(encryptedId)
-                   .flatMap(securityDataService::decryptId)
+        if (encryptedId == null) {
+            return null;
+        }
+
+        return securityDataService.decryptId(encryptedId)
                    .orElse(null);
     }
 }
