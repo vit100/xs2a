@@ -64,8 +64,8 @@ public class ConsentController implements ConsentApi {
 
         Set<Xs2aAccountReference> references = createConsent.getAccountReferences();
         ResponseObject accountReferenceValidationResponse = references.isEmpty()
-            ? ResponseObject.builder().build()
-            : referenceValidationService.validateAccountReferences(createConsent.getAccountReferences());
+                                                                ? ResponseObject.builder().build()
+                                                                : referenceValidationService.validateAccountReferences(createConsent.getAccountReferences());
 
         ResponseObject<CreateConsentResponse> createConsentResponse;
 
