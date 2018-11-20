@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.domain.event;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import lombok.Data;
 
@@ -29,5 +30,6 @@ public class RequestEventPayload {
     private UUID requestId;
     private String uri;
     private Map<String, String> headers;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object body;
 }
