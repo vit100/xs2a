@@ -57,7 +57,7 @@ public class TransactionControllerTest {
 
     @Before
     public void setUp() {
-        when(transactionService.getAllTransactions()).thenReturn(Collections.singletonList(getTransaction()));
+//        when(transactionService.getAllTransactions()).thenReturn(Collections.singletonList(getTransaction()));
         when(transactionService.getTransactionById(TRANSACTION_ID, ACCOUNT_ID)).thenReturn(Optional.of(getTransaction()));
         when(transactionService.getTransactionById(WRONG_TRANSACTION_ID, ACCOUNT_ID)).thenReturn(Optional.empty());
         when(transactionService.saveTransaction(getTransaction())).thenReturn(Optional.of(TRANSACTION_ID));

@@ -61,8 +61,8 @@ public class FutureBookingsServiceTest {
             .thenReturn(Collections.emptyList());
         when(accountService.updateAccount(notNull(AspspAccountDetails.class)))
             .thenReturn(Optional.of(getAspspAccountDetailsWithBalance((BALANCE.subtract(AMOUNT_TO_BE_CHARGED)))));
-        when(accountService.updateAccount(null))
-            .thenReturn(null);
+//        when(accountService.updateAccount(null))
+//            .thenReturn(null);
     }
 
     @Test

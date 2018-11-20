@@ -82,8 +82,8 @@ public class PsuService {
      * @return boolean representation of successful deletion(true) or its failure(false)
      */
     public boolean deletePsuByAspspPsuId(String aspspPsuId) {
-        if (StringUtils.isNotBlank(aspspPsuId) && psuRepository.exists(aspspPsuId)) {
-            psuRepository.delete(aspspPsuId);
+        if (StringUtils.isNotBlank(aspspPsuId) && psuRepository.existsById(aspspPsuId)) {
+            psuRepository.deleteById(aspspPsuId);
             return true;
         }
         return false;

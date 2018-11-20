@@ -64,10 +64,10 @@ public class PaymentControllerTest {
             .thenReturn(Optional.of(response));
         when(paymentService.addBulkPayments(any()))
             .thenReturn(Optional.of(bulkResponse));
-        when(paymentService.isPaymentExist(PAYMENT_ID))
-            .thenReturn(true);
-        when(paymentService.isPaymentExist(WRONG_PAYMENT_ID))
-            .thenReturn(false);
+//        when(paymentService.isPaymentExist(PAYMENT_ID))
+//            .thenReturn(true);
+//        when(paymentService.isPaymentExist(WRONG_PAYMENT_ID))
+//            .thenReturn(false);
         when(paymentService.getPaymentStatusById(PAYMENT_ID))
             .thenReturn(Optional.of(ACCP));
         when(paymentService.getPaymentStatusById(WRONG_PAYMENT_ID))

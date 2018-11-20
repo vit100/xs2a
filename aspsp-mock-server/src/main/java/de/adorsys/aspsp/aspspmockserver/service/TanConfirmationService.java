@@ -148,7 +148,7 @@ public class TanConfirmationService {
                 oldTan.setTanStatus(TanStatus.INVALID);
                 oldTan.setNumberOfAttempts(maximumNumberOfTanAttempts);
             }
-            tanRepository.save(tans);
+            tanRepository.saveAll(tans);
         }
     }
 

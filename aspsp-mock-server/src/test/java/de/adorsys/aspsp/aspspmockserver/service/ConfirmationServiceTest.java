@@ -72,24 +72,24 @@ public class ConfirmationServiceTest {
     @Before
     public void setUp() {
         ReflectionTestUtils.setField(tanConfirmationService, "maximumNumberOfTanAttempts", 3);
-        when(psuRepository.findOne(ASPSP_PSU_ID_1))
-            .thenReturn(getPsu1());
-        when(psuRepository.findOne(ASPSP_PSU_ID_2))
-            .thenReturn(getPsu2());
-        when(psuRepository.findOne(WRONG_PSU_ID))
-            .thenReturn(null);
-        when(accountService.getPsuIdByIban(WRONG_IBAN))
-            .thenReturn(Optional.empty());
-        when(accountService.getPsuIdByIban(IBAN_1))
-            .thenReturn(Optional.of(ASPSP_PSU_ID_1));
-        when(accountService.getPsuIdByIban(IBAN_2))
-            .thenReturn(Optional.of(ASPSP_PSU_ID_2));
-        when(tanRepository.save(any(Tan.class)))
-            .thenReturn(getUnusedTan());
-        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_1, TanStatus.UNUSED))
-            .thenReturn(Collections.singletonList(getUnusedTan()));
-        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_2, TanStatus.UNUSED))
-            .thenReturn(Collections.emptyList());
+//        when(psuRepository.findById(ASPSP_PSU_ID_1))
+//            .thenReturn(Optional.of(getPsu1()));
+//        when(psuRepository.findById(ASPSP_PSU_ID_2))
+//            .thenReturn(Optional.of(getPsu2()));
+//        when(psuRepository.findById(WRONG_PSU_ID))
+//            .thenReturn(Optional.ofNullable(null));
+//        when(accountService.getPsuIdByIban(WRONG_IBAN))
+//            .thenReturn(Optional.empty());
+//        when(accountService.getPsuIdByIban(IBAN_1))
+//            .thenReturn(Optional.of(ASPSP_PSU_ID_1));
+//        when(accountService.getPsuIdByIban(IBAN_2))
+//            .thenReturn(Optional.of(ASPSP_PSU_ID_2));
+//        when(tanRepository.save(any(Tan.class)))
+//            .thenReturn(getUnusedTan());
+//        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_1, TanStatus.UNUSED))
+//            .thenReturn(Collections.singletonList(getUnusedTan()));
+//        when(tanRepository.findByPsuIdAndTanStatus(PSU_ID_2, TanStatus.UNUSED))
+//            .thenReturn(Collections.emptyList());
         when(accountService.getPsuByPsuId(PSU_ID_1))
             .thenReturn(Optional.empty());
         when(accountService.getPsuByPsuId(WRONG_PSU_ID))

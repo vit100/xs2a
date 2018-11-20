@@ -41,7 +41,7 @@ public class AccountService {
      * @return Optional of saved account details
      */
     public Optional<AspspAccountDetails> addAccount(String psuId, AspspAccountDetails accountDetails) {
-        return Optional.ofNullable(psuRepository.findOne(psuId))
+        return psuRepository.findById(psuId)
                    .map(psu -> addAccountToPsuAndSave(psu, accountDetails))
                    .flatMap(psu -> findAccountInPsuById(psu, accountDetails.getResourceId()));
     }
@@ -111,7 +111,7 @@ public class AccountService {
      * @return list of account details
      */
     public List<AspspAccountDetails> getAccountsByPsuId(String psuId) {
-        return Optional.ofNullable(psuRepository.findOne(psuId))
+        return psuRepository.findById(psuId)
                    .map(Psu::getAccountDetailsList)
                    .orElseGet(Collections::emptyList);
     }

@@ -64,9 +64,9 @@ public class PsuServiceTest {
         when(psuRepository.findAll()).thenReturn(Collections.singletonList(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts())));
 
         //findOne
-        when(psuRepository.findOne(ASPSP_PSU_ID)).thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts()));
-        when(psuRepository.findOne(ASPSP_PSU_ID_1)).thenReturn(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(false), getProducts()));
-        when(psuRepository.findOne(WRONG_PSU_ID)).thenReturn(null);
+//        when(psuRepository.findById(ASPSP_PSU_ID)).thenReturn(Optional.of(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts())));
+//        when(psuRepository.findById(ASPSP_PSU_ID_1)).thenReturn(Optional.of(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(false), getProducts())));
+//        when(psuRepository.findById(WRONG_PSU_ID)).thenReturn(Optional.ofNullable(null));
 
         //findByIban
         when(psuRepository.findPsuByAccountDetailsList_Iban(IBAN)).thenReturn(Optional.of(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts())));
@@ -78,21 +78,21 @@ public class PsuServiceTest {
         when(keycloakService.registerClient(WRONG_PSU_ID, PASSWORD, E_MAIL)).thenReturn(true);
 
         //exists
-        when(psuRepository.exists(PSU_ID)).thenReturn(true);
-        when(psuRepository.exists(WRONG_PSU_ID)).thenReturn(false);
-        when(psuRepository.exists(ASPSP_PSU_ID)).thenReturn(true);
-        when(psuRepository.exists(WRONG_ASPSP_PSU_ID)).thenReturn(false);
-        doNothing().when(psuRepository).delete(PSU_ID);
+//        when(psuRepository.existsById(PSU_ID)).thenReturn(true);
+//        when(psuRepository.existsById(WRONG_PSU_ID)).thenReturn(false);
+        when(psuRepository.existsById(ASPSP_PSU_ID)).thenReturn(true);
+        when(psuRepository.existsById(WRONG_ASPSP_PSU_ID)).thenReturn(false);
+//        doNothing().when(psuRepository).deleteById(PSU_ID);
 
         //save
-        when(psuRepository.save(getPsu(null, E_MAIL, PSU_ID, getDetails(false), getProducts())))
-            .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts()));
+//        when(psuRepository.save(getPsu(null, E_MAIL, PSU_ID, getDetails(false), getProducts())))
+//            .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProducts()));
         when(psuRepository.save(getPsu(null, E_MAIL, WRONG_PSU_ID, getDetails(false), getProducts())))
             .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, WRONG_PSU_ID, getDetails(false), getProducts()));
-        when(psuRepository.save(getPsu(PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProductsExt())))
-            .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProductsExt()));
-        when(psuRepository.save(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(true), getProductsExt())))
-            .thenReturn(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(false), getProducts()));
+//        when(psuRepository.save(getPsu(PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProductsExt())))
+//            .thenReturn(getPsu(ASPSP_PSU_ID, E_MAIL, PSU_ID, getDetails(false), getProductsExt()));
+//        when(psuRepository.save(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(true), getProductsExt())))
+//            .thenReturn(getPsu(ASPSP_PSU_ID_1, E_MAIL, PSU_ID, getDetails(false), getProducts()));
     }
 
     @Test

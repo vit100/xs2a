@@ -28,7 +28,6 @@ import de.adorsys.psd2.xs2a.service.validator.header.impl.PaymentInitiationReque
 import de.adorsys.psd2.xs2a.service.validator.parameter.ParametersFactory;
 import de.adorsys.psd2.xs2a.service.validator.parameter.RequestParameter;
 import de.adorsys.psd2.xs2a.service.validator.parameter.impl.ErrorMessageParameterImpl;
-import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -41,7 +40,6 @@ import javax.validation.Validator;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Log4j
 @Service
 public class RequestValidatorService {
     @Autowired

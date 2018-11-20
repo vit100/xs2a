@@ -92,8 +92,8 @@ public class CmsPsuPisServiceInternalTest {
 
         when(pisPaymentDataRepository.findByPaymentId(PAYMENT_ID))
             .thenReturn(Optional.of(pisPaymentDataList));
-        when(pisPaymentDataRepository.findByPaymentId(WRONG_PAYMENT_ID))
-            .thenReturn(Optional.empty());
+//        when(pisPaymentDataRepository.findByPaymentId(WRONG_PAYMENT_ID))
+//            .thenReturn(Optional.empty());
         when(pisPaymentDataRepository.save(any(PisPaymentData.class)))
             .thenReturn(pisPaymentDataList.get(0));
 

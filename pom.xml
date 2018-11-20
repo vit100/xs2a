@@ -132,6 +132,7 @@
         <swagger.annotations.version>1.5.20</swagger.annotations.version>
         <jetbrains.annotations.version>15.0</jetbrains.annotations.version>
         <archunit-junit4.version>0.9.1</archunit-junit4.version>
+        <mockito.version>2.23.0</mockito.version>
 
         <dependency.locations.enabled>false</dependency.locations.enabled>
         <ruleset.basedir>${project.basedir}</ruleset.basedir>
@@ -139,7 +140,10 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
+        <!--  
         <version>1.5.16.RELEASE</version>
+        -->
+		<version>2.0.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 

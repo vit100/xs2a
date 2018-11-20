@@ -276,7 +276,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     public void updatePaymentConsent(PisConsentRequest request, String encryptedConsentId) {
         Optional<PisConsent> pisConsentById = getPisConsentById(encryptedConsentId);
         pisConsentById
-            .ifPresent(pisConsent -> pisPaymentDataRepository.save(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent)));
+            .ifPresent(pisConsent -> pisPaymentDataRepository.saveAll(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent)));
     }
 
     /**

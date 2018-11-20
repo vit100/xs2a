@@ -136,8 +136,8 @@ public class AccountServiceTest {
         doNothing()
             .when(aisConsentDataService).updateAspspConsentData(ASPSP_CONSENT_DATA);
 
-        doNothing()
-            .when(aisConsentService).consentActionLog(anyString(), anyString(), any(ActionStatus.class));
+//        doNothing()
+//            .when(aisConsentService).consentActionLog(anyString(), anyString(), any(ActionStatus.class));
     }
 
     @Test
@@ -322,8 +322,8 @@ public class AccountServiceTest {
         when(xs2aToSpiAccountReferenceMapper.mapToSpiAccountReference(XS2A_ACCOUNT_REFERENCE))
             .thenReturn(SPI_ACCOUNT_REFERENCE);
 
-        when(consentService.isValidAccountByAccess(anyString(), any()))
-            .thenReturn(true);
+//        when(consentService.isValidAccountByAccess(anyString(), any()))
+//            .thenReturn(true);
 
         when(accountSpi.requestBalancesForAccount(SPI_ACCOUNT_REFERENCE, SPI_ACCOUNT_CONSENT, ASPSP_CONSENT_DATA))
             .thenReturn(buildErrorSpiResponse(Collections.EMPTY_LIST));
@@ -350,14 +350,14 @@ public class AccountServiceTest {
         when(consentService.getValidatedConsent(CONSENT_ID))
             .thenReturn(buildEmptyAllowedAccountDataResponse());
 
-        when(aisConsentDataService.getAspspConsentDataByConsentId(CONSENT_ID))
-            .thenReturn(ASPSP_CONSENT_DATA);
+//        when(aisConsentDataService.getAspspConsentDataByConsentId(CONSENT_ID))
+//            .thenReturn(ASPSP_CONSENT_DATA);
 
-        when(accountSpi.requestBalancesForAccount(SPI_ACCOUNT_REFERENCE, SPI_ACCOUNT_CONSENT, ASPSP_CONSENT_DATA))
-            .thenReturn(buildSuccessSpiResponse(Collections.EMPTY_LIST));
+//        when(accountSpi.requestBalancesForAccount(SPI_ACCOUNT_REFERENCE, SPI_ACCOUNT_CONSENT, ASPSP_CONSENT_DATA))
+//            .thenReturn(buildSuccessSpiResponse(Collections.EMPTY_LIST));
 
-        when(messageErrorCodeMapper.mapToMessageErrorCode(LOGICAL_FAILURE_RESPONSE_STATUS))
-            .thenReturn(RESOURCE_UNKNOWN_404_MESSAGE_ERROR_CODE);
+//        when(messageErrorCodeMapper.mapToMessageErrorCode(LOGICAL_FAILURE_RESPONSE_STATUS))
+//            .thenReturn(RESOURCE_UNKNOWN_404_MESSAGE_ERROR_CODE);
 
         ResponseObject<Xs2aBalancesReport> actualResponse = accountService.getBalancesReport(CONSENT_ID, ACCOUNT_ID);
 
@@ -390,8 +390,8 @@ public class AccountServiceTest {
         when(xs2aToSpiAccountReferenceMapper.mapToSpiAccountReference(XS2A_ACCOUNT_REFERENCE))
             .thenReturn(SPI_ACCOUNT_REFERENCE);
 
-        when(consentService.isValidAccountByAccess(anyString(), any()))
-            .thenReturn(true);
+//        when(consentService.isValidAccountByAccess(anyString(), any()))
+//            .thenReturn(true);
 
         when(consentMapper.mapToSpiAccountConsent(any()))
             .thenReturn(SPI_ACCOUNT_CONSENT);
@@ -539,8 +539,8 @@ public class AccountServiceTest {
         when(xs2aToSpiAccountReferenceMapper.mapToSpiAccountReference(XS2A_ACCOUNT_REFERENCE))
             .thenReturn(SPI_ACCOUNT_REFERENCE);
 
-        when(consentService.isValidAccountByAccess(anyString(), any()))
-            .thenReturn(true);
+//        when(consentService.isValidAccountByAccess(anyString(), any()))
+//            .thenReturn(true);
 
         when(consentMapper.mapToSpiAccountConsent(any()))
             .thenReturn(SPI_ACCOUNT_CONSENT);

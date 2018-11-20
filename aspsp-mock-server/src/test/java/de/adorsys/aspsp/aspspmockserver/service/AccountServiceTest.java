@@ -58,10 +58,10 @@ public class AccountServiceTest {
     public void setUp() {
         List<Psu> psuList = new ArrayList<>();
         psuList.add(getPsuWithRightAccounts());
-        when(psuRepository.findOne(PSU_ID))
-            .thenReturn(getPsuWithRightAccounts());
-        when(psuRepository.findOne(WRONG_PSU_ID))
-            .thenReturn(null);
+        when(psuRepository.findById(PSU_ID))
+            .thenReturn(Optional.of(getPsuWithRightAccounts()));
+        when(psuRepository.findById(WRONG_PSU_ID))
+            .thenReturn(Optional.ofNullable(null));
         when(psuRepository.findPsuByAccountDetailsList_Iban(IBAN))
             .thenReturn(Optional.of(getPsuWithRightAccounts()));
         when(psuRepository.findPsuByAccountDetailsList_Iban(WRONG_IBAN))
@@ -71,8 +71,8 @@ public class AccountServiceTest {
             .thenReturn(Optional.of(getPsuWithRightAccounts()));
         when(psuRepository.findPsuByAccountDetailsList_ResourceId(WRONG_ACCOUNT_ID))
             .thenReturn(Optional.empty());
-        when(psuRepository.findPsuByAccountDetailsList_ResourceId(null))
-            .thenReturn(Optional.empty());
+//        when(psuRepository.findPsuByAccountDetailsList_ResourceId(null))
+//            .thenReturn(Optional.empty());
 
         when(psuRepository.save(any(Psu.class)))
             .thenReturn(getPsuWithRightAccounts());

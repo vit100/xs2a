@@ -83,8 +83,8 @@ public class CancelPaymentServiceTest {
                             .aspspConsentData(SOME_ASPSP_CONSENT_DATA)
                             .fail(SpiResponseStatus.LOGICAL_FAILURE));
 
-        when(spiToXs2aCancelPaymentMapper.mapToCancelPaymentResponse(eq(getSpiCancelPaymentResponse(false, SpiTransactionStatus.CANC))))
-            .thenReturn(getCancelPaymentResponse(false, CANC));
+//        when(spiToXs2aCancelPaymentMapper.mapToCancelPaymentResponse(eq(getSpiCancelPaymentResponse(false, SpiTransactionStatus.CANC))))
+//            .thenReturn(getCancelPaymentResponse(false, CANC));
         when(spiToXs2aCancelPaymentMapper.mapToCancelPaymentResponse(eq(getSpiCancelPaymentResponse(true, SpiTransactionStatus.ACTC))))
             .thenReturn(getCancelPaymentResponse(true, ACTC));
     }

@@ -92,7 +92,7 @@ public class PaymentService {
      * @return boolean representation of payments presence
      */
     public boolean isPaymentExist(String paymentId) {
-        return paymentRepository.exists(paymentId);
+        return paymentRepository.existsById(paymentId);
     }
 
     /**
@@ -135,7 +135,7 @@ public class PaymentService {
             return Optional.empty();
         }
 
-        List<AspspPayment> savedPayments = paymentRepository.save(aspspPayments);
+        List<AspspPayment> savedPayments = paymentRepository.saveAll(aspspPayments);
         AspspBulkPayment result = new AspspBulkPayment();
         result.setPayments(paymentMapper.mapToAspspSinglePaymentList(savedPayments));
         result.setPaymentId(savedPayments.get(0).getBulkId());
@@ -191,7 +191,7 @@ public class PaymentService {
      * @return AspspPaymentCancellationResponse containing information about the requirement of aspsp for start authorisation
      */
     public Optional<AspspPaymentCancellationResponse> cancelPayment(String paymentId) {
-        return Optional.ofNullable(paymentRepository.findOne(paymentId))
+        return paymentRepository.findById(paymentId)
                    .map(p -> updateAspsPaymentStatus(p, AspspTransactionStatus.CANC))
                    .map(p -> getPaymentCancellationResponse(false, p.getPaymentStatus()));
     }
@@ -203,7 +203,7 @@ public class PaymentService {
      * @return SpiCancelPayment containing information about the requirement of aspsp for start authorisation
      */
     public Optional<AspspPaymentCancellationResponse> initiatePaymentCancellation(String paymentId) {
-        return Optional.ofNullable(paymentRepository.findOne(paymentId))
+        return paymentRepository.findById(paymentId)
                    .map(p -> updateAspsPaymentStatus(p, AspspTransactionStatus.ACTC))
                    .map(p -> getPaymentCancellationResponse(true, p.getPaymentStatus()));
     }

@@ -38,6 +38,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType.SINGLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
@@ -68,18 +69,18 @@ public class PaymentServiceTest {
     public void setUp() {
         when(paymentRepository.save(any(AspspPayment.class)))
             .thenReturn(getAspspPayment(AMOUNT_TO_TRANSFER));
-        when(paymentRepository.save(anyListOf(AspspPayment.class)))
+        when(paymentRepository.saveAll(anyListOf(AspspPayment.class)))
             .thenReturn(Collections.singletonList(getAspspPayment(AMOUNT_TO_TRANSFER)));
-        when(paymentRepository.exists(PAYMENT_ID))
+        when(paymentRepository.existsById(PAYMENT_ID))
             .thenReturn(true);
-        when(paymentRepository.exists(WRONG_PAYMENT_ID))
+        when(paymentRepository.existsById(WRONG_PAYMENT_ID))
             .thenReturn(false);
         when(accountService.getPsuIdByIban(IBAN)).thenReturn(Optional.of(getAccountDetails().get(0).getResourceId()));
         when(accountService.getAccountsByIban(IBAN)).thenReturn(getAccountDetails());
-        when(accountService.getAccountsByIban(WRONG_IBAN)).thenReturn(null);
-        when(paymentMapper.mapToAspspPayment(any(), any())).thenReturn(new AspspPayment());
+//        when(accountService.getAccountsByIban(WRONG_IBAN)).thenReturn(null);
+//        when(paymentMapper.mapToAspspPayment(any(), any())).thenReturn(new AspspPayment());
         when(paymentMapper.mapToAspspSinglePayment(any(AspspPayment.class))).thenReturn(getAspspSinglePayment(AMOUNT_TO_TRANSFER));
-        when(paymentRepository.findOne(PAYMENT_ID)).thenReturn(getAspspPayment(AMOUNT_TO_TRANSFER));
+        when(paymentRepository.findById(PAYMENT_ID)).thenReturn(Optional.of(getAspspPayment(AMOUNT_TO_TRANSFER)));
     }
 
     @Test
@@ -87,6 +88,9 @@ public class PaymentServiceTest {
         when(accountService.getAccountsByIban(IBAN)).thenReturn(getAccountDetails());
         //Given
         AspspSinglePayment expectedPayment = getAspspSinglePayment(AMOUNT_TO_TRANSFER);
+        AspspPayment persistent = new AspspPayment();
+		when(paymentMapper.mapToAspspPayment(expectedPayment, SINGLE)).thenReturn(persistent);
+//		when(paymentMapper.mapToAspspSinglePayment(persistent)).thenReturn(expectedPayment);
 
         //When
         Optional<AspspSinglePayment> aspspSinglePayment = paymentService.addPayment(expectedPayment);
@@ -131,7 +135,7 @@ public class PaymentServiceTest {
     public void addBulkPayments_Success() {
         List<AspspPayment> payments = Collections.singletonList(getAspspPayment(AMOUNT_TO_TRANSFER));
         when(paymentMapper.mapToAspspPaymentList(any(), anyString())).thenReturn(payments);
-        when(paymentRepository.save(anyListOf(AspspPayment.class))).thenReturn(payments);
+        when(paymentRepository.saveAll(anyListOf(AspspPayment.class))).thenReturn(payments);
         when(paymentMapper.mapToAspspSinglePaymentList(anyListOf(AspspPayment.class)))
             .thenReturn(Collections.singletonList(getAspspSinglePayment(AMOUNT_TO_TRANSFER)));
 

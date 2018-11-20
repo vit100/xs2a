@@ -184,8 +184,8 @@ public class SecurityDataServiceTest {
 
     @Test
     public void encryptConsentData_Failure_NonExistingAlgorithm() {
-        when(cryptoProviderFactory.actualConsentDataCryptoProvider())
-            .thenReturn(CRYPTO_PROVIDER);
+//        when(cryptoProviderFactory.actualConsentDataCryptoProvider())
+//            .thenReturn(CRYPTO_PROVIDER);
 
         // Given
         String encryptedId = getEncryptedConsentId(NON_EXISTING_CRYPT_PROVIDER_ID);
