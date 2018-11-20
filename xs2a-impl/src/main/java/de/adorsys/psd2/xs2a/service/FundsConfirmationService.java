@@ -64,8 +64,8 @@ public class FundsConfirmationService {
      * Checks if the account balance is sufficient for requested operation
      *
      * @param requestHolder Information about the incoming request
-     * @param request       Contains the requested balanceAmount in order to comparing with available balanceAmount on account
-     * @return Response with result 'true' if there are enough funds on the account, 'false' if not
+     * @param request       Contains the requested balanceAmount in order to compare with the available balanceAmount in the account
+     * @return Response with the result 'true' if there are enough funds in the account, 'false' otherwise
      */
     public ResponseObject<FundsConfirmationResponse> fundsConfirmation(RequestHolder requestHolder, FundsConfirmationRequest request) {
         xs2aEventService.recordTppRequest(requestHolder, EventType.CONFIRM_FUNDS_REQUEST_RECEIVED);
