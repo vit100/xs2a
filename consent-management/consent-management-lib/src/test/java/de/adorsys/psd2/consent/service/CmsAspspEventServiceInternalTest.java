@@ -45,7 +45,7 @@ public class CmsAspspEventServiceInternalTest {
     private EventMapper eventMapper;
 
     @Test
-    public void getEventsForPeriod() {
+    public void getEventsForPeriod_Success() {
         OffsetDateTime start = OffsetDateTime.parse("2018-11-01T00:00:00Z");
         OffsetDateTime between = OffsetDateTime.parse("2018-11-10T00:00:00Z");
         OffsetDateTime end = OffsetDateTime.parse("2018-12-01T00:00:00Z");
@@ -64,6 +64,23 @@ public class CmsAspspEventServiceInternalTest {
         // Then
         assertThat(events.isEmpty()).isFalse();
         assertThat(events.get(0)).isEqualTo(expected);
+    }
+
+    @Test
+    public void getEventsForPeriod_EmptyResponse() {
+        OffsetDateTime start = OffsetDateTime.parse("2018-11-01T00:00:00Z");
+        OffsetDateTime end = OffsetDateTime.parse("2018-12-01T00:00:00Z");
+
+        when(eventMapper.mapToEventList(any()))
+            .thenReturn(Collections.emptyList());
+        when(eventRepository.findByTimestampBetween(start, end))
+            .thenReturn(Collections.emptyList());
+
+        // When
+        List<Event> events = cmsAspspEventServiceInternal.getEventsForPeriod(start, end);
+
+        // Then
+        assertThat(events.isEmpty()).isTrue();
     }
 
     private Event buildCmsEvent(OffsetDateTime timestamp) {

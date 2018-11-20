@@ -19,6 +19,7 @@ package de.adorsys.psd2.xs2a.service;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -38,19 +39,18 @@ import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
-import de.adorsys.psd2.xs2a.service.payment.CancelPaymentService;
-import de.adorsys.psd2.xs2a.service.payment.CreateBulkPaymentService;
-import de.adorsys.psd2.xs2a.service.payment.CreatePeriodicPaymentService;
-import de.adorsys.psd2.xs2a.service.payment.CreateSinglePaymentService;
+import de.adorsys.psd2.xs2a.service.payment.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
+import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.BulkPaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.PeriodicPaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.SinglePaymentSpi;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -64,7 +64,8 @@ import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentServiceTest {
@@ -118,6 +119,8 @@ public class PaymentServiceTest {
     private PisPsuDataService pisPsuDataService;
     @Mock
     private Xs2aEventService xs2aEventService;
+    @Mock
+    private ReadPaymentService<PaymentInformationResponse> readPaymentService;
 
     @Before
     public void setUp() {
@@ -147,6 +150,8 @@ public class PaymentServiceTest {
             .thenReturn(ResponseObject.<CancelPaymentResponse>builder()
                             .body(getCancelPaymentResponse(false, CANC))
                             .build());
+
+        when(readPaymentFactory.getService(anyString())).thenReturn(readPaymentService);
     }
 
     // TODO Update tests after rearranging order of payment creation with pis consent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/159
@@ -154,7 +159,7 @@ public class PaymentServiceTest {
     @Test
     public void createBulkPayments() {
         //When
-        ResponseObject<BulkPaymentInitiationResponse> actualResponse = paymentService.createPayment(null, BULK_PAYMENT_OK, getBulkPaymentInitiationParameters());
+        ResponseObject<BulkPaymentInitiationResponse> actualResponse = paymentService.createPayment(REQUEST_HOLDER, BULK_PAYMENT_OK, getBulkPaymentInitiationParameters());
         //Then
         assertThat(actualResponse.hasError()).isFalse();
         assertThat(actualResponse.getBody().getPaymentId()).isEqualTo(PAYMENT_ID);
@@ -168,7 +173,7 @@ public class PaymentServiceTest {
             .thenReturn(PSU_ID_DATA);
 
         // When
-        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(null, PaymentType.SINGLE, PAYMENT_ID);
+        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(REQUEST_HOLDER, PaymentType.SINGLE, PAYMENT_ID);
 
         // Then
         assertThat(actual.getBody()).isNotNull();
@@ -182,11 +187,78 @@ public class PaymentServiceTest {
             .thenReturn(PSU_ID_DATA);
 
         // When
-        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(null, PaymentType.SINGLE, PAYMENT_ID);
+        ResponseObject<CancelPaymentResponse> actual = paymentService.cancelPayment(REQUEST_HOLDER, PaymentType.SINGLE, PAYMENT_ID);
 
         // Then
         assertThat(actual.getBody()).isNotNull();
         assertThat(actual.getBody().isStartAuthorisationRequired()).isEqualTo(false);
+    }
+
+    @Test
+    public void cancelPayment_Success_ShouldRecordEvent() {
+        when(aspspProfileService.isPaymentCancellationAuthorizationMandated()).thenReturn(Boolean.FALSE);
+        when(pisPsuDataService.getPsuDataByPaymentId(PAYMENT_ID))
+            .thenReturn(PSU_ID_DATA);
+
+        // Given:
+        ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
+
+        // When
+        paymentService.cancelPayment(REQUEST_HOLDER, PaymentType.SINGLE, PAYMENT_ID);
+
+        // Then
+        verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), any(), argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue()).isEqualTo(EventType.CANCEL_PAYMENT_REQUEST_RECEIVED);
+    }
+
+    @Test
+    public void createPayment_Success_ShouldRecordEvent() {
+        // Given:
+        PaymentInitiationParameters parameters = buildPaymentInitiationParameters();
+        ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
+
+        // When
+        paymentService.createPayment(REQUEST_HOLDER, SINGLE_PAYMENT_OK, parameters);
+
+        // Then
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue()).isEqualTo(EventType.INITIATE_PAYMENT_REQUEST_RECEIVED);
+    }
+
+    @Test
+    public void getPaymentById_Success_ShouldRecordEvent() {
+        when(readPaymentService.getPayment(anyString(), any(), any()))
+            .thenReturn(new PaymentInformationResponse(SINGLE_PAYMENT_OK));
+
+        // Given:
+        ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
+
+        // When
+        paymentService.getPaymentById(REQUEST_HOLDER, PaymentType.SINGLE, PAYMENT_ID);
+
+        // Then
+        verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), any(), argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_PAYMENT_REQUEST_RECEIVED);
+    }
+
+    @Test
+    public void getPaymentStatusById_Success_ShouldRecordEvent() {
+        SpiResponse<SpiTransactionStatus> spiResponse = buildSpiResponseTransactionStatus();
+        when(singlePaymentSpi.getPaymentStatusById(any(), any(), any())).thenReturn(spiResponse);
+
+        // Given:
+        ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
+
+        // When
+        paymentService.getPaymentStatusById(REQUEST_HOLDER, PaymentType.SINGLE, PAYMENT_ID);
+
+        // Then
+        verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), any(), argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
+    }
+
+    private SpiResponse<SpiTransactionStatus> buildSpiResponseTransactionStatus() {
+        return new SpiResponse<>(SpiTransactionStatus.ACCP, ASPSP_CONSENT_DATA);
     }
 
     private static SinglePayment getSinglePayment(String iban, String amountToPay) {
@@ -273,6 +345,13 @@ public class PaymentServiceTest {
     private PaymentInitiationParameters getBulkPaymentInitiationParameters() {
         PaymentInitiationParameters requestParameters = new PaymentInitiationParameters();
         requestParameters.setPaymentType(PaymentType.BULK);
+
+        return requestParameters;
+    }
+
+    private PaymentInitiationParameters buildPaymentInitiationParameters() {
+        PaymentInitiationParameters requestParameters = new PaymentInitiationParameters();
+        requestParameters.setPaymentType(PaymentType.SINGLE);
 
         return requestParameters;
     }
