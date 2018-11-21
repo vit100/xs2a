@@ -17,6 +17,7 @@
 package de.adorsys.psd2.xs2a.service;
 
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.event.EventType;
@@ -58,6 +59,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Currency;
+import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -225,8 +227,10 @@ public class PaymentServiceTest {
 
     @Test
     public void getPaymentById_Success_ShouldRecordEvent() {
-        when(readPaymentService.getPayment(anyString(), any(), any()))
+        when(readPaymentService.getPayment(any(), any(), any(), any()))
             .thenReturn(new PaymentInformationResponse(SINGLE_PAYMENT_OK));
+        when(pisConsentService.getPisConsentById(anyString()))
+            .thenReturn(Optional.of(new PisConsentResponse()));
 
         // Given:
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
