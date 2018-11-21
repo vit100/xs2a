@@ -41,8 +41,7 @@ public class CmsAspspEventController {
     @GetMapping(path = "/")
     @ApiOperation(value = "Returns a list of Event objects between two dates")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK"),
-        @ApiResponse(code = 404, message = "Not Found")})
+        @ApiResponse(code = 200, message = "OK")})
     public ResponseEntity<List<Event>> getEventsForDates(
         @ApiParam(value = "Start date", example = "2010-01-01T00:00:00Z", required = true)
         @RequestHeader(value = "start-date")
