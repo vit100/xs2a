@@ -30,8 +30,34 @@ Migrations scripts were modified in order to fix oracle supporting issues. You m
 
 ## Log TPP requests and responses
 Now all the requests and responses from TPP to XS2A are logged.
-Logging flow is configured in logback-spring.xml file.
+Logging flow is configured in logback-spring.xml file. By default, all such logs are written to console only. 
+It is possible to change this behaviour by uncommenting the lines inside logback-spring.xml (see the hints inside this logback file).
+
 If there is a need to rewrite logging configurations, the following should be done:
 * logback file (logback.xml or logback.groovy (if Groovy is on the classpath)) should be created inside the project. 
 
 Please, use only mentioned names for logback files to make rewriting configs work.
+
+## New Java Interface for locking TPP Access provided in CMS-ASPSP-API
+With the de.adorsys.psd2.consent.aspsp.api.CmsAspspTppService ASPSP can implement a functionality of locking TPP by a certain
+time or forever or unlocking it. This may be required to provide temporary solutions to block requests from inappropriately
+behaving TPP before its certificate will be revoked.
+Functional implementation for this Java interface is planned to provided in the upcoming weeks. See [Roadmap](../roadmap.md)
+
+## Create one endpoint in CMS for working with AspspConsentData
+* Supported all types of services: AIS, PIS, PIIS
+* Added ability to delete AspspConsentData
+
+| Method | Path                                           | Description                                              |
+|--------|------------------------------------------------|----------------------------------------------------------|
+| GET    | api/v1/aspsp-consent-data/consents/{consent-id} | Get aspsp consent data identified by given consent id    |
+| GET    | api/v1/aspsp-consent-data/payments/{payment-id} | Get aspsp consent data identified by given payment id    |
+| PUT    | api/v1/aspsp-consent-data/consents/{consent-id} | Update aspsp consent data identified by given consent id |
+| DELETE | api/v1/aspsp-consent-data/consents/{consent-id} | Delete aspsp consent data identified by given consent id |
+
+Next old endpoints are not supported:
+* api/v1/ais/consent/{consent-id}/aspsp-consent-data
+* api/v1/pis/payment/{payment-id}/aspsp-consent-data
+* api/v1/pis/consent/{consent-id}/aspsp-consent-data
+
+Developer should change them according to the information in the table above.
