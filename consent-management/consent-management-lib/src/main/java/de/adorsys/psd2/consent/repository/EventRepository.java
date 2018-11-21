@@ -25,13 +25,13 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface EventRepository extends CrudRepository<EventEntity, Long> {
-    List<EventEntity> findByTimestampBetween(OffsetDateTime from, OffsetDateTime to);
+    List<EventEntity> findByTimestampBetweenOrderByTimestampAsc(OffsetDateTime from, OffsetDateTime to);
 
-    List<EventEntity> findByTimestampBetweenAndConsentId(OffsetDateTime from, OffsetDateTime to, String consentId);
+    List<EventEntity> findByTimestampBetweenAndConsentIdOrderByTimestampAsc(OffsetDateTime from, OffsetDateTime to, String consentId);
 
-    List<EventEntity> findByTimestampBetweenAndPaymentId(OffsetDateTime from, OffsetDateTime to, String paymentId);
+    List<EventEntity> findByTimestampBetweenAndPaymentIdOrderByTimestampAsc(OffsetDateTime from, OffsetDateTime to, String paymentId);
 
-    List<EventEntity> findByTimestampBetweenAndEventType(OffsetDateTime from, OffsetDateTime to, EventType eventType);
+    List<EventEntity> findByTimestampBetweenAndEventTypeOrderByTimestampAsc(OffsetDateTime from, OffsetDateTime to, EventType eventType);
 
-    List<EventEntity> findByTimestampBetweenAndEventOrigin(OffsetDateTime from, OffsetDateTime to, EventOrigin eventOrigin);
+    List<EventEntity> findByTimestampBetweenAndEventOriginOrderByTimestampAsc(OffsetDateTime from, OffsetDateTime to, EventOrigin eventOrigin);
 }

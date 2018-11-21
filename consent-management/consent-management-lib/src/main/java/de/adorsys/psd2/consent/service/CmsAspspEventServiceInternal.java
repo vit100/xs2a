@@ -40,31 +40,31 @@ public class CmsAspspEventServiceInternal implements CmsAspspEventService {
 
     @Override
     public List<Event> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end) {
-        List<EventEntity> eventEntity = eventRepository.findByTimestampBetween(start, end);
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenOrderByTimestampAsc(start, end);
         return eventMapper.mapToEventList(eventEntity);
     }
 
     @Override
     public List<Event> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull String consentId) {
-        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndConsentId(start, end, consentId);
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndConsentIdOrderByTimestampAsc(start, end, consentId);
         return eventMapper.mapToEventList(eventEntity);
     }
 
     @Override
     public List<Event> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull String paymentId) {
-        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndPaymentId(start, end, paymentId);
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndPaymentIdOrderByTimestampAsc(start, end, paymentId);
         return eventMapper.mapToEventList(eventEntity);
     }
 
     @Override
     public List<Event> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull EventType eventType) {
-        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndEventType(start, end, eventType);
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndEventTypeOrderByTimestampAsc(start, end, eventType);
         return eventMapper.mapToEventList(eventEntity);
     }
 
     @Override
     public List<Event> getEventsForPeriodAndEventOrigin(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull EventOrigin eventOrigin) {
-        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndEventOrigin(start, end, eventOrigin);
+        List<EventEntity> eventEntity = eventRepository.findByTimestampBetweenAndEventOriginOrderByTimestampAsc(start, end, eventOrigin);
         return eventMapper.mapToEventList(eventEntity);
     }
 }

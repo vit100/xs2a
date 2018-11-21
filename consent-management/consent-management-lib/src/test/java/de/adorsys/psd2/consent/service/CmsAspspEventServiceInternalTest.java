@@ -52,7 +52,7 @@ public class CmsAspspEventServiceInternalTest {
 
         when(eventMapper.mapToEventList(any()))
             .thenReturn(Collections.singletonList(buildCmsEvent(between)));
-        when(eventRepository.findByTimestampBetween(start, end))
+        when(eventRepository.findByTimestampBetweenOrderByTimestampAsc(start, end))
             .thenReturn(Collections.singletonList(buildEventEntity(between)));
 
         // Given
@@ -73,7 +73,7 @@ public class CmsAspspEventServiceInternalTest {
 
         when(eventMapper.mapToEventList(any()))
             .thenReturn(Collections.emptyList());
-        when(eventRepository.findByTimestampBetween(start, end))
+        when(eventRepository.findByTimestampBetweenOrderByTimestampAsc(start, end))
             .thenReturn(Collections.emptyList());
 
         // When
