@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.xs2a.service;
 
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
+import de.adorsys.psd2.xs2a.domain.RequestData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,13 +31,13 @@ import java.util.stream.Collectors;
 public class RequestProviderService {
     private final HttpServletRequest httpServletRequest;
 
-    public RequestHolder getRequestHolder() {
+    public RequestData getRequestData() {
         String uri = httpServletRequest.getRequestURI();
         UUID requestId = UUID.fromString(httpServletRequest.getHeader("X-Request-ID"));
         String ip = httpServletRequest.getRemoteAddr();
         Map<String, String> headers = getRequestHeaders(httpServletRequest);
 
-        return new RequestHolder(uri, requestId, ip, headers);
+        return new RequestData(uri, requestId, ip, headers);
     }
 
     private Map<String, String> getRequestHeaders(HttpServletRequest request) {

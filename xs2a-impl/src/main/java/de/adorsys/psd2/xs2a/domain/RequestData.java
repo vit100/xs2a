@@ -21,10 +21,29 @@ import lombok.Value;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Contains general information about the incoming request.
+ */
 @Value
-public class RequestHolder {
+public class RequestData {
+    /**
+     * Returns the part of the request's URL after the server name and port number.
+     * Example: '/v1/consents'
+     */
     private String uri;
+
+    /**
+     * Unique ID of the request, which was received as X-Request-ID in the header.
+     */
     private UUID requestId;
+
+    /**
+     * IP address, from which the request was sent.
+     */
     private String ip;
+
+    /**
+     * Headers used in the request.
+     */
     private Map<String, String> headers;
 }

@@ -20,7 +20,7 @@ import de.adorsys.psd2.consent.api.service.EventService;
 import de.adorsys.psd2.xs2a.core.event.Event;
 import de.adorsys.psd2.xs2a.core.event.EventOrigin;
 import de.adorsys.psd2.xs2a.core.event.EventType;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
+import de.adorsys.psd2.xs2a.domain.RequestData;
 import de.adorsys.psd2.xs2a.domain.event.RequestEventPayload;
 import de.adorsys.psd2.xs2a.service.RequestProviderService;
 import de.adorsys.psd2.xs2a.service.TppService;
@@ -95,13 +95,13 @@ public class Xs2aEventService {
     }
 
     private RequestEventPayload buildRequestEventPayload(Object body) {
-        RequestHolder requestHolder = requestProviderService.getRequestHolder();
+        RequestData requestData = requestProviderService.getRequestData();
         RequestEventPayload requestPayload = new RequestEventPayload();
         requestPayload.setTppInfo(tppService.getTppInfo());
-        requestPayload.setTppIp(requestHolder.getIp());
-        requestPayload.setRequestId(requestHolder.getRequestId());
-        requestPayload.setUri(requestHolder.getUri());
-        requestPayload.setHeaders(requestHolder.getHeaders());
+        requestPayload.setTppIp(requestData.getIp());
+        requestPayload.setRequestId(requestData.getRequestId());
+        requestPayload.setUri(requestData.getUri());
+        requestPayload.setHeaders(requestData.getHeaders());
         requestPayload.setBody(body);
         return requestPayload;
     }
