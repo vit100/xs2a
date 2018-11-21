@@ -24,7 +24,6 @@ import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.consent.*;
@@ -34,7 +33,6 @@ import de.adorsys.psd2.xs2a.service.ConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.web.mapper.AuthorisationMapper;
 import de.adorsys.psd2.xs2a.web.mapper.ConsentModelMapper;
-import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,13 +44,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -82,22 +80,18 @@ public class ConsentControllerTest {
     @Mock
     private AuthorisationMapper authorisationMapper;
 
-    @Mock
-    private RequestHolderMapper requestHolderMapper;
-
 
     @Before
     public void setUp() {
         when(consentModelMapper.mapToCreateConsentReq(any())).thenReturn(getCreateConsentReq());
-        when(consentService.createAccountConsentsWithResponse(any(), any(), eq(PSU_ID_DATA), eq(EXPLICIT_PREFERRED))).thenReturn(createXs2aConsentResponse(CONSENT_ID));
-        when(consentService.createAccountConsentsWithResponse(any(), any(), eq(PSU_ID_DATA), eq(EXPLICIT_PREFERRED))).thenReturn(createXs2aConsentResponse(null));
-        when(consentService.getAccountConsentsStatusById(any(), eq(CONSENT_ID))).thenReturn(ResponseObject.<ConsentStatusResponse>builder().body(new ConsentStatusResponse(ConsentStatus.RECEIVED)).build());
-        when(consentService.getAccountConsentsStatusById(any(), eq(WRONG_CONSENT_ID))).thenReturn(ResponseObject.<ConsentStatusResponse>builder().fail(new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404))).build());
-        when(consentService.getAccountConsentById(any(), eq(CONSENT_ID))).thenReturn(getConsent(CONSENT_ID));
-        when(consentService.getAccountConsentById(any(), eq(WRONG_CONSENT_ID))).thenReturn(getConsent(WRONG_CONSENT_ID));
-        when(consentService.deleteAccountConsentsById(any(), eq(CONSENT_ID))).thenReturn(ResponseObject.<Void>builder().build());
-        when(consentService.deleteAccountConsentsById(any(), eq(WRONG_CONSENT_ID))).thenReturn(ResponseObject.<Void>builder().fail(new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404))).build());
-        when(requestHolderMapper.mapToRequestHolder(any(), any())).thenReturn(new RequestHolder());
+        when(consentService.createAccountConsentsWithResponse(any(), eq(PSU_ID_DATA), eq(EXPLICIT_PREFERRED))).thenReturn(createXs2aConsentResponse(CONSENT_ID));
+        when(consentService.createAccountConsentsWithResponse(any(), eq(PSU_ID_DATA), eq(EXPLICIT_PREFERRED))).thenReturn(createXs2aConsentResponse(null));
+        when(consentService.getAccountConsentsStatusById(eq(CONSENT_ID))).thenReturn(ResponseObject.<ConsentStatusResponse>builder().body(new ConsentStatusResponse(ConsentStatus.RECEIVED)).build());
+        when(consentService.getAccountConsentsStatusById(eq(WRONG_CONSENT_ID))).thenReturn(ResponseObject.<ConsentStatusResponse>builder().fail(new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404))).build());
+        when(consentService.getAccountConsentById(eq(CONSENT_ID))).thenReturn(getConsent(CONSENT_ID));
+        when(consentService.getAccountConsentById(eq(WRONG_CONSENT_ID))).thenReturn(getConsent(WRONG_CONSENT_ID));
+        when(consentService.deleteAccountConsentsById(eq(CONSENT_ID))).thenReturn(ResponseObject.<Void>builder().build());
+        when(consentService.deleteAccountConsentsById(eq(WRONG_CONSENT_ID))).thenReturn(ResponseObject.<Void>builder().fail(new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404))).build());
     }
 
     @Test
@@ -118,24 +112,6 @@ public class ConsentControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(resp.getConsentStatus().toString()).isEqualTo(ConsentStatus.RECEIVED.getValue());
         assertThat(resp.getConsentId()).isEqualTo(CONSENT_ID);
-    }
-
-    @Test
-    public void createConsent_Success_ShouldMapRequest_WithBody() {
-        // Given
-        Consents consents = getConsents();
-
-        // When
-        consentController.createConsent(REQUEST_ID, consents, null, null, null,
-                                        WRONG_PSU_ID, null, null, null,
-                                        null, null, null,
-                                        null, null, null,
-                                        null, null, null,
-                                        null, null, null,
-                                        null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID), eq(consents));
     }
 
     @Test
@@ -165,18 +141,6 @@ public class ConsentControllerTest {
         //Then:
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isEqualTo(ConsentStatus.RECEIVED);
-    }
-
-    @Test
-    public void getConsentStatus_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        consentController.getConsentStatus(CONSENT_ID, REQUEST_ID, null, null, null,
-                                           null, null, null, null,
-                                           null, null, null,
-                                           null, null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
     }
 
     @Test
@@ -212,18 +176,6 @@ public class ConsentControllerTest {
     }
 
     @Test
-    public void startConsentAuthorisation_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        consentController.startConsentAuthorisation(CONSENT_ID, REQUEST_ID, null, null,
-                                                    null, null, null, null,
-                                                    null, null, null, null, null,
-                                                    null, null, null, null, null,
-                                                    null);
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    @Test
     public void startConsentAuthorisation_Failure() {
         doReturn(new ResponseEntity<>(HttpStatus.BAD_REQUEST)).when(responseMapper).created(any(), any());
 
@@ -253,18 +205,6 @@ public class ConsentControllerTest {
     }
 
     @Test
-    public void getConsentInformation_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        consentController.getConsentInformation(CONSENT_ID, REQUEST_ID, null, null,
-                                                null, null, null, null,
-                                                null, null, null,
-                                                null, null, null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    @Test
     public void getAccountConsentsInformationById_Failure() {
         doReturn(new ResponseEntity<>(HttpStatus.NOT_FOUND)).when(responseMapper).ok(any(), any());
         //When:
@@ -289,18 +229,6 @@ public class ConsentControllerTest {
     }
 
     @Test
-    public void deleteConsent_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        consentController.deleteConsent(CONSENT_ID, REQUEST_ID, null, null,
-                                        null, null, null, null,
-                                        null, null, null,
-                                        null, null, null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    @Test
     public void deleteAccountConsent_Failure() {
         doReturn(new ResponseEntity<>(HttpStatus.NOT_FOUND)).when(responseMapper).delete(any());
         //When:
@@ -310,21 +238,6 @@ public class ConsentControllerTest {
                                                                         null, null);
         //Then:
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    }
-
-    @Test
-    public void updateConsentsPsuData_Success_ShouldMapRequest_WithBody() {
-        // Given
-        Map<String, String> requestBody = Collections.singletonMap("authenticationMethodId", "someMethodId");
-
-        // When
-        consentController.updateConsentsPsuData(CONSENT_ID, AUTHORISATION_ID, REQUEST_ID, requestBody, null, null,
-                                                null, null, null, null,
-                                                null, null, null, null, null,
-                                                null, null, null, null, null,
-                                                null);
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID), eq(requestBody));
     }
 
     private ResponseObject<ConsentsResponse201> createConsentResponse(String consentId) {

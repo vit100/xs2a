@@ -33,7 +33,6 @@ import de.adorsys.psd2.xs2a.service.validator.RequestValidatorService;
 import de.adorsys.psd2.xs2a.service.validator.parameter.ParametersFactory;
 import de.adorsys.psd2.xs2a.web.interceptor.HandlerInterceptor;
 import de.adorsys.psd2.xs2a.web.interceptor.logging.*;
-import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -63,7 +62,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private int maxNumberOfCharInTransactionJson;
     private final CorsConfigProperties corsConfigProperties;
     private final TppService tppService;
-    private final RequestHolderMapper requestHolderMapper;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

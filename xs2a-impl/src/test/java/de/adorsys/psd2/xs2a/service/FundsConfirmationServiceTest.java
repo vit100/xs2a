@@ -89,7 +89,7 @@ public class FundsConfirmationServiceTest {
         fundsConfirmationService.fundsConfirmation(request);
 
         // Then
-        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(argumentCaptor.capture(), any());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.CONFIRM_FUNDS_REQUEST_RECEIVED);
     }
 

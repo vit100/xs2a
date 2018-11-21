@@ -36,7 +36,6 @@ import de.adorsys.psd2.xs2a.spi.domain.fund.SpiFundsConfirmationRequest;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.FundsConfirmationSpi;
-import de.adorsys.psd2.xs2a.web.RequestProviderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -68,7 +67,7 @@ public class FundsConfirmationService {
      * @return Response with the result 'true' if there are enough funds in the account, 'false' otherwise
      */
     public ResponseObject<FundsConfirmationResponse> fundsConfirmation(FundsConfirmationRequest request) {
-        xs2aEventService.recordTppRequest(requestProviderService.getRequest().body(request), EventType.CONFIRM_FUNDS_REQUEST_RECEIVED);
+        xs2aEventService.recordTppRequest(EventType.CONFIRM_FUNDS_REQUEST_RECEIVED, request);
 
         String consentId = null;
 

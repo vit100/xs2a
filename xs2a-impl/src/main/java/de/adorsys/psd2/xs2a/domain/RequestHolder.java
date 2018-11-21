@@ -16,33 +16,15 @@
 
 package de.adorsys.psd2.xs2a.domain;
 
-import lombok.Data;
+import lombok.Value;
 
 import java.util.Map;
 import java.util.UUID;
 
-@Data
+@Value
 public class RequestHolder {
     private String uri;
     private UUID requestId;
     private String ip;
     private Map<String, String> headers;
-    private Object body;
-    private String consentId;
-    private String paymentId;
-
-    public RequestHolder consentId(String consentId) {
-        this.consentId = consentId;
-        return this;
-    }
-
-    public RequestHolder paymentId(String paymentId) {
-        this.paymentId = paymentId;
-        return this;
-    }
-
-    public RequestHolder body(Object body) {
-        this.body = body;
-        return this;
-    }
 }

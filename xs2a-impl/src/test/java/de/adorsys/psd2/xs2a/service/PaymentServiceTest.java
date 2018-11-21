@@ -205,7 +205,7 @@ public class PaymentServiceTest {
         paymentService.cancelPayment(PaymentType.SINGLE, PAYMENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordTppRequest(eq(PAYMENT_ID), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture(), any());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.CANCEL_PAYMENT_REQUEST_RECEIVED);
     }
 
@@ -219,7 +219,7 @@ public class PaymentServiceTest {
         paymentService.createPayment(SINGLE_PAYMENT_OK, parameters);
 
         // Then
-        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(argumentCaptor.capture(), any());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.INITIATE_PAYMENT_REQUEST_RECEIVED);
     }
 
@@ -235,7 +235,7 @@ public class PaymentServiceTest {
         paymentService.getPaymentById(PaymentType.SINGLE, PAYMENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordTppRequest(eq(PAYMENT_ID), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture(), any());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_PAYMENT_REQUEST_RECEIVED);
     }
 
@@ -251,7 +251,7 @@ public class PaymentServiceTest {
         paymentService.getPaymentStatusById(PaymentType.SINGLE, PAYMENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordTppRequest(eq(PAYMENT_ID), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture(), any());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
     }
 

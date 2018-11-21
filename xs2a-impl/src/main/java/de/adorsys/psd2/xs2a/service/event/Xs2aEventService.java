@@ -22,10 +22,12 @@ import de.adorsys.psd2.xs2a.core.event.EventOrigin;
 import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.event.RequestEventPayload;
+import de.adorsys.psd2.xs2a.service.RequestProviderService;
 import de.adorsys.psd2.xs2a.service.TppService;
-import de.adorsys.psd2.xs2a.web.RequestProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -43,8 +45,9 @@ public class Xs2aEventService {
      *
      * @param eventType     Type of event
      */
-    public void recordTppRequest(EventType eventType) {
-        Event event = buildTppEvent(requestProviderService.getRequest(), eventType);
+    public void recordAisTppRequest(@NotNull String consentId, @NotNull EventType eventType, @Nullable Object body) {
+        Event event = buildTppEvent(eventType, body);
+        event.setConsentId(consentId);
 
         recordEventInCms(event);
     }
@@ -52,11 +55,22 @@ public class Xs2aEventService {
     /**
      * Records generic TPP request in form of event for given request and event type
      *
-     * @param requestHolder Information about the incoming request
      * @param eventType     Type of event
      */
-    public void recordTppRequest(RequestHolder requestHolder, EventType eventType) {
-        Event event = buildTppEvent(requestHolder, eventType);
+    public void recordPisTppRequest(@NotNull String paymentId, @NotNull EventType eventType, @Nullable Object body) {
+        Event event = buildTppEvent(eventType, body);
+        event.setPaymentId(paymentId);
+
+        recordEventInCms(event);
+    }
+
+    /**
+     * Records generic TPP request in form of event for given request and event type
+     *
+     * @param eventType Type of event
+     */
+    public void recordTppRequest(@NotNull EventType eventType, @Nullable Object body) {
+        Event event = buildTppEvent(eventType, body);
 
         recordEventInCms(event);
     }
@@ -68,23 +82,27 @@ public class Xs2aEventService {
         }
     }
 
-    private Event buildTppEvent(RequestHolder requestHolder, EventType eventType) {
+    private Event buildTppEvent(EventType eventType, Object body) {
         Event event = new Event();
         event.setTimestamp(OffsetDateTime.now());
         event.setEventOrigin(EventOrigin.TPP);
         event.setEventType(eventType);
-        event.setPaymentId(requestHolder.getPaymentId());
-        event.setConsentId(requestHolder.getConsentId());
 
+        RequestEventPayload payload = buildRequestEventPayload(body);
+        event.setPayload(payload);
+
+        return event;
+    }
+
+    private RequestEventPayload buildRequestEventPayload(Object body) {
+        RequestHolder requestHolder = requestProviderService.getRequestHolder();
         RequestEventPayload requestPayload = new RequestEventPayload();
         requestPayload.setTppInfo(tppService.getTppInfo());
         requestPayload.setTppIp(requestHolder.getIp());
         requestPayload.setRequestId(requestHolder.getRequestId());
         requestPayload.setUri(requestHolder.getUri());
-        requestPayload.setBody(requestHolder.getBody());
         requestPayload.setHeaders(requestHolder.getHeaders());
-        event.setPayload(requestPayload);
-
-        return event;
+        requestPayload.setBody(body);
+        return requestPayload;
     }
 }

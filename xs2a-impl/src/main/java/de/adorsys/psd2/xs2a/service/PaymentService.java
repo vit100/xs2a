@@ -49,7 +49,6 @@ import de.adorsys.psd2.xs2a.spi.service.BulkPaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.PeriodicPaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.SinglePaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
-import de.adorsys.psd2.xs2a.web.RequestProviderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -93,7 +92,7 @@ public class PaymentService {
      * @return Response containing information about created payment or corresponding error
      */
     public ResponseObject createPayment(Object payment, PaymentInitiationParameters paymentInitiationParameters) {
-        xs2aEventService.recordTppRequest(requestProviderService.getRequest().body(payment), EventType.INITIATE_PAYMENT_REQUEST_RECEIVED);
+        xs2aEventService.recordTppRequest(EventType.INITIATE_PAYMENT_REQUEST_RECEIVED, payment);
 
         TppInfo tppInfo = tppService.getTppInfo();
         tppInfo.setRedirectUri(paymentInitiationParameters.getTppRedirectUri());
@@ -122,7 +121,7 @@ public class PaymentService {
      * @return Response containing information about payment or corresponding error
      */
     public ResponseObject getPaymentById(PaymentType paymentType, String paymentId) {
-        xs2aEventService.recordTppRequest(requestProviderService.getRequest().paymentId(paymentId), EventType.GET_PAYMENT_REQUEST_RECEIVED);
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED, null);
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
 
         ReadPaymentService<PaymentInformationResponse> readPaymentService = readPaymentFactory.getService(paymentType.getValue());
@@ -146,7 +145,7 @@ public class PaymentService {
      * @return Information about the status of a payment
      */
     public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentId) {
-        xs2aEventService.recordTppRequest(requestProviderService.getRequest().paymentId(paymentId), EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED, null);
 
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentDataByPaymentId(paymentId);
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
@@ -194,7 +193,7 @@ public class PaymentService {
      * @return Response containing information about cancelled payment or corresponding error
      */
     public ResponseObject<CancelPaymentResponse> cancelPayment(PaymentType paymentType, String paymentId) {
-        xs2aEventService.recordTppRequest(requestProviderService.getRequest().paymentId(paymentId), EventType.CANCEL_PAYMENT_REQUEST_RECEIVED);
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.CANCEL_PAYMENT_REQUEST_RECEIVED, null);
 
         // we need to get decrypted payment ID
         String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(paymentId);

@@ -14,24 +14,35 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.web;
+package de.adorsys.psd2.xs2a.service;
 
 import de.adorsys.psd2.xs2a.domain.RequestHolder;
-import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RequestProviderService {
     private final HttpServletRequest httpServletRequest;
-    private final RequestHolderMapper requestHolderMapper;
 
-    public RequestHolder getRequest() {
-        String id = httpServletRequest.getHeader("X-Request-ID");
-        return requestHolderMapper.mapToRequestHolder(httpServletRequest, UUID.fromString(id));
+    public RequestHolder getRequestHolder() {
+        String uri = httpServletRequest.getRequestURI();
+        UUID requestId = UUID.fromString(httpServletRequest.getHeader("X-Request-ID"));
+        String ip = httpServletRequest.getRemoteAddr();
+        Map<String, String> headers = getRequestHeaders(httpServletRequest);
+
+        return new RequestHolder(uri, requestId, ip, headers);
+    }
+
+    private Map<String, String> getRequestHeaders(HttpServletRequest request) {
+        return Collections.list(request.getHeaderNames())
+                   .stream()
+                   .collect(Collectors.toMap(name -> name, request::getHeader));
     }
 }

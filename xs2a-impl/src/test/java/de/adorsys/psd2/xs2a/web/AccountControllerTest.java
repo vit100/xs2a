@@ -30,7 +30,6 @@ import de.adorsys.psd2.xs2a.domain.code.Xs2aPurposeCode;
 import de.adorsys.psd2.xs2a.service.AccountService;
 import de.adorsys.psd2.xs2a.service.mapper.AccountModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
-import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,11 +48,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
@@ -80,15 +77,12 @@ public class AccountControllerTest {
     private ResponseMapper responseMapper;
     @Mock
     private AccountModelMapper accountModelMapper;
-    @Mock
-    private RequestHolderMapper requestHolderMapper;
 
     @Before
     public void setUp() throws Exception {
-        when(accountService.getAccountList(any(), anyString(), anyBoolean())).thenReturn(getXs2aAccountDetailsList());
-        when(accountService.getBalancesReport(any(), anyString(), anyString())).thenReturn(getBalanceReport());
-        when(accountService.getAccountDetails(any(), anyString(), any(), anyBoolean())).thenReturn(getXs2aAccountDetails());
-        when(requestHolderMapper.mapToRequestHolder(any(), eq(REQUEST_ID))).thenReturn(buildRequestHolder());
+        when(accountService.getAccountList(anyString(), anyBoolean())).thenReturn(getXs2aAccountDetailsList());
+        when(accountService.getBalancesReport(anyString(), anyString())).thenReturn(getBalanceReport());
+        when(accountService.getAccountDetails(anyString(), any(), anyBoolean())).thenReturn(getXs2aAccountDetails());
     }
 
     @Test
@@ -163,74 +157,6 @@ public class AccountControllerTest {
 
         //Then:
         assertThat(result).isEqualTo(expectedResult);
-    }
-
-    @Test
-    public void getAccountList_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        accountController.getAccountList(REQUEST_ID, CONSENT_ID, false,
-                                         null, null, null, null, null, null,
-                                         null, null, null, null, null,
-                                         null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    @Test
-    public void readAccountDetails_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        accountController.readAccountDetails(ACCOUNT_ID, REQUEST_ID, CONSENT_ID, false,
-                                             null, null, null, null, null, null,
-                                             null, null, null, null, null,
-                                             null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    @Test
-    public void getBalances_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        accountController.getBalances(ACCOUNT_ID, REQUEST_ID, CONSENT_ID,
-                                      null, null, null, null, null, null,
-                                      null, null, null, null, null,
-                                      null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    @Test
-    public void getTransactionList_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        accountController.getTransactionList(ACCOUNT_ID, BOOKING_STATUS, REQUEST_ID, CONSENT_ID,
-                                             null, null, null, null,
-                                             null, null, null, null,
-                                             null, null, null, null,
-                                             null, null, null,
-                                             null, null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    @Test
-    public void getTransactionDetails_Success_ShouldMapRequest_WithoutBody() {
-        // When
-        accountController.getTransactionDetails(ACCOUNT_ID, RESOURCE_ID, REQUEST_ID, CONSENT_ID,
-                                                null, null, null, null, null, null,
-                                                null, null, null, null, null,
-                                                null, null);
-
-        // Then
-        verify(requestHolderMapper, times(1)).mapToRequestHolder(any(), eq(REQUEST_ID));
-    }
-
-    private RequestHolder buildRequestHolder() {
-        RequestHolder holder = new RequestHolder();
-        holder.setRequestId(REQUEST_ID);
-        return holder;
     }
 
     private ResponseObject<Map<String, List<Xs2aAccountDetails>>> getXs2aAccountDetailsList() {
