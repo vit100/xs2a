@@ -93,7 +93,7 @@ public class JsonConverterServiceTest {
     }
 
     @Value
-    private class HolderObject {
+    private static class HolderObject {
         private String someField;
         private Map<String, String> someMap;
     }
