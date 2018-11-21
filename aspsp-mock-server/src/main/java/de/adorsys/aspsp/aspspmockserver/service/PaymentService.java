@@ -192,6 +192,10 @@ public class PaymentService {
      */
     public Optional<AspspPaymentCancellationResponse> cancelPayment(String paymentId) {
         List<AspspPayment> payments = paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
+        if(CollectionUtils.isEmpty(payments)){
+            return Optional.empty();
+        }
+
         payments.forEach(
             payment -> updateAspsPaymentStatus(payment, AspspTransactionStatus.CANC)
         );
@@ -207,6 +211,10 @@ public class PaymentService {
      */
     public Optional<AspspPaymentCancellationResponse> initiatePaymentCancellation(String paymentId) {
         List<AspspPayment> payments = paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
+        if(CollectionUtils.isEmpty(payments)){
+            return Optional.empty();
+        }
+
         payments.forEach(
             payment -> updateAspsPaymentStatus(payment, AspspTransactionStatus.ACTC)
         );
