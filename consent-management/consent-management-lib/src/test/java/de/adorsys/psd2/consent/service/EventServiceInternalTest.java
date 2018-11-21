@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventServiceInternalTest {
-    private static final Long EVENT_ID = 100L;
+    private static final long EVENT_ID = 100;
     private static final String DECRYPTED_ID = "0310318d-c87d-405b-bd2b-166af5124e1f";
 
     @InjectMocks
