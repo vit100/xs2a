@@ -42,7 +42,7 @@ public interface CmsAspspEventService {
      * @param consentId Id of the consent
      * @return List of Event objects, recorded in given time period and with a given consentId
      */
-    List<Event> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String consentId);
+    List<Event> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull String consentId);
 
     /**
      * Returns a list of Event objects, recorded in given time period and with the given paymentId
@@ -52,7 +52,7 @@ public interface CmsAspspEventService {
      * @param paymentId Id of the payment
      * @return List of Event objects, recorded in given time period and with a given paymentId
      */
-    List<Event> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, String paymentId);
+    List<Event> getEventsForPeriodAndPaymentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull String paymentId);
 
     /**
      * Returns a list of Event objects of the specific type, recorded in given time period
@@ -62,7 +62,7 @@ public interface CmsAspspEventService {
      * @param eventType The searched type of the events
      * @return List of Event objects, recorded in given time period and of a specific type
      */
-    List<Event> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventType eventType);
+    List<Event> getEventsForPeriodAndEventType(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull EventType eventType);
 
     /**
      * Returns a list of Event objects from a specific origin, recorded in given time period
@@ -72,5 +72,5 @@ public interface CmsAspspEventService {
      * @param eventOrigin The searched origin of the events
      * @return List of Event objects, recorded in given time period and from a specific origin
      */
-    List<Event> getEventsForPeriodAndEventOrigin(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, EventOrigin eventOrigin);
+    List<Event> getEventsForPeriodAndEventOrigin(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull EventOrigin eventOrigin);
 }
