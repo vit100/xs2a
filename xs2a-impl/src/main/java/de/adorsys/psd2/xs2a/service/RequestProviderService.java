@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +44,6 @@ public class RequestProviderService {
     private Map<String, String> getRequestHeaders(HttpServletRequest request) {
         return Collections.list(request.getHeaderNames())
                    .stream()
-                   .collect(Collectors.toMap(name -> name, request::getHeader));
+                   .collect(Collectors.toMap(Function.identity(), request::getHeader));
     }
 }
