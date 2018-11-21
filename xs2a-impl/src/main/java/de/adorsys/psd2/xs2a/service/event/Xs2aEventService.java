@@ -41,9 +41,21 @@ public class Xs2aEventService {
     private final RequestProviderService requestProviderService;
 
     /**
-     * Records generic TPP request in form of event for given request and event type
+     * Records TPP request to the AIS in the CMS in form of TPP event for given consent id and event type
      *
-     * @param eventType     Type of event
+     * @param consentId Consent id that will be recorded along with the event
+     * @param eventType Type of the event
+     */
+    public void recordAisTppRequest(@NotNull String consentId, @NotNull EventType eventType) {
+        recordAisTppRequest(consentId, eventType, null);
+    }
+
+    /**
+     * Records TPP request to the AIS in the CMS in form of TPP event for given consent id, event type and request body
+     *
+     * @param consentId Consent id that will be recorded along with the event
+     * @param eventType Type of the event
+     * @param body      Body of the request
      */
     public void recordAisTppRequest(@NotNull String consentId, @NotNull EventType eventType, @Nullable Object body) {
         Event event = buildTppEvent(eventType, body);
@@ -53,9 +65,21 @@ public class Xs2aEventService {
     }
 
     /**
-     * Records generic TPP request in form of event for given request and event type
+     * Records TPP request to the PIS in the CMS in form of TPP event for given payment id and event type
      *
-     * @param eventType     Type of event
+     * @param paymentId Payment id that will be recorded along with the event
+     * @param eventType Type of the event
+     */
+    public void recordPisTppRequest(@NotNull String paymentId, @NotNull EventType eventType) {
+        recordPisTppRequest(paymentId, eventType, null);
+    }
+
+    /**
+     * Records TPP request to the PIS in the CMS in form of TPP event for given payment id, event type and request body
+     *
+     * @param paymentId Payment id that will be recorded along with the event
+     * @param eventType Type of the event
+     * @param body      Body of the request
      */
     public void recordPisTppRequest(@NotNull String paymentId, @NotNull EventType eventType, @Nullable Object body) {
         Event event = buildTppEvent(eventType, body);
@@ -65,9 +89,19 @@ public class Xs2aEventService {
     }
 
     /**
-     * Records generic TPP request in form of event for given request and event type
+     * Records generic TPP request in the CMS in form of TPP event for given event type
      *
      * @param eventType Type of event
+     */
+    public void recordTppRequest(@NotNull EventType eventType) {
+        recordTppRequest(eventType, null);
+    }
+
+    /**
+     * Records generic TPP request in the CMS in form of TPP event for given event type and request body
+     *
+     * @param eventType Type of event
+     * @param body      Body of the request
      */
     public void recordTppRequest(@NotNull EventType eventType, @Nullable Object body) {
         Event event = buildTppEvent(eventType, body);

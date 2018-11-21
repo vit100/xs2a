@@ -137,7 +137,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
      * @return ConsentStatus
      */
     public ResponseObject<ConsentStatusResponse> getAccountConsentsStatusById(String consentId) {
-        xs2aEventService.recordAisTppRequest(consentId, EventType.GET_AIS_CONSENT_STATUS_REQUEST_RECEIVED, null);
+        xs2aEventService.recordAisTppRequest(consentId, EventType.GET_AIS_CONSENT_STATUS_REQUEST_RECEIVED);
 
         AccountConsent validatedAccountConsent = getValidatedAccountConsent(consentId);
         Optional<ConsentStatus> consentStatus =
@@ -160,7 +160,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
      * @return VOID
      */
     public ResponseObject<Void> deleteAccountConsentsById(String consentId) {
-        xs2aEventService.recordAisTppRequest(consentId, EventType.DELETE_AIS_CONSENT_REQUEST_RECEIVED, null);
+        xs2aEventService.recordAisTppRequest(consentId, EventType.DELETE_AIS_CONSENT_REQUEST_RECEIVED);
         AccountConsent accountConsent = getValidatedAccountConsent(consentId);
 
         if (accountConsent != null) {
@@ -189,7 +189,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
      * @return AccountConsent requested by consentId
      */
     public ResponseObject<AccountConsent> getAccountConsentById(String consentId) {
-        xs2aEventService.recordAisTppRequest(consentId, EventType.GET_AIS_CONSENT_REQUEST_RECEIVED, null);
+        xs2aEventService.recordAisTppRequest(consentId, EventType.GET_AIS_CONSENT_REQUEST_RECEIVED);
 
         AccountConsent consent = getValidatedAccountConsent(consentId);
         return consent == null
@@ -232,7 +232,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     }
 
     public ResponseObject<CreateConsentAuthorizationResponse> createConsentAuthorizationWithResponse(PsuIdData psuData, String consentId) {
-        xs2aEventService.recordAisTppRequest(consentId, EventType.START_AIS_CONSENT_AUTHORISATION_REQUEST_RECEIVED, null);
+        xs2aEventService.recordAisTppRequest(consentId, EventType.START_AIS_CONSENT_AUTHORISATION_REQUEST_RECEIVED);
 
         return aisAuthorizationService.createConsentAuthorization(psuData, consentId)
                    .map(resp -> ResponseObject.<CreateConsentAuthorizationResponse>builder().body(resp).build())
@@ -264,7 +264,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     }
 
     public ResponseObject<Xsa2CreatePisConsentAuthorisationResponse> createPisConsentAuthorization(String paymentId, PaymentType paymentType, PsuIdData psuData) {
-        xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PIS_CONSENT_AUTHORISATION_REQUEST_RECEIVED, null);
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PIS_CONSENT_AUTHORISATION_REQUEST_RECEIVED);
 
         return pisAuthorizationService.createConsentAuthorisation(paymentId, paymentType, psuData)
                    .map(resp -> ResponseObject.<Xsa2CreatePisConsentAuthorisationResponse>builder()
@@ -290,7 +290,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     }
 
     public ResponseObject<Xs2aCreatePisConsentCancellationAuthorisationResponse> createPisConsentCancellationAuthorization(String paymentId, PaymentType paymentType) {
-        xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PIS_CONSENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED, null);
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PIS_CONSENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
 
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
         return pisAuthorizationService.createConsentCancellationAuthorisation(paymentId, paymentType, psuData)
@@ -318,7 +318,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     }
 
     public ResponseObject<Xs2aPaymentCancellationAuthorisationSubResource> getPaymentInitiationCancellationAuthorisationInformation(String paymentId) {
-        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED, null);
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
 
         return pisAuthorizationService.getCancellationAuthorisationSubResources(paymentId)
                    .map(resp -> ResponseObject.<Xs2aPaymentCancellationAuthorisationSubResource>builder().body(resp).build())
