@@ -28,6 +28,21 @@ public class RequestHolder {
     private String ip;
     private Map<String, String> headers;
     private Object body;
-    private String paymentId;
     private String consentId;
+    private String paymentId;
+
+    public RequestHolder consentId(String consentId) {
+        this.consentId = consentId;
+        return this;
+    }
+
+    public RequestHolder paymentId(String paymentId) {
+        this.paymentId = paymentId;
+        return this;
+    }
+
+    public RequestHolder body(Object body) {
+        this.body = body;
+        return this;
+    }
 }

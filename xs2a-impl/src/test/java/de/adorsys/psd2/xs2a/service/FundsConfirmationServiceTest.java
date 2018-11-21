@@ -19,7 +19,6 @@ package de.adorsys.psd2.xs2a.service;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationRequest;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiFundsConfirmationRequestMapper;
@@ -44,7 +43,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FundsConfirmationServiceTest {
-    private static final RequestHolder REQUEST_HOLDER = new RequestHolder();
     private static final AspspConsentData ASPSP_CONSENT_DATA = new AspspConsentData(new byte[0], "Some Consent ID");
     private static final PsuIdData PSU_ID_DATA = new PsuIdData(null, null, null, null);
     private static final SpiPsuData SPI_PSU_DATA = new SpiPsuData(null, null, null, null);
@@ -88,7 +86,7 @@ public class FundsConfirmationServiceTest {
         FundsConfirmationRequest request = buildFundsConfirmationRequest();
 
         // When
-        fundsConfirmationService.fundsConfirmation(REQUEST_HOLDER, request);
+        fundsConfirmationService.fundsConfirmation(request);
 
         // Then
         verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());

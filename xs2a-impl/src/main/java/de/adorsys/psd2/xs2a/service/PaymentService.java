@@ -25,7 +25,6 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
 import de.adorsys.psd2.xs2a.domain.pis.*;
@@ -50,6 +49,7 @@ import de.adorsys.psd2.xs2a.spi.service.BulkPaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.PeriodicPaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.SinglePaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
+import de.adorsys.psd2.xs2a.web.RequestProviderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -83,17 +83,17 @@ public class PaymentService {
     private final CancelPaymentService cancelPaymentService;
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aEventService xs2aEventService;
+    private final RequestProviderService requestProviderService;
 
     /**
      * Initiates a payment though "payment service" corresponding service method
      *
-     * @param requestHolder               Information about the incoming request
      * @param payment                     Payment information
      * @param paymentInitiationParameters Parameters for payment initiation
      * @return Response containing information about created payment or corresponding error
      */
-    public ResponseObject createPayment(RequestHolder requestHolder, Object payment, PaymentInitiationParameters paymentInitiationParameters) {
-        xs2aEventService.recordTppRequest(requestHolder, EventType.INITIATE_PAYMENT_REQUEST_RECEIVED);
+    public ResponseObject createPayment(Object payment, PaymentInitiationParameters paymentInitiationParameters) {
+        xs2aEventService.recordTppRequest(requestProviderService.getRequest().body(payment), EventType.INITIATE_PAYMENT_REQUEST_RECEIVED);
 
         TppInfo tppInfo = tppService.getTppInfo();
         tppInfo.setRedirectUri(paymentInitiationParameters.getTppRedirectUri());
@@ -117,13 +117,12 @@ public class PaymentService {
     /**
      * Retrieves payment from ASPSP by its ASPSP identifier, product and payment type
      *
-     * @param requestHolder Information about the incoming request
-     * @param paymentType   type of payment (payments, bulk-payments, periodic-payments)
-     * @param paymentId     ASPSP identifier of the payment
+     * @param paymentType type of payment (payments, bulk-payments, periodic-payments)
+     * @param paymentId   ASPSP identifier of the payment
      * @return Response containing information about payment or corresponding error
      */
-    public ResponseObject getPaymentById(RequestHolder requestHolder, PaymentType paymentType, String paymentId) {
-        xs2aEventService.recordPisTppRequest(paymentId, requestHolder, EventType.GET_PAYMENT_REQUEST_RECEIVED);
+    public ResponseObject getPaymentById(PaymentType paymentType, String paymentId) {
+        xs2aEventService.recordTppRequest(requestProviderService.getRequest().paymentId(paymentId), EventType.GET_PAYMENT_REQUEST_RECEIVED);
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
 
         ReadPaymentService<PaymentInformationResponse> readPaymentService = readPaymentFactory.getService(paymentType.getValue());
@@ -142,13 +141,12 @@ public class PaymentService {
     /**
      * Retrieves payment status from ASPSP
      *
-     * @param requestHolder Information about the incoming request
-     * @param paymentType   The addressed payment category Single, Periodic or Bulk
-     * @param paymentId     String representation of payment primary ASPSP identifier
+     * @param paymentType The addressed payment category Single, Periodic or Bulk
+     * @param paymentId   String representation of payment primary ASPSP identifier
      * @return Information about the status of a payment
      */
-    public ResponseObject<TransactionStatus> getPaymentStatusById(RequestHolder requestHolder, PaymentType paymentType, String paymentId) {
-        xs2aEventService.recordPisTppRequest(paymentId, requestHolder, EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
+    public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentId) {
+        xs2aEventService.recordTppRequest(requestProviderService.getRequest().paymentId(paymentId), EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
 
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentDataByPaymentId(paymentId);
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
@@ -191,13 +189,12 @@ public class PaymentService {
     /**
      * Cancels payment by its ASPSP identifier and payment type
      *
-     * @param requestHolder Information about the incoming request
-     * @param paymentType   type of payment (payments, bulk-payments, periodic-payments)
-     * @param paymentId     ASPSP identifier of the payment
+     * @param paymentType type of payment (payments, bulk-payments, periodic-payments)
+     * @param paymentId   ASPSP identifier of the payment
      * @return Response containing information about cancelled payment or corresponding error
      */
-    public ResponseObject<CancelPaymentResponse> cancelPayment(RequestHolder requestHolder, PaymentType paymentType, String paymentId) {
-        xs2aEventService.recordPisTppRequest(paymentId, requestHolder, EventType.CANCEL_PAYMENT_REQUEST_RECEIVED);
+    public ResponseObject<CancelPaymentResponse> cancelPayment(PaymentType paymentType, String paymentId) {
+        xs2aEventService.recordTppRequest(requestProviderService.getRequest().paymentId(paymentId), EventType.CANCEL_PAYMENT_REQUEST_RECEIVED);
 
         // we need to get decrypted payment ID
         String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(paymentId);

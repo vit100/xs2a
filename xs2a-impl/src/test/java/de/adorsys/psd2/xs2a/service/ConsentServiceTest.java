@@ -25,7 +25,6 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
@@ -91,7 +90,6 @@ public class ConsentServiceTest {
     private static final LocalDate YESTERDAY = LocalDate.now().minus(Period.ofDays(1));
     private static final PsuIdData PSU_ID_DATA = new PsuIdData(CORRECT_PSU_ID, null, null, null);
     private static final SpiPsuData SPI_PSU_DATA = new SpiPsuData(CORRECT_PSU_ID, null, null, null);
-    private static final RequestHolder REQUEST_HOLDER = new RequestHolder();
     private static final String AUTHORISATION_ID = "a8fc1f02-3639-4528-bd19-3eacf1c67038";
     private static final String PAYMENT_ID = "594ef79c-d785-41ec-9b14-2ea3a7ae2c7b";
 
@@ -221,8 +219,7 @@ public class ConsentServiceTest {
                             .aspspConsentData(ASPSP_CONSENT_DATA)
                             .success());
 
-        ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+        ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         CreateConsentResponse response = responseObj.getBody();
         //Then:
         assertThat(response.getConsentId()).isEqualTo(CONSENT_ID);
@@ -245,7 +242,7 @@ public class ConsentServiceTest {
                             .success());
 
         // When
-        consentService.createAccountConsentsWithResponse(REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+        consentService.createAccountConsentsWithResponse(req, PSU_ID_DATA, EXPLICIT_PREFERRED);
 
         // Then
         verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
@@ -270,7 +267,7 @@ public class ConsentServiceTest {
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         CreateConsentResponse response = responseObj.getBody();
         //Then:
         assertThat(response.getConsentId()).isEqualTo(CONSENT_ID);
@@ -291,7 +288,7 @@ public class ConsentServiceTest {
             .thenReturn(false);
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
 
         MessageError messageError = responseObj.getError();
 
@@ -323,7 +320,7 @@ public class ConsentServiceTest {
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         CreateConsentResponse response = responseObj.getBody();
         //Then:
         assertThat(response.getConsentId()).isEqualTo(CONSENT_ID);
@@ -347,7 +344,7 @@ public class ConsentServiceTest {
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         CreateConsentResponse response = responseObj.getBody();
         //Then:
         assertThat(response.getConsentId()).isEqualTo(CONSENT_ID);
@@ -371,7 +368,7 @@ public class ConsentServiceTest {
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         CreateConsentResponse response = responseObj.getBody();
         //Then:
         assertThat(response.getConsentId()).isEqualTo(CONSENT_ID);
@@ -389,7 +386,7 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         ResponseObject responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         //Then:
         assertThat(responseObj.getError().getTransactionStatus()).isEqualTo(TransactionStatus.RJCT);
     }
@@ -397,7 +394,7 @@ public class ConsentServiceTest {
     @Test
     public void getAccountConsentsStatusById_Success() {
         //When:
-        ResponseObject response = consentService.getAccountConsentsStatusById(REQUEST_HOLDER, CONSENT_ID);
+        ResponseObject response = consentService.getAccountConsentsStatusById(CONSENT_ID);
         //Then:
         assertThat(response.getBody()).isEqualTo(new ConsentStatusResponse(ConsentStatus.VALID));
     }
@@ -408,17 +405,17 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         //When:
-        consentService.getAccountConsentsStatusById(REQUEST_HOLDER, CONSENT_ID);
+        consentService.getAccountConsentsStatusById(CONSENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordAisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_AIS_CONSENT_STATUS_REQUEST_RECEIVED);
     }
 
     @Test
     public void getAccountConsentsStatusById_Failure() {
         //When:
-        ResponseObject response = consentService.getAccountConsentsStatusById(REQUEST_HOLDER, WRONG_CONSENT_ID);
+        ResponseObject response = consentService.getAccountConsentsStatusById(WRONG_CONSENT_ID);
         //Then:
         assertThat(response.getError().getTransactionStatus()).isEqualTo(TransactionStatus.RJCT);
     }
@@ -426,7 +423,7 @@ public class ConsentServiceTest {
     @Test
     public void getAccountConsentsById_Success() {
         //When:
-        ResponseObject response = consentService.getAccountConsentById(REQUEST_HOLDER, CONSENT_ID);
+        ResponseObject response = consentService.getAccountConsentById(CONSENT_ID);
         AccountConsent consent = (AccountConsent) response.getBody();
         //Than:
         assertThat(consent.getAccess().getAccounts().get(0).getIban()).isEqualTo(CORRECT_IBAN);
@@ -438,17 +435,17 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.getAccountConsentById(REQUEST_HOLDER, CONSENT_ID);
+        consentService.getAccountConsentById(CONSENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordAisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_AIS_CONSENT_REQUEST_RECEIVED);
     }
 
     @Test
     public void getAccountConsentsById_Failure() {
         //When:
-        ResponseObject response = consentService.getAccountConsentById(REQUEST_HOLDER, WRONG_CONSENT_ID);
+        ResponseObject response = consentService.getAccountConsentById(WRONG_CONSENT_ID);
         //Than:
         assertThat(response.getError().getTransactionStatus()).isEqualTo(TransactionStatus.RJCT);
     }
@@ -462,7 +459,7 @@ public class ConsentServiceTest {
                             .aspspConsentData(ASPSP_CONSENT_DATA)
                             .success());
 
-        ResponseObject response = consentService.deleteAccountConsentsById(REQUEST_HOLDER, CONSENT_ID);
+        ResponseObject response = consentService.deleteAccountConsentsById(CONSENT_ID);
         //Than:
         assertThat(response.hasError()).isEqualTo(false);
     }
@@ -479,17 +476,17 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.deleteAccountConsentsById(REQUEST_HOLDER, CONSENT_ID);
+        consentService.deleteAccountConsentsById(CONSENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordAisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.DELETE_AIS_CONSENT_REQUEST_RECEIVED);
     }
 
     @Test
     public void deleteAccountConsentsById_Failure() {
         //When:
-        ResponseObject response = consentService.deleteAccountConsentsById(REQUEST_HOLDER, WRONG_CONSENT_ID);
+        ResponseObject response = consentService.deleteAccountConsentsById(WRONG_CONSENT_ID);
         //Than:
         assertThat(response.getError().getTransactionStatus()).isEqualTo(TransactionStatus.RJCT);
     }
@@ -511,7 +508,7 @@ public class ConsentServiceTest {
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         CreateConsentResponse response = responseObj.getBody();
 
         //Then:
@@ -533,7 +530,7 @@ public class ConsentServiceTest {
             .thenReturn(false);
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
-            REQUEST_HOLDER, req, PSU_ID_DATA, EXPLICIT_PREFERRED);
+            req, PSU_ID_DATA, EXPLICIT_PREFERRED);
         MessageError messageError = responseObj.getError();
 
         //Then
@@ -555,10 +552,10 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.createConsentAuthorizationWithResponse(REQUEST_HOLDER, PSU_ID_DATA, CONSENT_ID);
+        consentService.createConsentAuthorizationWithResponse(PSU_ID_DATA, CONSENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordAisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.START_AIS_CONSENT_AUTHORISATION_REQUEST_RECEIVED);
     }
 
@@ -581,10 +578,10 @@ public class ConsentServiceTest {
         UpdateConsentPsuDataReq updateConsentPsuDataReq = buildUpdateConsentPsuDataReq();
 
         // When
-        consentService.updateConsentPsuData(REQUEST_HOLDER, updateConsentPsuDataReq);
+        consentService.updateConsentPsuData(updateConsentPsuDataReq);
 
         // Then
-        verify(xs2aEventService, times(1)).recordAisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.UPDATE_AIS_CONSENT_PSU_DATA_REQUEST_RECEIVED);
     }
 
@@ -597,10 +594,10 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.createPisConsentAuthorization(REQUEST_HOLDER, PAYMENT_ID, PaymentType.SINGLE, PSU_ID_DATA);
+        consentService.createPisConsentAuthorization(PAYMENT_ID, PaymentType.SINGLE, PSU_ID_DATA);
 
         // Then
-        verify(xs2aEventService, times(1)).recordPisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.START_PIS_CONSENT_AUTHORISATION_REQUEST_RECEIVED);
     }
 
@@ -614,10 +611,10 @@ public class ConsentServiceTest {
         Xs2aUpdatePisConsentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
 
         // When
-        consentService.updatePisConsentPsuData(REQUEST_HOLDER, request);
+        consentService.updatePisConsentPsuData(request);
 
         // Then
-        verify(xs2aEventService, times(1)).recordPisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.UPDATE_PAYMENT_INITIATION_PSU_DATA_REQUEST_RECEIVED);
     }
 
@@ -631,10 +628,10 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.createPisConsentCancellationAuthorization(REQUEST_HOLDER, PAYMENT_ID, PaymentType.SINGLE);
+        consentService.createPisConsentCancellationAuthorization(PAYMENT_ID, PaymentType.SINGLE);
 
         // Then
-        verify(xs2aEventService, times(1)).recordPisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.START_PIS_CONSENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
     }
 
@@ -648,10 +645,10 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.updatePisConsentCancellationPsuData(REQUEST_HOLDER, request);
+        consentService.updatePisConsentCancellationPsuData(request);
 
         // Then
-        verify(xs2aEventService, times(1)).recordPisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.UPDATE_PAYMENT_CANCELLATION_PSU_DATA_REQUEST_RECEIVED);
     }
 
@@ -665,10 +662,10 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.getPaymentInitiationCancellationAuthorisationInformation(REQUEST_HOLDER, PAYMENT_ID);
+        consentService.getPaymentInitiationCancellationAuthorisationInformation(PAYMENT_ID);
 
         // Then
-        verify(xs2aEventService, times(1)).recordPisTppRequest(anyString(), any(), argumentCaptor.capture());
+        verify(xs2aEventService, times(1)).recordTppRequest(any(), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
     }
 

@@ -23,7 +23,6 @@ import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationRequest;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationResponse;
@@ -37,6 +36,7 @@ import de.adorsys.psd2.xs2a.spi.domain.fund.SpiFundsConfirmationRequest;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.FundsConfirmationSpi;
+import de.adorsys.psd2.xs2a.web.RequestProviderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -59,16 +59,16 @@ public class FundsConfirmationService {
     private final PiisConsentValidationService piisConsentValidationService;
     private final PiisConsentService piisConsentService;
     private final Xs2aEventService xs2aEventService;
+    private final RequestProviderService requestProviderService;
 
     /**
      * Checks if the account balance is sufficient for requested operation
      *
-     * @param requestHolder Information about the incoming request
      * @param request       Contains the requested balanceAmount in order to compare with the available balanceAmount in the account
      * @return Response with the result 'true' if there are enough funds in the account, 'false' otherwise
      */
-    public ResponseObject<FundsConfirmationResponse> fundsConfirmation(RequestHolder requestHolder, FundsConfirmationRequest request) {
-        xs2aEventService.recordTppRequest(requestHolder, EventType.CONFIRM_FUNDS_REQUEST_RECEIVED);
+    public ResponseObject<FundsConfirmationResponse> fundsConfirmation(FundsConfirmationRequest request) {
+        xs2aEventService.recordTppRequest(requestProviderService.getRequest().body(request), EventType.CONFIRM_FUNDS_REQUEST_RECEIVED);
 
         String consentId = null;
 

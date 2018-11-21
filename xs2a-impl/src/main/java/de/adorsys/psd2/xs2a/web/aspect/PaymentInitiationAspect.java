@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.xs2a.web.aspect;
 
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
@@ -34,8 +33,8 @@ public class PaymentInitiationAspect extends AbstractPaymentLink<PaymentControll
         super(aspspProfileService, messageService, authorisationMethodService);
     }
 
-    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.PaymentService.createPayment(..)) && args(requestHolder,payment,requestParameters, ..)", returning = "result", argNames = "result,requestHolder,payment,requestParameters")
-    public ResponseObject<?> createPaymentAspect(ResponseObject<?> result, RequestHolder requestHolder, Object payment, PaymentInitiationParameters requestParameters) {
+    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.PaymentService.createPayment(..)) && args(payment,requestParameters, ..)", returning = "result", argNames = "result,payment,requestParameters")
+    public ResponseObject<?> createPaymentAspect(ResponseObject<?> result, Object payment, PaymentInitiationParameters requestParameters) {
         if (!result.hasError()) {
             return enrichLink(result, requestParameters);
         }

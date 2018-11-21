@@ -23,6 +23,7 @@ import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.event.RequestEventPayload;
 import de.adorsys.psd2.xs2a.service.TppService;
+import de.adorsys.psd2.xs2a.web.RequestProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,31 +36,15 @@ import java.time.OffsetDateTime;
 public class Xs2aEventService {
     private final TppService tppService;
     private final EventService eventService;
+    private final RequestProviderService requestProviderService;
 
     /**
-     * Records TPP request to AIS in form of event for given consent id, request and event type
+     * Records generic TPP request in form of event for given request and event type
      *
-     * @param consentId     Consent id that will be recorded along with the event
-     * @param requestHolder Information about the incoming request
-     * @param eventType     Type of the event
+     * @param eventType     Type of event
      */
-    public void recordAisTppRequest(String consentId, RequestHolder requestHolder, EventType eventType) {
-        Event event = buildTppEvent(requestHolder, eventType);
-        event.setConsentId(consentId);
-
-        recordEventInCms(event);
-    }
-
-    /**
-     * Records TPP request to PIS in form of event for given payment id, request and event type
-     *
-     * @param paymentId     Payment id that will be recorded along with the event
-     * @param requestHolder Information about the incoming request
-     * @param eventType     Type of the event
-     */
-    public void recordPisTppRequest(String paymentId, RequestHolder requestHolder, EventType eventType) {
-        Event event = buildTppEvent(requestHolder, eventType);
-        event.setPaymentId(paymentId);
+    public void recordTppRequest(EventType eventType) {
+        Event event = buildTppEvent(requestProviderService.getRequest(), eventType);
 
         recordEventInCms(event);
     }
@@ -88,6 +73,8 @@ public class Xs2aEventService {
         event.setTimestamp(OffsetDateTime.now());
         event.setEventOrigin(EventOrigin.TPP);
         event.setEventType(eventType);
+        event.setPaymentId(requestHolder.getPaymentId());
+        event.setConsentId(requestHolder.getConsentId());
 
         RequestEventPayload requestPayload = new RequestEventPayload();
         requestPayload.setTppInfo(tppService.getTppInfo());

@@ -20,7 +20,6 @@ import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.Links;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.CreateConsentReq;
 import de.adorsys.psd2.xs2a.domain.consent.CreateConsentResponse;
@@ -48,8 +47,8 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
         this.authorisationMethodService = authorisationMethodService;
     }
 
-    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.createAccountConsentsWithResponse(..)) && args(requestHolder, request, psuData, explicitPreferred)", returning = "result", argNames = "result,requestHolder,request,psuData,explicitPreferred")
-    public ResponseObject<CreateConsentResponse> invokeCreateAccountConsentAspect(ResponseObject<CreateConsentResponse> result, RequestHolder requestHolder, CreateConsentReq request, PsuIdData psuData, boolean explicitPreferred) {
+    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.createAccountConsentsWithResponse(..)) && args( request, psuData, explicitPreferred)", returning = "result", argNames = "result,request,psuData,explicitPreferred")
+    public ResponseObject<CreateConsentResponse> invokeCreateAccountConsentAspect(ResponseObject<CreateConsentResponse> result, CreateConsentReq request, PsuIdData psuData, boolean explicitPreferred) {
         if (!result.hasError()) {
 
             CreateConsentResponse body = result.getBody();
@@ -59,8 +58,8 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
         return enrichErrorTextMessage(result);
     }
 
-    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updateConsentPsuData(..)) && args(requestHolder,updatePsuData)", returning = "result", argNames = "result,requestHolder,updatePsuData")
-    public ResponseObject<UpdateConsentPsuDataResponse> invokeUpdateConsentPsuDataAspect(ResponseObject<UpdateConsentPsuDataResponse> result, RequestHolder requestHolder, UpdateConsentPsuDataReq updatePsuData) {
+    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updateConsentPsuData(..)) && args(updatePsuData)", returning = "result", argNames = "result,updatePsuData")
+    public ResponseObject<UpdateConsentPsuDataResponse> invokeUpdateConsentPsuDataAspect(ResponseObject<UpdateConsentPsuDataResponse> result, UpdateConsentPsuDataReq updatePsuData) {
         if (!result.hasError()) {
             UpdateConsentPsuDataResponse body = result.getBody();
             body.setLinks(buildLinksForUpdateConsentResponse(body, updatePsuData));

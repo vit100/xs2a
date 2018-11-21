@@ -43,7 +43,6 @@ public class RequestHolderMapper {
         requestHolder.setRequestId(requestId);
         requestHolder.setIp(request.getRemoteAddr());
         requestHolder.setHeaders(mapToRequestHeaders(request));
-        requestHolder.setBody(body);
         return requestHolder;
     }
 

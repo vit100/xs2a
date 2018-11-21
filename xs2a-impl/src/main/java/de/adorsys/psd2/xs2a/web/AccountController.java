@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.web;
 
 import de.adorsys.psd2.api.AccountApi;
 import de.adorsys.psd2.model.*;
-import de.adorsys.psd2.xs2a.domain.RequestHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.Xs2aBookingStatus;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReport;
@@ -26,7 +25,6 @@ import de.adorsys.psd2.xs2a.domain.account.Xs2aTransactionsReport;
 import de.adorsys.psd2.xs2a.service.AccountService;
 import de.adorsys.psd2.xs2a.service.mapper.AccountModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
-import de.adorsys.psd2.xs2a.web.mapper.RequestHolderMapper;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
@@ -34,7 +32,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -49,25 +46,20 @@ public class AccountController implements AccountApi {
     private final AccountService accountService;
     private final ResponseMapper responseMapper;
     private final AccountModelMapper accountModelMapper;
-    private final HttpServletRequest httpServletRequest;
-    private final RequestHolderMapper requestHolderMapper;
 
     @Override
     public ResponseEntity getAccountList(UUID xRequestID, String consentID, Boolean withBalance, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
-        return responseMapper.ok(accountService.getAccountList(requestHolder, consentID, Optional.ofNullable(withBalance).orElse(false)), accountModelMapper::mapToAccountList);
+        return responseMapper.ok(accountService.getAccountList(consentID, Optional.ofNullable(withBalance).orElse(false)), accountModelMapper::mapToAccountList);
     }
 
     @Override
     public ResponseEntity readAccountDetails(String accountId, UUID xRequestID, String consentID, Boolean withBalance, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
-        return responseMapper.ok(accountService.getAccountDetails(requestHolder, consentID, accountId, Optional.ofNullable(withBalance).orElse(false)), accountModelMapper::mapToAccountDetails);
+        return responseMapper.ok(accountService.getAccountDetails(consentID, accountId, Optional.ofNullable(withBalance).orElse(false)), accountModelMapper::mapToAccountDetails);
     }
 
     @Override
     public ResponseEntity getBalances(String accountId, UUID xRequestID, String consentID, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
-        return responseMapper.ok(accountService.getBalancesReport(requestHolder, consentID, accountId), accountModelMapper::mapToBalance);
+        return responseMapper.ok(accountService.getBalancesReport(consentID, accountId), accountModelMapper::mapToBalance);
     }
 
     @ApiOperation(value = "Read Transaction List", nickname = "getTransactionList", notes = "Read transaction reports or transaction lists of a given account adressed by \"account-id\", depending on the steering parameter  \"bookingStatus\" together with balances.  For a given account, additional parameters are e.g. the attributes \"dateFrom\" and \"dateTo\".  The ASPSP might add balance information, if transaction lists without balances are not supported. ", response = TransactionsResponse200Json.class, authorizations = {
@@ -115,17 +107,15 @@ public class AccountController implements AccountApi {
 
     @Override
     public ResponseEntity getTransactionList(String accountId, String bookingStatus, UUID xRequestID, String consentID, LocalDate dateFrom, LocalDate dateTo, String entryReferenceFrom, Boolean deltaList, Boolean withBalance, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
         ResponseObject<Xs2aTransactionsReport> transactionsReport =
-            accountService.getTransactionsReportByPeriod(requestHolder, consentID, accountId, BooleanUtils.isTrue(withBalance), dateFrom, dateTo, Xs2aBookingStatus.forValue(bookingStatus));
+            accountService.getTransactionsReportByPeriod(consentID, accountId, BooleanUtils.isTrue(withBalance), dateFrom, dateTo, Xs2aBookingStatus.forValue(bookingStatus));
         return responseMapper.ok(transactionsReport, accountModelMapper::mapToTransactionsResponse200Json);
     }
 
     @Override
     public ResponseEntity getTransactionDetails(String accountId, String resourceId, UUID xRequestID, String consentID, String digest, String signature, byte[] tpPSignatureCertificate, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
-        RequestHolder requestHolder = requestHolderMapper.mapToRequestHolder(httpServletRequest, xRequestID);
         ResponseObject<Xs2aAccountReport> responseObject =
-            accountService.getAccountReportByTransactionId(requestHolder, consentID, accountId, resourceId);
+            accountService.getAccountReportByTransactionId(consentID, accountId, resourceId);
         return responseMapper.ok(responseObject, accountModelMapper::mapToAccountReport);
     }
 }
