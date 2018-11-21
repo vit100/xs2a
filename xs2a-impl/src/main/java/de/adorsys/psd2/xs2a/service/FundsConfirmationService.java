@@ -58,7 +58,6 @@ public class FundsConfirmationService {
     private final PiisConsentValidationService piisConsentValidationService;
     private final PiisConsentService piisConsentService;
     private final Xs2aEventService xs2aEventService;
-    private final RequestProviderService requestProviderService;
 
     /**
      * Checks if the account balance is sufficient for requested operation

@@ -82,7 +82,6 @@ public class PaymentService {
     private final CancelPaymentService cancelPaymentService;
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aEventService xs2aEventService;
-    private final RequestProviderService requestProviderService;
 
     /**
      * Initiates a payment though "payment service" corresponding service method
