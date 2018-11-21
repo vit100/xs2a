@@ -8,7 +8,7 @@
     }
   },
   "response": {
-    "code": "404",
+    "code": "405",
     "header": {},
     "body": [{
       "category": "ERROR",

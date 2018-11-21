@@ -10,14 +10,10 @@
   "response": {
     "code": "403",
     "header": {},
-    "body": {
-      "transactionStatus": "",
-      "tppMessages": [
-        {
-          "category": "ERROR",
-          "code": "CONSENT_UNKNOWN_403"
-        }
-      ]
-    }
+    "body": [{
+      "category": "ERROR",
+      "code": "CONSENT_UNKNOWN_403"
+
+    }]
   }
 }

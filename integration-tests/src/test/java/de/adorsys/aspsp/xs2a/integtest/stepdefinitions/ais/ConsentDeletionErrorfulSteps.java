@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.junit.Cucumber;
+import cucumber.runtime.model.CucumberExamples;
 import de.adorsys.aspsp.xs2a.integtest.model.TestData;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
@@ -66,26 +68,18 @@ public class ConsentDeletionErrorfulSteps {
     public void loadTestData(String dataFileName) throws IOException{
         testService.parseJson("/data-input/ais/consent/deletion/" + dataFileName, new TypeReference<TestData<Consents, TppMessages >>() {
         });
-    }
 
+        if(dataFileName.equals("consent-deletion-not-existing-id.json")){
+            context.setConsentId("678316543982NotAConsent");
+        }
+        if(dataFileName.equals("consent-deletion-no-consent-id.json")){
+            context.setConsentId("");
+        }
+    }
 
     @When("^PSU sends the consent deletion request with errors$")
     public void deleteConsent()throws HttpClientErrorException, IOException{
-        HttpEntity entity = HttpEntityUtils.getHttpEntity(
-            context.getTestData().getRequest(), context.getAccessToken());
-
-        try {
-            restTemplate.exchange(
-                context.getBaseUrl() + "/consents/" + context.getConsentId(),
-                HttpMethod.DELETE,
-                entity,
-                TppMessages.class);
-        } catch (RestClientResponseException rex) {
-            context.handleRequestError(rex);
-        }
-
-
-
+        testService.sendErrorfulRestCall(HttpMethod.DELETE,context.getBaseUrl() + "/consents/" + context.getConsentId());
     }
 
     //@Then("^an error response code is displayed and an appropriate error response is shown$")
