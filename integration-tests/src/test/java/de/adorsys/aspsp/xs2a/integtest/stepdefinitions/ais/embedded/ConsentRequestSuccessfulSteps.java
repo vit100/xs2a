@@ -59,17 +59,7 @@ public class ConsentRequestSuccessfulSteps {
     @Autowired
     private Context<Consents, ConsentsResponse201> context;
 
-    @Given("^ASPSP-profile contains parameter signingBasketSupported is true$")
-    public void signingBasketSupportedIsTrue()  {
-        updateSigningBasketSupported(Boolean.TRUE);
-    }
-
-    @When("^parameter TPP-Explicit-Authorisation-Preferred is true$")
-    public void tppExplicitAuthorisationPreferredHeaderIsTrue() throws HttpClientErrorException {
-        context.getTestData().getRequest().getHeader().put("TPP-Explicit-Authorisation-Preferred","true");
-    }
-
-    @And("^response contains link \"startAuthorisation\"$")
+    @And("^response contains link startAuthorisation $")
     public void checkResponseCode() {
         ResponseEntity<ConsentsResponse201> actualResponse = context.getActualResponse();
         assertThat(actualResponse.getBody().getLinks().get("startAuthorisation"), notNullValue());

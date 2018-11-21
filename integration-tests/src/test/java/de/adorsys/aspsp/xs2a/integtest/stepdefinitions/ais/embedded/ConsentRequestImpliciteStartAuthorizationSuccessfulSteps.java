@@ -47,7 +47,7 @@ public class ConsentRequestImpliciteStartAuthorizationSuccessfulSteps {
     private Context<Consents, ConsentsResponse201> context;
 
     @And("^response contains link startAuthorisationWIthPsuAuthentication$")
-    public void checkResponseCode() {
+    public void checkStartAuthorisationWIthPsuAuthentication() {
         ResponseEntity<ConsentsResponse201> actualResponse = context.getActualResponse();
         assertThat(actualResponse.getBody().getLinks().get("startAuthorisationWIthPsuAuthentication$"), notNullValue());
     }

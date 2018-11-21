@@ -60,7 +60,7 @@ public class ConsentRequestExpliciteStartAuthorizationSuccessfulSteps {
     private Context<Consents, ConsentsResponse201> context;
 
     @And("^response contains link startAuthorisation$")
-    public void checkResponseCode() {
+    public void checkStartAuthorisation() {
         ResponseEntity<ConsentsResponse201> actualResponse = context.getActualResponse();
         assertThat(actualResponse.getBody().getLinks().get("startAuthorisation"), notNullValue());
     }
@@ -69,8 +69,6 @@ public class ConsentRequestExpliciteStartAuthorizationSuccessfulSteps {
     public void resetSigningBasketSupportedProfile(){
             HttpEntity entity = HttpEntityUtils.getHttpEntity(Boolean.FALSE);
             this.restTemplate.put(context.getProfileUrl() + "/aspsp-profile/for-debug/signing-basket-supported", entity);
-
-
     }
 
 
