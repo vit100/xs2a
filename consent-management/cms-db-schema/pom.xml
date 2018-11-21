@@ -66,6 +66,7 @@
                 <version>${liquibase.version}</version>
                 <configuration>
                     <propertyFile>${propertyFile}</propertyFile>
+                    <migrationSqlOutputFile>oracle.sql</migrationSqlOutputFile>
                 </configuration>
             </plugin>
         </plugins>
