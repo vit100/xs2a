@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
-import de.adorsys.psd2.consent.component.JsonConverter;
 import de.adorsys.psd2.consent.domain.event.EventEntity;
+import de.adorsys.psd2.consent.service.JsonConverterService;
 import de.adorsys.psd2.xs2a.core.event.Event;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class EventMapper {
-    private final JsonConverter jsonConverter;
+    private final JsonConverterService jsonConverterService;
 
     public List<Event> mapToEventList(@NotNull List<EventEntity> eventEntities) {
         return eventEntities.stream()
@@ -42,7 +42,7 @@ public class EventMapper {
         eventEntity.setTimestamp(event.getTimestamp());
         eventEntity.setConsentId(event.getConsentId());
         eventEntity.setPaymentId(event.getPaymentId());
-        byte[] payload = jsonConverter.toJsonBytes(event.getPayload())
+        byte[] payload = jsonConverterService.toJsonBytes(event.getPayload())
                              .orElse(null);
         eventEntity.setPayload(payload);
         eventEntity.setEventOrigin(event.getEventOrigin());
@@ -55,7 +55,7 @@ public class EventMapper {
         event.setTimestamp(eventEntity.getTimestamp());
         event.setConsentId(eventEntity.getConsentId());
         event.setPaymentId(eventEntity.getPaymentId());
-        Object payload = jsonConverter.toObject(eventEntity.getPayload(), Object.class)
+        Object payload = jsonConverterService.toObject(eventEntity.getPayload(), Object.class)
                              .orElse(null);
         event.setPayload(payload);
         event.setEventOrigin(eventEntity.getEventOrigin());

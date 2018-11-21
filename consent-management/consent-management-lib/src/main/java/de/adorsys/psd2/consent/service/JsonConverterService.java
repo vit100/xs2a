@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.component;
+package de.adorsys.psd2.consent.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
-@Component
+@Service
 @AllArgsConstructor
-public class JsonConverter {
+public class JsonConverterService {
     private final ObjectMapper objectMapper;
 
     public <T> Optional<byte[]> toJsonBytes(final T object) {
