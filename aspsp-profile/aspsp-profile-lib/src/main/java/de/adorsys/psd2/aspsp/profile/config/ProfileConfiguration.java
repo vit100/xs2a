@@ -135,6 +135,11 @@ public class ProfileConfiguration {
      */
     private boolean piisConsentSupported;
 
+    /**
+     * If the option is set to "true", than Delta report is supported
+     */
+    private boolean deltaReportSupported;
+
     @PostConstruct
     private void addDefaultValues() { //NOPMD It is necessary to set single payment and booked booking status available by default
         setDefaultPaymentType(PaymentType.SINGLE);
