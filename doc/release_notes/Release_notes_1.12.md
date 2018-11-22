@@ -88,7 +88,7 @@ of events by the requested. Appropriate endpoints were added to the CMS in conse
  
 Developers should apply new liquibase migration scripts in order to update the database.
 
-# Set finalised statuses
+## Set finalised statuses
 From now there is no possibility to update statuses of Autorisation, Payment Transaction, Consent if they are marked as "finalised".
 
 Finalised statuses are:
