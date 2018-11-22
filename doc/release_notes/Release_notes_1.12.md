@@ -89,10 +89,10 @@ of events by the requested. Appropriate endpoints were added to the CMS in conse
 Developers should apply new liquibase migration scripts in order to update the database.
 
 ## Set finalised statuses
-From now there is no possibility to update statuses of Autorisation, Payment Transaction, Consent if they are marked as "finalised".
+From now there is no possibility to update statuses of Authorisation, Payment Transaction, Consent if they are marked as "finalised".
 
 Finalised statuses are:
 
 * for Authorisation (SCA) status - *Finalised, Failed*;
 * for Payment Transaction status: *Cancelled, Rejected, AcceptedSettlementCompleted*;
-* for Consent status: *Rejected, RevokedByPSU, Expired, TerminatedByTpp*.
+* for Consent status: *Rejected, RevokedByPSU, Expired, TerminatedByTpp, TerminatedByAspsp*.
