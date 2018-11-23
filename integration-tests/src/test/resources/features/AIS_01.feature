@@ -287,17 +287,17 @@ Feature: Account Information Service
             | consent                                  | account-id                           | transaction-resource                      |
             | transactions-create-expired-consent.json | 42fb4cc3-91cb-45ba-9159-b87acf6d8add | transactionList-with-expired-consent.json |
 
-    @ignore
+    @TestTag
     Scenario Outline: Read transaction details successfully
-        Given PSU already has an existing consent <consent-id>
+        Given PSU already has an existing <status> consent <consent-id>
         And account id <account-id>
         And wants to read the transaction details using <transaction-resource>
         And resource id <resource-id>
         When PSU requests the transaction details
-        Then a successful response code and the appropriate list of accounts get returned
+        Then a successful response code and the appropriate detail of transaction get returned
         Examples:
-            | consent-id                       | account-id                           | transaction-resource              | resource-id                          |
-            | transactions-create-consent.json | 42fb4cc3-91cb-45ba-9159-b87acf6d8add | transactionDetail-successful.json | ba8f7012-bdaf-4ada-bbf7-4c004d046ffe |
+            | consent-id                                   | account-id                           | transaction-resource              | resource-id                          | status |
+            | transaction/transactions-create-consent.json | 42fb4cc3-91cb-45ba-9159-b87acf6d8add | transactionDetail-successful.json | ba8f7012-bdaf-4ada-bbf7-4c004d046ffe | valid  |
 
     @ignore
     Scenario Outline: Read transaction details errorful
