@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 71154155,
+              "duration": 67289317,
               "status": "passed"
             },
             "match": {
@@ -14,14 +14,14 @@
             }
           }
         ],
-        "line": 300,
-        "name": "Read transaction details successfully",
+        "line": 256,
+        "name": "Read transaction list successfully",
         "description": "",
-        "id": "account-information-service;read-transaction-details-successfully;;2",
+        "id": "account-information-service;read-transaction-list-successfully;;2",
         "after": [
           {
             "result": {
-              "duration": 411367,
+              "duration": 279768,
               "status": "passed"
             },
             "match": {
@@ -34,10 +34,10 @@
         "steps": [
           {
             "result": {
-              "duration": 726546800,
+              "duration": 752229932,
               "status": "passed"
             },
-            "line": 292,
+            "line": 248,
             "name": "PSU already has an existing valid consent transaction/transactions-create-consent.json",
             "match": {
               "arguments": [
@@ -54,16 +54,16 @@
             },
             "matchedColumns": [
               0,
-              4
+              9
             ],
             "keyword": "Given "
           },
           {
             "result": {
-              "duration": 6733909,
+              "duration": 6373911,
               "status": "passed"
             },
-            "line": 293,
+            "line": 249,
             "name": "account id 42fb4cc3-91cb-45ba-9159-b87acf6d8add",
             "match": {
               "arguments": [
@@ -81,20 +81,65 @@
           },
           {
             "result": {
-              "duration": 54712119,
-              "error_message": "com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field \"booked\" (class de.adorsys.psd2.model.TransactionsResponse200Json), not marked as ignorable (5 known properties: \"links\", \"_links\", \"account\", \"balances\", \"transactions\"])\n at [Source: {\n  \"request\": {\n    \"header\": {\n      \"x-request-id\": \"2f77a125-aa7a-45c0-b414-cea25a116035\",\n      \"date\": \"Sun, 11 Aug 2019 15:02:37 GMT\"\n    },\n    \"body\": {\n    }\n  },\n  \"response\": {\n    \"code\": \"200\",\n    \"header\": {},\n    \"body\": {\n      \"links\": {\n        \"viewBalances\": \"http://localhost:8080/v1/accounts/42fb4cc3-91cb-45ba-9159-b87acf6d8add/transactions/ba8f7012-bdaf-4ada-bbf7-4c004d046ffe\"\n      },\n      \"booked\": [\n        {\n          \"transactionId\": \"ba8f7012-bdaf-4ada-bbf7-4c004d046ffe\",\n          \"creditorId\": \"aspsp4\",\n          \"bookingDate\": \"2018-07-05\",\n          \"valueDate\": \"2018-07-05\",\n          \"transactionAmount\": {\n            \"currency\": \"EUR\",\n            \"amount\": \"50\"\n          },\n          \"creditorName\": \"Alexander Mueller\",\n          \"creditorAccount\": {\n            \"iban\": \"DE52500105173911841934\",\n            \"currency\": \"EUR\"\n          },\n          \"ultimateCreditor\": \"Alexander Mueller\",\n          \"debtorName\": \"Company AG\",\n          \"debtorAccount\": {\n            \"iban\": \"DE89370400440532013004\",\n            \"currency\": \"EUR\"\n          },\n          \"ultimateDebtor\": \"Company AG\"\n        }\n      ],\n      \"_links\": {\n        \"viewBalances\": \"http://localhost:8080/v1/accounts/42fb4cc3-91cb-45ba-9159-b87acf6d8add/transactions/ba8f7012-bdaf-4ada-bbf7-4c004d046ffe\"\n      }\n    }\n  }\n}\n; line: 17, column: 18] (through reference chain: de.adorsys.aspsp.xs2a.integtest.model.TestData[\"response\"]-\u003ede.adorsys.aspsp.xs2a.integtest.model.Response[\"body\"]-\u003ede.adorsys.psd2.model.TransactionsResponse200Json[\"booked\"])\n\tat com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:62)\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:834)\n\tat com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:1093)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1489)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownVanilla(BeanDeserializerBase.java:1467)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:282)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:140)\n\tat com.fasterxml.jackson.databind.deser.SettableBeanProperty.deserialize(SettableBeanProperty.java:504)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:111)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:276)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:140)\n\tat com.fasterxml.jackson.databind.deser.SettableBeanProperty.deserialize(SettableBeanProperty.java:504)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:111)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:276)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:140)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:3814)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:2877)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.TransactionDetailRequestSuccessfulSteps.wants_to_read_the_transaction_details_using(TransactionDetailRequestSuccessfulSteps.java:75)\n\tat ✽.And wants to read the transaction details using transactionDetail-successful.json(AIS_01.feature:294)\n",
-              "status": "failed"
+              "duration": 9995191,
+              "status": "passed"
             },
-            "line": 294,
-            "name": "wants to read the transaction details using transactionDetail-successful.json",
+            "line": 250,
+            "name": "balance false dateFrom 2008-09-15 dateTo  bookingStatus booked entryReferenceFrom  deltaList ",
             "match": {
               "arguments": [
                 {
-                  "val": "transactionDetail-successful.json",
-                  "offset": 44
+                  "val": "false",
+                  "offset": 8
+                },
+                {
+                  "val": "2008-09-15",
+                  "offset": 23
+                },
+                {
+                  "val": "",
+                  "offset": 41
+                },
+                {
+                  "val": "booked",
+                  "offset": 56
+                },
+                {
+                  "val": "",
+                  "offset": 82
+                },
+                {
+                  "val": "",
+                  "offset": 93
                 }
               ],
-              "location": "TransactionDetailRequestSuccessfulSteps.wants_to_read_the_transaction_details_using(String)"
+              "location": "TransactionListRequestSuccessfulSteps.setParameter(Boolean,String,String,String,String,Boolean)"
+            },
+            "matchedColumns": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 49094399,
+              "status": "passed"
+            },
+            "line": 251,
+            "name": "wants to read all transactions using transactionList-successful.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "transactionList-successful.json",
+                  "offset": 37
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.wants_to_read_all_transactions_using(String)"
             },
             "matchedColumns": [
               2
@@ -103,50 +148,1088 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 1426798852,
+              "status": "passed"
             },
-            "line": 295,
-            "name": "resource id ba8f7012-bdaf-4ada-bbf7-4c004d046ffe",
+            "line": 252,
+            "name": "PSU requests the transactions",
             "match": {
-              "arguments": [
-                {
-                  "val": "ba8f7012-bdaf-4ada-bbf7-4c004d046ffe",
-                  "offset": 12
-                }
-              ],
-              "location": "TransactionDetailRequestSuccessfulSteps.resource_id(String)"
-            },
-            "matchedColumns": [
-              3
-            ],
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 296,
-            "name": "PSU requests the transaction details",
-            "match": {
-              "location": "TransactionDetailRequestSuccessfulSteps.psu_requests_the_transaction_details()"
+              "location": "TransactionListRequestSuccessfulSteps.psu_requests_the_transactions()"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 3336909,
+              "status": "passed"
             },
-            "line": 297,
-            "name": "a successful response code and the appropriate detail of transaction get returned",
+            "line": 253,
+            "name": "a successful response code and the appropriate list of transaction get returned",
             "match": {
-              "location": "TransactionDetailRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_detail_of_transaction_get_returned()"
+              "location": "TransactionListRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned()"
             },
             "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 290,
+            "line": 246,
+            "name": "@TestTag"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 13111519,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          }
+        ],
+        "line": 257,
+        "name": "Read transaction list successfully",
+        "description": "",
+        "id": "account-information-service;read-transaction-list-successfully;;3",
+        "after": [
+          {
+            "result": {
+              "duration": 234818,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 437480912,
+              "status": "passed"
+            },
+            "line": 248,
+            "name": "PSU already has an existing valid consent transaction/transactions-create-consent.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "transaction/transactions-create-consent.json",
+                  "offset": 42
+                }
+              ],
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
+            },
+            "matchedColumns": [
+              0,
+              9
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 272600,
+              "status": "passed"
+            },
+            "line": 249,
+            "name": "account id 42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+            "match": {
+              "arguments": [
+                {
+                  "val": "42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+                  "offset": 11
+                }
+              ],
+              "location": "AccountDetailRequestSuccessfulSteps.account_id(String)"
+            },
+            "matchedColumns": [
+              1
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 196696,
+              "status": "passed"
+            },
+            "line": 250,
+            "name": "balance  dateFrom 2008-09-15 dateTo 2028-09-15 bookingStatus booked entryReferenceFrom  deltaList ",
+            "match": {
+              "arguments": [
+                {
+                  "val": "",
+                  "offset": 8
+                },
+                {
+                  "val": "2008-09-15",
+                  "offset": 18
+                },
+                {
+                  "val": "2028-09-15",
+                  "offset": 36
+                },
+                {
+                  "val": "booked",
+                  "offset": 61
+                },
+                {
+                  "val": "",
+                  "offset": 87
+                },
+                {
+                  "val": "",
+                  "offset": 98
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.setParameter(Boolean,String,String,String,String,Boolean)"
+            },
+            "matchedColumns": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 566100,
+              "status": "passed"
+            },
+            "line": 251,
+            "name": "wants to read all transactions using transactionList-successful.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "transactionList-successful.json",
+                  "offset": 37
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.wants_to_read_all_transactions_using(String)"
+            },
+            "matchedColumns": [
+              2
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1426156694,
+              "status": "passed"
+            },
+            "line": 252,
+            "name": "PSU requests the transactions",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.psu_requests_the_transactions()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 40695,
+              "status": "passed"
+            },
+            "line": 253,
+            "name": "a successful response code and the appropriate list of transaction get returned",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 246,
+            "name": "@TestTag"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 11168977,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          }
+        ],
+        "line": 258,
+        "name": "Read transaction list successfully",
+        "description": "",
+        "id": "account-information-service;read-transaction-list-successfully;;4",
+        "after": [
+          {
+            "result": {
+              "duration": 232249,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 438426039,
+              "status": "passed"
+            },
+            "line": 248,
+            "name": "PSU already has an existing valid consent transaction/transactions-create-consent.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "transaction/transactions-create-consent.json",
+                  "offset": 42
+                }
+              ],
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
+            },
+            "matchedColumns": [
+              0,
+              9
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 222924,
+              "status": "passed"
+            },
+            "line": 249,
+            "name": "account id 42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+            "match": {
+              "arguments": [
+                {
+                  "val": "42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+                  "offset": 11
+                }
+              ],
+              "location": "AccountDetailRequestSuccessfulSteps.account_id(String)"
+            },
+            "matchedColumns": [
+              1
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 295500,
+              "status": "passed"
+            },
+            "line": 250,
+            "name": "balance true dateFrom 2008-09-15 dateTo  bookingStatus booked entryReferenceFrom  deltaList ",
+            "match": {
+              "arguments": [
+                {
+                  "val": "true",
+                  "offset": 8
+                },
+                {
+                  "val": "2008-09-15",
+                  "offset": 22
+                },
+                {
+                  "val": "",
+                  "offset": 40
+                },
+                {
+                  "val": "booked",
+                  "offset": 55
+                },
+                {
+                  "val": "",
+                  "offset": 81
+                },
+                {
+                  "val": "",
+                  "offset": 92
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.setParameter(Boolean,String,String,String,String,Boolean)"
+            },
+            "matchedColumns": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 467538,
+              "status": "passed"
+            },
+            "line": 251,
+            "name": "wants to read all transactions using transactionList-successful.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "transactionList-successful.json",
+                  "offset": 37
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.wants_to_read_all_transactions_using(String)"
+            },
+            "matchedColumns": [
+              2
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1426899410,
+              "status": "passed"
+            },
+            "line": 252,
+            "name": "PSU requests the transactions",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.psu_requests_the_transactions()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 31686,
+              "status": "passed"
+            },
+            "line": 253,
+            "name": "a successful response code and the appropriate list of transaction get returned",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 246,
+            "name": "@TestTag"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 10151020,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          }
+        ],
+        "line": 259,
+        "name": "Read transaction list successfully",
+        "description": "",
+        "id": "account-information-service;read-transaction-list-successfully;;5",
+        "after": [
+          {
+            "result": {
+              "duration": 214107,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 441831409,
+              "status": "passed"
+            },
+            "line": 248,
+            "name": "PSU already has an existing valid consent transaction/transactions-create-consent.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "transaction/transactions-create-consent.json",
+                  "offset": 42
+                }
+              ],
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
+            },
+            "matchedColumns": [
+              0,
+              9
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 246458,
+              "status": "passed"
+            },
+            "line": 249,
+            "name": "account id 42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+            "match": {
+              "arguments": [
+                {
+                  "val": "42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+                  "offset": 11
+                }
+              ],
+              "location": "AccountDetailRequestSuccessfulSteps.account_id(String)"
+            },
+            "matchedColumns": [
+              1
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 252766,
+              "status": "passed"
+            },
+            "line": 250,
+            "name": "balance  dateFrom 2008-09-15 dateTo  bookingStatus pending entryReferenceFrom  deltaList ",
+            "match": {
+              "arguments": [
+                {
+                  "val": "",
+                  "offset": 8
+                },
+                {
+                  "val": "2008-09-15",
+                  "offset": 18
+                },
+                {
+                  "val": "",
+                  "offset": 36
+                },
+                {
+                  "val": "pending",
+                  "offset": 51
+                },
+                {
+                  "val": "",
+                  "offset": 78
+                },
+                {
+                  "val": "",
+                  "offset": 89
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.setParameter(Boolean,String,String,String,String,Boolean)"
+            },
+            "matchedColumns": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 443607,
+              "status": "passed"
+            },
+            "line": 251,
+            "name": "wants to read all transactions using transactionList-successful.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "transactionList-successful.json",
+                  "offset": 37
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.wants_to_read_all_transactions_using(String)"
+            },
+            "matchedColumns": [
+              2
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1365635441,
+              "status": "passed"
+            },
+            "line": 252,
+            "name": "PSU requests the transactions",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.psu_requests_the_transactions()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 49656,
+              "status": "passed"
+            },
+            "line": 253,
+            "name": "a successful response code and the appropriate list of transaction get returned",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 246,
+            "name": "@TestTag"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 9726782,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          }
+        ],
+        "line": 260,
+        "name": "Read transaction list successfully",
+        "description": "",
+        "id": "account-information-service;read-transaction-list-successfully;;6",
+        "after": [
+          {
+            "result": {
+              "duration": 277408,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 432619448,
+              "status": "passed"
+            },
+            "line": 248,
+            "name": "PSU already has an existing valid consent transaction/transactions-create-consent.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "transaction/transactions-create-consent.json",
+                  "offset": 42
+                }
+              ],
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
+            },
+            "matchedColumns": [
+              0,
+              9
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 269089,
+              "status": "passed"
+            },
+            "line": 249,
+            "name": "account id 42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+            "match": {
+              "arguments": [
+                {
+                  "val": "42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+                  "offset": 11
+                }
+              ],
+              "location": "AccountDetailRequestSuccessfulSteps.account_id(String)"
+            },
+            "matchedColumns": [
+              1
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 210315,
+              "status": "passed"
+            },
+            "line": 250,
+            "name": "balance  dateFrom 2008-09-15 dateTo  bookingStatus both entryReferenceFrom  deltaList ",
+            "match": {
+              "arguments": [
+                {
+                  "val": "",
+                  "offset": 8
+                },
+                {
+                  "val": "2008-09-15",
+                  "offset": 18
+                },
+                {
+                  "val": "",
+                  "offset": 36
+                },
+                {
+                  "val": "both",
+                  "offset": 51
+                },
+                {
+                  "val": "",
+                  "offset": 75
+                },
+                {
+                  "val": "",
+                  "offset": 86
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.setParameter(Boolean,String,String,String,String,Boolean)"
+            },
+            "matchedColumns": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 496487,
+              "status": "passed"
+            },
+            "line": 251,
+            "name": "wants to read all transactions using transactionList-successful.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "transactionList-successful.json",
+                  "offset": 37
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.wants_to_read_all_transactions_using(String)"
+            },
+            "matchedColumns": [
+              2
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1378280059,
+              "status": "passed"
+            },
+            "line": 252,
+            "name": "PSU requests the transactions",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.psu_requests_the_transactions()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 39829,
+              "status": "passed"
+            },
+            "line": 253,
+            "name": "a successful response code and the appropriate list of transaction get returned",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 246,
+            "name": "@TestTag"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 16210640,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          }
+        ],
+        "line": 261,
+        "name": "Read transaction list successfully",
+        "description": "",
+        "id": "account-information-service;read-transaction-list-successfully;;7",
+        "after": [
+          {
+            "result": {
+              "duration": 235469,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 478842057,
+              "status": "passed"
+            },
+            "line": 248,
+            "name": "PSU already has an existing valid consent transaction/transactions-create-consent.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "transaction/transactions-create-consent.json",
+                  "offset": 42
+                }
+              ],
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
+            },
+            "matchedColumns": [
+              0,
+              9
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 237688,
+              "status": "passed"
+            },
+            "line": 249,
+            "name": "account id 42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+            "match": {
+              "arguments": [
+                {
+                  "val": "42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+                  "offset": 11
+                }
+              ],
+              "location": "AccountDetailRequestSuccessfulSteps.account_id(String)"
+            },
+            "matchedColumns": [
+              1
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 289899,
+              "status": "passed"
+            },
+            "line": 250,
+            "name": "balance  dateFrom 2008-09-15 dateTo  bookingStatus booked entryReferenceFrom  deltaList false",
+            "match": {
+              "arguments": [
+                {
+                  "val": "",
+                  "offset": 8
+                },
+                {
+                  "val": "2008-09-15",
+                  "offset": 18
+                },
+                {
+                  "val": "",
+                  "offset": 36
+                },
+                {
+                  "val": "booked",
+                  "offset": 51
+                },
+                {
+                  "val": "",
+                  "offset": 77
+                },
+                {
+                  "val": "false",
+                  "offset": 88
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.setParameter(Boolean,String,String,String,String,Boolean)"
+            },
+            "matchedColumns": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 614187,
+              "status": "passed"
+            },
+            "line": 251,
+            "name": "wants to read all transactions using transactionList-successful.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "transactionList-successful.json",
+                  "offset": 37
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.wants_to_read_all_transactions_using(String)"
+            },
+            "matchedColumns": [
+              2
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1434141277,
+              "status": "passed"
+            },
+            "line": 252,
+            "name": "PSU requests the transactions",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.psu_requests_the_transactions()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 38852,
+              "status": "passed"
+            },
+            "line": 253,
+            "name": "a successful response code and the appropriate list of transaction get returned",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 246,
+            "name": "@TestTag"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 10635877,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          }
+        ],
+        "line": 262,
+        "name": "Read transaction list successfully",
+        "description": "",
+        "id": "account-information-service;read-transaction-list-successfully;;8",
+        "after": [
+          {
+            "result": {
+              "duration": 209503,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 443603387,
+              "status": "passed"
+            },
+            "line": 248,
+            "name": "PSU already has an existing valid consent transaction/transactions-create-consent.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "transaction/transactions-create-consent.json",
+                  "offset": 42
+                }
+              ],
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
+            },
+            "matchedColumns": [
+              0,
+              9
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 277604,
+              "status": "passed"
+            },
+            "line": 249,
+            "name": "account id 42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+            "match": {
+              "arguments": [
+                {
+                  "val": "42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+                  "offset": 11
+                }
+              ],
+              "location": "AccountDetailRequestSuccessfulSteps.account_id(String)"
+            },
+            "matchedColumns": [
+              1
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 257102,
+              "status": "passed"
+            },
+            "line": 250,
+            "name": "balance  dateFrom 2008-09-15 dateTo  bookingStatus booked entryReferenceFrom  deltaList true",
+            "match": {
+              "arguments": [
+                {
+                  "val": "",
+                  "offset": 8
+                },
+                {
+                  "val": "2008-09-15",
+                  "offset": 18
+                },
+                {
+                  "val": "",
+                  "offset": 36
+                },
+                {
+                  "val": "booked",
+                  "offset": 51
+                },
+                {
+                  "val": "",
+                  "offset": 77
+                },
+                {
+                  "val": "true",
+                  "offset": 88
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.setParameter(Boolean,String,String,String,String,Boolean)"
+            },
+            "matchedColumns": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 530998,
+              "status": "passed"
+            },
+            "line": 251,
+            "name": "wants to read all transactions using transactionList-successful.json",
+            "match": {
+              "arguments": [
+                {
+                  "val": "transactionList-successful.json",
+                  "offset": 37
+                }
+              ],
+              "location": "TransactionListRequestSuccessfulSteps.wants_to_read_all_transactions_using(String)"
+            },
+            "matchedColumns": [
+              2
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1377741513,
+              "status": "passed"
+            },
+            "line": 252,
+            "name": "PSU requests the transactions",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.psu_requests_the_transactions()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 35274,
+              "status": "passed"
+            },
+            "line": 253,
+            "name": "a successful response code and the appropriate list of transaction get returned",
+            "match": {
+              "location": "TransactionListRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 246,
             "name": "@TestTag"
           }
         ]

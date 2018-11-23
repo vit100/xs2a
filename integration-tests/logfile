@@ -1,0 +1,86 @@
+2018-11-23 14:41:29.820 CET [16824] LOG:  listening on IPv6 address "::1", port 5432
+2018-11-23 14:41:29.821 CET [16824] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2018-11-23 14:41:29.822 CET [16824] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2018-11-23 14:41:29.839 CET [16825] LOG:  database system was shut down at 2018-11-23 14:40:09 CET
+2018-11-23 14:41:29.844 CET [16824] LOG:  database system is ready to accept connections
+2018-11-23 14:42:59.922 CET [16849] ERROR:  schema "public" already exists
+2018-11-23 14:42:59.922 CET [16849] STATEMENT:  create schema public
+2018-11-23 14:43:15.930 CET [16849] ERROR:  syntax error at or near "." at character 18
+2018-11-23 14:43:15.930 CET [16849] STATEMENT:  create schema cms.public
+2018-11-23 14:47:16.017 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:16.017 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:16.197 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:16.197 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:16.701 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:16.701 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:16.782 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:16.782 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:16.831 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:16.831 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:16.884 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:16.884 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:16.930 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:16.930 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:17.024 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:17.024 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:17.150 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:17.150 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:17.250 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:17.250 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:17.330 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:17.330 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:17.383 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:17.383 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:17.825 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:17.825 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:17.890 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:17.890 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:18.010 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:18.010 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:18.059 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:18.059 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:18.108 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:18.108 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:18.168 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:18.168 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:18.311 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:18.311 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:18.378 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:18.378 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:18.494 CET [16904] ERROR:  relation "cms.ais_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:18.494 CET [16904] STATEMENT:  select nextval ('cms.ais_consent_id_seq')
+2018-11-23 14:47:19.515 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:19.515 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:19.618 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:19.618 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:19.699 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:19.699 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:19.781 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:19.781 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:19.884 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:19.884 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:19.955 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:19.955 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.014 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.014 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.114 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.114 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.195 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.195 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.260 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.260 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.354 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.354 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.425 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.425 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.491 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.491 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.596 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.596 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.692 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.692 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:47:20.794 CET [16904] ERROR:  relation "cms.pis_consent_id_seq" does not exist at character 17
+2018-11-23 14:47:20.794 CET [16904] STATEMENT:  select nextval ('cms.pis_consent_id_seq')
+2018-11-23 14:48:06.850 CET [16969] FATAL:  database "consent" does not exist
+2018-11-23 14:48:52.383 CET [17004] ERROR:  relation "databasechangeloglock" does not exist at character 22
+2018-11-23 14:48:52.383 CET [17004] STATEMENT:  SELECT COUNT(*) FROM databasechangeloglock
