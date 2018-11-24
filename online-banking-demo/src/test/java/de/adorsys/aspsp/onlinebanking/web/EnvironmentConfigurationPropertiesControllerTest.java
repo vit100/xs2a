@@ -29,6 +29,8 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+
+
 @RunWith(MockitoJUnitRunner.class)
 public class EnvironmentConfigurationPropertiesControllerTest {
     private final String MOCK_SERVER_URL = "http://localhost:28080";
