@@ -17,21 +17,19 @@
 package de.adorsys.psd2.consent.service;
 
 
-import de.adorsys.psd2.consent.api.AspspDataService;
-import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
-import de.adorsys.psd2.consent.api.CmsAuthorisationType;
-import de.adorsys.psd2.consent.domain.AspspConsentDataEntity;
-import de.adorsys.psd2.consent.domain.payment.PisConsent;
-import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
-import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
-import de.adorsys.psd2.consent.repository.AspspConsentDataRepository;
-import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
-import de.adorsys.psd2.consent.repository.PisConsentRepository;
-import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
-import de.adorsys.psd2.consent.service.mapper.PisConsentMapper;
-import de.adorsys.psd2.consent.service.security.EncryptedData;
-import de.adorsys.psd2.consent.service.security.SecurityDataService;
-import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
+import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,33 +37,29 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
-import java.util.function.Function;
-
-import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
+import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
+import de.adorsys.psd2.consent.api.CmsAuthorisationType;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.consent.domain.payment.PisConsent;
+import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
+import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
+import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
+import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
+import de.adorsys.psd2.consent.service.security.SecurityDataService;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PisConsentServiceInternalTest {
+
     @InjectMocks
     private PisConsentServiceInternal pisConsentService;
-    @Mock
-    private PisConsentMapper consentMapper;
-    @Mock
-    private PisConsentRepository pisConsentRepository;
     @Mock
     private PisPaymentDataRepository pisPaymentDataRepository;
     @Mock
     private PisConsentAuthorizationRepository pisConsentAuthorizationRepository;
     @Mock
     SecurityDataService securityDataService;
-    @Mock
-    private AspspConsentDataRepository aspspConsentDataRepository;  // TODO remove it after AspspConsentDataServiceTest is created https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/470
-    @Mock
-    private AspspDataService aspspDataService;
 
     private PisConsent pisConsent;
     private final long CONSENT_ID = 1;
@@ -77,7 +71,8 @@ public class PisConsentServiceInternalTest {
     private PisPaymentData pisPaymentData;
     private List<PisConsentAuthorization> pisConsentAuthorizationList = new ArrayList();
     private CmsAspspConsentDataBase64 cmsAspspConsentDataBase64;
-
+    private static final String FINALISED_AUTHORISATION_ID = "9b112130-6a96-4941-a220-2da8a4af2c65";
+    private static final String FINALISED_CANCELLATION_AUTHORISATION_ID = "2a112130-6a96-4941-a220-2da8a4af2c65";
 
     @Before
     public void setUp() {
@@ -85,34 +80,6 @@ public class PisConsentServiceInternalTest {
         pisConsent = buildConsent();
         pisPaymentData = buildPaymentData(pisConsent);
         pisConsentAuthorizationList.add(buildPisConsentAuthorisation("906a08bc-8347-4f08-8c24-eda17b1f4c57"));
-        when(securityDataService.decryptId(EXTERNAL_CONSENT_ID)).thenReturn(Optional.of(EXTERNAL_CONSENT_ID));
-        when(securityDataService.decryptId(EXTERNAL_CONSENT_ID_NOT_EXIST)).thenReturn(Optional.of(EXTERNAL_CONSENT_ID_NOT_EXIST));
-//        when(securityDataService.encryptConsentData(EXTERNAL_CONSENT_ID, cmsAspspConsentDataBase64.getAspspConsentDataBase64()))
-//            .thenReturn(Optional.of(new EncryptedData(ENCRYPTED_CONSENT_DATA)));
-//        when(aspspConsentDataRepository.findByConsentId(eq(EXTERNAL_CONSENT_ID))).thenReturn(Optional.empty());
-    }
-
-    @Test
-    public void updateAspspDataById() {
-        // When
-        CmsAspspConsentDataBase64 request = this.buildUpdateBlobRequest();
-        Function<String, byte[]> decode = Base64.getDecoder()::decode;
-        AspspConsentData aspspConsentDataConsentExist = new AspspConsentData(decode.apply(request.getAspspConsentDataBase64()), EXTERNAL_CONSENT_ID);
-        when(aspspDataService.updateAspspConsentData(aspspConsentDataConsentExist)).thenReturn(true);
-        when(pisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID)).thenReturn(Optional.ofNullable(pisConsent));
-        when(pisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID_NOT_EXIST)).thenReturn(Optional.empty());
-//        when(aspspConsentDataRepository.save(any(AspspConsentDataEntity.class)))
-//            .thenReturn(getAspspConsentData());
-
-        // Then
-        Optional<String> consentId = pisConsentService.updateAspspConsentDataInPisConsent(EXTERNAL_CONSENT_ID, request);
-        // Assert
-        assertTrue(consentId.isPresent());
-
-        //Then
-        Optional<String> consentId_notExists = pisConsentService.updateAspspConsentDataInPisConsent(EXTERNAL_CONSENT_ID_NOT_EXIST, request);
-        // Assert
-        assertFalse(consentId_notExists.isPresent());
     }
 
     @Test
@@ -132,18 +99,72 @@ public class PisConsentServiceInternalTest {
     public void getAuthorisationByPaymentIdWrongPaymentId() {
         //When
         when(securityDataService.decryptId(paymentIdWrong)).thenReturn(Optional.empty());
-//        when(pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentIdWrong, RECEIVED)).thenReturn(Optional.empty());
         //Then
         Optional<String> authorizationByPaymentId = pisConsentService.getAuthorisationByPaymentId(paymentIdWrong, CmsAuthorisationType.CANCELLED);
         //Assert
         assertFalse(authorizationByPaymentId.isPresent());
     }
 
+    @Test
+    public void updateConsentAuthorisation_FinalisedStatus_Fail() {
+        //Given
+        ScaStatus expectedScaStatus = ScaStatus.STARTED;
+        ScaStatus actualScaStatus = ScaStatus.FINALISED;
+
+        UpdatePisConsentPsuDataRequest updatePisConsentPsuDataRequest = buildUpdatePisConsentPsuDataRequest(expectedScaStatus);
+        PisConsentAuthorization finalisedConsentAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
+
+        when(pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_AUTHORISATION_ID, CmsAuthorisationType.CREATED))
+            .thenReturn(Optional.of(finalisedConsentAuthorization));
+
+        //When
+        Optional<UpdatePisConsentPsuDataResponse> updatePisConsentPsuDataResponse = pisConsentService.updateConsentAuthorisation(FINALISED_AUTHORISATION_ID, updatePisConsentPsuDataRequest);
+
+        //Then
+        assertTrue(updatePisConsentPsuDataResponse.isPresent());
+        assertNotEquals(updatePisConsentPsuDataResponse.get().getScaStatus(), expectedScaStatus);
+    }
+
+    @Test
+    public void updateConsentCancellationAuthorisation_FinalisedStatus_Fail() {
+        //Given
+        ScaStatus expectedScaStatus = ScaStatus.STARTED;
+        ScaStatus actualScaStatus = ScaStatus.FINALISED;
+
+        PisConsentAuthorization finalisedCancellationAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
+        UpdatePisConsentPsuDataRequest updatePisConsentPsuDataRequest = buildUpdatePisConsentPsuDataRequest(expectedScaStatus);
+
+        when(pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_CANCELLATION_AUTHORISATION_ID, CmsAuthorisationType.CANCELLED))
+            .thenReturn(Optional.of(finalisedCancellationAuthorization));
+
+        //When
+        Optional<UpdatePisConsentPsuDataResponse> updatePisConsentPsuDataResponse = pisConsentService.updateConsentCancellationAuthorisation(FINALISED_CANCELLATION_AUTHORISATION_ID, updatePisConsentPsuDataRequest);
+
+        //Then
+        assertTrue(updatePisConsentPsuDataResponse.isPresent());
+        assertNotEquals(updatePisConsentPsuDataResponse.get().getScaStatus(), expectedScaStatus);
+
+    }
+
+    private UpdatePisConsentPsuDataRequest buildUpdatePisConsentPsuDataRequest(ScaStatus status) {
+        UpdatePisConsentPsuDataRequest request = new UpdatePisConsentPsuDataRequest();
+        request.setAuthorizationId(FINALISED_AUTHORISATION_ID);
+        request.setScaStatus(status);
+        return request;
+    }
+
+    private PisConsentAuthorization buildFinalisedConsentAuthorisation(ScaStatus status) {
+        PisConsentAuthorization pisConsentAuthorization = new PisConsentAuthorization();
+        pisConsentAuthorization.setExternalId(FINALISED_AUTHORISATION_ID);
+        pisConsentAuthorization.setScaStatus(status);
+        return pisConsentAuthorization;
+    }
 
     private PisConsent buildConsent() {
         PisConsent pisConsent = new PisConsent();
         pisConsent.setId(CONSENT_ID);
         pisConsent.setExternalId(EXTERNAL_CONSENT_ID);
+        pisConsent.setConsentStatus(RECEIVED);
         return pisConsent;
     }
 
@@ -164,13 +185,5 @@ public class PisConsentServiceInternalTest {
         paymentData.setConsent(pisConsent);
         return paymentData;
     }
-
-    private AspspConsentDataEntity getAspspConsentData() {
-        AspspConsentDataEntity consentData = new AspspConsentDataEntity();
-        consentData.setConsentId(EXTERNAL_CONSENT_ID);
-        consentData.setData(ENCRYPTED_CONSENT_DATA);
-        return consentData;
-    }
-
 
 }

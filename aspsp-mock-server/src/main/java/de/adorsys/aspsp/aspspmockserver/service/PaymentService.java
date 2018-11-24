@@ -16,6 +16,22 @@
 
 package de.adorsys.aspsp.aspspmockserver.service;
 
+import static de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType.PERIODIC;
+import static de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType.SINGLE;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import de.adorsys.aspsp.aspspmockserver.config.rest.consent.PisConsentRemoteUrls;
 import de.adorsys.aspsp.aspspmockserver.domain.pis.AspspPayment;
 import de.adorsys.aspsp.aspspmockserver.repository.PaymentRepository;
@@ -32,20 +48,6 @@ import de.adorsys.psd2.aspsp.mock.api.payment.AspspPeriodicPayment;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspSinglePayment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType.PERIODIC;
-import static de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType.SINGLE;
 
 @Slf4j
 @Service
@@ -191,9 +193,17 @@ public class PaymentService {
      * @return AspspPaymentCancellationResponse containing information about the requirement of aspsp for start authorisation
      */
     public Optional<AspspPaymentCancellationResponse> cancelPayment(String paymentId) {
-        return paymentRepository.findById(paymentId)
-                   .map(p -> updateAspsPaymentStatus(p, AspspTransactionStatus.CANC))
-                   .map(p -> getPaymentCancellationResponse(false, p.getPaymentStatus()));
+
+        List<AspspPayment> payments = paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
+        if(CollectionUtils.isEmpty(payments)){
+            return Optional.empty();
+        }
+
+        payments.forEach(
+            payment -> updateAspsPaymentStatus(payment, AspspTransactionStatus.CANC)
+        );
+
+        return Optional.of(getPaymentCancellationResponse(false, AspspTransactionStatus.CANC));
     }
 
     /**
@@ -203,9 +213,17 @@ public class PaymentService {
      * @return SpiCancelPayment containing information about the requirement of aspsp for start authorisation
      */
     public Optional<AspspPaymentCancellationResponse> initiatePaymentCancellation(String paymentId) {
-        return paymentRepository.findById(paymentId)
-                   .map(p -> updateAspsPaymentStatus(p, AspspTransactionStatus.ACTC))
-                   .map(p -> getPaymentCancellationResponse(true, p.getPaymentStatus()));
+
+        List<AspspPayment> payments = paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
+        if(CollectionUtils.isEmpty(payments)){
+            return Optional.empty();
+        }
+
+        payments.forEach(
+            payment -> updateAspsPaymentStatus(payment, AspspTransactionStatus.ACTC)
+        );
+
+        return Optional.of(getPaymentCancellationResponse(true, AspspTransactionStatus.ACTC));
     }
 
     public List<AspspPayment> getAllPayments() {
