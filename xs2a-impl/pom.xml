@@ -201,7 +201,7 @@
             <artifactId>commons-validator</artifactId>
             <version>${commons-validator.version}</version>
         </dependency>
-
+		<!-- 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -211,8 +211,8 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.3.19.RELEASE</version>
         </dependency>
+		 -->
     </dependencies>
 
     <build>
