@@ -82,7 +82,7 @@ Feature: Account Information Service
             #| consent-dedicated-successful.json     | consent-deletion-no-consent-id.json           |
             | consent-dedicated-successful.json     | consent-deletion-not-existing-id.json         |
            # | consent-dedicated-successful.json     | consent-deletion-already-revoked.json         |
-           # | consents-create-expired-consent.json  | consent-deletion-with-expired-consent.json    |
+            #| consents-create-expired-consent.json  | consent-deletion-with-expired-consent.json    |
 
 
     @ignore

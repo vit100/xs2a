@@ -26,6 +26,7 @@ import cucumber.runtime.model.CucumberExamples;
 import de.adorsys.aspsp.xs2a.integtest.model.TestData;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
+import de.adorsys.aspsp.xs2a.integtest.util.AisConsentService;
 import de.adorsys.aspsp.xs2a.integtest.util.Context;
 import de.adorsys.aspsp.xs2a.integtest.util.HttpEntityUtils;
 import de.adorsys.psd2.model.Consents;
@@ -72,8 +73,8 @@ public class ConsentDeletionErrorfulSteps {
         if(dataFileName.equals("consent-deletion-not-existing-id.json")){
             context.setConsentId("678316543982NotAConsent");
         }
-        if(dataFileName.equals("consent-deletion-no-consent-id.json")){
-            context.setConsentId("");
+        if(dataFileName.equals("consent-deletion-with-expired-consent-id.json")){
+
         }
     }
 
