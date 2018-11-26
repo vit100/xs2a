@@ -27,9 +27,9 @@ import de.adorsys.psd2.xs2a.domain.consent.CreateConsentResponse;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.service.AccountReferenceValidationService;
 import de.adorsys.psd2.xs2a.service.ConsentService;
-import de.adorsys.psd2.xs2a.service.mapper.ConsentModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.web.mapper.AuthorisationMapper;
+import de.adorsys.psd2.xs2a.web.mapper.ConsentModelMapper;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -59,8 +59,8 @@ public class ConsentController implements ConsentApi {
 
         Set<Xs2aAccountReference> references = createConsent.getAccountReferences();
         ResponseObject accountReferenceValidationResponse = references.isEmpty()
-            ? ResponseObject.builder().build()
-            : referenceValidationService.validateAccountReferences(createConsent.getAccountReferences());
+                                                                ? ResponseObject.builder().build()
+                                                                : referenceValidationService.validateAccountReferences(createConsent.getAccountReferences());
 
         ResponseObject<CreateConsentResponse> createConsentResponse;
 
@@ -92,7 +92,7 @@ public class ConsentController implements ConsentApi {
     @Override
     public ResponseEntity updateConsentsPsuData(String consentId, String authorisationId, UUID xRequestID, Object body, String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType, String psUCorporateID, String psUCorporateIDType, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
-        UpdateConsentPsuDataReq updatePsuDataRequest = consentModelMapper.mapToUpdatePsuData(psuData, consentId, authorisationId, (HashMap) body);
+        UpdateConsentPsuDataReq updatePsuDataRequest = consentModelMapper.mapToUpdatePsuData(psuData, consentId, authorisationId, (Map) body);
         return responseMapper.ok(consentService.updateConsentPsuData(updatePsuDataRequest), consentModelMapper::mapToUpdatePsuAuthenticationResponse);
     }
 
