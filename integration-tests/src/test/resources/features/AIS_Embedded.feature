@@ -36,3 +36,23 @@ Feature: Account Information Service - Embedded approach
             | consent-all-accounts-successful.json |         false          |     false      |
             | consent-all-accounts-successful.json |         true           |     null       |
             | consent-all-accounts-successful.json |         false          |     null       |
+
+
+#    ####################################################################################################################
+#    #                                                                                                                  #
+#    # SCA Status for consent creation                                                                                  #
+#    #                                                                                                                  #
+#    ####################################################################################################################
+    Scenario Outline: Successful SCA status request for consent creation
+        Given PSU created a consent resource <consentId>
+        And get authorisation sub-resource
+        And AISP wants to get SCA status
+        When AISP request SCA status for consent creation
+        Then a successful response code and sca status in response gets returned
+        Examples:
+            | consentId |
+            | consent-dedicated-successful.json|
+            | Get-Successful-SCA-status-for-consent-creation.json|
+
+
+
