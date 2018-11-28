@@ -11,10 +11,15 @@
 ## version 1.14 (Planned date 21.12.2018)
 - Get list of consents by psu-id in Consent Management System 
 - Develop TPP access lock service
-- Support delta access for transaction list 
 - Support of multicurrency account 
 - Decoupled SCA approach support. Payments
 - Support Pain endpoints for initiation of bulk payments
 - Support Pain endpoints for initiation of periodic payments 
 - Implement Get SCA Status Request 
+
+## version 1.15 (Planned date 04.01.2019)
 - Obsolete Consents and Payments that were not confirmed 
+- Support delta access for transaction list 
+- Multiple SCA
+- Decoupled SCA approach support. AIS.
+- PIS Support a matrix payment-product/payment-type in aspsp-profile and corresponding services. 
