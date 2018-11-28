@@ -37,10 +37,14 @@
             <column name="payment_id" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="payment" type="${blob.type}">
+            <column name="payment_type" type="VARCHAR(25)">
                 <constraints nullable="false"/>
             </column>
-            <column name="consent_id" type="BIGINT">
+            <column name="payment_product" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_status" type="VARCHAR(4)"/>
+            <column name="payment" type="${blob.type}">
                 <constraints nullable="false"/>
             </column>
         </createTable>

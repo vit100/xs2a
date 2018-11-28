@@ -17,6 +17,9 @@
 package de.adorsys.psd2.consent.domain.payment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
+import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,13 +38,22 @@ public class PisCommonPaymentData {
     @Column(name = "payment_id", nullable = false)
     private String payment_id;
 
+    @Column(name = "payment_type", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    @ApiModelProperty(value = "Payment type: BULK, SINGLE or PERIODIC.", required = true, example = "SINGLE")
+    private PaymentType paymentType;
+
+    @Column(name = "payment_product", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    @ApiModelProperty(value = "Payment product", required = true, example = "sepa-credit-transfers")
+    private PaymentProduct pisPaymentProduct;
+
+    @Column(name = "transaction_status")
+    @Enumerated(value = EnumType.STRING)
+    @ApiModelProperty(name = "transactionStatus", example = "ACCP")
+    private TransactionStatus transactionStatus;
+
     @Column(name = "payment", nullable = false)
     @ApiModelProperty(value = "All data about the payment", required = true)
     private byte[] payment;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "consent_id", nullable = false)
-    @ApiModelProperty(value = "Detailed information about consent", required = true)
-    private PisConsent consent_id;
 }
