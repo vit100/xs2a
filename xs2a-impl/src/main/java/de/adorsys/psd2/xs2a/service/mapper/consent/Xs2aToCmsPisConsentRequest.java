@@ -28,10 +28,7 @@ import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.address.Xs2aAddress;
 import de.adorsys.psd2.xs2a.domain.address.Xs2aCountryCode;
 import de.adorsys.psd2.xs2a.domain.code.Xs2aPurposeCode;
-import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
-import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
-import de.adorsys.psd2.xs2a.domain.pis.Remittance;
-import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
+import de.adorsys.psd2.xs2a.domain.pis.*;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -42,6 +39,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class Xs2aToCmsPisConsentRequest {
+
+    public PisConsentRequest mapToCmsPisConsentRequest(PaymentInitialisationRequest paymentInitialisationRequest) {
+        PisConsentRequest request = new PisConsentRequest();
+        request.setPayments(Collections.emptyList());
+
+        request.setPaymentType(paymentInitialisationRequest.getPaymentType());
+        request.setPaymentProduct(PaymentProduct.getByValue(paymentInitialisationRequest.getPaymentProduct()).orElse(null));
+        // TODO put real tppInfo data https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/406
+        request.setTppInfo(new TppInfo());
+        return request;
+    }
 
     public PisConsentRequest mapToCmsSinglePisConsentRequest(SinglePayment singlePayment, PaymentProduct paymentProduct) {
         PisConsentRequest request = new PisConsentRequest();

@@ -84,6 +84,8 @@ public class PaymentService {
     private final CancelPaymentService cancelPaymentService;
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aEventService xs2aEventService;
+    private final CreatePaymentCommonService createPaymentCommonService;
+
 
     /**
      * Initiates a payment though "payment service" corresponding service method
@@ -105,6 +107,15 @@ public class PaymentService {
                        .build();
         }
 
+        if (isRawPaymentProduct()) {
+            PaymentInitialisationRequest request = new PaymentInitialisationRequest();
+            request.setPaymentType(paymentInitiationParameters.getPaymentType());
+            request.setPaymentData(payment);
+            request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct().getValue());
+
+            return createPaymentCommonService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
+        }
+
         if (paymentInitiationParameters.getPaymentType() == SINGLE) {
             return createSinglePaymentService.createPayment((SinglePayment) payment, paymentInitiationParameters, tppInfo, pisConsent);
         } else if (paymentInitiationParameters.getPaymentType() == PERIODIC) {
@@ -112,6 +123,11 @@ public class PaymentService {
         } else {
             return createBulkPaymentService.createPayment((BulkPayment) payment, paymentInitiationParameters, tppInfo, pisConsent);
         }
+    }
+
+    private boolean isRawPaymentProduct() {
+        // TODO make correct value of method
+        return false;
     }
 
     /**
@@ -125,9 +141,9 @@ public class PaymentService {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED);
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(paymentId);
         PisPayment payment = pisConsentService.getPisConsentById(aspspConsentData.getConsentId())
-                                    .map(PisConsentResponse::getPayments)
-                                    .map(payments -> payments.get(0))
-                                    .orElse(null);
+                                 .map(PisConsentResponse::getPayments)
+                                 .map(payments -> payments.get(0))
+                                 .orElse(null);
 
         if (payment == null) {
             return ResponseObject.builder()

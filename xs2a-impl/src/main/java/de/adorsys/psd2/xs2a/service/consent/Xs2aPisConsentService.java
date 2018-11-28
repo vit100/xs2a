@@ -22,10 +22,7 @@ import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
-import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
-import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
-import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
-import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
+import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aToCmsPisConsentRequest;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +59,12 @@ public class Xs2aPisConsentService {
         return pisConsentService.getConsentById(consentId);
     }
 
+    public void updatePaymentInPisConsent(PaymentInitialisationRequest payment, String consentId) {
+        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequest.mapToCmsPisConsentRequest(payment);
+        pisConsentService.updatePaymentConsent(pisConsentRequest, consentId);
+    }
+
+    // TODO  will be deleted!
     public void updateSinglePaymentInPisConsent(SinglePayment singlePayment, PaymentInitiationParameters paymentInitiationParameters, String consentId) {
         PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequest.mapToCmsSinglePisConsentRequest(singlePayment, paymentInitiationParameters.getPaymentProduct());
         pisConsentService.updatePaymentConsent(pisConsentRequest, consentId);

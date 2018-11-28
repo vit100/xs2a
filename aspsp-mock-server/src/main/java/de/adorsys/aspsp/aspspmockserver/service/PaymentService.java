@@ -26,10 +26,7 @@ import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountReference;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspAmount;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
 import de.adorsys.psd2.aspsp.mock.api.consent.AspspConsentStatus;
-import de.adorsys.psd2.aspsp.mock.api.payment.AspspBulkPayment;
-import de.adorsys.psd2.aspsp.mock.api.payment.AspspPaymentCancellationResponse;
-import de.adorsys.psd2.aspsp.mock.api.payment.AspspPeriodicPayment;
-import de.adorsys.psd2.aspsp.mock.api.payment.AspspSinglePayment;
+import de.adorsys.psd2.aspsp.mock.api.payment.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -57,6 +54,17 @@ public class PaymentService {
     private final PisConsentRemoteUrls remotePisConsentUrls;
     private final PaymentMapper paymentMapper;
     private final AccountService accountService;
+
+    /**
+     * Creates new payment
+     *
+     * @param aspspPaymentInfo payment
+     * @return Optional of saved single payment
+     */
+    public Optional<AspspPaymentInfo> addPaymentInfo(@NotNull AspspPaymentInfo aspspPaymentInfo) {
+        AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(aspspPaymentInfo));
+        return Optional.ofNullable(paymentMapper.mapToAspspPaymentInfo(saved));
+    }
 
     /**
      * Checks if there is enough funds for payment and if so saves the payment

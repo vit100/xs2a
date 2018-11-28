@@ -18,6 +18,7 @@ package de.adorsys.aspsp.aspspmockserver.service.mapper;
 
 import de.adorsys.aspsp.aspspmockserver.domain.pis.AspspPayment;
 import de.adorsys.aspsp.aspspmockserver.domain.pis.PisPaymentType;
+import de.adorsys.psd2.aspsp.mock.api.payment.AspspPaymentInfo;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspPeriodicPayment;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspSinglePayment;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,27 @@ import java.util.stream.Collectors;
 
 @Component
 public class PaymentMapper {
+
+    public AspspPayment mapToAspspPayment(AspspPaymentInfo paymentInfo) {
+        AspspPayment aspspPayment = new AspspPayment();
+        aspspPayment.setPaymentId(paymentInfo.getPaymentId());
+        aspspPayment.setPaymentStatus(paymentInfo.getPaymentStatus());
+        aspspPayment.setPaymentProduct(paymentInfo.getPaymentProduct());
+        aspspPayment.setPisPaymentType(PisPaymentType.valueOf(paymentInfo.getPaymentType())); // todo !!!!!!!
+        aspspPayment.setPaymentData(paymentInfo.getPayment());
+        return aspspPayment;
+    }
+
+    public AspspPaymentInfo mapToAspspPaymentInfo(AspspPayment aspspPayment) {
+        AspspPaymentInfo paymentInfo = new AspspPaymentInfo();
+        paymentInfo.setPaymentId(aspspPayment.getPaymentId());
+        paymentInfo.setPaymentStatus(aspspPayment.getPaymentStatus());
+        paymentInfo.setPaymentProduct(aspspPayment.getPaymentProduct());
+        paymentInfo.setPaymentType(aspspPayment.getPisPaymentType().name()); // todo !!!!!!!
+        paymentInfo.setPayment(aspspPayment.getPaymentData());
+        return paymentInfo;
+    }
+
     public List<AspspPayment> mapToAspspPaymentList(List<AspspSinglePayment> payments, String bulkId) {
         return payments.stream()
                    .map(p -> mapToBulkAspspPayment(p, bulkId))
