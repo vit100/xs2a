@@ -28,6 +28,7 @@ import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
+import de.adorsys.psd2.xs2a.spi.domain.consent.SpiAccountAccess;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse.VoidResponse;
@@ -68,10 +69,11 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     private static final String TEST_MESSAGE = "Test message";
 
     @Override
-    public SpiResponse<VoidResponse> initiateAisConsent(@NotNull SpiPsuData spiPsuData, SpiAccountConsent accountConsent, AspspConsentData initialAspspConsentData) {
+    public SpiResponse<SpiAccountAccess> initiateAisConsent(@NotNull SpiPsuData spiPsuData, SpiAccountConsent accountConsent, AspspConsentData initialAspspConsentData) {
         log.info("AisConsentSpi initiateAisConsent() mock implementation");
-        return SpiResponse.<VoidResponse>builder()
-                   .payload(SpiResponse.voidResponse())
+
+        return SpiResponse.<SpiAccountAccess>builder()
+                   .payload(new SpiAccountAccess())
                    .aspspConsentData(initialAspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))     // added for test purposes TODO remove if some requirements will be received https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/394
                    .message(Collections.singletonList(TEST_MESSAGE))                                      // added for test purposes TODO remove if some requirements will be received https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/394
                    .success();

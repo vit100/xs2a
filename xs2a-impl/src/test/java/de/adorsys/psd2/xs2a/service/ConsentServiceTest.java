@@ -41,6 +41,7 @@ import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
+import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aAccountAccessMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.service.validator.CreateConsentRequestValidator;
@@ -103,6 +104,8 @@ public class ConsentServiceTest {
     @Mock
     Xs2aAisConsentMapper aisConsentMapper;
     @Mock
+    SpiToXs2aAccountAccessMapper spiToXs2aAccountAccessMapper;
+    @Mock
     AspspProfileServiceWrapper aspspProfileService;
     @Mock
     TppService tppService;
@@ -129,6 +132,8 @@ public class ConsentServiceTest {
         //ConsentMapping
         when(aisConsentMapper.mapToAccountConsent(getSpiConsent(CONSENT_ID, getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false), false)))
             .thenReturn(getConsent(CONSENT_ID, getAccess(Collections.singletonList(getReference(CORRECT_IBAN, CURRENCY)), null, null, false, false), false));
+        when(spiToXs2aAccountAccessMapper.mapToAccountAccess(any()))
+            .thenReturn(getXs2aAccountAccess(Collections.singletonList(getXs2aReference(CORRECT_IBAN, CURRENCY)), null, null, false, false));
 
         //AisReportMock
         doNothing().when(aisConsentService).consentActionLog(anyString(), anyString(), any(ActionStatus.class));
@@ -214,8 +219,8 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
-                            .payload(SpiResponse.voidResponse())
+            .thenReturn(SpiResponse.<SpiAccountAccess>builder()
+                            .payload(getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false))
                             .aspspConsentData(ASPSP_CONSENT_DATA)
                             .success());
 
@@ -236,8 +241,8 @@ public class ConsentServiceTest {
         when(createConsentRequestValidator.validateRequest(req))
             .thenReturn(createValidationResult(true, null));
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
-                            .payload(SpiResponse.voidResponse())
+            .thenReturn(SpiResponse.<SpiAccountAccess>builder()
+                            .payload(getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false))
                             .aspspConsentData(ASPSP_CONSENT_DATA)
                             .success());
 
@@ -261,9 +266,9 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+            .thenReturn(SpiResponse.<SpiAccountAccess>builder()
                             .aspspConsentData(ASPSP_CONSENT_DATA)
-                            .payload(SpiResponse.voidResponse())
+                            .payload(getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false))
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
@@ -314,9 +319,9 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+            .thenReturn(SpiResponse.<SpiAccountAccess>builder()
                             .aspspConsentData(ASPSP_CONSENT_DATA)
-                            .payload(SpiResponse.voidResponse())
+                            .payload(getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false))
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
@@ -338,9 +343,9 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+            .thenReturn(SpiResponse.<SpiAccountAccess>builder()
                             .aspspConsentData(ASPSP_CONSENT_DATA)
-                            .payload(SpiResponse.voidResponse())
+                            .payload(getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false))
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
@@ -362,9 +367,9 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+            .thenReturn(SpiResponse.<SpiAccountAccess>builder()
                             .aspspConsentData(ASPSP_CONSENT_DATA)
-                            .payload(SpiResponse.voidResponse())
+                            .payload(getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false))
                             .success());
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
@@ -502,8 +507,8 @@ public class ConsentServiceTest {
             .thenReturn(createValidationResult(true, null));
 
         when(aisConsentSpi.initiateAisConsent(any(SpiPsuData.class), any(SpiAccountConsent.class), any(AspspConsentData.class)))
-            .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
-                            .payload(SpiResponse.voidResponse())
+            .thenReturn(SpiResponse.<SpiAccountAccess>builder()
+                            .payload(getSpiAccountAccess(Collections.singletonList(getSpiReference(CORRECT_IBAN, CURRENCY)), null, null, false, false))
                             .aspspConsentData(ASPSP_CONSENT_DATA)
                             .success());
 

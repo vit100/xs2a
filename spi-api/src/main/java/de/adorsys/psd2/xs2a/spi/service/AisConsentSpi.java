@@ -19,6 +19,7 @@ package de.adorsys.psd2.xs2a.spi.service;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
+import de.adorsys.psd2.xs2a.spi.domain.consent.SpiAccountAccess;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse.VoidResponse;
@@ -35,9 +36,9 @@ public interface AisConsentSpi extends AuthorisationSpi<SpiAccountConsent> {
      * @param psuData                 SpiPsuData container of authorisation data about PSU
      * @param accountConsent          Account consent
      * @param initialAspspConsentData Encrypted data that is stored in the consent management system
-     * @return Return a positive or negative response as part of SpiResponse
+     * @return Return account access
      */
-    SpiResponse<VoidResponse> initiateAisConsent(@NotNull SpiPsuData psuData, SpiAccountConsent accountConsent, AspspConsentData initialAspspConsentData);
+    SpiResponse<SpiAccountAccess> initiateAisConsent(@NotNull SpiPsuData psuData, SpiAccountConsent accountConsent, AspspConsentData initialAspspConsentData);
 
     /**
      * Revokes AIS consent
