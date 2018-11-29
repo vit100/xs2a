@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.consent.domain.payment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
