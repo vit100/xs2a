@@ -53,6 +53,7 @@ public class PisCommonPaymentData {
     @ApiModelProperty(name = "transactionStatus", example = "ACCP")
     private TransactionStatus transactionStatus;
 
+    @Lob
     @Column(name = "payment", nullable = false)
     @ApiModelProperty(value = "All data about the payment", required = true)
     private byte[] payment;
