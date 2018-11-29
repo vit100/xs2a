@@ -17,7 +17,13 @@
 package de.adorsys.psd2.consent.repository;
 
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
+import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface PisCommonPaymentDataRepository extends CrudRepository<PisCommonPaymentData, Long> {
+    Optional<PisCommonPaymentData> findByPaymentIdAndConsent_ConsentStatus(String paymentId, ConsentStatus cmsConsentStatus);
+
+    Optional<PisCommonPaymentData> findByPaymentId(String paymentId); //TODO It should be changed after BulkPayment will be added to the Database https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/446
 }

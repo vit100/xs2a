@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.domain.payment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import io.swagger.annotations.ApiModel;
@@ -25,16 +26,16 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@Entity(name = "pis_common_payment_data")
+@Entity(name = "pis_common_payment")
 @ApiModel(description = "pis common payment entity", value = "PisCommonPaymentData")
 public class PisCommonPaymentData {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pis_common_payment_data_generator")
-    @SequenceGenerator(name = "pis_common_payment_data_generator", sequenceName = "pis_common_payment_data_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pis_common_payment_generator")
+    @SequenceGenerator(name = "pis_common_payment_generator", sequenceName = "pis_common_payment_id_seq")
     private Long id;
 
     @Column(name = "payment_id", nullable = false)
-    private String payment_id;
+    private String paymentId;
 
     @Column(name = "payment_type", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -43,7 +44,7 @@ public class PisCommonPaymentData {
 
     @Column(name = "payment_product", nullable = false)
     @ApiModelProperty(value = "Payment product", required = true, example = "sepa-credit-transfers")
-    private String pisPaymentProduct;
+    private String paymentProduct;
 
     @Column(name = "transaction_status")
     @Enumerated(value = EnumType.STRING)
@@ -54,4 +55,10 @@ public class PisCommonPaymentData {
     @Column(name = "payment", nullable = false)
     @ApiModelProperty(value = "All data about the payment", required = true)
     private byte[] payment;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "consent_id", nullable = false)
+    @ApiModelProperty(value = "Detailed information about consent", required = true)
+    private PisConsent consent;
 }

@@ -77,4 +77,8 @@ public class PisConsent {
     @Enumerated(value = EnumType.STRING)
     @ApiModelProperty(value = "The following code values are permitted 'received', 'valid', 'rejected', 'expired', 'revoked by psu', 'terminated by tpp'. These values might be extended by ASPSP.", required = true, example = "VALID")
     private ConsentStatus consentStatus;
+
+    @OneToOne(mappedBy = "consent", cascade = CascadeType.ALL)
+    @ApiModelProperty(value = "Payment data")
+    private PisCommonPaymentData paymentData;
 }

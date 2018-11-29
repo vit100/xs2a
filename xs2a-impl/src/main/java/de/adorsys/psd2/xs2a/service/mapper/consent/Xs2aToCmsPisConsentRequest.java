@@ -39,12 +39,13 @@ import java.util.stream.Collectors;
 @Component
 public class Xs2aToCmsPisConsentRequest {
 
-    public PisConsentRequest mapToCmsPisConsentRequest(PaymentInitialisationRequest paymentInitialisationRequest) {
+    public PisConsentRequest mapToCmsPisConsentRequest(PaymentInitialisationRequest paymentInitRequest) {
         PisConsentRequest request = new PisConsentRequest();
         request.setPayments(Collections.emptyList());
-
-        request.setPaymentType(paymentInitialisationRequest.getPaymentType());
-        request.setPaymentProduct(paymentInitialisationRequest.getPaymentProduct());
+        request.setPaymentData(paymentInitRequest.getPaymentData());
+        request.setPaymentId(paymentInitRequest.getPaymentId());
+        request.setPaymentType(paymentInitRequest.getPaymentType());
+        request.setPaymentProduct(paymentInitRequest.getPaymentProduct());
         // TODO put real tppInfo data https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/406
         request.setTppInfo(new TppInfo());
         return request;
