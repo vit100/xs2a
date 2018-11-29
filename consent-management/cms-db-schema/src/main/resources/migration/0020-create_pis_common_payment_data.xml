@@ -48,10 +48,5 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
-        <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="pis_common_payment_data"
-                                 constraintName="fk_pis_common_payment_pis_consent" deferrable="false"
-                                 initiallyDeferred="false"
-                                 referencedColumnNames="id" referencedTableName="pis_consent"/>
     </changeSet>
 </databaseChangeLog>
