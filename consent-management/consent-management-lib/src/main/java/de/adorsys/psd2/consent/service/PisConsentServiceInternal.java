@@ -235,9 +235,9 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     private void savePaymentData(PisConsent pisConsent, PisConsentRequest request) {
-        boolean isCommonPayment = (CollectionUtils.isEmpty(request.getPayments()) && (request.getPaymentData() != null)); // todo it will be refactored
+        boolean isCommonPayment = CollectionUtils.isEmpty(request.getPayments()) && request.getPaymentData() != null; // todo it will be refactored
 
-        Object saved = isCommonPayment
+        Object saved = isCommonPayment //NOPMD todo rework later
                            ? pisCommonPaymentDataRepository.save(pisConsentMapper.mapToPisCommonPaymentData(request, pisConsent))
                            : pisPaymentDataRepository.save(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent));
     }
