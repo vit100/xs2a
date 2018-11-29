@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.xs2a.spi.domain.payment;
 
-import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
@@ -25,13 +24,12 @@ import lombok.Data;
 @Data
 public class SpiPaymentInfo implements SpiPayment {
     private String paymentId;
-    protected PaymentProduct paymentProduct;
+    private String paymentProduct;
     private PaymentType paymentType;
     private SpiTransactionStatus status;
-
     private Object paymentData;
 
-    public SpiPaymentInfo(PaymentProduct paymentProduct) {
+    public SpiPaymentInfo(String paymentProduct) {
         this.paymentProduct = paymentProduct;
     }
 }

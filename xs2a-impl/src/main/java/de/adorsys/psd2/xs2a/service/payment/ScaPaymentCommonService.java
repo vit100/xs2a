@@ -16,11 +16,11 @@
 
 package de.adorsys.psd2.xs2a.service.payment;
 
-import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
-import de.adorsys.psd2.xs2a.domain.pis.*;
+import de.adorsys.psd2.xs2a.domain.pis.PaymentInitialisationRequest;
+import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
 
 public interface ScaPaymentCommonService {
-    PaymentInitiationResponse createPayment(PaymentInitialisationRequest payment, TppInfo tppInfo, PaymentProduct paymentProduct, Xs2aPisConsent pisConsent);
+    PaymentInitiationResponse createPayment(PaymentInitialisationRequest payment, TppInfo tppInfo, String paymentProduct, Xs2aPisConsent pisConsent);
 }

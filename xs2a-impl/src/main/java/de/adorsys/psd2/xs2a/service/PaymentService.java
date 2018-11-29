@@ -110,7 +110,7 @@ public class PaymentService {
             PaymentInitialisationRequest request = new PaymentInitialisationRequest();
             request.setPaymentType(paymentInitiationParameters.getPaymentType());
             request.setPaymentData(payment);
-            request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct().getValue());
+            request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
 
             return createPaymentCommonService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
         }

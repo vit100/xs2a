@@ -89,7 +89,7 @@ public class CommonPaymentSpiImpl implements CommonPaymentSpi {
 
             ResponseEntity<List<AspspPaymentInfo>> aspspResponse =
                 aspspRestTemplate.exchange(aspspRemoteUrls.getPaymentById(), HttpMethod.GET, null, new ParameterizedTypeReference<List<AspspPaymentInfo>>() {
-                }, payment.getPaymentType().getValue(), payment.getPaymentProduct().getValue(), payment.getPaymentId());
+                }, payment.getPaymentType().getValue(), payment.getPaymentProduct(), payment.getPaymentId());
 
             AspspPaymentInfo aspspPaymentInfo = aspspResponse.getBody().get(0);
             SpiPaymentInfo spiPaymentInfo = spiPaymentInfoMapper.mapToSpiPaymentInfo(aspspPaymentInfo);

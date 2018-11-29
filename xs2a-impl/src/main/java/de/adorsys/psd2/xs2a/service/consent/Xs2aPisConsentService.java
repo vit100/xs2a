@@ -23,7 +23,6 @@ import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.pis.*;
-import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aToCmsPisConsentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class Xs2aPisConsentService {
     private final PisConsentService pisConsentService;
-    private final Xs2aPisConsentMapper pisConsentMapper;
     private final Xs2aToCmsPisConsentRequest xs2aToCmsPisConsentRequest;
 
     /**

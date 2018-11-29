@@ -44,7 +44,7 @@ public class Xs2aToCmsPisConsentRequest {
         request.setPayments(Collections.emptyList());
 
         request.setPaymentType(paymentInitialisationRequest.getPaymentType());
-        request.setPaymentProduct(PaymentProduct.getByValue(paymentInitialisationRequest.getPaymentProduct()).orElse(null));
+        request.setPaymentProduct(paymentInitialisationRequest.getPaymentProduct());
         // TODO put real tppInfo data https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/406
         request.setTppInfo(new TppInfo());
         return request;
