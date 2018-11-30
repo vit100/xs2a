@@ -22,12 +22,14 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Data
 @Entity(name = "pis_common_payment")
 @ApiModel(description = "pis common payment entity", value = "PisCommonPaymentData")
+@ToString(exclude = "consent")
 public class PisCommonPaymentData {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pis_common_payment_generator")
@@ -57,7 +59,7 @@ public class PisCommonPaymentData {
     private byte[] payment;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "consent_id", nullable = false)
     @ApiModelProperty(value = "Detailed information about consent", required = true)
     private PisConsent consent;

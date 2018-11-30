@@ -21,6 +21,7 @@ import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.consent.api.pis.CmsRemittance;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
@@ -42,13 +43,28 @@ public class Xs2aToCmsPisConsentRequest {
     public PisConsentRequest mapToCmsPisConsentRequest(PaymentInitialisationRequest paymentInitRequest) {
         PisConsentRequest request = new PisConsentRequest();
         request.setPayments(Collections.emptyList());
-        request.setPaymentData(paymentInitRequest.getPaymentData());
+        request.setPaymentInfo(mapToPisPaymentInfo(paymentInitRequest));
         request.setPaymentId(paymentInitRequest.getPaymentId());
         request.setPaymentType(paymentInitRequest.getPaymentType());
         request.setPaymentProduct(paymentInitRequest.getPaymentProduct());
         // TODO put real tppInfo data https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/406
         request.setTppInfo(new TppInfo());
         return request;
+    }
+
+    private PisPaymentInfo mapToPisPaymentInfo(PaymentInitialisationRequest paymentInitRequest) {
+        return Optional.ofNullable(paymentInitRequest)
+                   .map(dta -> {
+                            PisPaymentInfo paymentInfo = new PisPaymentInfo();
+                            paymentInfo.setPaymentId(dta.getPaymentId());
+                            paymentInfo.setPaymentProduct(dta.getPaymentProduct());
+                            paymentInfo.setPaymentType(dta.getPaymentType());
+                            paymentInfo.setTransactionStatus(dta.getTransactionStatus());
+                            paymentInfo.setPaymentData(dta.getPaymentData());
+                            return paymentInfo;
+                        }
+                   )
+                   .orElse(null);
     }
 
     public PisConsentRequest mapToCmsSinglePisConsentRequest(SinglePayment singlePayment, String paymentProduct) {

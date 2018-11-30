@@ -126,7 +126,7 @@ public class PaymentService {
 
     private boolean isRawPaymentProduct() {
         // TODO make correct value of method
-        return false;
+        return true;
     }
 
     /**
