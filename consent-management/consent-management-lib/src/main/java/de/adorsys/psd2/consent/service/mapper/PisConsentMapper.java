@@ -243,18 +243,18 @@ public class PisConsentMapper {
             os.writeObject(obj);
             return out.toByteArray();
         } catch (IOException e) {
-            e.printStackTrace(); // todo make correct log
+            e.printStackTrace(); // NOPMD todo make correct log
             return null;
         }
     }
 
-    private Object deserialize(byte[] data) {
+    private Object deserialize(byte[] data) { //NOPMD todo use this method
         try {
             ByteArrayInputStream in = new ByteArrayInputStream(data);
             ObjectInputStream is = new ObjectInputStream(in);
             return is.readObject();
         } catch (Exception e) {
-            e.printStackTrace(); // todo make correct log
+            e.printStackTrace(); // NOPMD todo make correct log
             return null;
         }
     }
