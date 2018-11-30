@@ -28,7 +28,6 @@ import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisConsent;
 import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
-import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
 import de.adorsys.psd2.consent.repository.PisConsentRepository;
@@ -152,12 +151,12 @@ public class PisConsentServiceInternal implements PisConsentService {
             return Optional.empty();
         }
 
-        return readConsentByPaymentId(paymentId.get())
+        return readReceivedConsentByPaymentId(paymentId.get())
                    .map(pisConsent -> saveNewAuthorization(pisConsent, authorizationType, psuData))
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
 
-    private Optional<PisConsent> readConsentByPaymentId(String paymentId) {
+    private Optional<PisConsent> readReceivedConsentByPaymentId(String paymentId) {
         // todo implementation should be changed
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
                                               .map(list -> list.get(0).getConsent());
@@ -235,7 +234,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     private void savePaymentData(PisConsent pisConsent, PisConsentRequest request) {
-        boolean isCommonPayment = (CollectionUtils.isEmpty(request.getPayments()) && (request.getPaymentInfo() != null)); // todo it will be refactored
+        boolean isCommonPayment = CollectionUtils.isEmpty(request.getPayments()) && request.getPaymentInfo() != null; // todo it will be refactored
 
         if (isCommonPayment) {
             pisCommonPaymentDataRepository.save(pisConsentMapper.mapToPisCommonPaymentData(request.getPaymentInfo(), pisConsent));
@@ -303,10 +302,20 @@ public class PisConsentServiceInternal implements PisConsentService {
             return Optional.empty();
         }
 
-        return pisPaymentDataRepository.findByPaymentId(paymentId.get())
-                   .map(l -> l.get(0))
-                   .map(PisPaymentData::getConsent)
+        return getPisConsentByPaymentId(paymentId.get())
                    .map(pc -> psuDataMapper.mapToPsuIdData(pc.getPsuData()));
+    }
+
+    private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
+        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
+                                              .map(list -> list.get(0).getConsent());
+
+        if (!consentOpt.isPresent()) {
+            consentOpt = pisCommonPaymentDataRepository.findByPaymentId(paymentId)
+                             .map(PisCommonPaymentData::getConsent);
+        }
+
+        return consentOpt;
     }
 
     /**

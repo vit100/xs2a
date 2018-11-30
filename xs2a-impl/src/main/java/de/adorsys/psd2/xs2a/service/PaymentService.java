@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.service;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.event.EventType;
@@ -84,7 +85,7 @@ public class PaymentService {
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aEventService xs2aEventService;
     private final CreatePaymentCommonService createPaymentCommonService;
-
+    private final ReadCommonPaymentService readCommonPaymentService;
 
     /**
      * Initiates a payment though "payment service" corresponding service method
@@ -126,7 +127,7 @@ public class PaymentService {
 
     private boolean isRawPaymentProduct() {
         // TODO make correct value of method
-        return true;
+        return false;
     }
 
     /**
@@ -139,20 +140,27 @@ public class PaymentService {
     public ResponseObject getPaymentById(PaymentType paymentType, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED);
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(paymentId);
-        PisPayment payment = pisConsentService.getPisConsentById(aspspConsentData.getConsentId())
-                                 .map(PisConsentResponse::getPayments)
-                                 .map(payments -> payments.get(0))
-                                 .orElse(null);
+        Optional<PisConsentResponse> pisConsent = pisConsentService.getPisConsentById(aspspConsentData.getConsentId());
 
-        if (payment == null) {
+        if (!pisConsent.isPresent()) {
             return ResponseObject.builder()
                        .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
                        .build();
         }
 
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
-        ReadPaymentService<PaymentInformationResponse> readPaymentService = readPaymentFactory.getService(paymentType.getValue());
-        PaymentInformationResponse response = readPaymentService.getPayment(payment, "sepa-credit-transfers", psuData, aspspConsentData); //NOT USED IN 1.2 //TODO clarify why here Payment product is hardcoded and what should be done instead https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
+        PaymentInformationResponse response = null;
+
+        if (pisConsent.get().getPaymentInfo() != null) {
+            PisPaymentInfo paymentInfo = pisConsent.get().getPaymentInfo();
+            response = readCommonPaymentService.getPayment(paymentInfo, psuData, aspspConsentData);
+        } else {
+            PisPayment payment = Optional.ofNullable(pisConsent.get().getPayments())
+                                     .map(l -> l.get(0))
+                                     .orElse(null);
+            ReadPaymentService<PaymentInformationResponse> readPaymentService = readPaymentFactory.getService(paymentType.getValue());
+            response = readPaymentService.getPayment(payment, "sepa-credit-transfers", psuData, aspspConsentData); //NOT USED IN 1.2 //TODO clarify why here Payment product is hardcoded and what should be done instead https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
+        }
 
         if (response.hasError()) {
             return ResponseObject.builder()

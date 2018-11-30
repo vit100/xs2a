@@ -44,6 +44,9 @@ public class PaymentModelMapperXs2a {
     private final AccountModelMapper accountModelMapper;
 
     public Object mapToXs2aPayment(Object payment, PaymentInitiationParameters requestParameters) {
+        if (isRawType()) {
+            return payment;
+        }
         if (requestParameters.getPaymentType() == SINGLE) {
             return mapToXs2aSinglePayment(validatePayment(payment, PaymentInitiationSctJson.class));
         } else if (requestParameters.getPaymentType() == PERIODIC) {
@@ -51,6 +54,10 @@ public class PaymentModelMapperXs2a {
         } else {
             return mapToXs2aBulkPayment(validatePayment(payment, BulkPaymentInitiationSctJson.class));
         }
+    }
+
+    private boolean isRawType() { //todo this code will be reworked later
+        return false;
     }
 
     private <R> R validatePayment(Object payment, Class<R> clazz) {
