@@ -23,6 +23,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import cucumber.api.junit.Cucumber;
 import cucumber.runtime.model.CucumberExamples;
+import de.adorsys.aspsp.xs2a.integtest.CucumberIT;
 import de.adorsys.aspsp.xs2a.integtest.model.TestData;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
@@ -65,7 +66,7 @@ public class ConsentDeletionErrorfulSteps {
 
 
     //already implemented in Branch AKI_successful_deletion_consent
-    @And("^PSU wants to delete the consent (.*)$")
+    @And("^PSU wants to errorfully delete the consent (.*)$")
     public void loadTestData(String dataFileName) throws IOException{
         testService.parseJson("/data-input/ais/consent/deletion/" + dataFileName, new TypeReference<TestData<Consents, TppMessages >>() {
         });
@@ -74,13 +75,17 @@ public class ConsentDeletionErrorfulSteps {
             context.setConsentId("678316543982NotAConsent");
         }
         if(dataFileName.equals("consent-deletion-with-expired-consent-id.json")){
-
+            makeConsentExpired();
         }
     }
 
     @When("^PSU sends the consent deletion request with errors$")
     public void deleteConsent()throws HttpClientErrorException, IOException{
         testService.sendErrorfulRestCall(HttpMethod.DELETE,context.getBaseUrl() + "/consents/" + context.getConsentId());
+    }
+
+    private void makeConsentExpired(){
+        testService.sendRestCall(HttpMethod.GET,context.getBaseUrl()+"/accounts");
     }
 
     //@Then("^an error response code is displayed and an appropriate error response is shown$")

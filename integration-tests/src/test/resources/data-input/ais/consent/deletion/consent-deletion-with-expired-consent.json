@@ -10,9 +10,9 @@
   "response": {
     "code": "401",
     "header": {},
-    "body": {
+    "body": [{
       "category": "ERROR",
       "code": "CONSENT_EXPIRED"
-    }
+    }]
   }
 }

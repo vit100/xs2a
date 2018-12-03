@@ -87,7 +87,7 @@ Feature: Account Information Service
     Scenario Outline: Errorful deletion of consent (redirect)
         Given PSU wants to create a consent <consent-id>
         And PSU sends the create consent request
-        And PSU wants to delete the consent <consent-resource>
+        And PSU wants to errorfully delete the consent <consent-resource>
         When PSU sends the consent deletion request with errors
         Then an error response code is displayed and an appropriate error response is shown
         Examples:
@@ -97,7 +97,7 @@ Feature: Account Information Service
             #| consent-dedicated-successful.json     | consent-deletion-no-consent-id.json           |
             | consent-dedicated-successful.json     | consent-deletion-not-existing-id.json         |
            # | consent-dedicated-successful.json     | consent-deletion-already-revoked.json         |
-            #| consents-create-expired-consent.json  | consent-deletion-with-expired-consent.json    |
+            | consent-dedicated-successful.json  | consent-deletion-with-expired-consent.json    |
 
 
     @ignore
