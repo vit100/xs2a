@@ -17,6 +17,7 @@
 package de.adorsys.aspsp.xs2a.spi.mapper;
 
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspPaymentInfo;
+import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentInfo;
@@ -37,7 +38,7 @@ public class SpiPaymentInfoMapper {
         aspspPaymentInfo.setPaymentStatus(spiPaymentMapper.mapToAspspTransactionStatus(transactionStatus));
         aspspPaymentInfo.setPaymentProduct(payment.getPaymentProduct());
         aspspPaymentInfo.setPaymentType(payment.getPaymentType().name()); // todo !!!!!!!!
-        aspspPaymentInfo.setPayment(payment.getPaymentData());
+        aspspPaymentInfo.setPaymentData(payment.getPaymentData());
 
         return aspspPaymentInfo;
     }
@@ -45,9 +46,9 @@ public class SpiPaymentInfoMapper {
     public SpiPaymentInfo mapToSpiPaymentInfo(@NotNull AspspPaymentInfo payment) {
         SpiPaymentInfo spiPayment = new SpiPaymentInfo(payment.getPaymentProduct());
         spiPayment.setPaymentId(payment.getPaymentId());
-        spiPayment.setPaymentType(PaymentType.valueOf(payment.getPaymentType())); // todo !!!!!!!!
-        spiPayment.setStatus(spiPaymentMapper.mapToSpiTransactionStatus(payment.getPaymentStatus()));
-
+        spiPayment.setPaymentType(PaymentType.getByValue(payment.getPaymentType()).orElse(null)); // todo !!!!!!!!
+        spiPayment.setStatus(TransactionStatus.getByValue(payment.getPaymentStatus().getName()));
+        spiPayment.setPaymentData(payment.getPaymentData());
         return spiPayment;
     }
 
