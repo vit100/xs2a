@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
@@ -33,11 +32,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+// TODO discuss error handling (e.g. 400 HttpCode response) https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/498
 @Service
 @RequiredArgsConstructor
 public class PisConsentServiceRemote implements PisConsentService {
@@ -57,24 +58,16 @@ public class PisConsentServiceRemote implements PisConsentService {
 
     @Override
     public Optional<PisConsentResponse> getConsentById(String consentId) {
-        return Optional.empty();
+        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisConsentUrls.getPisConsentById(), PisConsentResponse.class, consentId)
+                                       .getBody());
     }
 
     @Override
     public Optional<Boolean> updateConsentStatusById(String consentId, ConsentStatus status) {
-        return Optional.empty();
-    }
+        HttpStatus statusCode = consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentStatus(), HttpMethod.PUT,
+            null, Void.class, consentId, status).getStatusCode();
 
-    @Override
-    public Optional<CmsAspspConsentDataBase64> getAspspConsentDataByConsentId(String consentId) {
-        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisConsentUrls.getAspspConsentDataByConsentId(), CmsAspspConsentDataBase64.class, consentId)
-                                       .getBody());
-    }
-
-    @Override
-    public Optional<CmsAspspConsentDataBase64> getAspspConsentDataByPaymentId(String paymentId) {
-        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisConsentUrls.getAspspConsentData(), CmsAspspConsentDataBase64.class, paymentId)
-                                       .getBody());
+        return Optional.of(statusCode == HttpStatus.OK);
     }
 
     @Override
@@ -84,30 +77,29 @@ public class PisConsentServiceRemote implements PisConsentService {
     }
 
     @Override
-    public Optional<String> updateAspspConsentDataInPisConsent(String consentId, CmsAspspConsentDataBase64 request) {
-        CreatePisConsentResponse response = consentRestTemplate.exchange(remotePisConsentUrls.updateAspspConsentData(), HttpMethod.PUT,
-                                                                         new HttpEntity<>(request), CreatePisConsentResponse.class, consentId).getBody();
-        return Optional.ofNullable(response.getConsentId());
-    }
-
-    @Override
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsentAuthorisation(),
-                                                                     psuData, CreatePisConsentAuthorisationResponse.class, paymentId)
+            psuData, CreatePisConsentAuthorisationResponse.class, paymentId)
                                        .getBody());
     }
 
     @Override
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsentAuthorisationCancellation(),
-                                                                     psuData, CreatePisConsentAuthorisationResponse.class, paymentId)
+            psuData, CreatePisConsentAuthorisationResponse.class, paymentId)
                                        .getBody());
     }
 
     @Override
-    public Optional<UpdatePisConsentPsuDataResponse> updateConsentAuthorization(String authorizationId, UpdatePisConsentPsuDataRequest request, CmsAuthorisationType authorizationType) {
+    public Optional<UpdatePisConsentPsuDataResponse> updateConsentAuthorisation(String authorisationId, UpdatePisConsentPsuDataRequest request) {
         return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentAuthorisation(), HttpMethod.PUT, new HttpEntity<>(request),
-                                                                UpdatePisConsentPsuDataResponse.class, request.getAuthorizationId()).getBody());
+            UpdatePisConsentPsuDataResponse.class, request.getAuthorizationId()).getBody());
+    }
+
+    @Override
+    public Optional<UpdatePisConsentPsuDataResponse> updateConsentCancellationAuthorisation(String authorisationId, UpdatePisConsentPsuDataRequest request) {
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentCancellationAuthorisation(), HttpMethod.PUT, new HttpEntity<>(request),
+            UpdatePisConsentPsuDataResponse.class, request.getAuthorizationId()).getBody());
     }
 
     @Override
@@ -116,8 +108,14 @@ public class PisConsentServiceRemote implements PisConsentService {
     }
 
     @Override
-    public Optional<GetPisConsentAuthorisationResponse> getPisConsentAuthorizationById(String authorizationId, CmsAuthorisationType authorizationType) {
+    public Optional<GetPisConsentAuthorisationResponse> getPisConsentAuthorisationById(String authorizationId) {
         return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.getPisConsentAuthorisationById(), HttpMethod.GET, null, GetPisConsentAuthorisationResponse.class, authorizationId)
+                                       .getBody());
+    }
+
+    @Override
+    public Optional<GetPisConsentAuthorisationResponse> getPisConsentCancellationAuthorisationById(String cancellationId) {
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.getPisConsentCancellationAuthorisationById(), HttpMethod.GET, null, GetPisConsentAuthorisationResponse.class, cancellationId)
                                        .getBody());
     }
 

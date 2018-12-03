@@ -26,6 +26,7 @@ import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.web.xs2a.controller.PisConsentController;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
@@ -76,7 +77,7 @@ public class PisConsentControllerTest {
         when(pisConsentService.getConsentById(CONSENT_ID)).thenReturn(Optional.of(getPisConsentResponse()));
         when(pisConsentService.updateConsentStatusById(CONSENT_ID, RECEIVED)).thenReturn(Optional.of(Boolean.TRUE));
         when(pisConsentService.createAuthorization(PAYMENT_ID, CmsAuthorisationType.CREATED, PSU_DATA)).thenReturn(Optional.of(getCreatePisConsentAuthorisationResponse()));
-        when(pisConsentService.updateConsentAuthorization(AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest(), CmsAuthorisationType.CREATED)).thenReturn(Optional.of(getUpdatePisConsentPsuDataResponse()));
+        when(pisConsentService.updateConsentAuthorisation(AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest())).thenReturn(Optional.of(getUpdatePisConsentPsuDataResponse()));
     }
 
     @Test
@@ -220,7 +221,7 @@ public class PisConsentControllerTest {
     @Test
     public void updateConsentAuthorization_Failure() {
         //Given
-        when(pisConsentService.updateConsentAuthorization(WRONG_AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest(), CmsAuthorisationType.CREATED)).thenReturn(Optional.empty());
+        when(pisConsentService.updateConsentAuthorisation(WRONG_AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest())).thenReturn(Optional.empty());
         ResponseEntity<UpdatePisConsentPsuDataResponse> expected = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         //When
@@ -233,7 +234,7 @@ public class PisConsentControllerTest {
     @Test
     public void getConsentAuthorization_Success() {
         GetPisConsentAuthorisationResponse response = getGetPisConsentAuthorisationResponse();
-        when(pisConsentService.getPisConsentAuthorizationById(any(), any(CmsAuthorisationType.class))).thenReturn(Optional.of(response));
+        when(pisConsentService.getPisConsentAuthorisationById(any())).thenReturn(Optional.of(response));
 
         // Given
         GetPisConsentAuthorisationResponse expectedResponse = getGetPisConsentAuthorisationResponse();
@@ -249,7 +250,7 @@ public class PisConsentControllerTest {
 
     @Test
     public void getConsentAuthorization_Failure() {
-        when(pisConsentService.getPisConsentAuthorizationById(any(), any(CmsAuthorisationType.class))).thenReturn(Optional.empty());
+        when(pisConsentService.getPisConsentAuthorisationById(any())).thenReturn(Optional.empty());
 
         // When
         ResponseEntity<GetPisConsentAuthorisationResponse> result =

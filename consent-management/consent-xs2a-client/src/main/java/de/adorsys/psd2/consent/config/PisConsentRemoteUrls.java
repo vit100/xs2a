@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PisConsentRemoteUrls implements AspspConsentDataRemoteUrls {
+public class PisConsentRemoteUrls {
     @Value("${consent-service.baseurl:http://localhost:38080/api/v1}")
     private String consentServiceBaseUrl;
 
@@ -91,28 +91,16 @@ public class PisConsentRemoteUrls implements AspspConsentDataRemoteUrls {
         return consentServiceBaseUrl + "/pis/consent/authorizations/{authorization-id}";
     }
 
+    public String updatePisConsentCancellationAuthorisation() {
+        return consentServiceBaseUrl + "/pis/consent/cancellation-authorisations/{cancellation-id}";
+    }
+
     public String getPisConsentAuthorisationById() {
         return consentServiceBaseUrl + "/pis/consent/authorizations/{authorization-id}";
     }
 
-    /**
-     * Returns URL-string to CMS endpoint that gets aspsp consent data by payment ID
-     *
-     * @return String
-     */
-    @Override
-    public String getAspspConsentData() {
-        return consentServiceBaseUrl + "/pis/payment/{payment-id}/aspsp-consent-data";
-    }
-
-    /**
-     * Returns URL-string to CMS endpoint that updates aspsp consent data by consent ID
-     *
-     * @return String
-     */
-    @Override
-    public String updateAspspConsentData() {
-        return consentServiceBaseUrl + "/pis/consent/{consent-id}/aspsp-consent-data";
+    public String getPisConsentCancellationAuthorisationById() {
+        return consentServiceBaseUrl + "/pis/consent/cancellation-authorisations/{cancellation-id}";
     }
 
     /**
@@ -131,15 +119,6 @@ public class PisConsentRemoteUrls implements AspspConsentDataRemoteUrls {
      */
     public String updatePisConsentPayment() {
         return consentServiceBaseUrl + "/pis/consent/{consent-id}/payment";
-    }
-
-    /**
-     * Returns URL-string to CMS endpoint that gets aspsp consent data by consent ID
-     *
-     * @return String
-     */
-    public String getAspspConsentDataByConsentId() {
-        return consentServiceBaseUrl + "/pis/consent/{consent-id}/aspsp-consent-data";
     }
 
     /**

@@ -82,7 +82,6 @@ public class ConsentRequestSuccessfulSteps {
 
         context.setActualResponse(response);
         context.setConsentId(response.getBody().getConsentId());
-
     }
 
     @Then("^a successful response code and the appropriate consent response data is delivered to the PSU$")

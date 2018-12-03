@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.xs2a.service;
 
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -26,6 +26,7 @@ import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.*;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.exception.MessageCategory;
 import de.adorsys.psd2.xs2a.exception.MessageError;
@@ -35,6 +36,7 @@ import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
+import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiResponseStatusToXs2aMessageErrorCodeMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
@@ -75,16 +77,19 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     private final AuthorisationMethodService authorisationMethodService;
     private final AisConsentSpi aisConsentSpi;
     private final CreateConsentRequestValidator createConsentRequestValidator;
+    private final Xs2aEventService xs2aEventService;
 
     /**
-     * @param request body of create consent request carrying such parameters as AccountAccess, validity terms etc.
-     * @param psuData PsuIdData container of authorisation data about PSU
-     * @return CreateConsentResponse representing the complete response to create consent request
      * Performs create consent operation either by filling the appropriate AccountAccess fields with corresponding
      * account details or by getting account details from ASPSP by psuId and filling the appropriate fields in
      * AccountAccess determined by availableAccounts or allPsd2 variables
+     *
+     * @param request body of create consent request carrying such parameters as AccountAccess, validity terms etc.
+     * @param psuData PsuIdData container of authorisation data about PSU
+     * @return CreateConsentResponse representing the complete response to create consent request
      */
     public ResponseObject<CreateConsentResponse> createAccountConsentsWithResponse(CreateConsentReq request, PsuIdData psuData, boolean explicitPreferred) {
+        xs2aEventService.recordTppRequest(EventType.CREATE_AIS_CONSENT_REQUEST_RECEIVED, request);
         ValidationResult validationResult = createConsentRequestValidator.validateRequest(request);
 
         if (validationResult.isNotValid()) {
@@ -132,6 +137,8 @@ public class ConsentService { //TODO change format of consentRequest to mandator
      * @return ConsentStatus
      */
     public ResponseObject<ConsentStatusResponse> getAccountConsentsStatusById(String consentId) {
+        xs2aEventService.recordAisTppRequest(consentId, EventType.GET_AIS_CONSENT_STATUS_REQUEST_RECEIVED);
+
         AccountConsent validatedAccountConsent = getValidatedAccountConsent(consentId);
         Optional<ConsentStatus> consentStatus =
             Optional.ofNullable(validatedAccountConsent)
@@ -140,19 +147,20 @@ public class ConsentService { //TODO change format of consentRequest to mandator
         ResponseObject.ResponseBuilder<ConsentStatusResponse> responseBuilder = ResponseObject.builder();
         if (consentStatus.isPresent()) {
             responseBuilder = responseBuilder.body(new ConsentStatusResponse(consentStatus.get()));
-        }
-        else {
+        } else {
             responseBuilder = responseBuilder.fail(new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.CONSENT_UNKNOWN_400)));
         }
         return responseBuilder.build();
     }
 
     /**
+     * Revokes account consent on PSU request
+     *
      * @param consentId String representation of AccountConsent identification
      * @return VOID
-     * Revokes account consent on PSU request
      */
     public ResponseObject<Void> deleteAccountConsentsById(String consentId) {
+        xs2aEventService.recordAisTppRequest(consentId, EventType.DELETE_AIS_CONSENT_REQUEST_RECEIVED);
         AccountConsent accountConsent = getValidatedAccountConsent(consentId);
 
         if (accountConsent != null) {
@@ -175,10 +183,14 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     }
 
     /**
+     * Returns account consent by its id
+     *
      * @param consentId String representation of AccountConsent identification
      * @return AccountConsent requested by consentId
      */
     public ResponseObject<AccountConsent> getAccountConsentById(String consentId) {
+        xs2aEventService.recordAisTppRequest(consentId, EventType.GET_AIS_CONSENT_REQUEST_RECEIVED);
+
         AccountConsent consent = getValidatedAccountConsent(consentId);
         return consent == null
                    ? ResponseObject.<AccountConsent>builder().fail(new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.CONSENT_UNKNOWN_400))).build()
@@ -220,12 +232,16 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     }
 
     public ResponseObject<CreateConsentAuthorizationResponse> createConsentAuthorizationWithResponse(PsuIdData psuData, String consentId) {
+        xs2aEventService.recordAisTppRequest(consentId, EventType.START_AIS_CONSENT_AUTHORISATION_REQUEST_RECEIVED);
+
         return aisAuthorizationService.createConsentAuthorization(psuData, consentId)
                    .map(resp -> ResponseObject.<CreateConsentAuthorizationResponse>builder().body(resp).build())
                    .orElseGet(ResponseObject.<CreateConsentAuthorizationResponse>builder().fail(new MessageError(MessageErrorCode.CONSENT_UNKNOWN_400))::build);
     }
 
     public ResponseObject<UpdateConsentPsuDataResponse> updateConsentPsuData(UpdateConsentPsuDataReq updatePsuData) {
+        xs2aEventService.recordAisTppRequest(updatePsuData.getConsentId(), EventType.UPDATE_AIS_CONSENT_PSU_DATA_REQUEST_RECEIVED, updatePsuData);
+
         return Optional.ofNullable(aisAuthorizationService.getAccountConsentAuthorizationById(updatePsuData.getAuthorizationId(), updatePsuData.getConsentId()))
                    .map(conAuth -> getUpdateConsentPsuDataResponse(updatePsuData, conAuth))
                    .orElseGet(ResponseObject.<UpdateConsentPsuDataResponse>builder()
@@ -247,7 +263,10 @@ public class ConsentService { //TODO change format of consentRequest to mandator
                                   ::build);
     }
 
+    // TODO extract this method to PaymentAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
     public ResponseObject<Xsa2CreatePisConsentAuthorisationResponse> createPisConsentAuthorization(String paymentId, PaymentType paymentType, PsuIdData psuData) {
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PAYMENT_AUTHORISATION_REQUEST_RECEIVED);
+
         return pisAuthorizationService.createConsentAuthorisation(paymentId, paymentType, psuData)
                    .map(resp -> ResponseObject.<Xsa2CreatePisConsentAuthorisationResponse>builder()
                                     .body(resp)
@@ -257,7 +276,9 @@ public class ConsentService { //TODO change format of consentRequest to mandator
                                   ::build);
     }
 
-    public ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> updatePisConsentPsuData(UpdatePisConsentPsuDataRequest request) {
+    // TODO extract this method to PaymentAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
+    public ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> updatePisConsentPsuData(Xs2aUpdatePisConsentPsuDataRequest request) {
+        xs2aEventService.recordPisTppRequest(request.getPaymentId(), EventType.UPDATE_PAYMENT_AUTHORISATION_PSU_DATA_REQUEST_RECEIVED, request);
         Xs2aUpdatePisConsentPsuDataResponse response = pisAuthorizationService.updateConsentPsuData(request);
 
         if (response.hasError()) {
@@ -270,7 +291,10 @@ public class ConsentService { //TODO change format of consentRequest to mandator
                    .build();
     }
 
+    // TODO extract this method to PaymentCancellationAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
     public ResponseObject<Xs2aCreatePisConsentCancellationAuthorisationResponse> createPisConsentCancellationAuthorization(String paymentId, PaymentType paymentType) {
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PAYMENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
+
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
         return pisAuthorizationService.createConsentCancellationAuthorisation(paymentId, paymentType, psuData)
                    .map(resp -> ResponseObject.<Xs2aCreatePisConsentCancellationAuthorisationResponse>builder()
@@ -281,7 +305,26 @@ public class ConsentService { //TODO change format of consentRequest to mandator
                                   ::build);
     }
 
+    // TODO extract this method to PaymentCancellationAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
+    public ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> updatePisConsentCancellationPsuData(Xs2aUpdatePisConsentPsuDataRequest request) {
+        xs2aEventService.recordPisTppRequest(request.getPaymentId(), EventType.UPDATE_PAYMENT_CANCELLATION_PSU_DATA_REQUEST_RECEIVED, request);
+
+        Xs2aUpdatePisConsentPsuDataResponse response = pisAuthorizationService.updateConsentCancellationPsuData(request);
+
+        if (response.hasError()) {
+            return ResponseObject.<Xs2aUpdatePisConsentPsuDataResponse>builder()
+                       .fail(new MessageError(response.getErrorHolder().getErrorCode(), response.getErrorHolder().getMessage()))
+                       .build();
+        }
+        return ResponseObject.<Xs2aUpdatePisConsentPsuDataResponse>builder()
+                   .body(response)
+                   .build();
+    }
+
+    // TODO extract this method to PaymentCancellationAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
     public ResponseObject<Xs2aPaymentCancellationAuthorisationSubResource> getPaymentInitiationCancellationAuthorisationInformation(String paymentId) {
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
+
         return pisAuthorizationService.getCancellationAuthorisationSubResources(paymentId)
                    .map(resp -> ResponseObject.<Xs2aPaymentCancellationAuthorisationSubResource>builder().body(resp).build())
                    .orElseGet(ResponseObject.<Xs2aPaymentCancellationAuthorisationSubResource>builder()
@@ -295,7 +338,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
                           .anyMatch(a -> a.getResourceId().equals(resourceId));
     }
 
-    private Boolean isNotEmptyAccess(Xs2aAccountAccess access) {
+    private boolean isNotEmptyAccess(Xs2aAccountAccess access) {
         return Optional.ofNullable(access)
                    .map(Xs2aAccountAccess::isNotEmpty)
                    .orElse(false);
@@ -329,8 +372,6 @@ public class ConsentService { //TODO change format of consentRequest to mandator
 
     private void proceedEmbeddedImplicitCaseForCreateConsent(CreateConsentResponse response, PsuIdData psuData, String consentId) {
         aisAuthorizationService.createConsentAuthorization(psuData, consentId)
-            .ifPresent(a -> {
-                response.setAuthorizationId(a.getAuthorizationId());
-            });
+            .ifPresent(a -> response.setAuthorizationId(a.getAuthorizationId()));
     }
 }

@@ -31,7 +31,6 @@ import de.adorsys.psd2.consent.repository.PsuDataRepository;
 import de.adorsys.psd2.consent.service.mapper.CmsPsuPisMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
-import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
@@ -61,7 +60,9 @@ public class CmsPsuPisServiceInternalTest {
     private static final String AUTHORISATION_ID = "authorisation id";
     private static final String WRONG_AUTHORISATION_ID = "wrong authorisation id";
     private static final String CONSENT_ID = "consent id";
-    private static final PaymentProduct PAYMENT_PRODUCT = PaymentProduct.SEPA;
+    private static final String PAYMENT_PRODUCT = "sepa-credit-transfers";
+    private static final String FINALISED_PAYMENT_ID = "finalised payment id";
+    private static final String FINALISED_AUTHORISATION_ID = "finalised authorisation id";
     private final PsuIdData WRONG_PSU_ID_DATA = buildWrongPsuIdData();
     private final PsuIdData PSU_ID_DATA = buildPsuIdData();
     private static final String PAYMENT_ID = "payment id";
@@ -207,7 +208,7 @@ public class CmsPsuPisServiceInternalTest {
     @Test
     public void updatePaymentStatus_Success() {
         // When
-        boolean actualResult = cmsPsuPisServiceInternal.updatePaymentStatus(PAYMENT_ID, TransactionStatus.CANC);
+        boolean actualResult = cmsPsuPisServiceInternal.updatePaymentStatus(PAYMENT_ID, TransactionStatus.RCVD);
 
         // Then
         assertTrue(actualResult);
@@ -217,6 +218,34 @@ public class CmsPsuPisServiceInternalTest {
     public void updatePaymentStatus_Fail_WrongPaymentId() {
         // When
         boolean actualResult = cmsPsuPisServiceInternal.updatePaymentStatus(WRONG_PAYMENT_ID, TransactionStatus.CANC);
+
+        // Then
+        assertFalse(actualResult);
+    }
+
+    @Test
+    public void updateAuthorisationStatus_Fail_FinalisedStatus() {
+        //Given
+        PisConsentAuthorization finalisedPisAuthorisation = buildFinalisedAuthorisation();
+        when(pisConsentAuthorizationRepository.findByExternalId(FINALISED_AUTHORISATION_ID))
+            .thenReturn(Optional.of(finalisedPisAuthorisation));
+
+        // When
+        boolean actualResult = cmsPsuPisServiceInternal.updateAuthorisationStatus(PSU_ID_DATA, PAYMENT_ID, FINALISED_AUTHORISATION_ID, ScaStatus.SCAMETHODSELECTED);
+
+        // Then
+        assertFalse(actualResult);
+    }
+
+    @Test
+    public void updatePaymentStatus_Fail_FinalisedStatus() {
+        //Given
+        List<PisPaymentData> finalisedPisPaymentDataList = buildFinalisedPisPaymentDataList();
+        when(pisConsentService.getDecryptedId(FINALISED_PAYMENT_ID)).thenReturn(Optional.of(FINALISED_PAYMENT_ID));
+        when(pisPaymentDataRepository.findByPaymentId(FINALISED_PAYMENT_ID)).thenReturn(Optional.of(finalisedPisPaymentDataList));
+
+        // When
+        boolean actualResult = cmsPsuPisServiceInternal.updatePaymentStatus(FINALISED_PAYMENT_ID, TransactionStatus.CANC);
 
         // Then
         assertFalse(actualResult);
@@ -256,7 +285,7 @@ public class CmsPsuPisServiceInternalTest {
         pisConsent.setPsuData(buildPsuData());
         pisConsent.setExternalId(CONSENT_ID);
         pisConsent.setPaymentType(PaymentType.SINGLE);
-        pisConsent.setPisPaymentProduct(PAYMENT_PRODUCT);
+        pisConsent.setPaymentProduct(PAYMENT_PRODUCT);
         pisConsent.setPayments(buildPisPaymentDataListForConsent());
 
         return pisConsent;
@@ -279,7 +308,7 @@ public class CmsPsuPisServiceInternalTest {
         PisPaymentData pisPaymentData = new PisPaymentData();
         pisPaymentData.setPaymentId(PAYMENT_ID);
         pisPaymentData.setConsent(buildPisConsent());
-        pisPaymentData.setTransactionStatus(TransactionStatus.ACCP);
+        pisPaymentData.setTransactionStatus(TransactionStatus.RCVD);
         pisPaymentData.setDebtorAccount(buildAccountReference());
         pisPaymentData.setCreditorAccount(buildAccountReference());
         pisPaymentData.setAmount(new BigDecimal("1000"));
@@ -313,5 +342,29 @@ public class CmsPsuPisServiceInternalTest {
         cmsPayment.setPaymentId(PAYMENT_ID);
 
         return cmsPayment;
+    }
+
+    private PisConsentAuthorization buildFinalisedAuthorisation() {
+        PisConsentAuthorization pisConsentAuthorisation = new PisConsentAuthorization();
+        pisConsentAuthorisation.setScaStatus(ScaStatus.FINALISED);
+        pisConsentAuthorisation.setAuthorizationType(CmsAuthorisationType.CREATED);
+        pisConsentAuthorisation.setConsent(buildPisConsent());
+        pisConsentAuthorisation.setExternalId(AUTHORISATION_ID);
+        pisConsentAuthorisation.setPsuData(buildPsuData());
+
+        return pisConsentAuthorisation;
+    }
+
+    private List<PisPaymentData> buildFinalisedPisPaymentDataList() {
+        PisPaymentData pisPaymentData = new PisPaymentData();
+        pisPaymentData.setPaymentId(PAYMENT_ID);
+        pisPaymentData.setConsent(buildPisConsent());
+        pisPaymentData.setTransactionStatus(TransactionStatus.RJCT);
+        pisPaymentData.setDebtorAccount(buildAccountReference());
+        pisPaymentData.setCreditorAccount(buildAccountReference());
+        pisPaymentData.setAmount(new BigDecimal("1000"));
+        pisPaymentData.setCurrency(Currency.getInstance("EUR"));
+
+        return Collections.singletonList(pisPaymentData);
     }
 }

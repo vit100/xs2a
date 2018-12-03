@@ -22,6 +22,7 @@ import de.adorsys.psd2.consent.api.ais.AisConsentAuthorizationResponse;
 import de.adorsys.psd2.consent.api.ais.AisConsentStatusResponse;
 import de.adorsys.psd2.consent.api.ais.CreateAisConsentAuthorizationResponse;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
+import de.adorsys.psd2.consent.web.xs2a.controller.AisConsentController;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import org.junit.Before;
@@ -64,8 +65,6 @@ public class AisConsentControllerTest {
 
     @Before
     public void setUp() {
-        when(aisConsentService.saveAspspConsentDataInAisConsent(eq(CONSENT_ID), any())).thenReturn(Optional.of(CONSENT_ID));
-        when(aisConsentService.saveAspspConsentDataInAisConsent(eq(WRONG_CONSENT_ID), any())).thenReturn(Optional.empty());
         when(aisConsentService.getConsentStatusById(eq(CONSENT_ID))).thenReturn(Optional.of(ConsentStatus.RECEIVED));
         when(aisConsentService.getConsentStatusById(eq(WRONG_CONSENT_ID))).thenReturn(Optional.empty());
         when(aisConsentService.updateConsentStatusById(eq(CONSENT_ID), eq(CONSENT_STATUS))).thenReturn(true);

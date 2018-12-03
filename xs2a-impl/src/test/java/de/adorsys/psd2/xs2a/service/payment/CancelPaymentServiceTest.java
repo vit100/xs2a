@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
-import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
@@ -51,6 +50,7 @@ import static org.mockito.Mockito.when;
 public class CancelPaymentServiceTest {
     private static final String PAYMENT_ID = "12345";
     private static final String WRONG_PAYMENT_ID = "";
+    private static final AspspConsentData SOME_ASPSP_CONSENT_DATA = new AspspConsentData(new byte[0], "some consent id");
 
     @InjectMocks
     private CancelPaymentService cancelPaymentService;
@@ -65,16 +65,21 @@ public class CancelPaymentServiceTest {
     public void setUp() {
         when(paymentCancellationSpi.cancelPaymentWithoutSca(any(), eq(getSpiPayment(PAYMENT_ID)), any()))
             .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .payload(SpiResponse.voidResponse())
+                            .aspspConsentData(SOME_ASPSP_CONSENT_DATA)
                             .success());
         when(paymentCancellationSpi.cancelPaymentWithoutSca(any(), eq(getSpiPayment(WRONG_PAYMENT_ID)), any()))
             .thenReturn(SpiResponse.<SpiResponse.VoidResponse>builder()
+                            .aspspConsentData(SOME_ASPSP_CONSENT_DATA)
                             .fail(SpiResponseStatus.LOGICAL_FAILURE));
         when(paymentCancellationSpi.initiatePaymentCancellation(any(), eq(getSpiPayment(PAYMENT_ID)), any()))
             .thenReturn(SpiResponse.<SpiPaymentCancellationResponse>builder()
                             .payload(getSpiCancelPaymentResponse(true, SpiTransactionStatus.ACTC))
+                            .aspspConsentData(SOME_ASPSP_CONSENT_DATA)
                             .success());
         when(paymentCancellationSpi.initiatePaymentCancellation(any(), eq(getSpiPayment(WRONG_PAYMENT_ID)), any()))
             .thenReturn(SpiResponse.<SpiPaymentCancellationResponse>builder()
+                            .aspspConsentData(SOME_ASPSP_CONSENT_DATA)
                             .fail(SpiResponseStatus.LOGICAL_FAILURE));
 
         when(spiToXs2aCancelPaymentMapper.mapToCancelPaymentResponse(eq(getSpiCancelPaymentResponse(false, SpiTransactionStatus.CANC))))
@@ -148,7 +153,7 @@ public class CancelPaymentServiceTest {
     }
 
     private SpiPayment getSpiPayment(String paymentId) {
-        SpiSinglePayment spiSinglePayment = new SpiSinglePayment(PaymentProduct.SEPA);
+        SpiSinglePayment spiSinglePayment = new SpiSinglePayment("sepa-credit-transfers");
         spiSinglePayment.setPaymentId(paymentId);
         return spiSinglePayment;
     }

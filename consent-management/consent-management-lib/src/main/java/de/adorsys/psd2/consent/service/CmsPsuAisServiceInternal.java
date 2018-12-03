@@ -35,7 +35,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.*;
@@ -126,7 +127,8 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
     private Optional<AisConsent> getActualAisConsent(String encryptedConsentId) {
         Optional<String> consentIdDecrypted = securityDataService.decryptId(encryptedConsentId);
         return consentIdDecrypted
-                   .flatMap(c -> aisConsentRepository.findByExternalIdAndConsentStatusIn(c, EnumSet.of(RECEIVED, VALID)));
+                   .flatMap(aisConsentRepository::findByExternalId)
+                   .filter(c -> !c.getConsentStatus().isFinalisedStatus());
     }
 
     private Optional<AisConsent> getAisConsentById(String encryptedConsentId) {
@@ -136,6 +138,9 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
     }
 
     private boolean updateConsentStatus(AisConsent consent, ConsentStatus status) {
+        if (consent.getConsentStatus().isFinalisedStatus()) {
+            return false;
+        }
         consent.setLastActionDate(LocalDate.now());
         consent.setConsentStatus(status);
         return aisConsentRepository.save(consent) != null;
@@ -151,8 +156,11 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
         return psuDataRepository.save(psuData) != null;
     }
 
-    private boolean updateScaStatus(@NotNull ScaStatus status, AisConsentAuthorization auth) {
-        auth.setScaStatus(status);
-        return aisConsentAuthorizationRepository.save(auth) != null;
+    private boolean updateScaStatus(@NotNull ScaStatus status, AisConsentAuthorization authorization) {
+        if (authorization.getScaStatus().isFinalisedStatus()) {
+            return false;
+        }
+        authorization.setScaStatus(status);
+        return aisConsentAuthorizationRepository.save(authorization) != null;
     }
 }
