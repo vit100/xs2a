@@ -114,6 +114,8 @@ public class PisConsentMapper {
         response.setPaymentType(pis.getConsent().getPaymentType());
         response.setScaStatus(pis.getScaStatus());
         response.setConsentId(pis.getConsent().getExternalId());
+        response.setPaymentInfo(mapToPisPaymentInfo(pis.getConsent().getPaymentData()));
+
         return response;
     }
 

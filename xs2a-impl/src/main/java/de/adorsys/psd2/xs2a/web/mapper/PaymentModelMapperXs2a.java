@@ -44,7 +44,7 @@ public class PaymentModelMapperXs2a {
     private final AccountModelMapper accountModelMapper;
 
     public Object mapToXs2aPayment(Object payment, PaymentInitiationParameters requestParameters) {
-        if (isRawType()) {
+        if (isRawPaymentProduct()) {
             return payment;
         }
         if (requestParameters.getPaymentType() == SINGLE) {
@@ -56,7 +56,8 @@ public class PaymentModelMapperXs2a {
         }
     }
 
-    private boolean isRawType() { //todo this code will be reworked later
+    private boolean isRawPaymentProduct() {
+        // TODO make correct value of method
         return false;
     }
 

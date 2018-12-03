@@ -37,7 +37,7 @@ public class SpiPaymentInfoMapper {
         aspspPaymentInfo.setPaymentId(payment.getPaymentId());
         aspspPaymentInfo.setPaymentStatus(spiPaymentMapper.mapToAspspTransactionStatus(transactionStatus));
         aspspPaymentInfo.setPaymentProduct(payment.getPaymentProduct());
-        aspspPaymentInfo.setPaymentType(payment.getPaymentType().name()); // todo !!!!!!!!
+        aspspPaymentInfo.setPaymentType(payment.getPaymentType().name()); // todo implementation should be changed
         aspspPaymentInfo.setPaymentData(payment.getPaymentData());
 
         return aspspPaymentInfo;
@@ -46,7 +46,7 @@ public class SpiPaymentInfoMapper {
     public SpiPaymentInfo mapToSpiPaymentInfo(@NotNull AspspPaymentInfo payment) {
         SpiPaymentInfo spiPayment = new SpiPaymentInfo(payment.getPaymentProduct());
         spiPayment.setPaymentId(payment.getPaymentId());
-        spiPayment.setPaymentType(PaymentType.getByValue(payment.getPaymentType()).orElse(null)); // todo !!!!!!!!
+        spiPayment.setPaymentType(PaymentType.getByValue(payment.getPaymentType()).orElse(null)); // todo implementation should be changed
         spiPayment.setStatus(TransactionStatus.getByValue(payment.getPaymentStatus().getName()));
         spiPayment.setPaymentData(payment.getPaymentData());
         return spiPayment;
