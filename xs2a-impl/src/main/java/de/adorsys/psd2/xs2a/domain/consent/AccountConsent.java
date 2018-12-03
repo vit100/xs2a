@@ -19,6 +19,7 @@ package de.adorsys.psd2.xs2a.domain.consent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -68,7 +69,7 @@ public class AccountConsent {
 
     @ApiModelProperty(value = "TPP id", required = true, example = "af006545-d713-46d7-b6cf-09c9628f9a5d")
     @JsonIgnore
-    private final String tppId;
+    private final TppInfo tppInfo;
 
     @JsonIgnore
     public boolean isValidStatus() {

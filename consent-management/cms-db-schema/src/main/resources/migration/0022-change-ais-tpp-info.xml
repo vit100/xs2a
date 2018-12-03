@@ -28,11 +28,27 @@
             </column>
         </addColumn>
 
-        <!--<sql>-->
-        <!--INSERT INTO tpp_info (authorisation_number, tpp_name, tpp_role, authority_id, authority_name, organisation, organisation_unit, city, state, status)-->
-        <!--SELECT tpp_id, "default TPP", "AISP", "default authority id", "default authority name", "default organisation", "default organisation unit", "default city", "default state", "ENABLED"-->
-        <!--FROM ais_consent-->
-        <!--</sql>-->
+        <sql>
+            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
+            organisation, organisation_unit, city, state, status)
+            SELECT DISTINCT NEXTVAL(tpp_info_id_seq), tpp_id, "default TPP", "default authority id", "default authority
+            name", "default organisation", "default organisation unit", "default city", "default state", "ENABLED"
+            FROM ais_consent
+        </sql>
+
+        <sql>
+            UPDATE ais_consent
+            SET tpp_info_id = (SELECT id FROM tpp_info AS t INNER JOIN ais_consent AS a ON t.authorisation_number =
+            a.tpp_id)
+        </sql>
+
+        <sql>
+            INSERT INTO tpp_info_role (tpp_info_id, tpp_role)
+            SELECT DISTINCT id, "AISP"
+            FROM tpp_info AS t
+            INNER JOIN ais_consent AS a
+            ON t.authorisation_number = a.tpp_id
+        </sql>
 
         <addForeignKeyConstraint baseColumnNames="tpp_info_id" baseTableName="ais_consent"
                                  constraintName="fk__ais_consent__tpp_info" deferrable="false"
