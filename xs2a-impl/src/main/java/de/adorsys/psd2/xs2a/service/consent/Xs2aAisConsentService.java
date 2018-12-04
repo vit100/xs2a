@@ -48,7 +48,7 @@ public class Xs2aAisConsentService {
      *
      * @param request Request body storing main consent details
      * @param psuData PsuIdData container of authorisation data about PSU
-     * @param tppId   String representation of TPP`s identifier from TPP Certificate
+     * @param tppInfo Information about particular TPP from TPP Certificate
      * @return String representation of identifier of stored consent
      */
     public String createConsent(CreateConsentReq request, PsuIdData psuData, TppInfo tppInfo) {
