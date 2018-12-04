@@ -67,7 +67,7 @@ public class AccountConsent {
     @JsonIgnore
     private final PsuIdData psuData;
 
-    @ApiModelProperty(value = "TPP id", required = true, example = "af006545-d713-46d7-b6cf-09c9628f9a5d")
+    @ApiModelProperty(value = "TPP information", required = true)
     @JsonIgnore
     private final TppInfo tppInfo;
 
