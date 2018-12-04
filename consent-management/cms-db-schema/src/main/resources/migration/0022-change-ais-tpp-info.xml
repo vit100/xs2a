@@ -39,8 +39,11 @@
 
         <sql>
             UPDATE ais_consent
-            SET tpp_info_id = (SELECT id FROM tpp_info AS t INNER JOIN ais_consent AS a ON t.authorisation_number =
-            a.tpp_id)
+            SET tpp_info_id =
+            (SELECT t.tpp_info_id FROM tpp_info AS t
+            INNER JOIN ais_consent AS a
+            ON t.authorisation_number = a.tpp_id AND tpp_name = "default TPP"
+            LIMIT 1)
         </sql>
 
         <sql>
