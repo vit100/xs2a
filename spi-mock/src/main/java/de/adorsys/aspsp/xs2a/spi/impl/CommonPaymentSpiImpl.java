@@ -34,15 +34,12 @@ import de.adorsys.psd2.xs2a.spi.service.CommonPaymentSpi;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -87,11 +84,9 @@ public class CommonPaymentSpiImpl implements CommonPaymentSpi {
     public SpiResponse<SpiPaymentInfo> getPaymentById(@NotNull SpiPsuData psuData, @NotNull SpiPaymentInfo payment, @NotNull AspspConsentData aspspConsentData) {
         try {
 
-            ResponseEntity<List<AspspPaymentInfo>> aspspResponse =
-                aspspRestTemplate.exchange(aspspRemoteUrls.getPaymentById(), HttpMethod.GET, null, new ParameterizedTypeReference<List<AspspPaymentInfo>>() {
-                }, payment.getPaymentType().getValue(), payment.getPaymentProduct(), payment.getPaymentId());
+            ResponseEntity<AspspPaymentInfo> aspspResponse = aspspRestTemplate.getForEntity(aspspRemoteUrls.getCommonPaymentById(), AspspPaymentInfo.class, payment.getPaymentId());
 
-            AspspPaymentInfo aspspPaymentInfo = aspspResponse.getBody().get(0);
+            AspspPaymentInfo aspspPaymentInfo = aspspResponse.getBody();
             SpiPaymentInfo spiPaymentInfo = spiPaymentInfoMapper.mapToSpiPaymentInfo(aspspPaymentInfo);
 
             return SpiResponse.<SpiPaymentInfo>builder()

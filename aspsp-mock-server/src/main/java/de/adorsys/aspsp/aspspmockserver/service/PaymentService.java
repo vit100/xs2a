@@ -192,6 +192,12 @@ public class PaymentService {
         return paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
     }
 
+    public Optional<AspspPaymentInfo> getCommonPaymentById(String paymentId) {
+        return paymentRepository.findByPaymentId(paymentId)
+                   .map(paymentMapper::mapToAspspPaymentInfo);
+
+    }
+
     /**
      * Cancels payment
      *
@@ -200,7 +206,7 @@ public class PaymentService {
      */
     public Optional<AspspPaymentCancellationResponse> cancelPayment(String paymentId) {
         List<AspspPayment> payments = paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
-        if(CollectionUtils.isEmpty(payments)){
+        if (CollectionUtils.isEmpty(payments)) {
             return Optional.empty();
         }
 
@@ -219,7 +225,7 @@ public class PaymentService {
      */
     public Optional<AspspPaymentCancellationResponse> initiatePaymentCancellation(String paymentId) {
         List<AspspPayment> payments = paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
-        if(CollectionUtils.isEmpty(payments)){
+        if (CollectionUtils.isEmpty(payments)) {
             return Optional.empty();
         }
 

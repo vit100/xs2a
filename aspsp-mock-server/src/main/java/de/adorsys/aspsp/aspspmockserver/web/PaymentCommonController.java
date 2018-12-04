@@ -24,6 +24,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -42,6 +44,18 @@ public class PaymentCommonController {
         return paymentService.addPaymentInfo(aspspPaymentInfo)
                    .map(saved -> new ResponseEntity<>(saved, CREATED))
                    .orElseGet(ResponseEntity.noContent()::build);
+    }
+
+    @ApiOperation(value = "Returns the payment requested by it`s ASPSP identifier", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = AspspPaymentInfo.class),
+        @ApiResponse(code = 404, message = "Payment Not Found")})
+    @GetMapping(path = "/{paymentId}")
+    public ResponseEntity<AspspPaymentInfo> getPaymentById(@PathVariable("paymentId") String paymentId) {
+        Optional<AspspPaymentInfo> paymentOpt = paymentService.getCommonPaymentById(paymentId);
+        return paymentOpt.isPresent()
+                   ? ResponseEntity.ok(paymentOpt.get())
+                   : ResponseEntity.notFound().build();
     }
 
     @ApiOperation(value = "Returns the status of payment requested by it`s ASPSP identifier", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})

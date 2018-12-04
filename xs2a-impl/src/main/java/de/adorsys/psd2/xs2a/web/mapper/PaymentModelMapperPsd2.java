@@ -48,7 +48,10 @@ public class PaymentModelMapperPsd2 {
     public Object mapToGetPaymentResponse12(Object payment, PaymentType type, String product) {
         if (isRawPayment(payment)) {
             PisPaymentInfo paymentInfo = (PisPaymentInfo) payment;
-            return paymentInfo.getPaymentData();
+            Map paymentData = (Map) paymentInfo.getPaymentData();
+            paymentData.put("transactionStatus", paymentInfo.getTransactionStatus());
+
+            return paymentData;
         }
         if (type == SINGLE) {
             SinglePayment xs2aPayment = (SinglePayment) payment;
