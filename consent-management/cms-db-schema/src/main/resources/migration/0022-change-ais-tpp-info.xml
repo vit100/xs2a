@@ -131,7 +131,7 @@
                                  initiallyDeferred="false"
                                  referencedColumnNames="tpp_info_id" referencedTableName="tpp_info"/>
 
-        <addNotNullConstraint tableName="ais_consent" columnName="tpp_info_id"/>
+        <addNotNullConstraint tableName="ais_consent" columnName="tpp_info_id" columnDataType="BIGINT"/>
 
         <dropColumn columnName="tpp_id" tableName="ais_consent"/>
 
