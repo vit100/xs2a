@@ -40,30 +40,23 @@
         <comment>Insert default Tpp Info for PostgreSQL, MariaDB or Oracle</comment>
 
         <sql dbms="postgresql">
-            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
-            organisation, organisation_unit, city, state, status)
-            SELECT DISTINCT nextval('tpp_info_id_seq'), tpp_id, 'default TPP', 'default authority id',
-            'default authority name', 'default organisation', 'default organisation unit', 'default city',
-            'default state', 'ENABLED'
-            FROM ais_consent
+            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name)
+            VALUES (nextval('tpp_info_id_seq'),
+            consent.tpp_id FROM ( SELECT DISTINCT tpp_id FROM ais_consent) AS consent,
+            'default TPP')
         </sql>
 
         <sql dbms="mariadb">
-            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
-            organisation, organisation_unit, city, state, status)
-            SELECT DISTINCT NEXTVAL(tpp_info_id_seq), tpp_id, 'default TPP', 'default authority id',
-            'default authority name', 'default organisation', 'default organisation unit', 'default city',
-            'default state', 'ENABLED'
-            FROM ais_consent
+            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name)
+            VALUES (NEXTVAL(tpp_info_id_seq),
+            consent.tpp_id FROM ( SELECT DISTINCT tpp_id FROM ais_consent) AS consent,
+            'default TPP')
         </sql>
 
         <sql dbms="oracle">
-            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
-            organisation, organisation_unit, city, state, status)
-            SELECT tpp_info_id_seq.nextval, tpp_id, 'default TPP', 'default authority id',
-            'default authority name', 'default organisation', 'default organisation unit', 'default city',
-            'default state', 'ENABLED'
-            FROM (SELECT DISTINCT to_char(tpp_id) AS tpp_id FROM ais_consent)
+            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name)
+            VALUES (tpp_info_id_seq.nextval, tpp_id FROM (SELECT DISTINCT to_char(tpp_id) AS tpp_id FROM ais_consent),
+            'default TPP')
         </sql>
 
     </changeSet>
