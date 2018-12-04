@@ -54,7 +54,7 @@
         <sql dbms="oracle">
             INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name)
             SELECT tpp_info_id_seq.nextval, c.* FROM (SELECT DISTINCT to_char(tpp_id) AS tpp_id, 'default TPP'
-            FROM ais_consent ) as c
+            FROM ais_consent ) c
         </sql>
 
     </changeSet>
