@@ -156,18 +156,6 @@ public class PisConsentServiceInternal implements PisConsentService {
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
 
-    private Optional<PisConsent> readReceivedConsentByPaymentId(String paymentId) {
-        // todo implementation should be changed
-        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
-                                              .map(list -> list.get(0).getConsent());
-
-        if (!consentOpt.isPresent()) {
-            consentOpt = pisCommonPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
-                             .map(PisCommonPaymentData::getConsent);
-        }
-
-        return consentOpt;
-    }
 
     @Override
     @Transactional
@@ -233,16 +221,6 @@ public class PisConsentServiceInternal implements PisConsentService {
             .ifPresent(pisConsent -> savePaymentData(pisConsent, request));
     }
 
-    private void savePaymentData(PisConsent pisConsent, PisConsentRequest request) {
-        boolean isCommonPayment = CollectionUtils.isEmpty(request.getPayments()) && request.getPaymentInfo() != null; // todo it will be refactored
-
-        if (isCommonPayment) {
-            pisCommonPaymentDataRepository.save(pisConsentMapper.mapToPisCommonPaymentData(request.getPaymentInfo(), pisConsent));
-        } else {
-            pisPaymentDataRepository.save(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent));
-        }
-    }
-
     /**
      * Reads authorisation data by authorisation Id
      *
@@ -282,10 +260,8 @@ public class PisConsentServiceInternal implements PisConsentService {
             return Optional.empty();
         }
 
-        return pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId.get(), RECEIVED)
-                   .flatMap(list -> pisConsentAuthorizationRepository.findByConsentIdAndAuthorizationType(list.get(0).getConsent().getId(), authorizationType))
-                   .filter(CollectionUtils::isNotEmpty)
-                   .map(lst -> lst.get(0).getExternalId());
+        return readReceivedConsentByPaymentId(paymentId.get())
+                   .map(PisConsent::getExternalId);
     }
 
     /**
@@ -304,18 +280,6 @@ public class PisConsentServiceInternal implements PisConsentService {
 
         return getPisConsentByPaymentId(paymentId.get())
                    .map(pc -> psuDataMapper.mapToPsuIdData(pc.getPsuData()));
-    }
-
-    private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
-        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
-                                              .map(list -> list.get(0).getConsent());
-
-        if (!consentOpt.isPresent()) {
-            consentOpt = pisCommonPaymentDataRepository.findByPaymentId(paymentId)
-                             .map(PisCommonPaymentData::getConsent);
-        }
-
-        return consentOpt;
     }
 
     /**
@@ -354,6 +318,43 @@ public class PisConsentServiceInternal implements PisConsentService {
     private PisConsent setStatusAndSaveConsent(PisConsent consent, ConsentStatus status) {
         consent.setConsentStatus(status);
         return pisConsentRepository.save(consent);
+    }
+
+    private Optional<PisConsent> readReceivedConsentByPaymentId(String paymentId) {
+        // todo implementation should be changed
+        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
+                                              .map(list -> list.get(0).getConsent());
+
+        if (!consentOpt.isPresent()) {
+            consentOpt = pisCommonPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
+                             .map(PisCommonPaymentData::getConsent);
+        }
+
+        return consentOpt;
+    }
+
+    private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
+        // todo implementation should be changed
+        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
+                                              .map(list -> list.get(0).getConsent());
+
+        if (!consentOpt.isPresent()) {
+            consentOpt = pisCommonPaymentDataRepository.findByPaymentId(paymentId)
+                             .map(PisCommonPaymentData::getConsent);
+        }
+
+        return consentOpt;
+    }
+
+    private void savePaymentData(PisConsent pisConsent, PisConsentRequest request) {
+        boolean isCommonPayment = CollectionUtils.isEmpty(request.getPayments()) && request.getPaymentInfo() != null;
+        // todo implementation should be changed
+
+        if (isCommonPayment) {
+            pisCommonPaymentDataRepository.save(pisConsentMapper.mapToPisCommonPaymentData(request.getPaymentInfo(), pisConsent));
+        } else {
+            pisPaymentDataRepository.save(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent));
+        }
     }
 
     /**

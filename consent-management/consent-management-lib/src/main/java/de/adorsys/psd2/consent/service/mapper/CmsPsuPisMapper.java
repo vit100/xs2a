@@ -19,6 +19,7 @@ package de.adorsys.psd2.consent.service.mapper;
 import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.consent.api.pis.*;
 import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
+import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CmsPsuPisMapper {
     private final PisConsentMapper pisConsentMapper;
+
+    public CmsPayment mapToCmsPayment(PisCommonPaymentData paymentData) {
+        CmsCommonPayment cmsCommonPayment = new CmsCommonPayment(paymentData.getPaymentProduct());
+        cmsCommonPayment.setPaymentId(paymentData.getPaymentId());
+        cmsCommonPayment.setPaymentProduct(paymentData.getPaymentProduct());
+        cmsCommonPayment.setPaymentType(paymentData.getPaymentType());
+        cmsCommonPayment.setTransactionStatus(paymentData.getTransactionStatus());
+        cmsCommonPayment.setPaymentData(ObjectSerializeService.deserialize(paymentData.getPayment()));
+
+        return cmsCommonPayment;
+    }
 
     public CmsPayment mapToCmsPayment(List<PisPaymentData> pisPaymentDataList) {
         PaymentType paymentType = pisPaymentDataList.get(0).getConsent().getPaymentType();

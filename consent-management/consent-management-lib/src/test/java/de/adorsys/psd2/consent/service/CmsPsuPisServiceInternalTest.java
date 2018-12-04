@@ -25,6 +25,7 @@ import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.payment.PisConsent;
 import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
+import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PsuDataRepository;
@@ -73,6 +74,8 @@ public class CmsPsuPisServiceInternalTest {
     @Mock
     PisPaymentDataRepository pisPaymentDataRepository;
     @Mock
+    PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
+    @Mock
     PisConsentAuthorizationRepository pisConsentAuthorizationRepository;
     @Mock
     CmsPsuPisMapper cmsPsuPisMapper;
@@ -95,6 +98,8 @@ public class CmsPsuPisServiceInternalTest {
             .thenReturn(Optional.of(pisPaymentDataList));
         when(pisPaymentDataRepository.findByPaymentId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
+        when(pisCommonPaymentDataRepository.findByPaymentId(WRONG_PAYMENT_ID))
+            .thenReturn(Optional.empty());
         when(pisPaymentDataRepository.save(any(PisPaymentData.class)))
             .thenReturn(pisPaymentDataList.get(0));
 
@@ -114,9 +119,9 @@ public class CmsPsuPisServiceInternalTest {
             .thenReturn(Optional.empty());
         when(pisConsentService.getDecryptedId(PAYMENT_ID))
             .thenReturn(Optional.of(PAYMENT_ID));
+
         when(pisConsentService.getDecryptedId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
-
         when(psuDataRepository.save(any(PsuData.class)))
             .thenReturn(psuData);
         when(psuDataMapper.mapToPsuData(psuIdData))

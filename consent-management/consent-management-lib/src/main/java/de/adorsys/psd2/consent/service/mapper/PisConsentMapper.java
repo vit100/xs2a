@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +69,7 @@ public class PisConsentMapper {
         commonPaymentData.setPaymentType(paymentInfo.getPaymentType());
         commonPaymentData.setPaymentProduct(paymentInfo.getPaymentProduct());
         commonPaymentData.setTransactionStatus(TransactionStatus.RCVD);
-        commonPaymentData.setPayment(serialize(paymentInfo.getPaymentData()));
+        commonPaymentData.setPayment(ObjectSerializeService.serialize(paymentInfo.getPaymentData()));
         commonPaymentData.setConsent(consent);
 
         return commonPaymentData;
@@ -143,7 +142,7 @@ public class PisConsentMapper {
                             paymentInfo.setPaymentProduct(dta.getPaymentProduct());
                             paymentInfo.setPaymentType(dta.getPaymentType());
                             paymentInfo.setTransactionStatus(dta.getTransactionStatus());
-                            paymentInfo.setPaymentData(deserialize(dta.getPayment()));
+                            paymentInfo.setPaymentData(ObjectSerializeService.deserialize(dta.getPayment()));
                             return paymentInfo;
                         }
                    )
@@ -236,28 +235,5 @@ public class PisConsentMapper {
 
                        return pisAddress;
                    }).orElse(null);
-    }
-
-    private byte[] serialize(Object obj) {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ObjectOutputStream os = new ObjectOutputStream(out);
-            os.writeObject(obj);
-            return out.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace(); // NOPMD todo make correct log
-            return null;
-        }
-    }
-
-    private Object deserialize(byte[] data) { //NOPMD todo use this method
-        try {
-            ByteArrayInputStream in = new ByteArrayInputStream(data);
-            ObjectInputStream is = new ObjectInputStream(in);
-            return is.readObject();
-        } catch (Exception e) {
-            e.printStackTrace(); // NOPMD todo make correct log
-            return null;
-        }
     }
 }
