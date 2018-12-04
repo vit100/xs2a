@@ -30,30 +30,16 @@
 
     <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-2">
         <preConditions onFail="MARK_RAN">
-            <dbms type="mariadb"/>
+            <or>
+                <dbms type="postgresql"/>
+                <dbms type="mariadb"/>
+                <dbms type="oracle"/>
+            </or>
         </preConditions>
 
-        <comment>Insert default Tpp Info for Mariadb</comment>
+        <comment>Insert default Tpp Info for PostgreSQL, MariaDB or Oracle</comment>
 
-        <sql>
-            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
-            organisation, organisation_unit, city, state, status)
-            SELECT DISTINCT NEXTVAL(tpp_info_id_seq), tpp_id, 'default TPP', 'default authority id',
-            'default authority name', 'default organisation', 'default organisation unit', 'default city',
-            'default state', 'ENABLED'
-            FROM ais_consent
-        </sql>
-
-    </changeSet>
-
-    <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-3">
-        <preConditions onFail="MARK_RAN">
-            <dbms type="postgresql"/>
-        </preConditions>
-
-        <comment>Insert default Tpp Info for PostgreSQL</comment>
-
-        <sql>
+        <sql dbms="postgresql">
             INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
             organisation, organisation_unit, city, state, status)
             SELECT DISTINCT nextval('tpp_info_id_seq'), tpp_id, 'default TPP', 'default authority id',
@@ -62,18 +48,35 @@
             FROM ais_consent
         </sql>
 
+        <sql dbms="mariadb">
+            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
+            organisation, organisation_unit, city, state, status)
+            SELECT DISTINCT NEXTVAL(tpp_info_id_seq), tpp_id, 'default TPP', 'default authority id',
+            'default authority name', 'default organisation', 'default organisation unit', 'default city',
+            'default state', 'ENABLED'
+            FROM ais_consent
+        </sql>
+
+        <sql dbms="oracle">
+            INSERT INTO tpp_info (tpp_info_id, authorisation_number, tpp_name, authority_id, authority_name,
+            organisation, organisation_unit, city, state, status)
+            SELECT tpp_info_id_seq.nextval, tpp_id, 'default TPP', 'default authority id',
+            'default authority name', 'default organisation', 'default organisation unit', 'default city',
+            'default state', 'ENABLED'
+            FROM (SELECT DISTINCT to_char(tpp_id) AS tpp_id FROM ais_consent)
+        </sql>
+
     </changeSet>
 
-    <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-4">
+    <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-3">
         <preConditions onFail="MARK_RAN">
             <or>
                 <dbms type="postgresql"/>
                 <dbms type="mariadb"/>
             </or>
-
         </preConditions>
 
-        <comment>Insert default Tpp Info for Mariadb</comment>
+        <comment>Set tpp_info_id in ais_consent for PostgreSQL or Mariadb</comment>
 
         <sql>
             UPDATE ais_consent
@@ -94,12 +97,12 @@
 
     </changeSet>
 
-    <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-5">
+    <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-4">
         <preConditions onFail="MARK_RAN">
             <dbms type="oracle"/>
         </preConditions>
 
-        <comment>Insert default Tpp Info for Oracle</comment>
+        <comment>Set tpp_info_id in ais_consent for Oracle</comment>
 
         <sql>
             UPDATE ais_consent
@@ -120,16 +123,17 @@
 
     </changeSet>
 
-    <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-6">
-        <comment>Insert default Tpp Info for Mariadb</comment>
+    <changeSet author="ssh@adorsys.com.ua" id="2018-12-03-5">
+        <comment>Add constraints and drop tpp_id column</comment>
 
         <addForeignKeyConstraint baseColumnNames="tpp_info_id" baseTableName="ais_consent"
                                  constraintName="fk__ais_consent__tpp_info" deferrable="false"
                                  initiallyDeferred="false"
                                  referencedColumnNames="tpp_info_id" referencedTableName="tpp_info"/>
 
-        <dropColumn columnName="tpp_id" tableName="ais_consent"/>
         <addNotNullConstraint tableName="ais_consent" columnName="tpp_info_id"/>
+
+        <dropColumn columnName="tpp_id" tableName="ais_consent"/>
 
     </changeSet>
 
