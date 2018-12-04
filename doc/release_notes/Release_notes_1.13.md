@@ -21,3 +21,7 @@ To enable swagger in cms you have to add `@EnableCmsSwagger` annotation on any o
 ## PaymentProduct entity was replaced by raw String value
 Now instead of using PaymentProduct enum class, string value is used. PaymentProduct enum class is removed.
 In database, instead of saving enum values(SEPA, INSTANT_SEPA, etc), raw string values are saved:  sepa-credit-transfers, instant-sepa-credit-transfers, etc.
+
+## Store TppInfo in AisConsent
+Now AIS Consent contains TppInfo object instead of TPP Id.
+Developers should apply new liquibase migration scripts in order to update the database.
