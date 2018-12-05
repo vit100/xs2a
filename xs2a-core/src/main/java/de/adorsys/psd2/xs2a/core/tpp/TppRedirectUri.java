@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 @AllArgsConstructor
 public class TppRedirectUri {
     @NotNull
-    @ApiModelProperty(value = "Redirect URI", example = "Redirect URI")
+    @ApiModelProperty(value = "Redirect URI", example = "Redirect URI", required = true)
     private final String uri;
 
     @Nullable
