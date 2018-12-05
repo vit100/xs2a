@@ -49,10 +49,9 @@ public class PaymentModelMapperXs2a {
     private final AccountModelMapper accountModelMapper;
     private final HttpServletRequest httpServletRequest;
 
-
     public Object mapToXs2aPayment(Object payment, PaymentInitiationParameters requestParameters) {
         if (isRawPaymentProduct(requestParameters.getPaymentProduct())) {
-            return buildBinaryBodyData();
+            return buildBinaryBodyData(httpServletRequest);
         }
         if (requestParameters.getPaymentType() == SINGLE) {
             return mapToXs2aSinglePayment(validatePayment(payment, PaymentInitiationSctJson.class));
@@ -160,11 +159,11 @@ public class PaymentModelMapperXs2a {
                    .collect(Collectors.toList());
     }
 
-    private byte[] buildBinaryBodyData() {
+    private byte[] buildBinaryBodyData(HttpServletRequest httpServletRequest) {
         try {
             return IOUtils.toByteArray(httpServletRequest.getInputStream());
         } catch (IOException e) {
-            log.warn("Cannot deserialize httpServletRequest body!");
+            log.warn("Cannot deserialize httpServletRequest body!", e);
         }
 
         return null;

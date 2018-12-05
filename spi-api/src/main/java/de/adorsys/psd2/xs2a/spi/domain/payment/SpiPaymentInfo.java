@@ -27,7 +27,7 @@ public class SpiPaymentInfo implements SpiPayment {
     private String paymentProduct;
     private PaymentType paymentType;
     private TransactionStatus status;
-    private Object paymentData;
+    private byte[] paymentData;
 
     public SpiPaymentInfo(String paymentProduct) {
         this.paymentProduct = paymentProduct;

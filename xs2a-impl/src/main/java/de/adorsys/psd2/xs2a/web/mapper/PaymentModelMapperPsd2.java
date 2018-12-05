@@ -27,8 +27,12 @@ import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.service.mapper.AccountModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.MessageErrorMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,6 +41,7 @@ import static de.adorsys.psd2.xs2a.core.profile.PaymentType.PERIODIC;
 import static de.adorsys.psd2.xs2a.core.profile.PaymentType.SINGLE;
 import static de.adorsys.psd2.xs2a.service.mapper.AmountModelMapper.mapToAmount;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PaymentModelMapperPsd2 {
@@ -48,10 +53,12 @@ public class PaymentModelMapperPsd2 {
     public Object mapToGetPaymentResponse12(Object payment, PaymentType type, String product) {
         if (isRawPayment(payment)) {
             PisPaymentInfo paymentInfo = (PisPaymentInfo) payment;
-            Map paymentData = (Map) paymentInfo.getPaymentData();
-            paymentData.put("transactionStatus", paymentInfo.getTransactionStatus());
+            return convertResponseToRawData(paymentInfo.getPaymentData());
 
-            return paymentData;
+            /*Map paymentData = (Map) paymentInfo.getPaymentData();
+            paymentData.put("transactionStatus", paymentInfo.getTransactionStatus());
+*/
+
         }
         if (type == SINGLE) {
             SinglePayment xs2aPayment = (SinglePayment) payment;
@@ -205,5 +212,12 @@ public class PaymentModelMapperPsd2 {
                    }).orElse(null);
     }
 
-
+    private Object convertResponseToRawData(byte[] paymentData) {
+        try {
+            return IOUtils.toString(paymentData, Charset.defaultCharset().name());
+        } catch (IOException e) {
+            log.warn("Can not convert payment from byte[] ", e);
+            return null;
+        }
+    }
 }

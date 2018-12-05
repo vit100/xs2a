@@ -69,7 +69,7 @@ public class PisConsentMapper {
         commonPaymentData.setPaymentType(paymentInfo.getPaymentType());
         commonPaymentData.setPaymentProduct(paymentInfo.getPaymentProduct());
         commonPaymentData.setTransactionStatus(TransactionStatus.RCVD);
-        commonPaymentData.setPayment(ObjectSerializeService.serialize(paymentInfo.getPaymentData()));
+        commonPaymentData.setPayment(paymentInfo.getPaymentData());
         commonPaymentData.setConsent(consent);
 
         return commonPaymentData;
@@ -142,7 +142,7 @@ public class PisConsentMapper {
                             paymentInfo.setPaymentProduct(dta.getPaymentProduct());
                             paymentInfo.setPaymentType(dta.getPaymentType());
                             paymentInfo.setTransactionStatus(dta.getTransactionStatus());
-                            paymentInfo.setPaymentData(ObjectSerializeService.deserialize(dta.getPayment()));
+                            paymentInfo.setPaymentData(dta.getPayment());
                             return paymentInfo;
                         }
                    )

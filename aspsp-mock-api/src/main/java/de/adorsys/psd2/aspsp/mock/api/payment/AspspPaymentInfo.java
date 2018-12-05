@@ -25,5 +25,5 @@ public class AspspPaymentInfo {
     private AspspTransactionStatus paymentStatus;
     private String paymentProduct;
     private String pisPaymentType;
-    private Object paymentData;
+    private byte[] paymentData;
 }

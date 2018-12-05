@@ -62,7 +62,6 @@ public class RedirectAndEmbeddedPaymentCommonService implements ScaPaymentCommon
 
     private SpiPaymentInfo mapToSpiPaymentRequest(PaymentInitialisationRequest payment, String paymentProduct) {
         SpiPaymentInfo request = new SpiPaymentInfo(paymentProduct);
-
         request.setPaymentId(payment.getPaymentId());
         request.setPaymentType(payment.getPaymentType());
         request.setPaymentData(payment.getPaymentData());

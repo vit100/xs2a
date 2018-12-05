@@ -33,7 +33,7 @@ public class AspspPayment {
     private String paymentId;
     private AspspTransactionStatus paymentStatus;
     private String paymentProduct;
-    private Object paymentData;
+    private byte[] paymentData;
     private PisPaymentType pisPaymentType;
 
     private String endToEndIdentification;

@@ -114,8 +114,8 @@ public class PaymentService {
         if (isRawPaymentProduct(paymentInitiationParameters.getPaymentProduct())) {
             PaymentInitialisationRequest request = new PaymentInitialisationRequest();
             request.setPaymentType(paymentInitiationParameters.getPaymentType());
-            request.setPaymentData(payment);
             request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
+            request.setPaymentData((byte[]) payment);
 
             return createPaymentCommonService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
         }

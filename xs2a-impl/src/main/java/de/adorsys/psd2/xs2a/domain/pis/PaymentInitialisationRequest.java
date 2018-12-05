@@ -19,13 +19,14 @@ package de.adorsys.psd2.xs2a.domain.pis;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Data
 public class PaymentInitialisationRequest {
     private String paymentId;
     private String paymentProduct;
     private TransactionStatus transactionStatus;
     private PaymentType paymentType;
-
-    private Object paymentData;
+    private byte[] paymentData;
 }

@@ -62,7 +62,6 @@ public class CreatePaymentCommonService implements CreatePaymentService<PaymentI
 
         PaymentInitiationResponse response = scaPaymentService.createPayment(paymentInitialisationRequest, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisConsent);
 
-
         response.setPisConsentId(pisConsent.getConsentId());
 
         paymentInitialisationRequest.setTransactionStatus(response.getTransactionStatus());

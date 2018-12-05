@@ -40,7 +40,7 @@ public class CmsPsuPisMapper {
         cmsCommonPayment.setPaymentProduct(paymentData.getPaymentProduct());
         cmsCommonPayment.setPaymentType(paymentData.getPaymentType());
         cmsCommonPayment.setTransactionStatus(paymentData.getTransactionStatus());
-        cmsCommonPayment.setPaymentData(ObjectSerializeService.deserialize(paymentData.getPayment()));
+        cmsCommonPayment.setPaymentData(paymentData.getPayment());
 
         return cmsCommonPayment;
     }

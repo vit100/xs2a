@@ -36,5 +36,5 @@ public class PisPaymentInfo {
     private TransactionStatus transactionStatus;
 
     @ApiModelProperty(value = "Payment data")
-    private Object paymentData;
+    private byte[] paymentData;
 }
