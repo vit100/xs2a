@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.repository;
+package de.adorsys.psd2.consent.config;
 
-import de.adorsys.psd2.consent.api.CmsAuthorisationType;
-import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+@Component
+public class PisPaymentRemoteUrls {
+    @Value("${consent-service.baseurl:http://localhost:38080/api/v1}")
+    private String paymentServiceBaseUrl;
 
-public interface PisConsentAuthorizationRepository extends CrudRepository<PisConsentAuthorization, Long> {
-    Optional<PisConsentAuthorization> findByExternalId(String externalId);
-    Optional<PisConsentAuthorization> findByExternalIdAndAuthorizationType(String externalId, CmsAuthorisationType authorizationType);
+    /**
+     * Returns URL-string to CMS endpoint that updates payment status
+     *
+     * @return String
+     */
+    public String updatePaymentStatus() {
+        return paymentServiceBaseUrl + "/pis/payment/{payment-id}/status/{status}";
+    }
 }

@@ -40,13 +40,15 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
@@ -156,7 +158,6 @@ public class PisConsentServiceInternal implements PisConsentService {
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
 
-
     @Override
     @Transactional
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
@@ -216,7 +217,6 @@ public class PisConsentServiceInternal implements PisConsentService {
     @Transactional
     public void updatePaymentConsent(PisConsentRequest request, String encryptedConsentId) {
         Optional<PisConsent> pisConsentById = getPisConsentById(encryptedConsentId);
-
         pisConsentById
             .ifPresent(pisConsent -> savePaymentData(pisConsent, request));
     }
@@ -246,19 +246,45 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     /**
-     * Reads authorization id data by encrypted payment Id and type of authorization
+     * Reads authorisation IDs data by encrypted payment Id and type of authorization
      *
      * @param encryptedPaymentId encrypted id of the payment
-     * @param authorizationType  type of authorization required to create. Can be  CREATED or CANCELLED
-     * @return response contains authorization id
+     * @param authorisationType  type of authorization required to create. Can be  CREATED or CANCELLED
+     * @return response contains authorisation IDs
      */
     @Override
-    public Optional<String> getAuthorisationByPaymentId(String encryptedPaymentId, CmsAuthorisationType authorizationType) {
+    public Optional<List<String>> getAuthorisationsByPaymentId(String encryptedPaymentId, CmsAuthorisationType authorisationType) {
         Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
         if (!paymentId.isPresent()) {
             log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
             return Optional.empty();
         }
+
+
+
+        ===========  на деве
+
+        Optional<List<PisPaymentData>> paymentDataListOptional = pisPaymentDataRepository.findByPaymentId(paymentId.get());
+        if (!paymentDataListOptional.isPresent()) {
+            return Optional.empty();
+        }
+
+        List<PisPaymentData> paymentDataList = paymentDataListOptional.get();
+        if (paymentDataList.isEmpty()) {
+            return Optional.of(Collections.emptyList());
+        }
+
+        List<String> authorisationIds = paymentDataList.get(0).getConsent()
+                                            .getAuthorizations()
+                                            .stream()
+                                            .filter(auth -> auth.getAuthorizationType() == authorisationType)
+                                            .map(PisConsentAuthorization::getExternalId)
+                                            .collect(Collectors.toList());
+
+        return Optional.of(authorisationIds);
+
+      ==== у меня
+
 
         return readReceivedConsentByPaymentId(paymentId.get())
                    .map(PisConsent::getExternalId);

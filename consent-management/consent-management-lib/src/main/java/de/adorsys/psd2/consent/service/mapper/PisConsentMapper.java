@@ -157,29 +157,30 @@ public class PisConsentMapper {
 
     private PisPayment mapToPisPayment(PisPaymentData payment) {
         return Optional.ofNullable(payment)
-                   .map(pm -> {
-                       PisPayment pisPayment = new PisPayment();
-                       pisPayment.setPaymentId(pm.getPaymentId());
-                       pisPayment.setEndToEndIdentification(pm.getEndToEndIdentification());
-                       pisPayment.setDebtorAccount(accountReferenceMapper.mapToCmsAccountReference(pm.getDebtorAccount()));
-                       pisPayment.setUltimateDebtor(pm.getUltimateDebtor());
-                       pisPayment.setCurrency(pm.getCurrency());
-                       pisPayment.setAmount(pm.getAmount());
-                       pisPayment.setCreditorAccount(accountReferenceMapper.mapToCmsAccountReference(pm.getCreditorAccount()));
-                       pisPayment.setCreditorAgent(pm.getCreditorAgent());
-                       pisPayment.setCreditorName(pm.getCreditorName());
-                       pisPayment.setCreditorAddress(mapToCmsAddress(pm.getCreditorAddress()));
-                       pisPayment.setRemittanceInformationUnstructured(pm.getRemittanceInformationUnstructured());
-                       pisPayment.setRemittanceInformationStructured(mapToCmsRemittance(pm.getRemittanceInformationStructured()));
-                       pisPayment.setRequestedExecutionDate(pm.getRequestedExecutionDate());
-                       pisPayment.setRequestedExecutionTime(pm.getRequestedExecutionTime());
-                       pisPayment.setUltimateCreditor(pm.getUltimateCreditor());
-                       pisPayment.setPurposeCode(pm.getPurposeCode());
-                       pisPayment.setStartDate(pm.getStartDate());
-                       pisPayment.setEndDate(pm.getEndDate());
-                       pisPayment.setExecutionRule(pm.getExecutionRule());
-                       pisPayment.setFrequency(pm.getFrequency());
-                       pisPayment.setDayOfExecution(pm.getDayOfExecution());
+            .map(pm -> {
+                PisPayment pisPayment = new PisPayment();
+                pisPayment.setPaymentId(pm.getPaymentId());
+                pisPayment.setEndToEndIdentification(pm.getEndToEndIdentification());
+                pisPayment.setDebtorAccount(accountReferenceMapper.mapToCmsAccountReference(pm.getDebtorAccount()));
+                pisPayment.setUltimateDebtor(pm.getUltimateDebtor());
+                pisPayment.setCurrency(pm.getCurrency());
+                pisPayment.setAmount(pm.getAmount());
+                pisPayment.setCreditorAccount(accountReferenceMapper.mapToCmsAccountReference(pm.getCreditorAccount()));
+                pisPayment.setCreditorAgent(pm.getCreditorAgent());
+                pisPayment.setCreditorName(pm.getCreditorName());
+                pisPayment.setCreditorAddress(mapToCmsAddress(pm.getCreditorAddress()));
+                pisPayment.setRemittanceInformationUnstructured(pm.getRemittanceInformationUnstructured());
+                pisPayment.setRemittanceInformationStructured(mapToCmsRemittance(pm.getRemittanceInformationStructured()));
+                pisPayment.setRequestedExecutionDate(pm.getRequestedExecutionDate());
+                pisPayment.setRequestedExecutionTime(pm.getRequestedExecutionTime());
+                pisPayment.setUltimateCreditor(pm.getUltimateCreditor());
+                pisPayment.setPurposeCode(pm.getPurposeCode());
+                pisPayment.setStartDate(pm.getStartDate());
+                pisPayment.setEndDate(pm.getEndDate());
+                pisPayment.setExecutionRule(pm.getExecutionRule());
+                pisPayment.setFrequency(pm.getFrequency());
+                pisPayment.setDayOfExecution(pm.getDayOfExecution());
+                pisPayment.setTransactionStatus(pm.getTransactionStatus());
 
                        return pisPayment;
                    }).orElse(null);
