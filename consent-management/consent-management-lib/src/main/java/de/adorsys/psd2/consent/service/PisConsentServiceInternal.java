@@ -321,7 +321,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     private Optional<PisConsent> readReceivedConsentByPaymentId(String paymentId) {
-        // todo implementation should be changed
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
                                               .map(list -> list.get(0).getConsent());
 
@@ -334,7 +334,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
-        // todo implementation should be changed
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
                                               .map(list -> list.get(0).getConsent());
 
@@ -348,7 +348,7 @@ public class PisConsentServiceInternal implements PisConsentService {
 
     private void savePaymentData(PisConsent pisConsent, PisConsentRequest request) {
         boolean isCommonPayment = CollectionUtils.isEmpty(request.getPayments()) && request.getPaymentInfo() != null;
-        // todo implementation should be changed
+        // todo implementation should be changed  https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
 
         if (isCommonPayment) {
             pisCommonPaymentDataRepository.save(pisConsentMapper.mapToPisCommonPaymentData(request.getPaymentInfo(), pisConsent));

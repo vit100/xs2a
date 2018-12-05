@@ -107,7 +107,7 @@ public class PaymentService {
                        .build();
         }
 
-        if (isRawPaymentProduct()) {
+        if (isRawPaymentProduct(paymentInitiationParameters.getPaymentProduct())) {
             PaymentInitialisationRequest request = new PaymentInitialisationRequest();
             request.setPaymentType(paymentInitiationParameters.getPaymentType());
             request.setPaymentData(payment);
@@ -125,9 +125,9 @@ public class PaymentService {
         }
     }
 
-    private boolean isRawPaymentProduct() {
-        // TODO make correct value of method
-        return false;
+    private boolean isRawPaymentProduct(String paymentProduct) {
+        // TODO make correct value of method https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
+        return paymentProduct.contains("pain.");
     }
 
     /**

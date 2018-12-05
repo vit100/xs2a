@@ -35,7 +35,7 @@ public class PaymentMapper {
         aspspPayment.setPaymentId(paymentInfo.getPaymentId());
         aspspPayment.setPaymentStatus(paymentInfo.getPaymentStatus());
         aspspPayment.setPaymentProduct(paymentInfo.getPaymentProduct());
-        aspspPayment.setPisPaymentType(PisPaymentType.valueOf(paymentInfo.getPisPaymentType())); // todo implementation should be changed
+        aspspPayment.setPisPaymentType(PisPaymentType.valueOf(paymentInfo.getPisPaymentType()));
         aspspPayment.setPaymentData(paymentInfo.getPaymentData());
         return aspspPayment;
     }
@@ -45,7 +45,7 @@ public class PaymentMapper {
         paymentInfo.setPaymentId(aspspPayment.getPaymentId());
         paymentInfo.setPaymentStatus(aspspPayment.getPaymentStatus());
         paymentInfo.setPaymentProduct(aspspPayment.getPaymentProduct());
-        paymentInfo.setPisPaymentType(aspspPayment.getPisPaymentType().name()); // todo implementation should be changed
+        paymentInfo.setPisPaymentType(aspspPayment.getPisPaymentType().name());
         paymentInfo.setPaymentData(aspspPayment.getPaymentData());
         return paymentInfo;
     }

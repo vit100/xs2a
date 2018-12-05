@@ -77,7 +77,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         if (isPsuDataEquals(encryptedPaymentId, psuIdData)) {
             Optional<List<PisPaymentData>> list = getPaymentDataList(encryptedPaymentId);
 
-            // todo implementation should be changed
+            // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
             if (list.isPresent()) {
                 return list
                            .filter(CollectionUtils::isNotEmpty)
@@ -111,7 +111,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     public boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status) {
         Optional<List<PisPaymentData>> list = getPaymentDataList(encryptedPaymentId);
 
-        // todo implementation should be changed
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         if (list.isPresent()) {
             return updateStatusInPaymentDataList(list.get(), status);
         } else {
@@ -180,7 +180,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
-        // todo implementation should be changed
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
                                               .map(list -> list.get(0).getConsent());
 

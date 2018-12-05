@@ -44,7 +44,7 @@ public class PaymentModelMapperXs2a {
     private final AccountModelMapper accountModelMapper;
 
     public Object mapToXs2aPayment(Object payment, PaymentInitiationParameters requestParameters) {
-        if (isRawPaymentProduct()) {
+        if (isRawPaymentProduct(requestParameters.getPaymentProduct())) {
             return payment;
         }
         if (requestParameters.getPaymentType() == SINGLE) {
@@ -56,9 +56,9 @@ public class PaymentModelMapperXs2a {
         }
     }
 
-    private boolean isRawPaymentProduct() {
-        // TODO make correct value of method
-        return false;
+    private boolean isRawPaymentProduct(String paymentProduct) {
+        // TODO make correct value of method https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
+        return paymentProduct.contains("pain.");
     }
 
     private <R> R validatePayment(Object payment, Class<R> clazz) {

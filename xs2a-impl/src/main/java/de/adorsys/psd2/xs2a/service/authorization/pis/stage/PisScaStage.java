@@ -56,7 +56,8 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
     private ApplicationContext applicationContext;
 
     protected PaymentSpi getPaymentService(GetPisConsentAuthorisationResponse pisConsentAuthorisationResponse, PaymentType paymentType) {
-        if (pisConsentAuthorisationResponse.getPaymentInfo() != null) {  // todo implementation should be changed
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
+        if (pisConsentAuthorisationResponse.getPaymentInfo() != null) {
            return applicationContext.getBean(CommonPaymentSpi.class);
         }
 
