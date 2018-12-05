@@ -72,8 +72,6 @@ public class CmsPsuAisServiceTest {
     private AisAccountConsent mockAisAccountConsent;
     @Mock
     private TppInfo tppInfo;
-    @Mock
-    private TppRedirectUri tppRedirectUri;
 
     private AisConsent aisConsent;
     private List<AisConsent> aisConsents;
@@ -350,9 +348,7 @@ public class CmsPsuAisServiceTest {
         when(mockAisConsentAuthorization.getConsent()).thenReturn(aisConsent);
         when(aisConsentMapper.mapToAisAccountConsent(aisConsent)).thenReturn(mockAisAccountConsent);
         when(mockAisAccountConsent.getTppInfo()).thenReturn(tppInfo);
-        when(tppInfo.getTppRedirectUri()).thenReturn(tppRedirectUri);
-        when(tppRedirectUri.getUri()).thenReturn(TPP_OK_REDIRECT_URI);
-        when(tppRedirectUri.getNokUri()).thenReturn(TPP_NOK_REDIRECT_URI);
+        when(tppInfo.getTppRedirectUri()).thenReturn(buildTppRedirectUri());
 
         Optional<CmsAisConsentResponse> consentResponseOptional = cmsPsuAisService.checkRedirectAndGetConsent(psuIdData, AUTHORISATION_ID);
 
@@ -429,5 +425,9 @@ public class CmsPsuAisServiceTest {
             null, 0,
             null, null,
             false, false, null, null, null);
+    }
+
+    private TppRedirectUri buildTppRedirectUri() {
+        return new TppRedirectUri(TPP_OK_REDIRECT_URI, TPP_NOK_REDIRECT_URI);
     }
 }
