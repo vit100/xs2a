@@ -84,7 +84,7 @@ public class PisConsentServiceInternalTest {
     public void getAuthorisationByPaymentIdSuccess() {
         //When
         when(securityDataService.decryptId(paymentId)).thenReturn(Optional.of(paymentId));
-        when(pisPaymentDataRepository.findByPaymentId(paymentId)).thenReturn(Optional.of(Collections.singletonList(pisPaymentData)));
+        when(pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)).thenReturn(Optional.of(Collections.singletonList(pisPaymentData)));
         //Then
         Optional<List<String>> authorizationByPaymentId = pisConsentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CANCELLED);
         //Assert

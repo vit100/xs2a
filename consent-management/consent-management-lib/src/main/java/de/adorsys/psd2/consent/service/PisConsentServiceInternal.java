@@ -40,11 +40,11 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -260,34 +260,8 @@ public class PisConsentServiceInternal implements PisConsentService {
             return Optional.empty();
         }
 
-
-
-        ===========  на деве
-
-        Optional<List<PisPaymentData>> paymentDataListOptional = pisPaymentDataRepository.findByPaymentId(paymentId.get());
-        if (!paymentDataListOptional.isPresent()) {
-            return Optional.empty();
-        }
-
-        List<PisPaymentData> paymentDataList = paymentDataListOptional.get();
-        if (paymentDataList.isEmpty()) {
-            return Optional.of(Collections.emptyList());
-        }
-
-        List<String> authorisationIds = paymentDataList.get(0).getConsent()
-                                            .getAuthorizations()
-                                            .stream()
-                                            .filter(auth -> auth.getAuthorizationType() == authorisationType)
-                                            .map(PisConsentAuthorization::getExternalId)
-                                            .collect(Collectors.toList());
-
-        return Optional.of(authorisationIds);
-
-      ==== у меня
-
-
         return readReceivedConsentByPaymentId(paymentId.get())
-                   .map(PisConsent::getExternalId);
+                   .map(cnst -> readAuthorisationsFromConsent(cnst, authorisationType));
     }
 
     /**
@@ -389,14 +363,22 @@ public class PisConsentServiceInternal implements PisConsentService {
      * @param pisConsent PIS Consent, for which authorization is performed
      * @return PisConsentAuthorization
      */
-    private PisConsentAuthorization saveNewAuthorization(PisConsent pisConsent, CmsAuthorisationType authorizationType, PsuIdData psuData) {
+    private PisConsentAuthorization saveNewAuthorization(PisConsent pisConsent, CmsAuthorisationType authorisationType, PsuIdData psuData) {
         PisConsentAuthorization consentAuthorization = new PisConsentAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
         consentAuthorization.setConsent(pisConsent);
         consentAuthorization.setScaStatus(STARTED);
-        consentAuthorization.setAuthorizationType(authorizationType);
+        consentAuthorization.setAuthorizationType(authorisationType);
         consentAuthorization.setPsuData(psuDataMapper.mapToPsuData(psuData));
         return pisConsentAuthorizationRepository.save(consentAuthorization);
+    }
+
+    private List<String> readAuthorisationsFromConsent(PisConsent pisConsent, CmsAuthorisationType authorisationType) {
+        return pisConsent.getAuthorizations()
+                   .stream()
+                   .filter(auth -> auth.getAuthorizationType() == authorisationType)
+                   .map(PisConsentAuthorization::getExternalId)
+                   .collect(Collectors.toList());
     }
 
     private ScaStatus doUpdateConsentAuthorisation(UpdatePisConsentPsuDataRequest request, PisConsentAuthorization pisConsentAuthorisation) {
