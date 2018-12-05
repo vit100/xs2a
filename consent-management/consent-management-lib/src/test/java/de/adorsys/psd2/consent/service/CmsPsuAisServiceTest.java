@@ -31,6 +31,7 @@ import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
+import de.adorsys.psd2.xs2a.core.tpp.TppRedirectUri;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,9 +46,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CmsPsuAisServiceTest {
@@ -73,6 +72,8 @@ public class CmsPsuAisServiceTest {
     private AisAccountConsent mockAisAccountConsent;
     @Mock
     private TppInfo tppInfo;
+    @Mock
+    private TppRedirectUri tppRedirectUri;
 
     private AisConsent aisConsent;
     private List<AisConsent> aisConsents;
@@ -349,8 +350,9 @@ public class CmsPsuAisServiceTest {
         when(mockAisConsentAuthorization.getConsent()).thenReturn(aisConsent);
         when(aisConsentMapper.mapToAisAccountConsent(aisConsent)).thenReturn(mockAisAccountConsent);
         when(mockAisAccountConsent.getTppInfo()).thenReturn(tppInfo);
-        when(tppInfo.getRedirectUri()).thenReturn(TPP_OK_REDIRECT_URI);
-        when(tppInfo.getNokRedirectUri()).thenReturn(TPP_NOK_REDIRECT_URI);
+        when(tppInfo.getTppRedirectUri()).thenReturn(tppRedirectUri);
+        when(tppRedirectUri.getUri()).thenReturn(TPP_OK_REDIRECT_URI);
+        when(tppRedirectUri.getNokUri()).thenReturn(TPP_NOK_REDIRECT_URI);
 
         Optional<CmsAisConsentResponse> consentResponseOptional = cmsPsuAisService.checkRedirectAndGetConsent(psuIdData, AUTHORISATION_ID);
 

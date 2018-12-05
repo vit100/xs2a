@@ -31,6 +31,7 @@ import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
+import de.adorsys.psd2.xs2a.core.tpp.TppRedirectUri;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -206,7 +207,13 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
             return Optional.empty();
         }
 
+        TppRedirectUri tppRedirectUri = tppInfo.getTppRedirectUri();
+
+        if (tppRedirectUri == null) {
+            return Optional.empty();
+        }
+
         return Optional.of(aisAccountConsent)
-                   .map(c -> new CmsAisConsentResponse(aisAccountConsent, redirectId, tppInfo.getRedirectUri(), tppInfo.getNokRedirectUri()));
+                   .map(c -> new CmsAisConsentResponse(aisAccountConsent, redirectId, tppRedirectUri.getUri(), tppRedirectUri.getNokUri()));
     }
 }
