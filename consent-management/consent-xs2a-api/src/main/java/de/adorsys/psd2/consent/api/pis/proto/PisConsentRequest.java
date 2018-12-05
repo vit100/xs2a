@@ -48,7 +48,7 @@ public class PisConsentRequest {
     @ApiModelProperty(value = "External Payment Id", example = "32454656712432")
     private String paymentId;
 
-    @ApiModelProperty(value = "External Payment Id", example = "32454656712432")
+    @ApiModelProperty(value = "Transaction status", example = "ACCP")
     private TransactionStatus transactionStatus;
 
     @ApiModelProperty(value = "Payment info")
