@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.domain.pis;
+package de.adorsys.psd2.xs2a.web.mapper;
 
-import de.adorsys.psd2.xs2a.core.profile.PaymentType;
-import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppRedirectUri;
-import lombok.Data;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Component;
 
-@Data
-public class PaymentInitiationParameters {
-    private PaymentType paymentType;
-    private String paymentProduct;
-    private String qwacCertificate;
-    private TppRedirectUri tppRedirectUri;
-    private boolean tppExplicitAuthorisationPreferred;
-    private PsuIdData psuData;
+import java.util.Optional;
+
+@Component
+public class TppRedirectUriMapper {
+    public @Nullable TppRedirectUri mapToTppRedirectUri(@Nullable String redirectUri, @Nullable String nokRedirectUri) {
+        return Optional.ofNullable(redirectUri)
+                   .map(redirect -> new TppRedirectUri(redirect, nokRedirectUri))
+                   .orElse(null);
+    }
 }
