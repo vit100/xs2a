@@ -60,7 +60,7 @@ public class PisCommonPaymentData {
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "consent_id", nullable = false)
-    @ApiModelProperty(value = "Detailed information about consent", required = true)
+    @JoinColumn(name = "consent_id")
+    @ApiModelProperty(value = "Detailed information about consent")
     private PisConsent consent;
 }

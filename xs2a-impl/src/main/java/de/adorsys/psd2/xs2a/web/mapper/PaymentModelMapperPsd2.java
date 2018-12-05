@@ -29,6 +29,7 @@ import de.adorsys.psd2.xs2a.service.mapper.MessageErrorMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -53,12 +54,14 @@ public class PaymentModelMapperPsd2 {
     public Object mapToGetPaymentResponse12(Object payment, PaymentType type, String product) {
         if (isRawPayment(payment)) {
             PisPaymentInfo paymentInfo = (PisPaymentInfo) payment;
-            return convertResponseToRawData(paymentInfo.getPaymentData());
+            String paymentResponse = convertResponseToRawData(paymentInfo.getPaymentData());
 
-            /*Map paymentData = (Map) paymentInfo.getPaymentData();
-            paymentData.put("transactionStatus", paymentInfo.getTransactionStatus());
-*/
+            if (paymentInfo.getPaymentProduct().contains("pain")) {
+                return paymentResponse;
+            }
 
+            // it will be useful when we implement raw json payment
+            return enrichPaymentWithStatus(paymentInfo.getTransactionStatus(), paymentResponse);
         }
         if (type == SINGLE) {
             SinglePayment xs2aPayment = (SinglePayment) payment;
@@ -104,6 +107,19 @@ public class PaymentModelMapperPsd2 {
             paymentResponse.setTransactionStatus(mapToTransactionStatus12(xs2aPayment.getTransactionStatus()));
             return paymentResponse;
         }
+    }
+
+    @Nullable
+    private Object enrichPaymentWithStatus(de.adorsys.psd2.xs2a.core.pis.TransactionStatus transactionStatus, Object resp) {
+        try {
+            Map paymentData = mapper.readValue(resp.toString(), Map.class);
+            paymentData.put("transactionStatus", transactionStatus);
+            return paymentData;
+        } catch (IOException e) {
+            log.warn("Can not convert payment to json ", e);
+
+        }
+        return null;
     }
 
     public static PaymentInitiationStatusResponse200Json mapToStatusResponse12(de.adorsys.psd2.xs2a.core.pis.TransactionStatus status) {
@@ -212,7 +228,7 @@ public class PaymentModelMapperPsd2 {
                    }).orElse(null);
     }
 
-    private Object convertResponseToRawData(byte[] paymentData) {
+    private String convertResponseToRawData(byte[] paymentData) {
         try {
             return IOUtils.toString(paymentData, Charset.defaultCharset().name());
         } catch (IOException e) {

@@ -47,9 +47,7 @@
             <column name="payment" type="${blob.type}">
                 <constraints nullable="false"/>
             </column>
-            <column name="consent_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="consent_id" type="BIGINT"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="pis_common_payment"

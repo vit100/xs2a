@@ -159,7 +159,7 @@ public class PisConsentServiceInternal implements PisConsentService {
         }
 
         return readReceivedConsentByPaymentId(paymentId.get())
-                   .map(pisConsent -> saveNewAuthorization(pisConsent, authorizationType, psuData))
+                   .map(pisConsent -> saveNewAuthorisation(pisConsent, authorizationType, psuData))
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
 
@@ -283,7 +283,7 @@ public class PisConsentServiceInternal implements PisConsentService {
             return Optional.empty();
         }
 
-        return getPisConsentByPaymentId(paymentId.get())
+        return readPisConsentByPaymentId(paymentId.get())
                    .map(pc -> psuDataMapper.mapToPsuIdData(pc.getPsuData()));
     }
 
@@ -338,7 +338,7 @@ public class PisConsentServiceInternal implements PisConsentService {
         return consentOpt;
     }
 
-    private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
+    private Optional<PisConsent> readPisConsentByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
                                               .map(list -> list.get(0).getConsent());
@@ -363,12 +363,12 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     /**
-     * Creates PIS consent authorization entity and stores it into database
+     * Creates PIS consent authorisation entity and stores it into database
      *
-     * @param pisConsent PIS Consent, for which authorization is performed
+     * @param pisConsent PIS Consent, for which authorisation is performed
      * @return PisConsentAuthorization
      */
-    private PisConsentAuthorization saveNewAuthorization(PisConsent pisConsent, CmsAuthorisationType authorisationType, PsuIdData psuData) {
+    private PisConsentAuthorization saveNewAuthorisation(PisConsent pisConsent, CmsAuthorisationType authorisationType, PsuIdData psuData) {
         PisConsentAuthorization consentAuthorization = new PisConsentAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
         consentAuthorization.setConsent(pisConsent);
