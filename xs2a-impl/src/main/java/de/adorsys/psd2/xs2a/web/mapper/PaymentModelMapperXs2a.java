@@ -25,8 +25,12 @@ import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.service.mapper.AccountModelMapper;
 import de.adorsys.psd2.xs2a.service.validator.ValueValidatorService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -36,16 +40,19 @@ import java.util.stream.Collectors;
 import static de.adorsys.psd2.xs2a.core.profile.PaymentType.PERIODIC;
 import static de.adorsys.psd2.xs2a.core.profile.PaymentType.SINGLE;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PaymentModelMapperXs2a {
     private final ObjectMapper mapper;
     private final ValueValidatorService validationService;
     private final AccountModelMapper accountModelMapper;
+    private final HttpServletRequest httpServletRequest;
+
 
     public Object mapToXs2aPayment(Object payment, PaymentInitiationParameters requestParameters) {
         if (isRawPaymentProduct(requestParameters.getPaymentProduct())) {
-            return payment;
+            return buildBinaryBodyData();
         }
         if (requestParameters.getPaymentType() == SINGLE) {
             return mapToXs2aSinglePayment(validatePayment(payment, PaymentInitiationSctJson.class));
@@ -151,5 +158,15 @@ public class PaymentModelMapperXs2a {
                        return payment;
                    })
                    .collect(Collectors.toList());
+    }
+
+    private byte[] buildBinaryBodyData() {
+        try {
+            return IOUtils.toByteArray(httpServletRequest.getInputStream());
+        } catch (IOException e) {
+            log.warn("Cannot deserialize httpServletRequest body!");
+        }
+
+        return null;
     }
 }
