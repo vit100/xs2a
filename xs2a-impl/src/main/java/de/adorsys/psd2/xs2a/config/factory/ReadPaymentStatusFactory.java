@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service;
+package de.adorsys.psd2.xs2a.config.factory;
 
-import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import org.springframework.stereotype.Service;
-
-//TODO Implement this class properly during implementation of FundsConfirmationConsent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/379
-@Service
-public class FundsConfirmationPsuDataService {
-
-    public PsuIdData getPsuDataByConsentId(String consentId) {
-        return new PsuIdData(null, null, null, null);
-    }
+/**
+ * This is specific factory intended to retrieve specific payment type dependent service, which retrieves payment status by ID
+ */
+public interface ReadPaymentStatusFactory extends ServiceFactory {
+    String SERVICE_PREFIX = "status-";
 }

@@ -16,15 +16,10 @@
 
 package de.adorsys.psd2.xs2a.config;
 
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-@EnableWebMvc
-@TestConfiguration
-@ActiveProfiles(profiles = "test")
-@TestPropertySource("classpath:application-test.properties")
-public class WebConfigTest extends WebMvcConfigurerAdapter {
+@Configuration
+@ComponentScan(basePackages = {"de.adorsys.psd2.xs2a", "de.adorsys.psd2.aspsp.profile", "de.adorsys.psd2.consent"})
+public class Xs2aInterfaceConfig {
 }
