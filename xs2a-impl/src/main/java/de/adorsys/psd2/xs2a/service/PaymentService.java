@@ -156,10 +156,10 @@ public class PaymentService {
         PisConsentResponse pisConsent = pisConsentOptional.get();
 
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
-        PaymentInformationResponse response = null;
+        PaymentInformationResponse response;
 
-        if (pisConsent.get().getPaymentInfo() != null) {
-            PisPaymentInfo paymentInfo = pisConsent.get().getPaymentInfo();
+        if (pisConsent.getPaymentInfo() != null) {
+            PisPaymentInfo paymentInfo = pisConsent.getPaymentInfo();
             response = readCommonPaymentService.getPayment(paymentInfo, psuData, aspspConsentData);
         } else {
             PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
