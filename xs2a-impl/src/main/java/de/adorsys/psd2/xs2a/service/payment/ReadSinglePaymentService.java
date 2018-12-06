@@ -46,7 +46,7 @@ public class ReadSinglePaymentService extends ReadPaymentService<PaymentInformat
 
     @Override
     public PaymentInformationResponse<SinglePayment> getPayment(PisPayment pisPayment, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
-        Optional<SpiSinglePayment> spiPaymentOptional = spiPaymentFactory.createSpiSinglePayment(pisPayment, paymentProduct);
+        Optional<SpiSinglePayment> spiPaymentOptional = spiPaymentFactory.createSpiSinglePayment(pisPayment, paymentProduct, tppService.getTppInfo());
 
         if (!spiPaymentOptional.isPresent()) {
             return new PaymentInformationResponse<>(

@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.service.TppService;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiBulkPayment;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
@@ -34,10 +35,11 @@ import java.util.Optional;
 public class ReadBulkPaymentStatusService implements ReadPaymentStatusService {
     private final SpiPaymentFactory spiPaymentFactory;
     private final BulkPaymentSpi bulkPaymentSpi;
+    private final TppService tppService;
 
     @Override
     public SpiResponse<SpiTransactionStatus> readPaymentStatus(PisPayment pisPayment, String paymentProduct, SpiPsuData spiPsuData, AspspConsentData aspspConsentData) {
-        Optional<SpiBulkPayment> spiBulkPaymentOptional = spiPaymentFactory.createSpiBulkPayment(pisPayment, paymentProduct);
+        Optional<SpiBulkPayment> spiBulkPaymentOptional = spiPaymentFactory.createSpiBulkPayment(pisPayment, paymentProduct, tppService.getTppInfo());
 
         return spiBulkPaymentOptional
                    .map(spiBulkPayment -> bulkPaymentSpi.getPaymentStatusById(spiPsuData, spiBulkPayment, aspspConsentData))

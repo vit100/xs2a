@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers;
 
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.psd2.xs2a.spi.domain.code.SpiFrequencyCode;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPeriodicPayment;
@@ -29,7 +30,7 @@ public class Xs2aToSpiPeriodicPaymentMapper {
     private final Xs2aToSpiAddressMapper xs2aToSpiAddressMapper;
     private final Xs2aToSpiAccountReferenceMapper xs2aToSpiAccountReferenceMapper;
 
-    public SpiPeriodicPayment mapToSpiPeriodicPayment(PeriodicPayment payment, String paymentProduct) {
+    public SpiPeriodicPayment mapToSpiPeriodicPayment(PeriodicPayment payment, String paymentProduct, TppInfo tppInfo) {
         SpiPeriodicPayment periodic = new SpiPeriodicPayment(paymentProduct);
         periodic.setPaymentId(payment.getPaymentId());
         periodic.setEndToEndIdentification(payment.getEndToEndIdentification());
@@ -47,6 +48,7 @@ public class Xs2aToSpiPeriodicPaymentMapper {
         periodic.setDayOfExecution(payment.getDayOfExecution());
         periodic.setRequestedExecutionTime(payment.getRequestedExecutionTime());
         periodic.setRequestedExecutionDate(payment.getRequestedExecutionDate());
+        periodic.setTppInfo(tppInfo);
         return periodic;
     }
 }

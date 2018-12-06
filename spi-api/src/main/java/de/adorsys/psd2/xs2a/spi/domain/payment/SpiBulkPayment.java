@@ -17,6 +17,7 @@
 package de.adorsys.psd2.xs2a.spi.domain.payment;
 
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountReference;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
@@ -34,6 +35,7 @@ public class SpiBulkPayment implements SpiPayment {
     private SpiTransactionStatus paymentStatus;
     private List<SpiSinglePayment> payments;
     private String paymentProduct;
+    private TppInfo tppInfo;
 
     @Override
     public PaymentType getPaymentType() {

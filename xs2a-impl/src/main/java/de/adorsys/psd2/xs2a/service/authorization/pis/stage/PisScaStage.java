@@ -19,9 +19,11 @@ package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
+import de.adorsys.psd2.xs2a.service.TppService;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
@@ -48,6 +50,7 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
     protected final Xs2aPisConsentMapper xs2aPisConsentMapper;
     protected final SpiErrorMapper spiErrorMapper;
     protected final Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper;
+    protected final TppService tppService;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -63,17 +66,17 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
     }
 
     // TODO pass actual PaymentProduct https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/442
-    protected SpiPayment mapToSpiPayment(List<PisPayment> payments, PaymentType paymentType) {
+    protected SpiPayment mapToSpiPayment(List<PisPayment> payments, PaymentType paymentType, TppInfo tppInfo) {
         if (PaymentType.SINGLE == paymentType) {
             SinglePayment singlePayment = cmsToXs2aPaymentMapper.mapToSinglePayment(payments.get(0));
-            return xs2aToSpiSinglePaymentMapper.mapToSpiSinglePayment(singlePayment, "sepa-credit-transfers");
+            return xs2aToSpiSinglePaymentMapper.mapToSpiSinglePayment(singlePayment, "sepa-credit-transfers", tppInfo);
         }
         if (PaymentType.PERIODIC == paymentType) {
             PeriodicPayment periodicPayment = cmsToXs2aPaymentMapper.mapToPeriodicPayment(payments.get(0));
-            return xs2aToSpiPeriodicPaymentMapper.mapToSpiPeriodicPayment(periodicPayment, "sepa-credit-transfers");
+            return xs2aToSpiPeriodicPaymentMapper.mapToSpiPeriodicPayment(periodicPayment, "sepa-credit-transfers", tppInfo);
         } else {
             BulkPayment bulkPayment = cmsToXs2aPaymentMapper.mapToBulkPayment(payments);
-            return xs2aToSpiBulkPaymentMapper.mapToSpiBulkPayment(bulkPayment, "sepa-credit-transfers");
+            return xs2aToSpiBulkPaymentMapper.mapToSpiBulkPayment(bulkPayment, "sepa-credit-transfers", tppInfo);
         }
     }
 }

@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers;
 
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiBulkPayment;
@@ -32,21 +33,21 @@ public class Xs2aToSpiBulkPaymentMapper {
     private final Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper;
     private final Xs2aToSpiAccountReferenceMapper xs2aToSpiAccountReferenceMapper;
 
-    public SpiBulkPayment mapToSpiBulkPayment(BulkPayment payment, String paymentProduct) {
+    public SpiBulkPayment mapToSpiBulkPayment(BulkPayment payment, String paymentProduct, TppInfo tppInfo) {
         SpiBulkPayment bulk = new SpiBulkPayment();
         bulk.setPaymentId(payment.getPaymentId());
         bulk.setBatchBookingPreferred(payment.getBatchBookingPreferred());
         bulk.setDebtorAccount(xs2aToSpiAccountReferenceMapper.mapToSpiAccountReference(payment.getDebtorAccount()));
         bulk.setPaymentProduct(paymentProduct);
         bulk.setRequestedExecutionDate(payment.getRequestedExecutionDate());
-        bulk.setPayments(mapToListSpiSinglePayment(payment.getPayments(), paymentProduct));
+        bulk.setPayments(mapToListSpiSinglePayment(payment.getPayments(), paymentProduct, tppInfo));
         bulk.setRequestedExecutionDate(payment.getRequestedExecutionDate());
         return bulk;
     }
 
-    private List<SpiSinglePayment> mapToListSpiSinglePayment(List<SinglePayment> payments, String paymentProduct) {
+    private List<SpiSinglePayment> mapToListSpiSinglePayment(List<SinglePayment> payments, String paymentProduct, TppInfo tppInfo) {
         return payments.stream()
-                   .map(p -> xs2aToSpiSinglePaymentMapper.mapToSpiSinglePayment(p, paymentProduct))
+                   .map(p -> xs2aToSpiSinglePaymentMapper.mapToSpiSinglePayment(p, paymentProduct, tppInfo))
                    .collect(Collectors.toList());
     }
 }

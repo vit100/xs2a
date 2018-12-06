@@ -44,9 +44,6 @@ import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
-import de.adorsys.psd2.xs2a.spi.service.BulkPaymentSpi;
-import de.adorsys.psd2.xs2a.spi.service.PeriodicPaymentSpi;
-import de.adorsys.psd2.xs2a.spi.service.SinglePaymentSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,9 +76,6 @@ public class PaymentService {
     private final CreateBulkPaymentService createBulkPaymentService;
     private final Xs2aPisConsentMapper xs2aPisConsentMapper;
     private final Xs2aToSpiPsuDataMapper psuDataMapper;
-    private final SinglePaymentSpi singlePaymentSpi;
-    private final PeriodicPaymentSpi periodicPaymentSpi;
-    private final BulkPaymentSpi bulkPaymentSpi;
     private final SpiToXs2aTransactionalStatusMapper spiToXs2aTransactionalStatus;
     private final AspspProfileServiceWrapper profileService;
     private final CancelPaymentService cancelPaymentService;
@@ -248,7 +242,7 @@ public class PaymentService {
                        .build();
         }
 
-        Optional<? extends SpiPayment> spiPaymentOptional = spiPaymentFactory.createSpiPaymentByPaymentType(pisPayment, pisConsent.getPaymentProduct(), paymentType);
+        Optional<? extends SpiPayment> spiPaymentOptional = spiPaymentFactory.createSpiPaymentByPaymentType(pisPayment, pisConsent.getPaymentProduct(), paymentType, tppService.getTppInfo());
 
         if (!spiPaymentOptional.isPresent()) {
             log.error("Unknown payment type: {}", paymentType);

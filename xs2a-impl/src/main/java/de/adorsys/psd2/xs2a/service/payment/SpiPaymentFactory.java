@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
@@ -57,14 +58,14 @@ public class SpiPaymentFactory {
      * @param paymentType    PaymentType
      * @return Optional of SpiPayment subclass of requested payment type or throws IllegalArgumentException for unknown payment type
      */
-    public Optional<? extends SpiPayment> createSpiPaymentByPaymentType(PisPayment pisPayment, String paymentProduct, PaymentType paymentType) {
+    public Optional<? extends SpiPayment> createSpiPaymentByPaymentType(PisPayment pisPayment, String paymentProduct, PaymentType paymentType, TppInfo tppInfo) {
         switch (paymentType) {
             case SINGLE:
-                return createSpiSinglePayment(pisPayment, paymentProduct);
+                return createSpiSinglePayment(pisPayment, paymentProduct, tppInfo);
             case PERIODIC:
-                return createSpiPeriodicPayment(pisPayment, paymentProduct);
+                return createSpiPeriodicPayment(pisPayment, paymentProduct, tppInfo);
             case BULK:
-                return createSpiBulkPayment(pisPayment, paymentProduct);
+                return createSpiBulkPayment(pisPayment, paymentProduct, tppInfo);
             default:
                 log.error("Unknown payment type: {}", paymentType);
                 throw new IllegalArgumentException("Unknown payment type");
@@ -78,14 +79,14 @@ public class SpiPaymentFactory {
      * @param paymentProduct PaymentProduct
      * @return Optional of SpiSinglePayment from PisPayment
      */
-    public Optional<SpiSinglePayment> createSpiSinglePayment(PisPayment pisPayment, String paymentProduct) {
+    public Optional<SpiSinglePayment> createSpiSinglePayment(PisPayment pisPayment, String paymentProduct, TppInfo tppInfo) {
         SinglePayment singlePayment = cmsToXs2aPaymentMapper.mapToSinglePayment(pisPayment);
 
         if (singlePayment == null) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(xs2aToSpiSinglePaymentMapper.mapToSpiSinglePayment(singlePayment, paymentProduct));
+        return Optional.ofNullable(xs2aToSpiSinglePaymentMapper.mapToSpiSinglePayment(singlePayment, paymentProduct, tppInfo));
     }
 
     /**
@@ -95,14 +96,14 @@ public class SpiPaymentFactory {
      * @param paymentProduct PaymentProduct
      * @return Optional of SpiPeriodicPayment from PisPayment
      */
-    public Optional<SpiPeriodicPayment> createSpiPeriodicPayment(PisPayment pisPayment, String paymentProduct) {
+    public Optional<SpiPeriodicPayment> createSpiPeriodicPayment(PisPayment pisPayment, String paymentProduct, TppInfo tppInfo) {
         PeriodicPayment periodicPayment = cmsToXs2aPaymentMapper.mapToPeriodicPayment(pisPayment);
 
         if (periodicPayment == null) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(xs2aToSpiPeriodicPaymentMapper.mapToSpiPeriodicPayment(periodicPayment, paymentProduct));
+        return Optional.ofNullable(xs2aToSpiPeriodicPaymentMapper.mapToSpiPeriodicPayment(periodicPayment, paymentProduct, tppInfo));
     }
 
     /**
@@ -112,13 +113,13 @@ public class SpiPaymentFactory {
      * @param paymentProduct PaymentProduct
      * @return Optional of SpiBulkPayment from PisPayment
      */
-    public Optional<SpiBulkPayment> createSpiBulkPayment(PisPayment pisPayment, String paymentProduct) {
+    public Optional<SpiBulkPayment> createSpiBulkPayment(PisPayment pisPayment, String paymentProduct, TppInfo tppInfo) {
         BulkPayment bulkPayment = cmsToXs2aPaymentMapper.mapToBulkPayment(Collections.singletonList(pisPayment));
 
         if (bulkPayment == null) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(xs2aToSpiBulkPaymentMapper.mapToSpiBulkPayment(bulkPayment, paymentProduct));
+        return Optional.ofNullable(xs2aToSpiBulkPaymentMapper.mapToSpiBulkPayment(bulkPayment, paymentProduct, tppInfo));
     }
 }

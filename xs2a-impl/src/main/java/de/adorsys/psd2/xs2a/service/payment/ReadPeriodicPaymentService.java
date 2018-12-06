@@ -46,7 +46,7 @@ public class ReadPeriodicPaymentService extends ReadPaymentService<PaymentInform
 
     @Override
     public PaymentInformationResponse<PeriodicPayment> getPayment(PisPayment pisPayment, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
-        Optional<SpiPeriodicPayment> spiPaymentOptional = spiPaymentFactory.createSpiPeriodicPayment(pisPayment, paymentProduct);
+        Optional<SpiPeriodicPayment> spiPaymentOptional = spiPaymentFactory.createSpiPeriodicPayment(pisPayment, paymentProduct, tppService.getTppInfo());
 
         if (!spiPaymentOptional.isPresent()) {
             return new PaymentInformationResponse<>(
