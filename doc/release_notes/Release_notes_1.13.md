@@ -55,3 +55,9 @@ See corresponding method's javadocs for more details.
 ## Store TppInfo in AIS Consent
 Now AIS Consent contains TppInfo object instead of TPP Id.
 Developers should apply new liquibase migration scripts in order to update the database.
+
+## Update payment status in consent management
+Each time TPP asks for payment or payment status by payment id, XS2A will implicitly update payment status in CMS DB after SPI call is proceeded.
+If this very time payment has finalised status, we will check if status from SPI is the same: 
+* if the same, the updating process will be omitted;
+* if not, FORMAT_ERROR (400) "Payment is finalised already, so its status cannot be changed" will be returned.
