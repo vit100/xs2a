@@ -47,12 +47,39 @@
             <column name="payment" type="${blob.type}">
                 <constraints nullable="false"/>
             </column>
+            <column name="psu_id" type="BIGINT"/>
+            <column name="tpp_info_id" type="BIGINT"/>
             <column name="consent_id" type="BIGINT"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="pis_common_payment"
-                                 constraintName="fk_pis_com_payment_pis_consent" deferrable="false"
+                                 constraintName="fk_com_payment_pis_consent" deferrable="false"
                                  initiallyDeferred="false"
                                  referencedColumnNames="id" referencedTableName="pis_consent"/>
+
+        <addForeignKeyConstraint baseColumnNames="psu_id" baseTableName="pis_common_payment"
+                                 constraintName="fk_com_payment_psu_data" deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id" referencedTableName="psu_data"/>
+
+        <addForeignKeyConstraint baseColumnNames="tpp_info_id" baseTableName="pis_common_payment"
+                                 constraintName="fk_com_payment_tpp_info" deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="tpp_info_id" referencedTableName="tpp_info"/>
+
     </changeSet>
+
+    <changeSet author="iiu@adorsys.com.ua" id="2018-11-28-3">
+        <comment>Add many to one relationship with pis_common_data</comment>
+
+        <addColumn tableName="pis_consent_authorization">
+            <column name="payment_id" type="BIGINT"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="payment_id" baseTableName="pis_consent_authorization"
+                                 constraintName="fk_pis_auth_com_payment" deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id" referencedTableName="pis_common_payment"/>
+    </changeSet>
+
 </databaseChangeLog>

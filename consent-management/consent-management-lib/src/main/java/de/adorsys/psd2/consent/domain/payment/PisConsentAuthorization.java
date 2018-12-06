@@ -60,6 +60,10 @@ public class PisConsentAuthorization {
     @Column(name = "expiration_timestamp")
     private OffsetDateTime redirectUrlExpirationTimestamp;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private PisCommonPaymentData paymentData;
+
     public boolean isNotExpired() {
         return redirectUrlExpirationTimestamp.isAfter(OffsetDateTime.now());
     }

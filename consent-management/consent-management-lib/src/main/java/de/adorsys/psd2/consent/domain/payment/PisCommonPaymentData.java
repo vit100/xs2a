@@ -17,6 +17,8 @@
 package de.adorsys.psd2.consent.domain.payment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.adorsys.psd2.consent.domain.PsuData;
+import de.adorsys.psd2.consent.domain.TppInfoEntity;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import io.swagger.annotations.ApiModel;
@@ -25,6 +27,8 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity(name = "pis_common_payment")
@@ -58,8 +62,23 @@ public class PisCommonPaymentData {
     @ApiModelProperty(value = "All data about the payment", required = true)
     private byte[] payment;
 
+    @OneToMany(mappedBy = "psuId", cascade = CascadeType.ALL)
+    @ApiModelProperty(value = "List of PSU", required = true)
+    private List<PsuData> psuData;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tpp_info_id")
+    @ApiModelProperty(value = "Information about TPP", required = true)
+    private TppInfoEntity tppInfo;
+
+    @OneToMany(mappedBy = "paymentData",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
+    @ApiModelProperty(value = "List of authorizations related to the consent", required = true)
+    private List<PisConsentAuthorization> authorizations = new ArrayList<>();
+
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "consent_id")
     @ApiModelProperty(value = "Detailed information about consent")
     private PisConsent consent;
