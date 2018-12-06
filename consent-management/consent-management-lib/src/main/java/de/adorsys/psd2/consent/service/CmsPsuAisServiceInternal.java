@@ -31,7 +31,6 @@ import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
-import de.adorsys.psd2.xs2a.core.tpp.TppRedirectUri;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -197,23 +196,9 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
 
         AisAccountConsent aisAccountConsent = consentMapper.mapToAisAccountConsent(aisConsent);
 
-        if (aisAccountConsent == null) {
-            return Optional.empty();
-        }
-
-        TppInfo tppInfo = aisAccountConsent.getTppInfo();
-
-        if (tppInfo == null) {
-            return Optional.empty();
-        }
-
-        TppRedirectUri tppRedirectUri = tppInfo.getTppRedirectUri();
-
-        if (tppRedirectUri == null) {
-            return Optional.empty();
-        }
-
-        return Optional.of(aisAccountConsent)
-                   .map(c -> new CmsAisConsentResponse(aisAccountConsent, redirectId, tppRedirectUri.getUri(), tppRedirectUri.getNokUri()));
+        return Optional.ofNullable(aisAccountConsent)
+                   .map(AisAccountConsent::getTppInfo)
+                   .map(TppInfo::getTppRedirectUri)
+                   .map(uri -> new CmsAisConsentResponse(aisAccountConsent, redirectId, uri.getUri(), uri.getNokUri()));
     }
 }
