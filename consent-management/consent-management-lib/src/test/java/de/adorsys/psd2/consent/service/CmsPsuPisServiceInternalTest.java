@@ -91,6 +91,8 @@ public class CmsPsuPisServiceInternalTest {
     PsuDataRepository psuDataRepository;
     @Mock
     PsuDataMapper psuDataMapper;
+    @Mock
+    CommonPaymentDataService commonPaymentDataService;
 
     @Before
     public void setUp() {
@@ -125,6 +127,9 @@ public class CmsPsuPisServiceInternalTest {
             .thenReturn(Optional.empty());
         when(pisConsentService.getDecryptedId(PAYMENT_ID))
             .thenReturn(Optional.of(PAYMENT_ID));
+
+        when(commonPaymentDataService.getPisCommonPaymentData(WRONG_PAYMENT_ID))
+            .thenReturn(Optional.empty());
 
         when(pisConsentService.getDecryptedId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());

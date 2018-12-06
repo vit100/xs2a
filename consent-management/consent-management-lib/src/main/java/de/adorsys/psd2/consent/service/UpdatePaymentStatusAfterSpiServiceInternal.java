@@ -20,7 +20,6 @@ import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiService;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
-import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +38,8 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePaymentStatusAfterSpiService {
     private final PisPaymentDataRepository pisPaymentDataRepository;
-    private final PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
     private final PisConsentService pisConsentService;
+    private final CommonPaymentDataService commonPaymentDataService;
 
     @Override
     @Transactional
@@ -51,22 +50,11 @@ public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePayment
         if (list.isPresent()) {
             return updateStatusInPaymentDataList(list.get(), status);
         } else {
-            Optional<PisCommonPaymentData> paymentDataOptional = getPisCommonPaymentData(encryptedPaymentId);
+            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(encryptedPaymentId);
 
             return paymentDataOptional.isPresent()
-                       && updateStatusInPaymentData(paymentDataOptional.get(), status);
+                       && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
         }
-    }
-
-    private Optional<PisCommonPaymentData> getPisCommonPaymentData(String encryptedPaymentId) {
-        return pisConsentService.getDecryptedId(encryptedPaymentId)
-                   .flatMap(pisCommonPaymentDataRepository::findByPaymentId);
-    }
-
-    private boolean updateStatusInPaymentData(PisCommonPaymentData paymentData, TransactionStatus status) {
-        paymentData.setTransactionStatus(status);
-        PisCommonPaymentData saved = pisCommonPaymentDataRepository.save(paymentData);
-        return saved.getPaymentId() != null;
     }
 
     private boolean updateStatusInPaymentDataList(List<PisPaymentData> payments, TransactionStatus newStatus) {

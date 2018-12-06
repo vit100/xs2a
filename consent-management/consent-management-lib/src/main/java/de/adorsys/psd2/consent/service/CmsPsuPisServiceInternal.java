@@ -56,6 +56,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final PisConsentAuthorizationRepository pisConsentAuthorizationRepository;
     private final CmsPsuPisMapper cmsPsuPisMapper;
     private final PisConsentService pisConsentService;
+    private final CommonPaymentDataService commonPaymentDataService;
     private final PsuDataRepository psuDataRepository;
     private final PsuDataMapper psuDataMapper;
 
@@ -85,7 +86,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                            .filter(CollectionUtils::isNotEmpty)
                            .map(cmsPsuPisMapper::mapToCmsPayment);
             } else {
-                return getPisCommonPaymentData(encryptedPaymentId)
+                return commonPaymentDataService.getPisCommonPaymentData(encryptedPaymentId)
                            .map(cmsPsuPisMapper::mapToCmsPayment);
             }
         }
@@ -134,10 +135,10 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         if (list.isPresent()) {
             return updateStatusInPaymentDataList(list.get(), status);
         } else {
-            Optional<PisCommonPaymentData> paymentDataOptional = getPisCommonPaymentData(encryptedPaymentId);
+            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(encryptedPaymentId);
 
             return paymentDataOptional.isPresent()
-                       && updateStatusInPaymentData(paymentDataOptional.get(), status);
+                       && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
         }
     }
 
@@ -182,12 +183,6 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         return true;
     }
 
-    private boolean updateStatusInPaymentData(PisCommonPaymentData paymentData, TransactionStatus status) {
-        paymentData.setTransactionStatus(status);
-        PisCommonPaymentData saved = pisCommonPaymentDataRepository.save(paymentData);
-        return saved.getPaymentId() != null;
-    }
-
     private Optional<List<PisPaymentData>> getPaymentDataList(String encryptedPaymentId) {
         return pisConsentService.getDecryptedId(encryptedPaymentId)
                    .flatMap(pisPaymentDataRepository::findByPaymentId);
@@ -216,11 +211,6 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private void changeAuthorisationStatusToFailed(PisConsentAuthorization authorisation) {
         authorisation.setScaStatus(ScaStatus.FAILED);
         pisConsentAuthorizationRepository.save(authorisation);
-    }
-
-    private Optional<PisCommonPaymentData> getPisCommonPaymentData(String encryptedPaymentId) {
-        return pisConsentService.getDecryptedId(encryptedPaymentId)
-                   .flatMap(pisCommonPaymentDataRepository::findByPaymentId);
     }
 
     private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
