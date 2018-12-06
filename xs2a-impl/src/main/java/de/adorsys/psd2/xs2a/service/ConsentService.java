@@ -196,7 +196,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
                    : ResponseObject.<AccountConsent>builder().body(consent).build();
     }
 
-    ResponseObject<AccountConsent> getValidatedConsent(String consentId, boolean withBalance) {
+    public ResponseObject<AccountConsent> getValidatedConsent(String consentId, boolean withBalance) {
         AccountConsent accountConsent = getValidatedAccountConsent(consentId);
 
         if (accountConsent == null) {
@@ -226,7 +226,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
         return ResponseObject.<AccountConsent>builder().body(accountConsent).build();
     }
 
-    ResponseObject<AccountConsent> getValidatedConsent(String consentId) {
+    public ResponseObject<AccountConsent> getValidatedConsent(String consentId) {
         return getValidatedConsent(consentId, false);
     }
 
@@ -351,7 +351,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
                                   ::build);
     }
 
-    boolean isValidAccountByAccess(String resourceId, List<Xs2aAccountReference> allowedAccountData) {
+    public boolean isValidAccountByAccess(String resourceId, List<Xs2aAccountReference> allowedAccountData) {
         return CollectionUtils.isNotEmpty(allowedAccountData)
                    && allowedAccountData.stream()
                           .anyMatch(a -> a.getResourceId().equals(resourceId));

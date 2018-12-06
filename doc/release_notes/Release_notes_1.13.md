@@ -68,6 +68,6 @@ de.adorsys.psd2.consent.web.aspsp.controller, de.adorsys.psd2.consent.web.psu.co
 
 ## Update payment status in consent management
 Each time TPP asks for payment or payment status by payment id, XS2A will implicitly update payment status in CMS DB after SPI call is proceeded.
-If this very time payment has finalised status, we will check if status from SPI is the same: 
+When the payment is completed at this time, we will check if status from SPI is the same: 
 * if the same, the updating process will be omitted;
 * if not, FORMAT_ERROR (400) "Payment is finalised already, so its status cannot be changed" will be returned.
