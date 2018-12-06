@@ -24,6 +24,14 @@ import java.util.Optional;
 
 @Component
 public class TppRedirectUriMapper {
+    /**
+     * Maps redirectUri and nokRedirectUri to TppRedirectUri object
+     *
+     * @param redirectUri    URI of the TPP, where the flow will be redirected to
+     * @param nokRedirectUri Nok URI of the TPP, where the flow will be redirected to in case of a negative response
+     * @return new TppRedirectUri object if the given redirectUri wasn't null, <code>null</code> otherwise.
+     * Returned TppRedirectUri will always contain redirectUri, but the nokRedirectUri may be null in case it wasn't provided to the mapper.
+     */
     public @Nullable TppRedirectUri mapToTppRedirectUri(@Nullable String redirectUri, @Nullable String nokRedirectUri) {
         return Optional.ofNullable(redirectUri)
                    .map(redirect -> new TppRedirectUri(redirect, nokRedirectUri))
