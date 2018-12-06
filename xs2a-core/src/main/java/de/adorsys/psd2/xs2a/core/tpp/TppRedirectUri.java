@@ -17,7 +17,6 @@
 package de.adorsys.psd2.xs2a.core.tpp;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
  * TPP redirect URIs, used in Redirect SCA approach.
  */
 @Value
-@AllArgsConstructor
 public class TppRedirectUri {
     @NotNull
     @ApiModelProperty(value = "Redirect URI", example = "Redirect URI", required = true)
