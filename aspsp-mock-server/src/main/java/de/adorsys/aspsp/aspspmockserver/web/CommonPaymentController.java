@@ -31,8 +31,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/payments/common")
-@Api(tags = "Payments", description = "Provides access to payments")
-public class PaymentCommonController {
+@Api(tags = "Common payments", description = "Provides access to common payments")
+public class CommonPaymentController {
     private PaymentService paymentService;
 
     @ApiOperation(value = "Creates a payment based on request body", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})

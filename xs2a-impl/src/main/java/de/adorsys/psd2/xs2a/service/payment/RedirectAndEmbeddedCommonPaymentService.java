@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
 // TODO add add checking SpiResponse on error https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/450
 @Service
 @RequiredArgsConstructor
-public class RedirectAndEmbeddedPaymentCommonService implements ScaPaymentCommonService {
+public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPaymentService {
 
     private final CommonPaymentSpi commonPaymentSpi;
     private final SpiToXs2aPaymentMapper spiToXs2aPaymentMapper;

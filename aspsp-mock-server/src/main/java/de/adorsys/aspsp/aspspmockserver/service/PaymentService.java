@@ -188,14 +188,23 @@ public class PaymentService {
         consentRestTemplate.put(remotePisConsentUrls.updatePisConsentStatus(), null, consentId, consentStatus.name());
     }
 
+    /**
+     *
+     * @param paymentId Payment identifier
+     * @return AspspPayment information about payment
+     */
     public List<AspspPayment> getPaymentById(String paymentId) {
         return paymentRepository.findByPaymentIdOrBulkId(paymentId, paymentId);
     }
 
+    /**
+     *
+     * @param paymentId Payment identifier
+     * @return AspspPaymentInfo common information about payment
+     */
     public Optional<AspspPaymentInfo> getCommonPaymentById(String paymentId) {
         return paymentRepository.findByPaymentId(paymentId)
                    .map(paymentMapper::mapToAspspPaymentInfo);
-
     }
 
     /**
@@ -236,6 +245,10 @@ public class PaymentService {
         return Optional.of(getPaymentCancellationResponse(true, AspspTransactionStatus.ACTC));
     }
 
+    /**
+     *
+     * @return List of payments
+     */
     public List<AspspPayment> getAllPayments() {
         return paymentRepository.findAll();
     }

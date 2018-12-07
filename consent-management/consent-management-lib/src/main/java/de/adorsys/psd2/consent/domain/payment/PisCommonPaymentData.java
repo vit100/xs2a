@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString(exclude = "consent")
 @Entity(name = "pis_common_payment")
 @ApiModel(description = "pis common payment entity", value = "PisCommonPaymentData")
-@ToString(exclude = "consent")
 public class PisCommonPaymentData {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pis_common_payment_generator")
