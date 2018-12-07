@@ -42,6 +42,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Component
 @RequiredArgsConstructor
 public class AccountSpiImpl implements AccountSpi {
@@ -131,11 +133,45 @@ public class AccountSpiImpl implements AccountSpi {
                 balances = accountDetails.getBalances();
             }
 
-            SpiTransactionReport transactionReport = new SpiTransactionReport(transactions, balances, SpiTransactionReport.RESPONSE_TYPE_JSON, null);
+            SpiResponse.SpiResponseBuilder<SpiTransactionReport> responseBuilder =
+                SpiResponse.<SpiTransactionReport>builder()
+                    .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()));
+            if (acceptMediaType.contains(SpiTransactionReport.RESPONSE_TYPE_JSON)) {
+                SpiTransactionReport transactionReport = new SpiTransactionReport(transactions,
+                                                                                  balances,
+                                                                                  SpiTransactionReport.RESPONSE_TYPE_JSON,
+                                                                                  null
+                );
+                responseBuilder = responseBuilder.payload(transactionReport);
+            } else if (acceptMediaType.contains(SpiTransactionReport.RESPONSE_TYPE_TEXT)) {
 
-            return SpiResponse.<SpiTransactionReport>builder()
-                .payload(transactionReport)
-                .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                StringBuilder textResponseBuilder = new StringBuilder();
+                int transactionsCount = transactions.size();
+                textResponseBuilder
+                    .append("Transactions report in plain text format.\n")
+                    .append("=========================================\n")
+                    .append("Transactions count: ").append(transactionsCount).append("\n\n");
+                if (transactionsCount > 0) {
+                    textResponseBuilder.append("Transactions:\n");
+                    for (SpiTransaction transaction: transactions) {
+                        textResponseBuilder.append(transaction).append("\n");
+                    }
+                }
+                textResponseBuilder.append("\nEnd of report.");
+
+                SpiTransactionReport transactionReport = new SpiTransactionReport(Collections.emptyList(),
+                                                                                  Collections.emptyList(),
+                                                                                  SpiTransactionReport.RESPONSE_TYPE_TEXT,
+                                                                                  textResponseBuilder.toString().getBytes(UTF_8)
+                );
+
+                responseBuilder = responseBuilder.payload(transactionReport);
+            } else {
+                return responseBuilder
+                           .fail(SpiResponseStatus.NOT_SUPPORTED);
+            }
+
+            return responseBuilder
                 .success();
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {

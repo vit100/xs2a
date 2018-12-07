@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
-import de.adorsys.psd2.xs2a.core.profile.PaymentProduct;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
@@ -93,7 +92,7 @@ public class CancelPaymentServiceTest {
     public void cancelPaymentWithoutAuthorisation_Success() {
         //When
         ResponseObject<CancelPaymentResponse> response =
-            cancelPaymentService.cancelPaymentWithoutAuthorisation(getSpiPsuData(), getSpiPayment(PAYMENT_ID), getAspspConsentData());
+            cancelPaymentService.cancelPaymentWithoutAuthorisation(getSpiPsuData(), getSpiPayment(PAYMENT_ID));
 
         //Than
         assertThat(response.hasError()).isFalse();
@@ -104,7 +103,7 @@ public class CancelPaymentServiceTest {
     public void cancelPaymentWithoutAuthorisation_Failure_WrongId() {
         //When
         ResponseObject<CancelPaymentResponse> response =
-            cancelPaymentService.cancelPaymentWithoutAuthorisation(getSpiPsuData(), getSpiPayment(WRONG_PAYMENT_ID), getAspspConsentData());
+            cancelPaymentService.cancelPaymentWithoutAuthorisation(getSpiPsuData(), getSpiPayment(WRONG_PAYMENT_ID));
 
         //Than
         assertThat(response.hasError()).isTrue();
@@ -116,7 +115,7 @@ public class CancelPaymentServiceTest {
     public void cancelPaymentWithAuthorisation_Success() {
         //When
         ResponseObject<CancelPaymentResponse> response =
-            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(PAYMENT_ID), getAspspConsentData());
+            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(PAYMENT_ID));
 
         //Than
         assertThat(response.hasError()).isFalse();
@@ -127,7 +126,7 @@ public class CancelPaymentServiceTest {
     public void cancelPaymentWithAuthorisation_Failure_WrongId() {
         //When
         ResponseObject<CancelPaymentResponse> response =
-            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(WRONG_PAYMENT_ID), getAspspConsentData());
+            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(WRONG_PAYMENT_ID));
 
         //Than
         assertThat(response.hasError()).isTrue();
@@ -154,12 +153,8 @@ public class CancelPaymentServiceTest {
     }
 
     private SpiPayment getSpiPayment(String paymentId) {
-        SpiSinglePayment spiSinglePayment = new SpiSinglePayment(PaymentProduct.SEPA);
+        SpiSinglePayment spiSinglePayment = new SpiSinglePayment("sepa-credit-transfers");
         spiSinglePayment.setPaymentId(paymentId);
         return spiSinglePayment;
-    }
-
-    private AspspConsentData getAspspConsentData() {
-        return new AspspConsentData("data".getBytes(), "consent id");
     }
 }
