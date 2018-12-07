@@ -38,9 +38,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class Xs2aToCmsPisConsentRequest {
+public class Xs2aToCmsPisConsentRequestMapper {
 
-    public PisConsentRequest mapToCmsPisConsentRequest(PaymentInitialisationRequest paymentInitRequest) {
+    public PisConsentRequest mapToCmsPisConsentRequest(CommonPayment paymentInitRequest) {
         PisConsentRequest request = new PisConsentRequest();
         request.setPayments(Collections.emptyList());
         request.setPaymentInfo(mapToPisPaymentInfo(paymentInitRequest));
@@ -52,7 +52,7 @@ public class Xs2aToCmsPisConsentRequest {
         return request;
     }
 
-    private PisPaymentInfo mapToPisPaymentInfo(PaymentInitialisationRequest paymentInitRequest) {
+    private PisPaymentInfo mapToPisPaymentInfo(CommonPayment paymentInitRequest) {
         return Optional.ofNullable(paymentInitRequest)
                    .map(dta -> {
                             PisPaymentInfo paymentInfo = new PisPaymentInfo();

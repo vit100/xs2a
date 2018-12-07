@@ -21,7 +21,7 @@ import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
 import de.adorsys.psd2.xs2a.domain.consent.Xsa2CreatePisConsentAuthorisationResponse;
-import de.adorsys.psd2.xs2a.domain.pis.PaymentInitialisationRequest;
+import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.exception.MessageError;
@@ -36,7 +36,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CreateCommonPaymentService implements CreatePaymentService<PaymentInitialisationRequest, PaymentInitiationResponse> {
+public class CreateCommonPaymentService implements CreatePaymentService<CommonPayment, PaymentInitiationResponse> {
     private final ScaCommonPaymentService scaPaymentService;
     private final Xs2aPisConsentService pisConsentService;
     private final AuthorisationMethodService authorisationMethodService;
@@ -46,31 +46,31 @@ public class CreateCommonPaymentService implements CreatePaymentService<PaymentI
     /**
      * Initiates payment
      *
-     * @param paymentInitialisationRequest payment information
-     * @param paymentInitiationParameters  payment initiation parameters
-     * @param pisConsent                   consent information
-     * @param tppInfo                      information about particular TPP
-     * @return Response containing information about created periodic payment or corresponding error
+     * @param payment                     payment information
+     * @param paymentInitiationParameters payment initiation parameters
+     * @param pisConsent                  consent information
+     * @param tppInfo                     information about particular TPP
+     * @return Response containing information about created common payment or corresponding error
      */
     @Override
-    public ResponseObject<PaymentInitiationResponse> createPayment(PaymentInitialisationRequest paymentInitialisationRequest, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisConsent pisConsent) {
+    public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisConsent pisConsent) {
         String externalPaymentId = pisConsent.getConsentId();
 
         // we need to get decrypted payment ID
         String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
-        paymentInitialisationRequest.setPaymentId(internalPaymentId);
+        payment.setPaymentId(internalPaymentId);
 
-        PaymentInitiationResponse response = scaPaymentService.createPayment(paymentInitialisationRequest, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisConsent);
+        PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisConsent);
 
         response.setPisConsentId(pisConsent.getConsentId());
 
-        paymentInitialisationRequest.setTransactionStatus(response.getTransactionStatus());
+        payment.setTransactionStatus(response.getTransactionStatus());
 
-        pisConsentService.updatePaymentInPisConsent(paymentInitialisationRequest, pisConsent.getConsentId());
+        pisConsentService.updatePaymentInPisConsent(payment, pisConsent.getConsentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {
-            Optional<Xsa2CreatePisConsentAuthorisationResponse> consentAuthorisation = pisScaAuthorisationService.createConsentAuthorisation(externalPaymentId, paymentInitialisationRequest.getPaymentType(), paymentInitiationParameters.getPsuData());
+            Optional<Xsa2CreatePisConsentAuthorisationResponse> consentAuthorisation = pisScaAuthorisationService.createConsentAuthorisation(externalPaymentId, payment.getPaymentType(), paymentInitiationParameters.getPsuData());
             if (!consentAuthorisation.isPresent()) {
                 return ResponseObject.<PaymentInitiationResponse>builder()
                            .fail(new MessageError(MessageErrorCode.CONSENT_INVALID))

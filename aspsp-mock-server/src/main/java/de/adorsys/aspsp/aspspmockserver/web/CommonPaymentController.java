@@ -20,7 +20,7 @@ import de.adorsys.aspsp.aspspmockserver.service.PaymentService;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspPaymentInfo;
 import io.swagger.annotations.*;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +29,11 @@ import java.util.Optional;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(path = "/payments/common")
 @Api(tags = "Common payments", description = "Provides access to common payments")
 public class CommonPaymentController {
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
 
     @ApiOperation(value = "Creates a payment based on request body", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})
     @ApiResponses(value = {

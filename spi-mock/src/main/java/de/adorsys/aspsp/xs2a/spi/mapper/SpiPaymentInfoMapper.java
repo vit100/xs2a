@@ -33,14 +33,12 @@ public class SpiPaymentInfoMapper {
     private final SpiPaymentMapper spiPaymentMapper;
 
     public AspspPaymentInfo mapToAspspPayment(@NotNull SpiPaymentInfo payment, SpiTransactionStatus transactionStatus) {
-        AspspPaymentInfo aspspPaymentInfo = new AspspPaymentInfo();
-        aspspPaymentInfo.setPaymentId(payment.getPaymentId());
-        aspspPaymentInfo.setPaymentStatus(spiPaymentMapper.mapToAspspTransactionStatus(transactionStatus));
-        aspspPaymentInfo.setPaymentProduct(payment.getPaymentProduct());
-        aspspPaymentInfo.setPisPaymentType(payment.getPaymentType().name());
-        aspspPaymentInfo.setPaymentData(payment.getPaymentData());
-
-        return aspspPaymentInfo;
+        return new AspspPaymentInfo(payment.getPaymentId(),
+                                    spiPaymentMapper.mapToAspspTransactionStatus(transactionStatus),
+                                    payment.getPaymentProduct(),
+                                    payment.getPaymentType().name(),
+                                    payment.getPaymentData()
+        );
     }
 
     public SpiPaymentInfo mapToSpiPaymentInfo(@NotNull AspspPaymentInfo payment) {

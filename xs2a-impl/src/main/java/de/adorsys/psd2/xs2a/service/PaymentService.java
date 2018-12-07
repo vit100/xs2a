@@ -110,7 +110,7 @@ public class PaymentService {
         }
 
         if (isRawPaymentProduct(paymentInitiationParameters.getPaymentProduct())) {
-            PaymentInitialisationRequest request = new PaymentInitialisationRequest();
+            CommonPayment request = new CommonPayment();
             request.setPaymentType(paymentInitiationParameters.getPaymentType());
             request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
             request.setPaymentData((byte[]) payment);

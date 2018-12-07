@@ -41,13 +41,12 @@ public class PaymentMapper {
     }
 
     public AspspPaymentInfo mapToAspspPaymentInfo(AspspPayment aspspPayment) {
-        AspspPaymentInfo paymentInfo = new AspspPaymentInfo();
-        paymentInfo.setPaymentId(aspspPayment.getPaymentId());
-        paymentInfo.setPaymentStatus(aspspPayment.getPaymentStatus());
-        paymentInfo.setPaymentProduct(aspspPayment.getPaymentProduct());
-        paymentInfo.setPisPaymentType(aspspPayment.getPisPaymentType().name());
-        paymentInfo.setPaymentData(aspspPayment.getPaymentData());
-        return paymentInfo;
+        return new AspspPaymentInfo(aspspPayment.getPaymentId(),
+                                    aspspPayment.getPaymentStatus(),
+                                    aspspPayment.getPaymentProduct(),
+                                    aspspPayment.getPisPaymentType().name(),
+                                    aspspPayment.getPaymentData()
+        );
     }
 
     public List<AspspPayment> mapToAspspPaymentList(List<AspspSinglePayment> payments, String bulkId) {

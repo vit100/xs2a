@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
-public class PaymentInitialisationRequest {
+public class CommonPayment {
     private String paymentId;
     private String paymentProduct;
     private TransactionStatus transactionStatus;

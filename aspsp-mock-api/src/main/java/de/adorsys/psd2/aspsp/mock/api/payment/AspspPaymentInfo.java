@@ -17,9 +17,9 @@
 package de.adorsys.psd2.aspsp.mock.api.payment;
 
 import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class AspspPaymentInfo {
     private String paymentId;
     private AspspTransactionStatus paymentStatus;

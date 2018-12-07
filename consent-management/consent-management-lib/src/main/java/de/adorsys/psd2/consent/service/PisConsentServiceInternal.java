@@ -328,6 +328,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     private Optional<PisConsent> readReceivedConsentByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
+                                              .filter(CollectionUtils::isNotEmpty)
                                               .map(list -> list.get(0).getConsent());
 
         if (!consentOpt.isPresent()) {
@@ -341,6 +342,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     private Optional<PisConsent> readPisConsentByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
+                                              .filter(CollectionUtils::isNotEmpty)
                                               .map(list -> list.get(0).getConsent());
 
         if (!consentOpt.isPresent()) {

@@ -23,7 +23,7 @@ import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.pis.*;
-import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aToCmsPisConsentRequest;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aToCmsPisConsentRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class Xs2aPisConsentService {
     private final PisConsentService pisConsentService;
-    private final Xs2aToCmsPisConsentRequest xs2aToCmsPisConsentRequest;
+    private final Xs2aToCmsPisConsentRequestMapper xs2aToCmsPisConsentRequestMapper;
 
     /**
      * Creates PIS consent
@@ -57,24 +57,24 @@ public class Xs2aPisConsentService {
         return pisConsentService.getConsentById(consentId);
     }
 
-    public void updatePaymentInPisConsent(PaymentInitialisationRequest payment, String consentId) {
-        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequest.mapToCmsPisConsentRequest(payment);
+    public void updatePaymentInPisConsent(CommonPayment payment, String consentId) {
+        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequestMapper.mapToCmsPisConsentRequest(payment);
         pisConsentService.updatePaymentConsent(pisConsentRequest, consentId);
     }
 
     // TODO  will be deleted!
     public void updateSinglePaymentInPisConsent(SinglePayment singlePayment, PaymentInitiationParameters paymentInitiationParameters, String consentId) {
-        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequest.mapToCmsSinglePisConsentRequest(singlePayment, paymentInitiationParameters.getPaymentProduct());
+        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequestMapper.mapToCmsSinglePisConsentRequest(singlePayment, paymentInitiationParameters.getPaymentProduct());
         pisConsentService.updatePaymentConsent(pisConsentRequest, consentId);
     }
 
     public void updatePeriodicPaymentInPisConsent(PeriodicPayment periodicPayment, PaymentInitiationParameters paymentInitiationParameters, String consentId) {
-        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequest.mapToCmsPeriodicPisConsentRequest(periodicPayment, paymentInitiationParameters.getPaymentProduct());
+        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequestMapper.mapToCmsPeriodicPisConsentRequest(periodicPayment, paymentInitiationParameters.getPaymentProduct());
         pisConsentService.updatePaymentConsent(pisConsentRequest, consentId);
     }
 
     public void updateBulkPaymentInPisConsent(BulkPayment bulkPayment, PaymentInitiationParameters paymentInitiationParameters, String consentId) {
-        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequest.mapToCmsBulkPisConsentRequest(bulkPayment, paymentInitiationParameters.getPaymentProduct());
+        PisConsentRequest pisConsentRequest = xs2aToCmsPisConsentRequestMapper.mapToCmsBulkPisConsentRequest(bulkPayment, paymentInitiationParameters.getPaymentProduct());
         pisConsentService.updatePaymentConsent(pisConsentRequest, consentId);
     }
 

@@ -52,9 +52,9 @@ public class PisCommonPaymentData {
     @ApiModelProperty(value = "Payment product", required = true, example = "sepa-credit-transfers")
     private String paymentProduct;
 
-    @Column(name = "transaction_status")
+    @Column(name = "transaction_status", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    @ApiModelProperty(name = "transactionStatus", example = "ACCP")
+    @ApiModelProperty(name = "transactionStatus", example = "ACCP", required = true)
     private TransactionStatus transactionStatus;
 
     @Lob
@@ -64,7 +64,7 @@ public class PisCommonPaymentData {
 
     @OneToMany(mappedBy = "psuId", cascade = CascadeType.ALL)
     @ApiModelProperty(value = "List of PSU", required = true)
-    private List<PsuData> psuData;
+    private List<PsuData> psuData = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tpp_info_id")

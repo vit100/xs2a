@@ -35,7 +35,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +60,7 @@ public class PaymentService {
      * @param aspspPaymentInfo payment
      * @return Optional of saved single payment
      */
-    public Optional<AspspPaymentInfo> addPaymentInfo(@NotNull AspspPaymentInfo aspspPaymentInfo) {
+    public Optional<AspspPaymentInfo> addPaymentInfo(AspspPaymentInfo aspspPaymentInfo) {
         AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(aspspPaymentInfo));
         return Optional.ofNullable(paymentMapper.mapToAspspPaymentInfo(saved));
     }
@@ -72,7 +71,7 @@ public class PaymentService {
      * @param payment Single payment
      * @return Optional of saved single payment
      */
-    public Optional<AspspSinglePayment> addPayment(@NotNull AspspSinglePayment payment) {
+    public Optional<AspspSinglePayment> addPayment(AspspSinglePayment payment) {
         if (payment.getInstructedAmount() != null && areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getAmount())) {
             AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, SINGLE));
             return Optional.ofNullable(paymentMapper.mapToAspspSinglePayment(saved));
@@ -88,7 +87,7 @@ public class PaymentService {
      * @param payment Periodic payment
      * @return Optional of saved periodic payment
      */
-    public Optional<AspspPeriodicPayment> addPeriodicPayment(@NotNull AspspPeriodicPayment payment) {
+    public Optional<AspspPeriodicPayment> addPeriodicPayment(AspspPeriodicPayment payment) {
         AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, PERIODIC));
         return Optional.ofNullable(paymentMapper.mapToAspspPeriodicPayment(saved));
     }
@@ -184,11 +183,12 @@ public class PaymentService {
      * @param consentId     Consent primary identifier
      * @param consentStatus New status of the PIS consent
      */
-    public void updatePaymentConsentStatus(@NotNull String consentId, AspspConsentStatus consentStatus) {
+    public void updatePaymentConsentStatus(String consentId, AspspConsentStatus consentStatus) {
         consentRestTemplate.put(remotePisConsentUrls.updatePisConsentStatus(), null, consentId, consentStatus.name());
     }
 
     /**
+     * Gets payments by paymentId
      *
      * @param paymentId Payment identifier
      * @return AspspPayment information about payment
@@ -198,6 +198,7 @@ public class PaymentService {
     }
 
     /**
+     * Gets a common payment by paymentId
      *
      * @param paymentId Payment identifier
      * @return AspspPaymentInfo common information about payment
@@ -246,6 +247,7 @@ public class PaymentService {
     }
 
     /**
+     * Gets all payments
      *
      * @return List of payments
      */

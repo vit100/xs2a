@@ -19,7 +19,7 @@ package de.adorsys.psd2.xs2a.service.payment;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
-import de.adorsys.psd2.xs2a.domain.pis.PaymentInitialisationRequest;
+import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
@@ -33,8 +33,6 @@ import de.adorsys.psd2.xs2a.spi.service.CommonPaymentSpi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
-// TODO add add checking SpiResponse on error https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/450
 @Service
 @RequiredArgsConstructor
 public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPaymentService {
@@ -46,7 +44,7 @@ public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPayment
     private final SpiErrorMapper spiErrorMapper;
 
     @Override
-    public SinglePaymentInitiationResponse createPayment(PaymentInitialisationRequest payment, TppInfo tppInfo, String paymentProduct, Xs2aPisConsent pisConsent) {
+    public SinglePaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, Xs2aPisConsent pisConsent) {
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(pisConsent.getConsentId());
         SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(pisConsent.getPsuData());
 
@@ -60,7 +58,7 @@ public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPayment
         return spiToXs2aPaymentMapper.mapToPaymentInitiateResponse(spiResponse.getPayload(), SinglePaymentInitiationResponse::new);
     }
 
-    private SpiPaymentInfo mapToSpiPaymentRequest(PaymentInitialisationRequest payment, String paymentProduct) {
+    private SpiPaymentInfo mapToSpiPaymentRequest(CommonPayment payment, String paymentProduct) {
         SpiPaymentInfo request = new SpiPaymentInfo(paymentProduct);
         request.setPaymentId(payment.getPaymentId());
         request.setPaymentType(payment.getPaymentType());

@@ -66,7 +66,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         Optional<String> paymentId = pisConsentService.getDecryptedId(encryptedPaymentId);
 
         if (!paymentId.isPresent()) {
-            log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
+            log.warn("Payment Id is not encrypted: {}", encryptedPaymentId);
             return false;
         }
 
@@ -217,6 +217,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
+                                              .filter(CollectionUtils::isNotEmpty)
                                               .map(list -> list.get(0).getConsent());
 
         if (!consentOpt.isPresent()) {
