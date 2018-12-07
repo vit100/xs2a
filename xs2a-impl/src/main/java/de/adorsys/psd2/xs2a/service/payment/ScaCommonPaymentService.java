@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.spi.domain.payment.response;
+package de.adorsys.psd2.xs2a.service.payment;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.pis.PaymentInitialisationRequest;
+import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class SpiPaymentCommonInitiationResponse extends SpiPaymentInitiationResponse {
-
+public interface ScaCommonPaymentService {
+    PaymentInitiationResponse createPayment(PaymentInitialisationRequest payment, TppInfo tppInfo, String paymentProduct, Xs2aPisConsent pisConsent);
 }

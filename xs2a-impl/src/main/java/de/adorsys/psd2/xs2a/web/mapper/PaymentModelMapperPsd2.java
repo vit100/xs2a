@@ -117,7 +117,6 @@ public class PaymentModelMapperPsd2 {
             return paymentData;
         } catch (IOException e) {
             log.warn("Can not convert payment to json ", e);
-
         }
         return null;
     }

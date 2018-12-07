@@ -21,7 +21,7 @@ import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentInfo;
-import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiPaymentCommonInitiationResponse;
+import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiCommonPaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiPaymentInitiationResponse;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +53,7 @@ public class SpiPaymentInfoMapper {
     }
 
     public SpiPaymentInitiationResponse mapToSpiPaymentInitiationResponse(@NotNull AspspPaymentInfo payment) {
-        SpiPaymentCommonInitiationResponse spi = new SpiPaymentCommonInitiationResponse();
+        SpiCommonPaymentInitiationResponse spi = new SpiCommonPaymentInitiationResponse();
         spi.setPaymentId(payment.getPaymentId());
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);

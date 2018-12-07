@@ -36,8 +36,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CreatePaymentCommonService implements CreatePaymentService<PaymentInitialisationRequest, PaymentInitiationResponse> {
-    private final ScaPaymentCommonService scaPaymentService;
+public class CreateCommonPaymentService implements CreatePaymentService<PaymentInitialisationRequest, PaymentInitiationResponse> {
+    private final ScaCommonPaymentService scaPaymentService;
     private final Xs2aPisConsentService pisConsentService;
     private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;

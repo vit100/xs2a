@@ -86,7 +86,7 @@ public class PaymentService {
     private final CancelPaymentService cancelPaymentService;
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aEventService xs2aEventService;
-    private final CreatePaymentCommonService createPaymentCommonService;
+    private final CreateCommonPaymentService createCommonPaymentService;
     private final ReadCommonPaymentService readCommonPaymentService;
     private final Xs2aToSpiPaymentInfoMapper xs2aToSpiPaymentInfoMapper;
 
@@ -116,7 +116,7 @@ public class PaymentService {
             request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
             request.setPaymentData((byte[]) payment);
 
-            return createPaymentCommonService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
+            return createCommonPaymentService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
         }
 
         if (paymentInitiationParameters.getPaymentType() == SINGLE) {

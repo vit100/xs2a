@@ -26,7 +26,7 @@ public class CmsCommonPayment implements CmsPayment {
     private String paymentProduct;
     private PaymentType paymentType;
     private TransactionStatus transactionStatus;
-    private Object paymentData;
+    private byte[] paymentData;
 
     public CmsCommonPayment(String paymentProduct) {
         this.paymentProduct = paymentProduct;

@@ -33,13 +33,13 @@ public class CommonPaymentDataService {
     private final PisConsentService pisConsentService;
     private final PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
 
-    public Optional<PisCommonPaymentData> getPisCommonPaymentData(String encryptedPaymentId) {
+    protected Optional<PisCommonPaymentData> getPisCommonPaymentData(String encryptedPaymentId) {
         return pisConsentService.getDecryptedId(encryptedPaymentId)
                    .flatMap(pisCommonPaymentDataRepository::findByPaymentId);
     }
 
     @Transactional
-    public boolean updateStatusInPaymentData(PisCommonPaymentData paymentData, TransactionStatus status) {
+    protected boolean updateStatusInPaymentData(PisCommonPaymentData paymentData, TransactionStatus status) {
         paymentData.setTransactionStatus(status);
         PisCommonPaymentData saved = pisCommonPaymentDataRepository.save(paymentData);
         return saved.getPaymentId() != null;
