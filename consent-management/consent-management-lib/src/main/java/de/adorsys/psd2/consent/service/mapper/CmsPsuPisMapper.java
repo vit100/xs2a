@@ -23,6 +23,7 @@ import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 public class CmsPsuPisMapper {
     private final PisConsentMapper pisConsentMapper;
 
-    public CmsPayment mapToCmsPayment(PisCommonPaymentData paymentData) {
+    public CmsPayment mapToCmsPayment(@NotNull PisCommonPaymentData paymentData) {
         CmsCommonPayment cmsCommonPayment = new CmsCommonPayment(paymentData.getPaymentProduct());
         cmsCommonPayment.setPaymentId(paymentData.getPaymentId());
         cmsCommonPayment.setPaymentProduct(paymentData.getPaymentProduct());
@@ -122,12 +123,12 @@ public class CmsPsuPisMapper {
     private CmsAccountReference mapToCmsAccountReference(AccountReferenceEntity pisAccountReference) {
         return Optional.ofNullable(pisAccountReference)
                    .map(ref -> new CmsAccountReference(null,
-                       ref.getIban(),
-                       ref.getBban(),
-                       ref.getPan(),
-                       ref.getMaskedPan(),
-                       ref.getMsisdn(),
-                       ref.getCurrency())
+                                                       ref.getIban(),
+                                                       ref.getBban(),
+                                                       ref.getPan(),
+                                                       ref.getMaskedPan(),
+                                                       ref.getMsisdn(),
+                                                       ref.getCurrency())
                    ).orElse(null);
     }
 }
