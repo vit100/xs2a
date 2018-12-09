@@ -1,0 +1,31 @@
+{
+  "request": {
+    "header": {
+      "x-request-id": "2f77a125-a",
+      "psu-ip-address": "192.168.0.26",
+      "date": "Sun, 11 Aug 2019 15:02:37 GMT"
+    },
+    "body": {
+      "cardNumber": "string",
+      "payee": "string",
+      "instructedAmount": {
+        "currency": "USD",
+        "amount": "123"
+      },
+      "account": {
+        "currency": "EUR",
+        "iban": "DE52500105173911841934"
+      }
+    }
+  },
+  "response": {
+  "code": "400",
+  "header": {},
+  "body": [
+    {
+      "category": "ERROR",
+      "code": "FORMAT_ERROR"
+    }
+  ]
+}
+}

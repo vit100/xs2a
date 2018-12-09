@@ -1,0 +1,40 @@
+{
+  "access": {
+    "transactions": [
+      {
+        "resourceId": "42fb4cc3-91cb-45ba-9159-b87acf6d8add",
+        "currency": "EUR",
+        "iban": "DE52500105173911841934"
+      }
+    ]
+  },
+  "psuData": {
+    "psuId": null
+  },
+  "combinedServiceIndicator": false,
+  "allowedFrequencyPerDay": 0,
+  "recurringIndicator": false,
+  "tppInfo": {
+    "authorisationNumber": 12345987,
+    "authorityId": "authority id",
+    "authorityName": "authority name",
+    "city": "Nuremberg",
+    "country": "Germany",
+    "organisation": "Organisation",
+    "organisationUnit": "Organisation unit",
+    "state": "Bayern",
+    "status": "ENABLED",
+    "tppName": "Tpp company",
+    "tppRedirectUri": {
+      "nokUri": "Nok redirect URI",
+      "uri": "Redirect URI"
+    },
+    "tppRoles": [
+      "PISP",
+      "AISP",
+      "PIISP"
+    ]
+  },
+  "tppRedirectPreferred": true,
+  "validUntil": "2020-10-10"
+}
