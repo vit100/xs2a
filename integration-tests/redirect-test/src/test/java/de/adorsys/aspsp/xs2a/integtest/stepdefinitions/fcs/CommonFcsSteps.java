@@ -16,24 +16,16 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.fcs;
 
-import com.fasterxml.jackson.core.type.*;
 import cucumber.api.java.en.*;
-import de.adorsys.aspsp.xs2a.integtest.model.*;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.*;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
 import de.adorsys.aspsp.xs2a.integtest.util.*;
 import de.adorsys.aspsp.xs2a.integtest.utils.*;
-import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.domain.fund.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.client.*;
 
 import java.io.*;
-import java.util.*;
-
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
 
 
 @FeatureFileSteps
@@ -45,7 +37,6 @@ public class CommonFcsSteps {
     @Autowired
     @Qualifier("aspsp-profile")
     private RestTemplate restTemplate;
-
 
 
     @When("^confirmation of funds request is received in xs2a$")

@@ -16,20 +16,18 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.common;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.psd2.model.PaymentInitiationSctJson;
-import de.adorsys.psd2.model.TppMessages;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.client.HttpClientErrorException;
+import com.fasterxml.jackson.core.type.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
+import java.io.*;
 
 @FeatureFileSteps
 public class SinglePaymentErrorfulSteps {
@@ -45,13 +43,13 @@ public class SinglePaymentErrorfulSteps {
         context.setPaymentProduct(paymentProduct);
         context.setPaymentService(paymentService);
 
-        testService.parseJson("/data-input/pis/single/" + dataFileName,  new TypeReference<TestData<PaymentInitiationSctJson, TppMessages>>() {
+        testService.parseJson("/data-input/pis/single/" + dataFileName, new TypeReference<TestData<PaymentInitiationSctJson, TppMessages>>() {
         });
     }
 
     @When("^PSU sends the single payment initiating request with error$")
     public void sendPaymentInitiatingRequestWithError() throws HttpClientErrorException, IOException {
-        testService.sendErrorfulRestCall(HttpMethod.POST,context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentProduct());
+        testService.sendErrorfulRestCall(HttpMethod.POST, context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentProduct());
     }
 
     // @Then("^an error response code and the appropriate error response are received$")

@@ -16,35 +16,27 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import cucumber.api.java.en.Given;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.TransactionsResponse200Json;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import lombok.extern.slf4j.*;
+import org.apache.commons.lang3.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-
-import lombok.extern.slf4j.Slf4j;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 @FeatureFileSteps
@@ -61,7 +53,6 @@ public class TransactionListRequestSuccessfulSteps {
     private ObjectMapper mapper;
 
 
-
     //@Given("^PSU already has an existing (.*) consent (.*)$")
     //in commonStep
 
@@ -74,29 +65,29 @@ public class TransactionListRequestSuccessfulSteps {
 
         String query = "?";
 
-        if(BooleanUtils.isTrue(balance)){
-            query = query+"balance=true&";
+        if (BooleanUtils.isTrue(balance)) {
+            query = query + "balance=true&";
         }
-        if(BooleanUtils.isFalse(balance)){
-            query = query+"balance=false&";
+        if (BooleanUtils.isFalse(balance)) {
+            query = query + "balance=false&";
         }
-        if(StringUtils.isNotEmpty(dateFrom)){
-            query = query+"dateFrom="+dateFrom+"&";
+        if (StringUtils.isNotEmpty(dateFrom)) {
+            query = query + "dateFrom=" + dateFrom + "&";
         }
-        if(StringUtils.isNotEmpty(dateTo)){
-            query = query+"dateTo="+dateTo+"&";
+        if (StringUtils.isNotEmpty(dateTo)) {
+            query = query + "dateTo=" + dateTo + "&";
         }
-        if(StringUtils.isNotEmpty(bookingStatus)){
-            query = query+"bookingStatus="+bookingStatus+"&";
+        if (StringUtils.isNotEmpty(bookingStatus)) {
+            query = query + "bookingStatus=" + bookingStatus + "&";
         }
-        if(StringUtils.isNotEmpty(entryReferenceFrom)){
-            query = query+"entryReferenceFrom="+entryReferenceFrom+"&";
+        if (StringUtils.isNotEmpty(entryReferenceFrom)) {
+            query = query + "entryReferenceFrom=" + entryReferenceFrom + "&";
         }
-        if(BooleanUtils.isTrue(deltaList)){
-            query = query+"deltaList=true";
+        if (BooleanUtils.isTrue(deltaList)) {
+            query = query + "deltaList=true";
         }
-        if(BooleanUtils.isFalse(deltaList)){
-            query = query+"deltaList=false";
+        if (BooleanUtils.isFalse(deltaList)) {
+            query = query + "deltaList=false";
         }
 
         context.setQueryParams(query);
@@ -106,8 +97,9 @@ public class TransactionListRequestSuccessfulSteps {
     @Given("^wants to read all transactions using (.*)$")
     public void wants_to_read_all_transactions_using(String dataFileName) throws IOException {
         TestData<HashMap, TransactionsResponse200Json> data = mapper.readValue(
-                resourceToString("/data-input/ais/transaction/" + dataFileName, UTF_8),
-                new TypeReference<TestData<HashMap, TransactionsResponse200Json>>() {});
+            resourceToString("/data-input/ais/transaction/" + dataFileName, UTF_8),
+            new TypeReference<TestData<HashMap, TransactionsResponse200Json>>() {
+            });
 
         context.setTestData(data);
         context.getTestData().getRequest().getHeader().put("Consent-ID", context.getConsentId());
@@ -116,21 +108,21 @@ public class TransactionListRequestSuccessfulSteps {
     @When("^PSU requests the transactions$")
     public void psu_requests_the_transactions() {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(context.getTestData().getRequest(),
-                context.getAccessToken());
-        String url = context.getBaseUrl() + "/accounts/"+context.getRessourceId()+"/transactions/"+context.getQueryParams();
-        log.info("////url////  "+url);
-        log.info("////entity request list transaction////  "+entity.toString());
+            context.getAccessToken());
+        String url = context.getBaseUrl() + "/accounts/" + context.getRessourceId() + "/transactions/" + context.getQueryParams();
+        log.info("////url////  " + url);
+        log.info("////entity request list transaction////  " + entity.toString());
         ResponseEntity<TransactionsResponse200Json> response = restTemplate.exchange(
-                context.getBaseUrl() + "/accounts/"+context.getRessourceId()+"/transactions/"+context.getQueryParams(),
-                HttpMethod.GET,
-                entity,
-                TransactionsResponse200Json.class);
+            context.getBaseUrl() + "/accounts/" + context.getRessourceId() + "/transactions/" + context.getQueryParams(),
+            HttpMethod.GET,
+            entity,
+            TransactionsResponse200Json.class);
 
         context.setActualResponse(response);
     }
 
     @Then("^a successful response code and the appropriate list of transaction get returned$")
-    public void a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned(){
+    public void a_successful_response_code_and_the_appropriate_list_of_transaction_get_returned() {
         ResponseEntity<TransactionsResponse200Json> actualResponse = context.getActualResponse();
         TransactionsResponse200Json givenResponseBody = context.getTestData().getResponse().getBody();
 

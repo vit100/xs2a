@@ -22,15 +22,12 @@ import de.adorsys.aspsp.xs2a.integtest.model.*;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.*;
 import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
 import de.adorsys.aspsp.xs2a.integtest.util.*;
-import de.adorsys.aspsp.xs2a.integtest.utils.*;
 import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.domain.fund.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
-import org.springframework.web.client.*;
 
 import java.io.*;
-import java.util.*;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -51,7 +48,7 @@ public class FundConfirmationSuccessfulSteps {
     }
 
     @And("^wants to get a confirmation (.*) of (.*) on his account$")
-    public void psu_want_to_get_confirmation_of_fund(boolean result ,String amount) {
+    public void psu_want_to_get_confirmation_of_fund(boolean result, String amount) {
         context.getTestData().getResponse().getBody().setFundsAvailable(result);
         context.getTestData().getRequest().getBody().getInstructedAmount().setAmount(amount);
     }

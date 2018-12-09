@@ -16,32 +16,24 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.TppMessages;
-import de.adorsys.psd2.model.TransactionDetails;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
 
 @Slf4j
 @FeatureFileSteps
@@ -61,7 +53,7 @@ public class TransactionDetailRequestErrorfulSteps {
     //@Given("^PSU already has an existing (.*) consent (.*)$")
     //in commonStep
 
-   //@And("^account id (.*)$")
+    //@And("^account id (.*)$")
     //in AccountDetailRequestSuccessfulSteps
 
 
@@ -69,7 +61,8 @@ public class TransactionDetailRequestErrorfulSteps {
     public void wants_to_read_the_transaction_details_errorful_using(String dataFileName) throws IOException {
         TestData<HashMap, TppMessages> data = mapper.readValue(
             resourceToString("/data-input/ais/transaction/" + dataFileName, UTF_8),
-            new TypeReference<TestData<HashMap, TppMessages>>() {});
+            new TypeReference<TestData<HashMap, TppMessages>>() {
+            });
 
         context.setTestData(data);
         context.getTestData().getRequest().getHeader().put("Consent-ID", context.getConsentId());
@@ -80,13 +73,13 @@ public class TransactionDetailRequestErrorfulSteps {
 
 
     @When("^PSU requests the transaction details errorful$")
-    public void psu_requests_the_transaction_details_errorful() throws HttpClientErrorException, IOException{
+    public void psu_requests_the_transaction_details_errorful() throws HttpClientErrorException, IOException {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(context.getTestData().getRequest(),
             context.getAccessToken());
 
         try {
-              restTemplate.exchange(
-                context.getBaseUrl() + "/accounts/"+context.getRessourceId()+"/transactions/"+context.getTransactionId(),
+            restTemplate.exchange(
+                context.getBaseUrl() + "/accounts/" + context.getRessourceId() + "/transactions/" + context.getTransactionId(),
                 HttpMethod.GET,
                 entity,
                 TransactionDetails.class);

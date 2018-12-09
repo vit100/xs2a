@@ -16,21 +16,19 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.common;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.AbstractErrorfulSteps;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.psd2.model.TppMessages;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.client.HttpClientErrorException;
+import com.fasterxml.jackson.core.type.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
 @FeatureFileSteps
 public class SinglePaymentInformationErrorfulSteps extends AbstractErrorfulSteps {
@@ -45,8 +43,8 @@ public class SinglePaymentInformationErrorfulSteps extends AbstractErrorfulSteps
     //    See Global Successful Steps
 
     @And("^PSU prepares the errorful payment information request data (.*) with the payment service (.*)$")
-    public void loadErrorfulPaymentInformationTestData (String dataFileName, String paymentService) throws IOException {
-        testService.parseJson("/data-input/pis/information/" + dataFileName,new TypeReference<TestData<HashMap, TppMessages>>() {
+    public void loadErrorfulPaymentInformationTestData(String dataFileName, String paymentService) throws IOException {
+        testService.parseJson("/data-input/pis/information/" + dataFileName, new TypeReference<TestData<HashMap, TppMessages>>() {
         });
         context.setPaymentService(paymentService);
         this.setErrorfulIds(dataFileName);
@@ -54,7 +52,7 @@ public class SinglePaymentInformationErrorfulSteps extends AbstractErrorfulSteps
 
     @When("^PSU requests the information of the payment with error$")
     public void sendPaymentInformationRequestWithError() throws HttpClientErrorException, IOException {
-        testService.sendErrorfulRestCall(HttpMethod.GET,context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentId());
+        testService.sendErrorfulRestCall(HttpMethod.GET, context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentId());
     }
 
     // @Then("^an error response code and the appropriate error response are received$")

@@ -16,24 +16,20 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
+import java.io.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
 
 @Service
 public class TestService {
@@ -48,7 +44,7 @@ public class TestService {
     @Autowired
     private ObjectMapper mapper;
 
-    public void sendRestCall (HttpMethod httpMethod, String url) {
+    public void sendRestCall(HttpMethod httpMethod, String url) {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(
             context.getTestData().getRequest(), context.getAccessToken());
 
@@ -71,7 +67,7 @@ public class TestService {
         context.setActualResponse(response);
     }
 
-    public void sendErrorfulRestCall (HttpMethod httpMethod, String url) throws IOException {
+    public void sendErrorfulRestCall(HttpMethod httpMethod, String url) throws IOException {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(
             context.getTestData().getRequest(), context.getAccessToken());
 
@@ -86,7 +82,7 @@ public class TestService {
         }
     }
 
-    public void sendErrorfulRestCall (HttpMethod httpMethod, String url, HttpEntity httpEntity) throws IOException {
+    public void sendErrorfulRestCall(HttpMethod httpMethod, String url, HttpEntity httpEntity) throws IOException {
 
         try {
             restTemplate.exchange(
@@ -99,7 +95,7 @@ public class TestService {
         }
     }
 
-    public void parseJson (String fileName, TypeReference typeReference) throws IOException {
+    public void parseJson(String fileName, TypeReference typeReference) throws IOException {
         TestData<?, ?> data = mapper.readValue(resourceToString(
             fileName, UTF_8),
             typeReference);

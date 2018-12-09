@@ -6,7 +6,16 @@
         "before": [
           {
             "result": {
-              "duration": 30179978,
+              "duration": 579677519,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 79004142,
               "status": "passed"
             },
             "match": {
@@ -21,7 +30,7 @@
         "after": [
           {
             "result": {
-              "duration": 1396433,
+              "duration": 309846,
               "status": "passed"
             },
             "match": {
@@ -34,7 +43,7 @@
         "steps": [
           {
             "result": {
-              "duration": 252698531,
+              "duration": 378855904,
               "status": "passed"
             },
             "line": 10,
@@ -55,7 +64,7 @@
           },
           {
             "result": {
-              "duration": 2016767500,
+              "duration": 2132744490,
               "status": "passed"
             },
             "line": 11,
@@ -67,7 +76,7 @@
           },
           {
             "result": {
-              "duration": 6986412,
+              "duration": 5087692,
               "status": "passed"
             },
             "line": 12,
@@ -89,7 +98,16 @@
         "before": [
           {
             "result": {
-              "duration": 11917728,
+              "duration": 11843773,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12977096,
               "status": "passed"
             },
             "match": {
@@ -104,7 +122,7 @@
         "after": [
           {
             "result": {
-              "duration": 221546,
+              "duration": 217078,
               "status": "passed"
             },
             "match": {
@@ -117,7 +135,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1880250,
+              "duration": 1836292,
               "status": "passed"
             },
             "line": 10,
@@ -138,7 +156,7 @@
           },
           {
             "result": {
-              "duration": 1872727747,
+              "duration": 1815660511,
               "status": "passed"
             },
             "line": 11,
@@ -150,7 +168,7 @@
           },
           {
             "result": {
-              "duration": 38895,
+              "duration": 112519,
               "status": "passed"
             },
             "line": 12,
@@ -180,7 +198,16 @@
         "before": [
           {
             "result": {
-              "duration": 16143738,
+              "duration": 27440919,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10335024,
               "status": "passed"
             },
             "match": {
@@ -195,7 +222,7 @@
         "after": [
           {
             "result": {
-              "duration": 1004894,
+              "duration": 303871,
               "status": "passed"
             },
             "match": {
@@ -208,7 +235,7 @@
         "steps": [
           {
             "result": {
-              "duration": 12982341,
+              "duration": 12320271,
               "status": "passed"
             },
             "line": 20,
@@ -229,7 +256,7 @@
           },
           {
             "result": {
-              "duration": 23509827,
+              "duration": 17304186,
               "status": "passed"
             },
             "line": 21,
@@ -241,7 +268,7 @@
           },
           {
             "result": {
-              "duration": 4654267,
+              "duration": 9830355,
               "status": "passed"
             },
             "line": 22,
@@ -257,7 +284,16 @@
         "before": [
           {
             "result": {
-              "duration": 13881002,
+              "duration": 16218001,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 16462694,
               "status": "passed"
             },
             "match": {
@@ -272,7 +308,7 @@
         "after": [
           {
             "result": {
-              "duration": 409990,
+              "duration": 215517,
               "status": "passed"
             },
             "match": {
@@ -285,7 +321,7 @@
         "steps": [
           {
             "result": {
-              "duration": 3013849,
+              "duration": 4976184,
               "status": "passed"
             },
             "line": 31,
@@ -306,7 +342,7 @@
           },
           {
             "result": {
-              "duration": 73779111,
+              "duration": 66012634,
               "status": "passed"
             },
             "line": 32,
@@ -318,7 +354,7 @@
           },
           {
             "result": {
-              "duration": 624236,
+              "duration": 370367,
               "status": "passed"
             },
             "line": 33,
@@ -334,7 +370,16 @@
         "before": [
           {
             "result": {
-              "duration": 12873951,
+              "duration": 18224671,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 19084186,
               "status": "passed"
             },
             "match": {
@@ -349,7 +394,7 @@
         "after": [
           {
             "result": {
-              "duration": 225213,
+              "duration": 215498,
               "status": "passed"
             },
             "match": {
@@ -362,7 +407,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1876332617,
+              "duration": 1949319439,
               "status": "passed"
             },
             "line": 39,
@@ -383,7 +428,7 @@
           },
           {
             "result": {
-              "duration": 259281102,
+              "duration": 241683710,
               "status": "passed"
             },
             "line": 40,
@@ -404,7 +449,7 @@
           },
           {
             "result": {
-              "duration": 513083030,
+              "duration": 483160668,
               "status": "passed"
             },
             "line": 41,
@@ -416,7 +461,7 @@
           },
           {
             "result": {
-              "duration": 61663,
+              "duration": 56063,
               "status": "passed"
             },
             "line": 42,
@@ -432,7 +477,16 @@
         "before": [
           {
             "result": {
-              "duration": 17437285,
+              "duration": 11377866,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 21370615,
               "status": "passed"
             },
             "match": {
@@ -447,7 +501,7 @@
         "after": [
           {
             "result": {
-              "duration": 505489,
+              "duration": 227162,
               "status": "passed"
             },
             "match": {
@@ -460,7 +514,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1811192932,
+              "duration": 1656153900,
               "status": "passed"
             },
             "line": 39,
@@ -481,7 +535,7 @@
           },
           {
             "result": {
-              "duration": 262820007,
+              "duration": 257179874,
               "status": "passed"
             },
             "line": 40,
@@ -502,7 +556,7 @@
           },
           {
             "result": {
-              "duration": 499373400,
+              "duration": 454140887,
               "status": "passed"
             },
             "line": 41,
@@ -514,7 +568,7 @@
           },
           {
             "result": {
-              "duration": 92455,
+              "duration": 43937,
               "status": "passed"
             },
             "line": 42,
@@ -530,7 +584,16 @@
         "before": [
           {
             "result": {
-              "duration": 19990575,
+              "duration": 7767273,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10700573,
               "status": "passed"
             },
             "match": {
@@ -545,7 +608,7 @@
         "after": [
           {
             "result": {
-              "duration": 6087348,
+              "duration": 238374,
               "status": "passed"
             },
             "match": {
@@ -558,7 +621,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1872517524,
+              "duration": 1633508664,
               "status": "passed"
             },
             "line": 39,
@@ -579,7 +642,7 @@
           },
           {
             "result": {
-              "duration": 268095680,
+              "duration": 240074158,
               "status": "passed"
             },
             "line": 40,
@@ -600,7 +663,7 @@
           },
           {
             "result": {
-              "duration": 481686910,
+              "duration": 478732326,
               "status": "passed"
             },
             "line": 41,
@@ -612,7 +675,7 @@
           },
           {
             "result": {
-              "duration": 46834,
+              "duration": 33120,
               "status": "passed"
             },
             "line": 42,
@@ -628,7 +691,16 @@
         "before": [
           {
             "result": {
-              "duration": 14461325,
+              "duration": 19844640,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7406067,
               "status": "passed"
             },
             "match": {
@@ -643,7 +715,7 @@
         "after": [
           {
             "result": {
-              "duration": 459201,
+              "duration": 252709,
               "status": "passed"
             },
             "match": {
@@ -656,7 +728,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1885489512,
+              "duration": 1740897988,
               "status": "passed"
             },
             "line": 39,
@@ -677,7 +749,7 @@
           },
           {
             "result": {
-              "duration": 260944165,
+              "duration": 252857848,
               "status": "passed"
             },
             "line": 40,
@@ -698,7 +770,7 @@
           },
           {
             "result": {
-              "duration": 528210642,
+              "duration": 486212357,
               "status": "passed"
             },
             "line": 41,
@@ -710,7 +782,7 @@
           },
           {
             "result": {
-              "duration": 83654,
+              "duration": 38143,
               "status": "passed"
             },
             "line": 42,
@@ -726,7 +798,16 @@
         "before": [
           {
             "result": {
-              "duration": 20471963,
+              "duration": 12981405,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9598302,
               "status": "passed"
             },
             "match": {
@@ -741,7 +822,7 @@
         "after": [
           {
             "result": {
-              "duration": 261821,
+              "duration": 306867,
               "status": "passed"
             },
             "match": {
@@ -754,7 +835,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1986795941,
+              "duration": 1764018694,
               "status": "passed"
             },
             "line": 39,
@@ -775,7 +856,7 @@
           },
           {
             "result": {
-              "duration": 256234483,
+              "duration": 233765031,
               "status": "passed"
             },
             "line": 40,
@@ -796,7 +877,7 @@
           },
           {
             "result": {
-              "duration": 510919076,
+              "duration": 466218939,
               "status": "passed"
             },
             "line": 41,
@@ -808,7 +889,7 @@
           },
           {
             "result": {
-              "duration": 41257,
+              "duration": 58289,
               "status": "passed"
             },
             "line": 42,
@@ -824,7 +905,16 @@
         "before": [
           {
             "result": {
-              "duration": 22567989,
+              "duration": 11451331,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11153267,
               "status": "passed"
             },
             "match": {
@@ -839,7 +929,7 @@
         "after": [
           {
             "result": {
-              "duration": 3884316,
+              "duration": 471249,
               "status": "passed"
             },
             "match": {
@@ -852,7 +942,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1827764002,
+              "duration": 1633206590,
               "status": "passed"
             },
             "line": 39,
@@ -873,7 +963,7 @@
           },
           {
             "result": {
-              "duration": 234739153,
+              "duration": 252312483,
               "status": "passed"
             },
             "line": 40,
@@ -894,7 +984,7 @@
           },
           {
             "result": {
-              "duration": 451851436,
+              "duration": 464912950,
               "status": "passed"
             },
             "line": 41,
@@ -906,7 +996,7 @@
           },
           {
             "result": {
-              "duration": 44375,
+              "duration": 69260,
               "status": "passed"
             },
             "line": 42,
@@ -922,7 +1012,16 @@
         "before": [
           {
             "result": {
-              "duration": 14192195,
+              "duration": 12781525,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10207314,
               "status": "passed"
             },
             "match": {
@@ -937,7 +1036,7 @@
         "after": [
           {
             "result": {
-              "duration": 354460,
+              "duration": 351470,
               "status": "passed"
             },
             "match": {
@@ -950,7 +1049,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2127604045,
+              "duration": 1812739238,
               "status": "passed"
             },
             "line": 39,
@@ -971,7 +1070,7 @@
           },
           {
             "result": {
-              "duration": 462891491,
+              "duration": 238713544,
               "status": "passed"
             },
             "line": 40,
@@ -992,7 +1091,7 @@
           },
           {
             "result": {
-              "duration": 749981067,
+              "duration": 469121938,
               "status": "passed"
             },
             "line": 41,
@@ -1004,7 +1103,7 @@
           },
           {
             "result": {
-              "duration": 58288,
+              "duration": 47086,
               "status": "passed"
             },
             "line": 42,
@@ -1020,7 +1119,16 @@
         "before": [
           {
             "result": {
-              "duration": 20356656,
+              "duration": 17223109,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 15012930,
               "status": "passed"
             },
             "match": {
@@ -1035,7 +1143,7 @@
         "after": [
           {
             "result": {
-              "duration": 328215,
+              "duration": 235169,
               "status": "passed"
             },
             "match": {
@@ -1048,7 +1156,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1815188656,
+              "duration": 1710056146,
               "status": "passed"
             },
             "line": 39,
@@ -1069,7 +1177,7 @@
           },
           {
             "result": {
-              "duration": 260187965,
+              "duration": 252275654,
               "status": "passed"
             },
             "line": 40,
@@ -1090,7 +1198,7 @@
           },
           {
             "result": {
-              "duration": 509392640,
+              "duration": 459940537,
               "status": "passed"
             },
             "line": 41,
@@ -1102,7 +1210,7 @@
           },
           {
             "result": {
-              "duration": 55776,
+              "duration": 48276,
               "status": "passed"
             },
             "line": 42,
@@ -1118,7 +1226,16 @@
         "before": [
           {
             "result": {
-              "duration": 11054686,
+              "duration": 10060264,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 6564075,
               "status": "passed"
             },
             "match": {
@@ -1133,7 +1250,7 @@
         "after": [
           {
             "result": {
-              "duration": 317489,
+              "duration": 2729625,
               "status": "passed"
             },
             "match": {
@@ -1146,7 +1263,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1935952608,
+              "duration": 1645307373,
               "status": "passed"
             },
             "line": 39,
@@ -1167,7 +1284,7 @@
           },
           {
             "result": {
-              "duration": 291979234,
+              "duration": 256062587,
               "status": "passed"
             },
             "line": 40,
@@ -1188,7 +1305,7 @@
           },
           {
             "result": {
-              "duration": 508767318,
+              "duration": 446650000,
               "status": "passed"
             },
             "line": 41,
@@ -1200,7 +1317,7 @@
           },
           {
             "result": {
-              "duration": 51680,
+              "duration": 85374,
               "status": "passed"
             },
             "line": 42,
@@ -1216,7 +1333,16 @@
         "before": [
           {
             "result": {
-              "duration": 21988932,
+              "duration": 8571808,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10536465,
               "status": "passed"
             },
             "match": {
@@ -1231,7 +1357,7 @@
         "after": [
           {
             "result": {
-              "duration": 193965,
+              "duration": 274910,
               "status": "passed"
             },
             "match": {
@@ -1244,7 +1370,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1858182722,
+              "duration": 1661116765,
               "status": "passed"
             },
             "line": 39,
@@ -1265,7 +1391,7 @@
           },
           {
             "result": {
-              "duration": 257478616,
+              "duration": 234525516,
               "status": "passed"
             },
             "line": 40,
@@ -1286,7 +1412,7 @@
           },
           {
             "result": {
-              "duration": 516512181,
+              "duration": 472637255,
               "status": "passed"
             },
             "line": 41,
@@ -1298,7 +1424,7 @@
           },
           {
             "result": {
-              "duration": 48108,
+              "duration": 62076,
               "status": "passed"
             },
             "line": 42,
@@ -1314,7 +1440,16 @@
         "before": [
           {
             "result": {
-              "duration": 16780496,
+              "duration": 15393787,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8720301,
               "status": "passed"
             },
             "match": {
@@ -1329,7 +1464,7 @@
         "after": [
           {
             "result": {
-              "duration": 363900,
+              "duration": 321585,
               "status": "passed"
             },
             "match": {
@@ -1342,7 +1477,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2000993938,
+              "duration": 1760017607,
               "status": "passed"
             },
             "line": 39,
@@ -1363,7 +1498,7 @@
           },
           {
             "result": {
-              "duration": 256342174,
+              "duration": 244463296,
               "status": "passed"
             },
             "line": 40,
@@ -1384,7 +1519,7 @@
           },
           {
             "result": {
-              "duration": 615456152,
+              "duration": 452632579,
               "status": "passed"
             },
             "line": 41,
@@ -1396,7 +1531,7 @@
           },
           {
             "result": {
-              "duration": 73761,
+              "duration": 94436,
               "status": "passed"
             },
             "line": 42,
@@ -1412,7 +1547,16 @@
         "before": [
           {
             "result": {
-              "duration": 16558052,
+              "duration": 19728315,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9240178,
               "status": "passed"
             },
             "match": {
@@ -1427,7 +1571,7 @@
         "after": [
           {
             "result": {
-              "duration": 538325,
+              "duration": 604263,
               "status": "passed"
             },
             "match": {
@@ -1440,7 +1584,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1870040230,
+              "duration": 1689879367,
               "status": "passed"
             },
             "line": 39,
@@ -1461,7 +1605,7 @@
           },
           {
             "result": {
-              "duration": 264512607,
+              "duration": 241470655,
               "status": "passed"
             },
             "line": 40,
@@ -1482,7 +1626,7 @@
           },
           {
             "result": {
-              "duration": 504113448,
+              "duration": 484757219,
               "status": "passed"
             },
             "line": 41,
@@ -1494,7 +1638,7 @@
           },
           {
             "result": {
-              "duration": 44024,
+              "duration": 39510,
               "status": "passed"
             },
             "line": 42,
@@ -1510,7 +1654,16 @@
         "before": [
           {
             "result": {
-              "duration": 15267127,
+              "duration": 6834270,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12159724,
               "status": "passed"
             },
             "match": {
@@ -1525,7 +1678,7 @@
         "after": [
           {
             "result": {
-              "duration": 190827,
+              "duration": 219497,
               "status": "passed"
             },
             "match": {
@@ -1538,7 +1691,7 @@
         "steps": [
           {
             "result": {
-              "duration": 11127482,
+              "duration": 8738531,
               "status": "passed"
             },
             "line": 60,
@@ -1559,7 +1712,7 @@
           },
           {
             "result": {
-              "duration": 59178332,
+              "duration": 56688086,
               "status": "passed"
             },
             "line": 61,
@@ -1571,7 +1724,7 @@
           },
           {
             "result": {
-              "duration": 512218,
+              "duration": 264800,
               "status": "passed"
             },
             "line": 62,
@@ -1587,7 +1740,16 @@
         "before": [
           {
             "result": {
-              "duration": 14852473,
+              "duration": 12597422,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9818602,
               "status": "passed"
             },
             "match": {
@@ -1602,7 +1764,7 @@
         "after": [
           {
             "result": {
-              "duration": 202481,
+              "duration": 250335,
               "status": "passed"
             },
             "match": {
@@ -1615,7 +1777,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2166520,
+              "duration": 1119926,
               "status": "passed"
             },
             "line": 78,
@@ -1636,7 +1798,7 @@
           },
           {
             "result": {
-              "duration": 1928698007,
+              "duration": 1669045668,
               "status": "passed"
             },
             "line": 79,
@@ -1648,7 +1810,7 @@
           },
           {
             "result": {
-              "duration": 15485523,
+              "duration": 10489129,
               "status": "passed"
             },
             "line": 80,
@@ -1669,7 +1831,7 @@
           },
           {
             "result": {
-              "duration": 2250646894,
+              "duration": 1982837442,
               "status": "passed"
             },
             "line": 81,
@@ -1681,7 +1843,7 @@
           },
           {
             "result": {
-              "duration": 105795,
+              "duration": 86203,
               "status": "passed"
             },
             "line": 82,
@@ -1697,7 +1859,16 @@
         "before": [
           {
             "result": {
-              "duration": 16399667,
+              "duration": 9536242,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12337200,
               "status": "passed"
             },
             "match": {
@@ -1712,7 +1883,7 @@
         "after": [
           {
             "result": {
-              "duration": 212784,
+              "duration": 239363,
               "status": "passed"
             },
             "match": {
@@ -1725,7 +1896,7 @@
         "steps": [
           {
             "result": {
-              "duration": 512302231,
+              "duration": 448739705,
               "status": "passed"
             },
             "line": 125,
@@ -1751,7 +1922,7 @@
           },
           {
             "result": {
-              "duration": 37204476,
+              "duration": 29169823,
               "status": "passed"
             },
             "line": 126,
@@ -1772,7 +1943,7 @@
           },
           {
             "result": {
-              "duration": 2228181541,
+              "duration": 2061074636,
               "status": "passed"
             },
             "line": 127,
@@ -1784,7 +1955,7 @@
           },
           {
             "result": {
-              "duration": 101692,
+              "duration": 161755,
               "status": "passed"
             },
             "line": 128,
@@ -1800,7 +1971,16 @@
         "before": [
           {
             "result": {
-              "duration": 10284145,
+              "duration": 8890830,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13573754,
               "status": "passed"
             },
             "match": {
@@ -1815,7 +1995,7 @@
         "after": [
           {
             "result": {
-              "duration": 233007,
+              "duration": 166173,
               "status": "passed"
             },
             "match": {
@@ -1828,7 +2008,7 @@
         "steps": [
           {
             "result": {
-              "duration": 522232030,
+              "duration": 470759594,
               "status": "passed"
             },
             "line": 135,
@@ -1854,7 +2034,7 @@
           },
           {
             "result": {
-              "duration": 4468026,
+              "duration": 4861655,
               "status": "passed"
             },
             "line": 136,
@@ -1875,7 +2055,7 @@
           },
           {
             "result": {
-              "duration": 9745127,
+              "duration": 4127498,
               "status": "passed"
             },
             "line": 137,
@@ -1887,7 +2067,7 @@
           },
           {
             "result": {
-              "duration": 48075,
+              "duration": 71987,
               "status": "passed"
             },
             "line": 138,
@@ -1903,7 +2083,16 @@
         "before": [
           {
             "result": {
-              "duration": 11690771,
+              "duration": 11296369,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9730476,
               "status": "passed"
             },
             "match": {
@@ -1918,7 +2107,7 @@
         "after": [
           {
             "result": {
-              "duration": 175143,
+              "duration": 160679,
               "status": "passed"
             },
             "match": {
@@ -1931,7 +2120,7 @@
         "steps": [
           {
             "result": {
-              "duration": 522143176,
+              "duration": 487055301,
               "status": "passed"
             },
             "line": 135,
@@ -1957,7 +2146,7 @@
           },
           {
             "result": {
-              "duration": 3117906,
+              "duration": 1202192,
               "status": "passed"
             },
             "line": 136,
@@ -1978,7 +2167,7 @@
           },
           {
             "result": {
-              "duration": 11838645,
+              "duration": 5149987,
               "status": "passed"
             },
             "line": 137,
@@ -1990,7 +2179,7 @@
           },
           {
             "result": {
-              "duration": 43439,
+              "duration": 39541,
               "status": "passed"
             },
             "line": 138,
@@ -2006,7 +2195,16 @@
         "before": [
           {
             "result": {
-              "duration": 16806886,
+              "duration": 10150613,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9754121,
               "status": "passed"
             },
             "match": {
@@ -2021,7 +2219,7 @@
         "after": [
           {
             "result": {
-              "duration": 193719,
+              "duration": 420683,
               "status": "passed"
             },
             "match": {
@@ -2034,7 +2232,7 @@
         "steps": [
           {
             "result": {
-              "duration": 547270990,
+              "duration": 518004160,
               "status": "passed"
             },
             "line": 135,
@@ -2060,7 +2258,7 @@
           },
           {
             "result": {
-              "duration": 1413882,
+              "duration": 1110868,
               "status": "passed"
             },
             "line": 136,
@@ -2081,7 +2279,7 @@
           },
           {
             "result": {
-              "duration": 521797903,
+              "duration": 470503806,
               "status": "passed"
             },
             "line": 137,
@@ -2093,7 +2291,7 @@
           },
           {
             "result": {
-              "duration": 41101,
+              "duration": 79153,
               "status": "passed"
             },
             "line": 138,
@@ -2109,7 +2307,16 @@
         "before": [
           {
             "result": {
-              "duration": 16091400,
+              "duration": 10180625,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8652325,
               "status": "passed"
             },
             "match": {
@@ -2124,7 +2331,7 @@
         "after": [
           {
             "result": {
-              "duration": 233810,
+              "duration": 259338,
               "status": "passed"
             },
             "match": {
@@ -2137,7 +2344,7 @@
         "steps": [
           {
             "result": {
-              "duration": 513786316,
+              "duration": 526362756,
               "status": "passed"
             },
             "line": 135,
@@ -2163,7 +2370,7 @@
           },
           {
             "result": {
-              "duration": 1185250,
+              "duration": 1053410,
               "status": "passed"
             },
             "line": 136,
@@ -2184,7 +2391,7 @@
           },
           {
             "result": {
-              "duration": 2189813527,
+              "duration": 1962541826,
               "status": "passed"
             },
             "line": 137,
@@ -2196,7 +2403,7 @@
           },
           {
             "result": {
-              "duration": 1518209,
+              "duration": 2623853,
               "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:138)\n",
               "status": "failed"
             },
@@ -2213,7 +2420,16 @@
         "before": [
           {
             "result": {
-              "duration": 28981278,
+              "duration": 11231582,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11552856,
               "status": "passed"
             },
             "match": {
@@ -2228,7 +2444,7 @@
         "after": [
           {
             "result": {
-              "duration": 178105,
+              "duration": 257971,
               "status": "passed"
             },
             "match": {
@@ -2241,7 +2457,7 @@
         "steps": [
           {
             "result": {
-              "duration": 609274724,
+              "duration": 442223272,
               "status": "passed"
             },
             "line": 135,
@@ -2267,7 +2483,7 @@
           },
           {
             "result": {
-              "duration": 923143,
+              "duration": 900245,
               "status": "passed"
             },
             "line": 136,
@@ -2288,7 +2504,7 @@
           },
           {
             "result": {
-              "duration": 549061368,
+              "duration": 455669437,
               "status": "passed"
             },
             "line": 137,
@@ -2300,7 +2516,7 @@
           },
           {
             "result": {
-              "duration": 40709,
+              "duration": 40988,
               "status": "passed"
             },
             "line": 138,
@@ -2316,7 +2532,16 @@
         "before": [
           {
             "result": {
-              "duration": 9752521,
+              "duration": 10027634,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13469482,
               "status": "passed"
             },
             "match": {
@@ -2331,7 +2556,7 @@
         "after": [
           {
             "result": {
-              "duration": 211170,
+              "duration": 187722,
               "status": "passed"
             },
             "match": {
@@ -2344,7 +2569,7 @@
         "steps": [
           {
             "result": {
-              "duration": 584400915,
+              "duration": 484719242,
               "status": "passed"
             },
             "line": 135,
@@ -2370,7 +2595,7 @@
           },
           {
             "result": {
-              "duration": 1882165,
+              "duration": 2085667,
               "status": "passed"
             },
             "line": 136,
@@ -2391,7 +2616,7 @@
           },
           {
             "result": {
-              "duration": 530311336,
+              "duration": 514288999,
               "status": "passed"
             },
             "line": 137,
@@ -2403,7 +2628,7 @@
           },
           {
             "result": {
-              "duration": 37778,
+              "duration": 33268,
               "status": "passed"
             },
             "line": 138,
@@ -2419,7 +2644,16 @@
         "before": [
           {
             "result": {
-              "duration": 17644047,
+              "duration": 6885931,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9023407,
               "status": "passed"
             },
             "match": {
@@ -2434,7 +2668,7 @@
         "after": [
           {
             "result": {
-              "duration": 279885,
+              "duration": 162929,
               "status": "passed"
             },
             "match": {
@@ -2447,7 +2681,7 @@
         "steps": [
           {
             "result": {
-              "duration": 536297962,
+              "duration": 473429292,
               "status": "passed"
             },
             "line": 135,
@@ -2473,7 +2707,7 @@
           },
           {
             "result": {
-              "duration": 1133253,
+              "duration": 987817,
               "status": "passed"
             },
             "line": 136,
@@ -2494,7 +2728,7 @@
           },
           {
             "result": {
-              "duration": 584260452,
+              "duration": 485288920,
               "status": "passed"
             },
             "line": 137,
@@ -2506,7 +2740,7 @@
           },
           {
             "result": {
-              "duration": 104232,
+              "duration": 35642,
               "status": "passed"
             },
             "line": 138,
@@ -2522,7 +2756,16 @@
         "before": [
           {
             "result": {
-              "duration": 12997051,
+              "duration": 10530650,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10336114,
               "status": "passed"
             },
             "match": {
@@ -2537,7 +2780,7 @@
         "after": [
           {
             "result": {
-              "duration": 432984,
+              "duration": 216033,
               "status": "passed"
             },
             "match": {
@@ -2550,7 +2793,7 @@
         "steps": [
           {
             "result": {
-              "duration": 503949040,
+              "duration": 455573791,
               "status": "passed"
             },
             "line": 135,
@@ -2576,7 +2819,7 @@
           },
           {
             "result": {
-              "duration": 1376077,
+              "duration": 1403818,
               "status": "passed"
             },
             "line": 136,
@@ -2597,7 +2840,7 @@
           },
           {
             "result": {
-              "duration": 541147033,
+              "duration": 479417698,
               "status": "passed"
             },
             "line": 137,
@@ -2609,7 +2852,7 @@
           },
           {
             "result": {
-              "duration": 65338,
+              "duration": 39506,
               "status": "passed"
             },
             "line": 138,
@@ -2625,7 +2868,16 @@
         "before": [
           {
             "result": {
-              "duration": 10086158,
+              "duration": 16518230,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8232548,
               "status": "passed"
             },
             "match": {
@@ -2640,7 +2892,7 @@
         "after": [
           {
             "result": {
-              "duration": 178318,
+              "duration": 320102,
               "status": "passed"
             },
             "match": {
@@ -2653,7 +2905,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1270066,
+              "duration": 1092193,
               "status": "passed"
             },
             "line": 153,
@@ -2674,7 +2926,7 @@
           },
           {
             "result": {
-              "duration": 63108460,
+              "duration": 66053612,
               "error_message": "com.fasterxml.jackson.core.JsonParseException: Unrecognized token \u0027Internal\u0027: was expecting \u0027null\u0027, \u0027true\u0027, \u0027false\u0027 or NaN\n at [Source: (String)\"Internal Server Error\"; line: 1, column: 9]\n\tat com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1804)\n\tat com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:679)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2839)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2817)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._matchToken(ReaderBasedJsonParser.java:2606)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:1875)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:749)\n\tat com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4141)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4000)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3004)\n\tat de.adorsys.aspsp.xs2a.integtest.util.Context.handleRequestError(Context.java:52)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.AccountListRequestErrofulSteps.psu_sends_get_request(AccountListRequestErrofulSteps.java:89)\n\tat ✽.When PSU sends get request(AIS_01.feature:154)\n",
               "status": "failed"
             },
@@ -2702,7 +2954,16 @@
         "before": [
           {
             "result": {
-              "duration": 13160889,
+              "duration": 10559273,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11863492,
               "status": "passed"
             },
             "match": {
@@ -2717,7 +2978,7 @@
         "after": [
           {
             "result": {
-              "duration": 325018,
+              "duration": 194064,
               "status": "passed"
             },
             "match": {
@@ -2730,7 +2991,7 @@
         "steps": [
           {
             "result": {
-              "duration": 553282690,
+              "duration": 487579238,
               "status": "passed"
             },
             "line": 161,
@@ -2756,7 +3017,7 @@
           },
           {
             "result": {
-              "duration": 4400519,
+              "duration": 3047909,
               "status": "passed"
             },
             "line": 162,
@@ -2777,7 +3038,7 @@
           },
           {
             "result": {
-              "duration": 2906407,
+              "duration": 2126414,
               "status": "passed"
             },
             "line": 163,
@@ -2798,7 +3059,7 @@
           },
           {
             "result": {
-              "duration": 2187005181,
+              "duration": 1829167871,
               "status": "passed"
             },
             "line": 164,
@@ -2810,7 +3071,7 @@
           },
           {
             "result": {
-              "duration": 81537,
+              "duration": 58959,
               "status": "passed"
             },
             "line": 165,
@@ -2826,7 +3087,16 @@
         "before": [
           {
             "result": {
-              "duration": 14298077,
+              "duration": 12650262,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10961854,
               "status": "passed"
             },
             "match": {
@@ -2841,7 +3111,7 @@
         "after": [
           {
             "result": {
-              "duration": 199674,
+              "duration": 662712,
               "status": "passed"
             },
             "match": {
@@ -2854,7 +3124,7 @@
         "steps": [
           {
             "result": {
-              "duration": 522856635,
+              "duration": 487418008,
               "status": "passed"
             },
             "line": 172,
@@ -2880,7 +3150,7 @@
           },
           {
             "result": {
-              "duration": 281650,
+              "duration": 421805,
               "status": "passed"
             },
             "line": 173,
@@ -2901,7 +3171,7 @@
           },
           {
             "result": {
-              "duration": 3681178,
+              "duration": 7148134,
               "status": "passed"
             },
             "line": 174,
@@ -2922,7 +3192,7 @@
           },
           {
             "result": {
-              "duration": 14173370,
+              "duration": 6173659,
               "status": "passed"
             },
             "line": 175,
@@ -2934,7 +3204,7 @@
           },
           {
             "result": {
-              "duration": 80348,
+              "duration": 103991,
               "status": "passed"
             },
             "line": 176,
@@ -2950,7 +3220,16 @@
         "before": [
           {
             "result": {
-              "duration": 16093886,
+              "duration": 9767686,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 15244804,
               "status": "passed"
             },
             "match": {
@@ -2965,7 +3244,7 @@
         "after": [
           {
             "result": {
-              "duration": 238204,
+              "duration": 287097,
               "status": "passed"
             },
             "match": {
@@ -2978,7 +3257,7 @@
         "steps": [
           {
             "result": {
-              "duration": 523863995,
+              "duration": 504879211,
               "status": "passed"
             },
             "line": 172,
@@ -3004,7 +3283,7 @@
           },
           {
             "result": {
-              "duration": 246777,
+              "duration": 238585,
               "status": "passed"
             },
             "line": 173,
@@ -3025,7 +3304,7 @@
           },
           {
             "result": {
-              "duration": 918182,
+              "duration": 798977,
               "status": "passed"
             },
             "line": 174,
@@ -3046,7 +3325,7 @@
           },
           {
             "result": {
-              "duration": 8324599,
+              "duration": 6937691,
               "status": "passed"
             },
             "line": 175,
@@ -3058,7 +3337,7 @@
           },
           {
             "result": {
-              "duration": 63019,
+              "duration": 45628,
               "status": "passed"
             },
             "line": 176,
@@ -3074,7 +3353,16 @@
         "before": [
           {
             "result": {
-              "duration": 15953106,
+              "duration": 10823830,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11216339,
               "status": "passed"
             },
             "match": {
@@ -3089,7 +3377,7 @@
         "after": [
           {
             "result": {
-              "duration": 241874,
+              "duration": 271270,
               "status": "passed"
             },
             "match": {
@@ -3102,7 +3390,7 @@
         "steps": [
           {
             "result": {
-              "duration": 542728998,
+              "duration": 483315475,
               "status": "passed"
             },
             "line": 172,
@@ -3128,7 +3416,7 @@
           },
           {
             "result": {
-              "duration": 271871,
+              "duration": 221370,
               "status": "passed"
             },
             "line": 173,
@@ -3149,7 +3437,7 @@
           },
           {
             "result": {
-              "duration": 994247,
+              "duration": 787355,
               "status": "passed"
             },
             "line": 174,
@@ -3170,7 +3458,7 @@
           },
           {
             "result": {
-              "duration": 554641649,
+              "duration": 469368729,
               "status": "passed"
             },
             "line": 175,
@@ -3182,7 +3470,7 @@
           },
           {
             "result": {
-              "duration": 46111,
+              "duration": 37763,
               "status": "passed"
             },
             "line": 176,
@@ -3198,7 +3486,16 @@
         "before": [
           {
             "result": {
-              "duration": 11983956,
+              "duration": 8736002,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8232261,
               "status": "passed"
             },
             "match": {
@@ -3213,7 +3510,7 @@
         "after": [
           {
             "result": {
-              "duration": 232982,
+              "duration": 212365,
               "status": "passed"
             },
             "match": {
@@ -3226,7 +3523,7 @@
         "steps": [
           {
             "result": {
-              "duration": 567264859,
+              "duration": 486020964,
               "status": "passed"
             },
             "line": 172,
@@ -3252,7 +3549,7 @@
           },
           {
             "result": {
-              "duration": 301732,
+              "duration": 335146,
               "status": "passed"
             },
             "line": 173,
@@ -3273,7 +3570,7 @@
           },
           {
             "result": {
-              "duration": 1205144,
+              "duration": 1245215,
               "status": "passed"
             },
             "line": 174,
@@ -3294,7 +3591,7 @@
           },
           {
             "result": {
-              "duration": 1950799565,
+              "duration": 1726084464,
               "status": "passed"
             },
             "line": 175,
@@ -3306,7 +3603,7 @@
           },
           {
             "result": {
-              "duration": 379603,
+              "duration": 219746,
               "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:176)\n",
               "status": "failed"
             },
@@ -3323,7 +3620,16 @@
         "before": [
           {
             "result": {
-              "duration": 17553217,
+              "duration": 12217102,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9510392,
               "status": "passed"
             },
             "match": {
@@ -3338,7 +3644,7 @@
         "after": [
           {
             "result": {
-              "duration": 290167,
+              "duration": 354990,
               "status": "passed"
             },
             "match": {
@@ -3351,7 +3657,7 @@
         "steps": [
           {
             "result": {
-              "duration": 513817048,
+              "duration": 487657769,
               "status": "passed"
             },
             "line": 172,
@@ -3377,7 +3683,7 @@
           },
           {
             "result": {
-              "duration": 248659,
+              "duration": 238312,
               "status": "passed"
             },
             "line": 173,
@@ -3398,7 +3704,7 @@
           },
           {
             "result": {
-              "duration": 748808,
+              "duration": 1150711,
               "status": "passed"
             },
             "line": 174,
@@ -3419,7 +3725,7 @@
           },
           {
             "result": {
-              "duration": 513182085,
+              "duration": 477717630,
               "status": "passed"
             },
             "line": 175,
@@ -3431,7 +3737,7 @@
           },
           {
             "result": {
-              "duration": 403504,
+              "duration": 753749,
               "status": "passed"
             },
             "line": 176,
@@ -3447,7 +3753,16 @@
         "before": [
           {
             "result": {
-              "duration": 17850662,
+              "duration": 11147852,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14166678,
               "status": "passed"
             },
             "match": {
@@ -3462,7 +3777,7 @@
         "after": [
           {
             "result": {
-              "duration": 297327,
+              "duration": 286916,
               "status": "passed"
             },
             "match": {
@@ -3475,7 +3790,7 @@
         "steps": [
           {
             "result": {
-              "duration": 551744187,
+              "duration": 443351437,
               "status": "passed"
             },
             "line": 172,
@@ -3501,7 +3816,7 @@
           },
           {
             "result": {
-              "duration": 396527,
+              "duration": 243132,
               "status": "passed"
             },
             "line": 173,
@@ -3522,7 +3837,7 @@
           },
           {
             "result": {
-              "duration": 1082855,
+              "duration": 796766,
               "status": "passed"
             },
             "line": 174,
@@ -3543,7 +3858,7 @@
           },
           {
             "result": {
-              "duration": 540367209,
+              "duration": 460911660,
               "status": "passed"
             },
             "line": 175,
@@ -3555,7 +3870,7 @@
           },
           {
             "result": {
-              "duration": 51812,
+              "duration": 67727,
               "status": "passed"
             },
             "line": 176,
@@ -3571,7 +3886,16 @@
         "before": [
           {
             "result": {
-              "duration": 19178205,
+              "duration": 16618591,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8677469,
               "status": "passed"
             },
             "match": {
@@ -3586,7 +3910,7 @@
         "after": [
           {
             "result": {
-              "duration": 231658,
+              "duration": 401894,
               "status": "passed"
             },
             "match": {
@@ -3599,7 +3923,7 @@
         "steps": [
           {
             "result": {
-              "duration": 522623562,
+              "duration": 496600092,
               "status": "passed"
             },
             "line": 172,
@@ -3625,7 +3949,7 @@
           },
           {
             "result": {
-              "duration": 333794,
+              "duration": 202604,
               "status": "passed"
             },
             "line": 173,
@@ -3646,7 +3970,7 @@
           },
           {
             "result": {
-              "duration": 1145643,
+              "duration": 888638,
               "status": "passed"
             },
             "line": 174,
@@ -3667,7 +3991,7 @@
           },
           {
             "result": {
-              "duration": 575330045,
+              "duration": 488570271,
               "status": "passed"
             },
             "line": 175,
@@ -3679,7 +4003,7 @@
           },
           {
             "result": {
-              "duration": 49057,
+              "duration": 43435,
               "status": "passed"
             },
             "line": 176,
@@ -3695,7 +4019,16 @@
         "before": [
           {
             "result": {
-              "duration": 20723136,
+              "duration": 8261322,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14727511,
               "status": "passed"
             },
             "match": {
@@ -3710,7 +4043,7 @@
         "after": [
           {
             "result": {
-              "duration": 206129,
+              "duration": 214346,
               "status": "passed"
             },
             "match": {
@@ -3723,7 +4056,7 @@
         "steps": [
           {
             "result": {
-              "duration": 513624777,
+              "duration": 471944626,
               "status": "passed"
             },
             "line": 172,
@@ -3749,7 +4082,7 @@
           },
           {
             "result": {
-              "duration": 396273,
+              "duration": 296054,
               "status": "passed"
             },
             "line": 173,
@@ -3770,7 +4103,7 @@
           },
           {
             "result": {
-              "duration": 1143430,
+              "duration": 865338,
               "status": "passed"
             },
             "line": 174,
@@ -3791,7 +4124,7 @@
           },
           {
             "result": {
-              "duration": 530903336,
+              "duration": 469914892,
               "status": "passed"
             },
             "line": 175,
@@ -3803,7 +4136,7 @@
           },
           {
             "result": {
-              "duration": 48021,
+              "duration": 39725,
               "status": "passed"
             },
             "line": 176,
@@ -3819,7 +4152,16 @@
         "before": [
           {
             "result": {
-              "duration": 20581629,
+              "duration": 6428469,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 16423460,
               "status": "passed"
             },
             "match": {
@@ -3834,7 +4176,7 @@
         "after": [
           {
             "result": {
-              "duration": 151344,
+              "duration": 188849,
               "status": "passed"
             },
             "match": {
@@ -3847,7 +4189,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1511133,
+              "duration": 6739227,
               "status": "passed"
             },
             "line": 190,
@@ -3868,7 +4210,7 @@
           },
           {
             "result": {
-              "duration": 60038101,
+              "duration": 57512203,
               "error_message": "com.fasterxml.jackson.core.JsonParseException: Unrecognized token \u0027Internal\u0027: was expecting \u0027null\u0027, \u0027true\u0027, \u0027false\u0027 or NaN\n at [Source: (String)\"Internal Server Error\"; line: 1, column: 9]\n\tat com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1804)\n\tat com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:679)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2839)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2817)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._matchToken(ReaderBasedJsonParser.java:2606)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:1875)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:749)\n\tat com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4141)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4000)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3004)\n\tat de.adorsys.aspsp.xs2a.integtest.util.Context.handleRequestError(Context.java:52)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.AccountDetailRequestErrofulSteps.psu_requests_the_account_details(AccountDetailRequestErrofulSteps.java:91)\n\tat ✽.When PSU requests the account details erroful(AIS_01.feature:191)\n",
               "status": "failed"
             },
@@ -3896,7 +4238,16 @@
         "before": [
           {
             "result": {
-              "duration": 13690079,
+              "duration": 17225080,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11752704,
               "status": "passed"
             },
             "match": {
@@ -3911,7 +4262,7 @@
         "after": [
           {
             "result": {
-              "duration": 187223,
+              "duration": 208792,
               "status": "passed"
             },
             "match": {
@@ -3924,7 +4275,7 @@
         "steps": [
           {
             "result": {
-              "duration": 534530549,
+              "duration": 484631165,
               "status": "passed"
             },
             "line": 204,
@@ -3949,7 +4300,7 @@
           },
           {
             "result": {
-              "duration": 345936,
+              "duration": 214328,
               "status": "passed"
             },
             "line": 205,
@@ -3970,7 +4321,7 @@
           },
           {
             "result": {
-              "duration": 8552473,
+              "duration": 8762789,
               "status": "passed"
             },
             "line": 206,
@@ -3991,7 +4342,7 @@
           },
           {
             "result": {
-              "duration": 2019318203,
+              "duration": 1766936736,
               "status": "passed"
             },
             "line": 207,
@@ -4003,7 +4354,7 @@
           },
           {
             "result": {
-              "duration": 80620,
+              "duration": 83196,
               "status": "passed"
             },
             "line": 208,
@@ -4019,7 +4370,16 @@
         "before": [
           {
             "result": {
-              "duration": 13707814,
+              "duration": 13943204,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11634248,
               "status": "passed"
             },
             "match": {
@@ -4034,7 +4394,7 @@
         "after": [
           {
             "result": {
-              "duration": 383298,
+              "duration": 164077,
               "status": "passed"
             },
             "match": {
@@ -4047,7 +4407,7 @@
         "steps": [
           {
             "result": {
-              "duration": 524526649,
+              "duration": 472444759,
               "status": "passed"
             },
             "line": 204,
@@ -4072,7 +4432,7 @@
           },
           {
             "result": {
-              "duration": 392995,
+              "duration": 254713,
               "status": "passed"
             },
             "line": 205,
@@ -4093,7 +4453,7 @@
           },
           {
             "result": {
-              "duration": 550649,
+              "duration": 450231,
               "status": "passed"
             },
             "line": 206,
@@ -4114,7 +4474,7 @@
           },
           {
             "result": {
-              "duration": 1968786423,
+              "duration": 1757144647,
               "status": "passed"
             },
             "line": 207,
@@ -4126,7 +4486,7 @@
           },
           {
             "result": {
-              "duration": 86322,
+              "duration": 33831,
               "status": "passed"
             },
             "line": 208,
@@ -4142,7 +4502,16 @@
         "before": [
           {
             "result": {
-              "duration": 11414782,
+              "duration": 15811169,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7218225,
               "status": "passed"
             },
             "match": {
@@ -4157,7 +4526,7 @@
         "after": [
           {
             "result": {
-              "duration": 253313,
+              "duration": 178961,
               "status": "passed"
             },
             "match": {
@@ -4170,7 +4539,7 @@
         "steps": [
           {
             "result": {
-              "duration": 529450611,
+              "duration": 463540581,
               "status": "passed"
             },
             "line": 254,
@@ -4196,7 +4565,7 @@
           },
           {
             "result": {
-              "duration": 256200,
+              "duration": 202293,
               "status": "passed"
             },
             "line": 255,
@@ -4217,7 +4586,7 @@
           },
           {
             "result": {
-              "duration": 17257923,
+              "duration": 11835856,
               "status": "passed"
             },
             "line": 256,
@@ -4263,7 +4632,7 @@
           },
           {
             "result": {
-              "duration": 32787192,
+              "duration": 22509103,
               "status": "passed"
             },
             "line": 257,
@@ -4284,7 +4653,7 @@
           },
           {
             "result": {
-              "duration": 1981727645,
+              "duration": 1754868963,
               "status": "passed"
             },
             "line": 258,
@@ -4296,7 +4665,7 @@
           },
           {
             "result": {
-              "duration": 55815,
+              "duration": 47620,
               "status": "passed"
             },
             "line": 259,
@@ -4312,7 +4681,16 @@
         "before": [
           {
             "result": {
-              "duration": 22774404,
+              "duration": 10469196,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 6236580,
               "status": "passed"
             },
             "match": {
@@ -4327,7 +4705,7 @@
         "after": [
           {
             "result": {
-              "duration": 302923,
+              "duration": 438623,
               "status": "passed"
             },
             "match": {
@@ -4340,7 +4718,7 @@
         "steps": [
           {
             "result": {
-              "duration": 448410860,
+              "duration": 482662622,
               "status": "passed"
             },
             "line": 254,
@@ -4366,7 +4744,7 @@
           },
           {
             "result": {
-              "duration": 239485,
+              "duration": 244462,
               "status": "passed"
             },
             "line": 255,
@@ -4387,7 +4765,7 @@
           },
           {
             "result": {
-              "duration": 163148,
+              "duration": 190788,
               "status": "passed"
             },
             "line": 256,
@@ -4433,7 +4811,7 @@
           },
           {
             "result": {
-              "duration": 616031,
+              "duration": 713730,
               "status": "passed"
             },
             "line": 257,
@@ -4454,7 +4832,7 @@
           },
           {
             "result": {
-              "duration": 2084933829,
+              "duration": 1739128741,
               "status": "passed"
             },
             "line": 258,
@@ -4466,7 +4844,7 @@
           },
           {
             "result": {
-              "duration": 98631,
+              "duration": 172474,
               "status": "passed"
             },
             "line": 259,
@@ -4482,7 +4860,16 @@
         "before": [
           {
             "result": {
-              "duration": 11310530,
+              "duration": 8448066,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9052858,
               "status": "passed"
             },
             "match": {
@@ -4497,7 +4884,7 @@
         "after": [
           {
             "result": {
-              "duration": 192017,
+              "duration": 1203525,
               "status": "passed"
             },
             "match": {
@@ -4510,7 +4897,7 @@
         "steps": [
           {
             "result": {
-              "duration": 541352403,
+              "duration": 464639763,
               "status": "passed"
             },
             "line": 254,
@@ -4536,7 +4923,7 @@
           },
           {
             "result": {
-              "duration": 448865,
+              "duration": 317453,
               "status": "passed"
             },
             "line": 255,
@@ -4557,7 +4944,7 @@
           },
           {
             "result": {
-              "duration": 423693,
+              "duration": 443833,
               "status": "passed"
             },
             "line": 256,
@@ -4603,7 +4990,7 @@
           },
           {
             "result": {
-              "duration": 728585,
+              "duration": 998450,
               "status": "passed"
             },
             "line": 257,
@@ -4624,7 +5011,7 @@
           },
           {
             "result": {
-              "duration": 1954134517,
+              "duration": 2619794605,
               "status": "passed"
             },
             "line": 258,
@@ -4636,7 +5023,7 @@
           },
           {
             "result": {
-              "duration": 34810,
+              "duration": 138140,
               "status": "passed"
             },
             "line": 259,
@@ -4652,7 +5039,16 @@
         "before": [
           {
             "result": {
-              "duration": 11634914,
+              "duration": 7983308,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 24935105,
               "status": "passed"
             },
             "match": {
@@ -4667,7 +5063,7 @@
         "after": [
           {
             "result": {
-              "duration": 171389,
+              "duration": 212562,
               "status": "passed"
             },
             "match": {
@@ -4680,7 +5076,7 @@
         "steps": [
           {
             "result": {
-              "duration": 502418412,
+              "duration": 457425326,
               "status": "passed"
             },
             "line": 254,
@@ -4706,7 +5102,7 @@
           },
           {
             "result": {
-              "duration": 227616,
+              "duration": 234539,
               "status": "passed"
             },
             "line": 255,
@@ -4727,7 +5123,7 @@
           },
           {
             "result": {
-              "duration": 176152,
+              "duration": 150267,
               "status": "passed"
             },
             "line": 256,
@@ -4773,7 +5169,7 @@
           },
           {
             "result": {
-              "duration": 381459,
+              "duration": 389417,
               "status": "passed"
             },
             "line": 257,
@@ -4794,7 +5190,7 @@
           },
           {
             "result": {
-              "duration": 2007335330,
+              "duration": 1787717561,
               "status": "passed"
             },
             "line": 258,
@@ -4806,7 +5202,7 @@
           },
           {
             "result": {
-              "duration": 30519,
+              "duration": 31479,
               "status": "passed"
             },
             "line": 259,
@@ -4822,7 +5218,16 @@
         "before": [
           {
             "result": {
-              "duration": 11165006,
+              "duration": 8639988,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 15191903,
               "status": "passed"
             },
             "match": {
@@ -4837,7 +5242,7 @@
         "after": [
           {
             "result": {
-              "duration": 232616,
+              "duration": 196180,
               "status": "passed"
             },
             "match": {
@@ -4850,7 +5255,7 @@
         "steps": [
           {
             "result": {
-              "duration": 509929251,
+              "duration": 473335733,
               "status": "passed"
             },
             "line": 254,
@@ -4876,7 +5281,7 @@
           },
           {
             "result": {
-              "duration": 745444,
+              "duration": 1001670,
               "status": "passed"
             },
             "line": 255,
@@ -4897,7 +5302,7 @@
           },
           {
             "result": {
-              "duration": 591683,
+              "duration": 153914,
               "status": "passed"
             },
             "line": 256,
@@ -4943,7 +5348,7 @@
           },
           {
             "result": {
-              "duration": 2148845,
+              "duration": 746721,
               "status": "passed"
             },
             "line": 257,
@@ -4964,7 +5369,7 @@
           },
           {
             "result": {
-              "duration": 1927256451,
+              "duration": 1852883369,
               "status": "passed"
             },
             "line": 258,
@@ -4976,7 +5381,7 @@
           },
           {
             "result": {
-              "duration": 34018,
+              "duration": 29864,
               "status": "passed"
             },
             "line": 259,
@@ -4992,7 +5397,16 @@
         "before": [
           {
             "result": {
-              "duration": 16591928,
+              "duration": 10009827,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10601507,
               "status": "passed"
             },
             "match": {
@@ -5007,7 +5421,7 @@
         "after": [
           {
             "result": {
-              "duration": 225380,
+              "duration": 213874,
               "status": "passed"
             },
             "match": {
@@ -5020,7 +5434,7 @@
         "steps": [
           {
             "result": {
-              "duration": 446666827,
+              "duration": 469497250,
               "status": "passed"
             },
             "line": 254,
@@ -5046,7 +5460,7 @@
           },
           {
             "result": {
-              "duration": 243554,
+              "duration": 221595,
               "status": "passed"
             },
             "line": 255,
@@ -5067,7 +5481,7 @@
           },
           {
             "result": {
-              "duration": 170399,
+              "duration": 128436,
               "status": "passed"
             },
             "line": 256,
@@ -5113,7 +5527,7 @@
           },
           {
             "result": {
-              "duration": 385875,
+              "duration": 349715,
               "status": "passed"
             },
             "line": 257,
@@ -5134,7 +5548,7 @@
           },
           {
             "result": {
-              "duration": 1879856349,
+              "duration": 1867029413,
               "status": "passed"
             },
             "line": 258,
@@ -5146,7 +5560,7 @@
           },
           {
             "result": {
-              "duration": 32130,
+              "duration": 35670,
               "status": "passed"
             },
             "line": 259,
@@ -5162,7 +5576,16 @@
         "before": [
           {
             "result": {
-              "duration": 11545835,
+              "duration": 13377511,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11217846,
               "status": "passed"
             },
             "match": {
@@ -5177,7 +5600,7 @@
         "after": [
           {
             "result": {
-              "duration": 291351,
+              "duration": 196695,
               "status": "passed"
             },
             "match": {
@@ -5190,7 +5613,7 @@
         "steps": [
           {
             "result": {
-              "duration": 550973060,
+              "duration": 478564592,
               "status": "passed"
             },
             "line": 254,
@@ -5216,7 +5639,7 @@
           },
           {
             "result": {
-              "duration": 228722,
+              "duration": 191784,
               "status": "passed"
             },
             "line": 255,
@@ -5237,7 +5660,7 @@
           },
           {
             "result": {
-              "duration": 173387,
+              "duration": 130466,
               "status": "passed"
             },
             "line": 256,
@@ -5283,7 +5706,7 @@
           },
           {
             "result": {
-              "duration": 475290,
+              "duration": 358609,
               "status": "passed"
             },
             "line": 257,
@@ -5304,7 +5727,7 @@
           },
           {
             "result": {
-              "duration": 1953606299,
+              "duration": 1826863229,
               "status": "passed"
             },
             "line": 258,
@@ -5316,7 +5739,7 @@
           },
           {
             "result": {
-              "duration": 105622,
+              "duration": 33520,
               "status": "passed"
             },
             "line": 259,
@@ -5332,7 +5755,16 @@
         "before": [
           {
             "result": {
-              "duration": 18002325,
+              "duration": 9758532,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14892065,
               "status": "passed"
             },
             "match": {
@@ -5347,7 +5779,7 @@
         "after": [
           {
             "result": {
-              "duration": 214353,
+              "duration": 177660,
               "status": "passed"
             },
             "match": {
@@ -5360,7 +5792,7 @@
         "steps": [
           {
             "result": {
-              "duration": 500897292,
+              "duration": 483158825,
               "status": "passed"
             },
             "line": 271,
@@ -5386,7 +5818,7 @@
           },
           {
             "result": {
-              "duration": 486649,
+              "duration": 274714,
               "status": "passed"
             },
             "line": 272,
@@ -5407,7 +5839,7 @@
           },
           {
             "result": {
-              "duration": 9645951,
+              "duration": 4144362,
               "status": "passed"
             },
             "line": 273,
@@ -5428,7 +5860,7 @@
           },
           {
             "result": {
-              "duration": 9075676,
+              "duration": 9874386,
               "status": "passed"
             },
             "line": 274,
@@ -5440,7 +5872,7 @@
           },
           {
             "result": {
-              "duration": 51260,
+              "duration": 70162,
               "status": "passed"
             },
             "line": 275,
@@ -5456,7 +5888,16 @@
         "before": [
           {
             "result": {
-              "duration": 15684331,
+              "duration": 20190464,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 26131910,
               "status": "passed"
             },
             "match": {
@@ -5471,7 +5912,7 @@
         "after": [
           {
             "result": {
-              "duration": 249629,
+              "duration": 176469,
               "status": "passed"
             },
             "match": {
@@ -5484,7 +5925,7 @@
         "steps": [
           {
             "result": {
-              "duration": 729860743,
+              "duration": 521303779,
               "status": "passed"
             },
             "line": 271,
@@ -5510,7 +5951,7 @@
           },
           {
             "result": {
-              "duration": 386118,
+              "duration": 224776,
               "status": "passed"
             },
             "line": 272,
@@ -5531,7 +5972,7 @@
           },
           {
             "result": {
-              "duration": 816404,
+              "duration": 491266,
               "status": "passed"
             },
             "line": 273,
@@ -5552,7 +5993,7 @@
           },
           {
             "result": {
-              "duration": 6509824,
+              "duration": 7640226,
               "status": "passed"
             },
             "line": 274,
@@ -5564,7 +6005,7 @@
           },
           {
             "result": {
-              "duration": 46130,
+              "duration": 46631,
               "status": "passed"
             },
             "line": 275,
@@ -5580,7 +6021,16 @@
         "before": [
           {
             "result": {
-              "duration": 13602418,
+              "duration": 17982199,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12040979,
               "status": "passed"
             },
             "match": {
@@ -5595,7 +6045,7 @@
         "after": [
           {
             "result": {
-              "duration": 313426,
+              "duration": 230595,
               "status": "passed"
             },
             "match": {
@@ -5608,7 +6058,7 @@
         "steps": [
           {
             "result": {
-              "duration": 478823522,
+              "duration": 448047742,
               "status": "passed"
             },
             "line": 271,
@@ -5634,7 +6084,7 @@
           },
           {
             "result": {
-              "duration": 263301,
+              "duration": 195843,
               "status": "passed"
             },
             "line": 272,
@@ -5655,7 +6105,7 @@
           },
           {
             "result": {
-              "duration": 1082487,
+              "duration": 804489,
               "status": "passed"
             },
             "line": 273,
@@ -5676,7 +6126,7 @@
           },
           {
             "result": {
-              "duration": 10571919,
+              "duration": 8710563,
               "status": "passed"
             },
             "line": 274,
@@ -5688,7 +6138,7 @@
           },
           {
             "result": {
-              "duration": 39302,
+              "duration": 34635,
               "status": "passed"
             },
             "line": 275,
@@ -5704,7 +6154,16 @@
         "before": [
           {
             "result": {
-              "duration": 16076129,
+              "duration": 11075441,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 18263693,
               "status": "passed"
             },
             "match": {
@@ -5719,7 +6178,7 @@
         "after": [
           {
             "result": {
-              "duration": 192643,
+              "duration": 200009,
               "status": "passed"
             },
             "match": {
@@ -5732,7 +6191,7 @@
         "steps": [
           {
             "result": {
-              "duration": 510213319,
+              "duration": 445121271,
               "status": "passed"
             },
             "line": 271,
@@ -5758,7 +6217,7 @@
           },
           {
             "result": {
-              "duration": 227539,
+              "duration": 203328,
               "status": "passed"
             },
             "line": 272,
@@ -5779,7 +6238,7 @@
           },
           {
             "result": {
-              "duration": 916698,
+              "duration": 844583,
               "status": "passed"
             },
             "line": 273,
@@ -5800,7 +6259,7 @@
           },
           {
             "result": {
-              "duration": 10231296,
+              "duration": 6372750,
               "status": "passed"
             },
             "line": 274,
@@ -5812,7 +6271,7 @@
           },
           {
             "result": {
-              "duration": 48742,
+              "duration": 58400,
               "status": "passed"
             },
             "line": 275,
@@ -5828,7 +6287,16 @@
         "before": [
           {
             "result": {
-              "duration": 15181445,
+              "duration": 15899618,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 19213236,
               "status": "passed"
             },
             "match": {
@@ -5843,7 +6311,7 @@
         "after": [
           {
             "result": {
-              "duration": 198248,
+              "duration": 192233,
               "status": "passed"
             },
             "match": {
@@ -5856,7 +6324,7 @@
         "steps": [
           {
             "result": {
-              "duration": 525220151,
+              "duration": 450132262,
               "status": "passed"
             },
             "line": 271,
@@ -5882,7 +6350,7 @@
           },
           {
             "result": {
-              "duration": 210140,
+              "duration": 228538,
               "status": "passed"
             },
             "line": 272,
@@ -5903,7 +6371,7 @@
           },
           {
             "result": {
-              "duration": 1017704,
+              "duration": 874379,
               "status": "passed"
             },
             "line": 273,
@@ -5924,7 +6392,7 @@
           },
           {
             "result": {
-              "duration": 511739876,
+              "duration": 497242187,
               "status": "passed"
             },
             "line": 274,
@@ -5936,7 +6404,7 @@
           },
           {
             "result": {
-              "duration": 44083,
+              "duration": 86943,
               "status": "passed"
             },
             "line": 275,
@@ -5952,7 +6420,16 @@
         "before": [
           {
             "result": {
-              "duration": 25645054,
+              "duration": 17269337,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11181633,
               "status": "passed"
             },
             "match": {
@@ -5967,7 +6444,7 @@
         "after": [
           {
             "result": {
-              "duration": 721088,
+              "duration": 191235,
               "status": "passed"
             },
             "match": {
@@ -5980,7 +6457,7 @@
         "steps": [
           {
             "result": {
-              "duration": 507234975,
+              "duration": 513680677,
               "status": "passed"
             },
             "line": 271,
@@ -6006,7 +6483,7 @@
           },
           {
             "result": {
-              "duration": 261049,
+              "duration": 197652,
               "status": "passed"
             },
             "line": 272,
@@ -6027,7 +6504,7 @@
           },
           {
             "result": {
-              "duration": 914091,
+              "duration": 789230,
               "status": "passed"
             },
             "line": 273,
@@ -6048,7 +6525,7 @@
           },
           {
             "result": {
-              "duration": 1972856484,
+              "duration": 1899987341,
               "status": "passed"
             },
             "line": 274,
@@ -6060,7 +6537,7 @@
           },
           {
             "result": {
-              "duration": 850013,
+              "duration": 194770,
               "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:275)\n",
               "status": "failed"
             },
@@ -6077,7 +6554,16 @@
         "before": [
           {
             "result": {
-              "duration": 16831720,
+              "duration": 24428960,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 17628788,
               "status": "passed"
             },
             "match": {
@@ -6092,7 +6578,7 @@
         "after": [
           {
             "result": {
-              "duration": 142615,
+              "duration": 126695,
               "status": "passed"
             },
             "match": {
@@ -6105,7 +6591,7 @@
         "steps": [
           {
             "result": {
-              "duration": 503858582,
+              "duration": 464248279,
               "status": "passed"
             },
             "line": 271,
@@ -6131,7 +6617,7 @@
           },
           {
             "result": {
-              "duration": 326342,
+              "duration": 504955,
               "status": "passed"
             },
             "line": 272,
@@ -6152,7 +6638,7 @@
           },
           {
             "result": {
-              "duration": 987200,
+              "duration": 1214234,
               "status": "passed"
             },
             "line": 273,
@@ -6173,7 +6659,7 @@
           },
           {
             "result": {
-              "duration": 515599153,
+              "duration": 476614809,
               "status": "passed"
             },
             "line": 274,
@@ -6185,7 +6671,7 @@
           },
           {
             "result": {
-              "duration": 37182,
+              "duration": 31045,
               "status": "passed"
             },
             "line": 275,
@@ -6201,7 +6687,16 @@
         "before": [
           {
             "result": {
-              "duration": 20739598,
+              "duration": 11816520,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 26570095,
               "status": "passed"
             },
             "match": {
@@ -6216,7 +6711,7 @@
         "after": [
           {
             "result": {
-              "duration": 143438,
+              "duration": 162544,
               "status": "passed"
             },
             "match": {
@@ -6229,7 +6724,7 @@
         "steps": [
           {
             "result": {
-              "duration": 509053145,
+              "duration": 443521110,
               "status": "passed"
             },
             "line": 271,
@@ -6255,7 +6750,7 @@
           },
           {
             "result": {
-              "duration": 324051,
+              "duration": 195200,
               "status": "passed"
             },
             "line": 272,
@@ -6276,7 +6771,7 @@
           },
           {
             "result": {
-              "duration": 1099085,
+              "duration": 1101452,
               "status": "passed"
             },
             "line": 273,
@@ -6297,7 +6792,7 @@
           },
           {
             "result": {
-              "duration": 521310528,
+              "duration": 476060369,
               "status": "passed"
             },
             "line": 274,
@@ -6309,7 +6804,7 @@
           },
           {
             "result": {
-              "duration": 34835,
+              "duration": 30157,
               "status": "passed"
             },
             "line": 275,
@@ -6325,7 +6820,16 @@
         "before": [
           {
             "result": {
-              "duration": 18556416,
+              "duration": 13720817,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 21930628,
               "status": "passed"
             },
             "match": {
@@ -6340,7 +6844,7 @@
         "after": [
           {
             "result": {
-              "duration": 149210,
+              "duration": 184669,
               "status": "passed"
             },
             "match": {
@@ -6353,7 +6857,7 @@
         "steps": [
           {
             "result": {
-              "duration": 505504866,
+              "duration": 467744964,
               "status": "passed"
             },
             "line": 271,
@@ -6379,7 +6883,7 @@
           },
           {
             "result": {
-              "duration": 230288,
+              "duration": 293127,
               "status": "passed"
             },
             "line": 272,
@@ -6400,7 +6904,7 @@
           },
           {
             "result": {
-              "duration": 1070532,
+              "duration": 2462733,
               "status": "passed"
             },
             "line": 273,
@@ -6421,7 +6925,7 @@
           },
           {
             "result": {
-              "duration": 516086141,
+              "duration": 483663371,
               "status": "passed"
             },
             "line": 274,
@@ -6433,7 +6937,7 @@
           },
           {
             "result": {
-              "duration": 35748,
+              "duration": 64641,
               "status": "passed"
             },
             "line": 275,
@@ -6449,7 +6953,16 @@
         "before": [
           {
             "result": {
-              "duration": 22810942,
+              "duration": 11452745,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 17150324,
               "status": "passed"
             },
             "match": {
@@ -6464,7 +6977,7 @@
         "after": [
           {
             "result": {
-              "duration": 140811,
+              "duration": 317130,
               "status": "passed"
             },
             "match": {
@@ -6477,7 +6990,7 @@
         "steps": [
           {
             "result": {
-              "duration": 477112939,
+              "duration": 521079211,
               "status": "passed"
             },
             "line": 271,
@@ -6503,7 +7016,7 @@
           },
           {
             "result": {
-              "duration": 212679,
+              "duration": 224726,
               "status": "passed"
             },
             "line": 272,
@@ -6524,7 +7037,7 @@
           },
           {
             "result": {
-              "duration": 1185452,
+              "duration": 1421000,
               "status": "passed"
             },
             "line": 273,
@@ -6545,7 +7058,7 @@
           },
           {
             "result": {
-              "duration": 516627783,
+              "duration": 474811648,
               "status": "passed"
             },
             "line": 274,
@@ -6557,7 +7070,7 @@
           },
           {
             "result": {
-              "duration": 48263,
+              "duration": 52158,
               "status": "passed"
             },
             "line": 275,
@@ -6573,7 +7086,16 @@
         "before": [
           {
             "result": {
-              "duration": 11778586,
+              "duration": 18495313,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 27988660,
               "status": "passed"
             },
             "match": {
@@ -6588,7 +7110,7 @@
         "after": [
           {
             "result": {
-              "duration": 171107,
+              "duration": 190087,
               "status": "passed"
             },
             "match": {
@@ -6601,7 +7123,7 @@
         "steps": [
           {
             "result": {
-              "duration": 440451903,
+              "duration": 437044365,
               "status": "passed"
             },
             "line": 291,
@@ -6627,7 +7149,7 @@
           },
           {
             "result": {
-              "duration": 368928,
+              "duration": 247910,
               "status": "passed"
             },
             "line": 292,
@@ -6648,7 +7170,7 @@
           },
           {
             "result": {
-              "duration": 10287283,
+              "duration": 6752341,
               "status": "passed"
             },
             "line": 293,
@@ -6669,7 +7191,7 @@
           },
           {
             "result": {
-              "duration": 166924,
+              "duration": 60823,
               "status": "passed"
             },
             "line": 294,
@@ -6690,7 +7212,7 @@
           },
           {
             "result": {
-              "duration": 2001254873,
+              "duration": 1842693899,
               "status": "passed"
             },
             "line": 295,
@@ -6702,7 +7224,7 @@
           },
           {
             "result": {
-              "duration": 317583,
+              "duration": 309988,
               "error_message": "java.lang.AssertionError: \nExpected: is \"ba8f7012-bdaf-4ada-bbf7-4c004d046ffe\"\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.TransactionDetailRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_detail_of_transaction_get_returned(TransactionDetailRequestSuccessfulSteps.java:104)\n\tat ✽.Then a successful response code and the appropriate detail of transaction get returned(AIS_01.feature:296)\n",
               "status": "failed"
             },
@@ -6719,7 +7241,16 @@
         "before": [
           {
             "result": {
-              "duration": 14671114,
+              "duration": 11452627,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 21776740,
               "status": "passed"
             },
             "match": {
@@ -6734,7 +7265,7 @@
         "after": [
           {
             "result": {
-              "duration": 243274,
+              "duration": 184710,
               "status": "passed"
             },
             "match": {
@@ -6747,7 +7278,7 @@
         "steps": [
           {
             "result": {
-              "duration": 517309750,
+              "duration": 434185844,
               "status": "passed"
             },
             "line": 302,
@@ -6773,7 +7304,7 @@
           },
           {
             "result": {
-              "duration": 252140,
+              "duration": 232288,
               "status": "passed"
             },
             "line": 303,
@@ -6794,7 +7325,7 @@
           },
           {
             "result": {
-              "duration": 4430653,
+              "duration": 3799751,
               "status": "passed"
             },
             "line": 304,
@@ -6815,7 +7346,7 @@
           },
           {
             "result": {
-              "duration": 223031,
+              "duration": 311242,
               "status": "passed"
             },
             "line": 305,
@@ -6836,7 +7367,7 @@
           },
           {
             "result": {
-              "duration": 6876376,
+              "duration": 7562693,
               "status": "passed"
             },
             "line": 306,
@@ -6848,7 +7379,7 @@
           },
           {
             "result": {
-              "duration": 65129,
+              "duration": 41333,
               "status": "passed"
             },
             "line": 307,
@@ -6864,7 +7395,16 @@
         "before": [
           {
             "result": {
-              "duration": 10125320,
+              "duration": 14042757,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 29044009,
               "status": "passed"
             },
             "match": {
@@ -6879,7 +7419,7 @@
         "after": [
           {
             "result": {
-              "duration": 211716,
+              "duration": 155515,
               "status": "passed"
             },
             "match": {
@@ -6892,7 +7432,7 @@
         "steps": [
           {
             "result": {
-              "duration": 514394048,
+              "duration": 482217641,
               "status": "passed"
             },
             "line": 302,
@@ -6918,7 +7458,7 @@
           },
           {
             "result": {
-              "duration": 208191,
+              "duration": 192712,
               "status": "passed"
             },
             "line": 303,
@@ -6939,7 +7479,7 @@
           },
           {
             "result": {
-              "duration": 546592,
+              "duration": 441629,
               "status": "passed"
             },
             "line": 304,
@@ -6960,7 +7500,7 @@
           },
           {
             "result": {
-              "duration": 176451,
+              "duration": 150393,
               "status": "passed"
             },
             "line": 305,
@@ -6981,7 +7521,7 @@
           },
           {
             "result": {
-              "duration": 7441726,
+              "duration": 6746242,
               "status": "passed"
             },
             "line": 306,
@@ -6993,7 +7533,7 @@
           },
           {
             "result": {
-              "duration": 32340,
+              "duration": 30693,
               "status": "passed"
             },
             "line": 307,
@@ -7009,7 +7549,16 @@
         "before": [
           {
             "result": {
-              "duration": 13565919,
+              "duration": 11230667,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 18453700,
               "status": "passed"
             },
             "match": {
@@ -7024,7 +7573,7 @@
         "after": [
           {
             "result": {
-              "duration": 964702,
+              "duration": 171334,
               "status": "passed"
             },
             "match": {
@@ -7037,7 +7586,7 @@
         "steps": [
           {
             "result": {
-              "duration": 512176466,
+              "duration": 460226176,
               "status": "passed"
             },
             "line": 302,
@@ -7063,7 +7612,7 @@
           },
           {
             "result": {
-              "duration": 200448,
+              "duration": 188301,
               "status": "passed"
             },
             "line": 303,
@@ -7084,7 +7633,7 @@
           },
           {
             "result": {
-              "duration": 939721,
+              "duration": 477701,
               "status": "passed"
             },
             "line": 304,
@@ -7105,7 +7654,7 @@
           },
           {
             "result": {
-              "duration": 191823,
+              "duration": 102472,
               "status": "passed"
             },
             "line": 305,
@@ -7126,7 +7675,7 @@
           },
           {
             "result": {
-              "duration": 8167129,
+              "duration": 8488023,
               "status": "passed"
             },
             "line": 306,
@@ -7138,7 +7687,7 @@
           },
           {
             "result": {
-              "duration": 226134,
+              "duration": 45816,
               "status": "passed"
             },
             "line": 307,
@@ -7154,7 +7703,16 @@
         "before": [
           {
             "result": {
-              "duration": 10953945,
+              "duration": 12604161,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 20824609,
               "status": "passed"
             },
             "match": {
@@ -7169,7 +7727,7 @@
         "after": [
           {
             "result": {
-              "duration": 258070,
+              "duration": 151199,
               "status": "passed"
             },
             "match": {
@@ -7182,7 +7740,7 @@
         "steps": [
           {
             "result": {
-              "duration": 550831124,
+              "duration": 439511094,
               "status": "passed"
             },
             "line": 302,
@@ -7208,7 +7766,7 @@
           },
           {
             "result": {
-              "duration": 218221,
+              "duration": 196966,
               "status": "passed"
             },
             "line": 303,
@@ -7229,7 +7787,7 @@
           },
           {
             "result": {
-              "duration": 726082,
+              "duration": 493547,
               "status": "passed"
             },
             "line": 304,
@@ -7250,7 +7808,7 @@
           },
           {
             "result": {
-              "duration": 234463,
+              "duration": 104939,
               "status": "passed"
             },
             "line": 305,
@@ -7271,7 +7829,7 @@
           },
           {
             "result": {
-              "duration": 9652298,
+              "duration": 7656898,
               "status": "passed"
             },
             "line": 306,
@@ -7283,7 +7841,7 @@
           },
           {
             "result": {
-              "duration": 33485,
+              "duration": 29086,
               "status": "passed"
             },
             "line": 307,
@@ -7299,7 +7857,16 @@
         "before": [
           {
             "result": {
-              "duration": 10033687,
+              "duration": 15838970,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 28240168,
               "status": "passed"
             },
             "match": {
@@ -7314,7 +7881,7 @@
         "after": [
           {
             "result": {
-              "duration": 166707,
+              "duration": 172099,
               "status": "passed"
             },
             "match": {
@@ -7327,7 +7894,7 @@
         "steps": [
           {
             "result": {
-              "duration": 510775847,
+              "duration": 471363117,
               "status": "passed"
             },
             "line": 302,
@@ -7353,7 +7920,7 @@
           },
           {
             "result": {
-              "duration": 226828,
+              "duration": 343666,
               "status": "passed"
             },
             "line": 303,
@@ -7374,7 +7941,7 @@
           },
           {
             "result": {
-              "duration": 496468,
+              "duration": 2482730,
               "status": "passed"
             },
             "line": 304,
@@ -7395,7 +7962,7 @@
           },
           {
             "result": {
-              "duration": 146149,
+              "duration": 871506,
               "status": "passed"
             },
             "line": 305,
@@ -7416,7 +7983,7 @@
           },
           {
             "result": {
-              "duration": 522215502,
+              "duration": 489441366,
               "status": "passed"
             },
             "line": 306,
@@ -7428,7 +7995,7 @@
           },
           {
             "result": {
-              "duration": 29547,
+              "duration": 30268,
               "status": "passed"
             },
             "line": 307,
@@ -7444,7 +8011,16 @@
         "before": [
           {
             "result": {
-              "duration": 14989742,
+              "duration": 19673608,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11499020,
               "status": "passed"
             },
             "match": {
@@ -7459,7 +8035,7 @@
         "after": [
           {
             "result": {
-              "duration": 185089,
+              "duration": 161095,
               "status": "passed"
             },
             "match": {
@@ -7472,7 +8048,7 @@
         "steps": [
           {
             "result": {
-              "duration": 509452968,
+              "duration": 525450174,
               "status": "passed"
             },
             "line": 302,
@@ -7498,7 +8074,7 @@
           },
           {
             "result": {
-              "duration": 238644,
+              "duration": 319636,
               "status": "passed"
             },
             "line": 303,
@@ -7519,7 +8095,7 @@
           },
           {
             "result": {
-              "duration": 585480,
+              "duration": 940605,
               "status": "passed"
             },
             "line": 304,
@@ -7540,7 +8116,7 @@
           },
           {
             "result": {
-              "duration": 163334,
+              "duration": 154098,
               "status": "passed"
             },
             "line": 305,
@@ -7561,7 +8137,7 @@
           },
           {
             "result": {
-              "duration": 1963367899,
+              "duration": 1727456703,
               "status": "passed"
             },
             "line": 306,
@@ -7573,7 +8149,7 @@
           },
           {
             "result": {
-              "duration": 217807,
+              "duration": 139304,
               "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:307)\n",
               "status": "failed"
             },
@@ -7590,7 +8166,16 @@
         "before": [
           {
             "result": {
-              "duration": 15892479,
+              "duration": 6406412,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 27166590,
               "status": "passed"
             },
             "match": {
@@ -7605,7 +8190,7 @@
         "after": [
           {
             "result": {
-              "duration": 202927,
+              "duration": 162675,
               "status": "passed"
             },
             "match": {
@@ -7618,7 +8203,7 @@
         "steps": [
           {
             "result": {
-              "duration": 568997819,
+              "duration": 438417892,
               "status": "passed"
             },
             "line": 302,
@@ -7644,7 +8229,7 @@
           },
           {
             "result": {
-              "duration": 238340,
+              "duration": 213289,
               "status": "passed"
             },
             "line": 303,
@@ -7665,7 +8250,7 @@
           },
           {
             "result": {
-              "duration": 549916,
+              "duration": 529884,
               "status": "passed"
             },
             "line": 304,
@@ -7686,7 +8271,7 @@
           },
           {
             "result": {
-              "duration": 114852,
+              "duration": 92354,
               "status": "passed"
             },
             "line": 305,
@@ -7707,7 +8292,7 @@
           },
           {
             "result": {
-              "duration": 497041868,
+              "duration": 484709058,
               "status": "passed"
             },
             "line": 306,
@@ -7719,7 +8304,7 @@
           },
           {
             "result": {
-              "duration": 52449,
+              "duration": 29518,
               "status": "passed"
             },
             "line": 307,
@@ -7735,7 +8320,16 @@
         "before": [
           {
             "result": {
-              "duration": 12921454,
+              "duration": 17965999,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14903788,
               "status": "passed"
             },
             "match": {
@@ -7750,7 +8344,7 @@
         "after": [
           {
             "result": {
-              "duration": 184536,
+              "duration": 172423,
               "status": "passed"
             },
             "match": {
@@ -7763,7 +8357,7 @@
         "steps": [
           {
             "result": {
-              "duration": 526689466,
+              "duration": 523066455,
               "status": "passed"
             },
             "line": 302,
@@ -7789,7 +8383,7 @@
           },
           {
             "result": {
-              "duration": 273848,
+              "duration": 177744,
               "status": "passed"
             },
             "line": 303,
@@ -7810,7 +8404,7 @@
           },
           {
             "result": {
-              "duration": 525418,
+              "duration": 406371,
               "status": "passed"
             },
             "line": 304,
@@ -7831,7 +8425,7 @@
           },
           {
             "result": {
-              "duration": 138111,
+              "duration": 81935,
               "status": "passed"
             },
             "line": 305,
@@ -7852,7 +8446,7 @@
           },
           {
             "result": {
-              "duration": 511581632,
+              "duration": 481241600,
               "status": "passed"
             },
             "line": 306,
@@ -7864,7 +8458,7 @@
           },
           {
             "result": {
-              "duration": 30657,
+              "duration": 28764,
               "status": "passed"
             },
             "line": 307,
@@ -7880,7 +8474,16 @@
         "before": [
           {
             "result": {
-              "duration": 20454618,
+              "duration": 15154508,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 23665736,
               "status": "passed"
             },
             "match": {
@@ -7895,7 +8498,7 @@
         "after": [
           {
             "result": {
-              "duration": 181202,
+              "duration": 165047,
               "status": "passed"
             },
             "match": {
@@ -7908,7 +8511,7 @@
         "steps": [
           {
             "result": {
-              "duration": 524391396,
+              "duration": 462268411,
               "status": "passed"
             },
             "line": 302,
@@ -7934,7 +8537,7 @@
           },
           {
             "result": {
-              "duration": 313459,
+              "duration": 160898,
               "status": "passed"
             },
             "line": 303,
@@ -7955,7 +8558,7 @@
           },
           {
             "result": {
-              "duration": 616945,
+              "duration": 535268,
               "status": "passed"
             },
             "line": 304,
@@ -7976,7 +8579,7 @@
           },
           {
             "result": {
-              "duration": 130266,
+              "duration": 110396,
               "status": "passed"
             },
             "line": 305,
@@ -7997,7 +8600,7 @@
           },
           {
             "result": {
-              "duration": 510844657,
+              "duration": 483885930,
               "status": "passed"
             },
             "line": 306,
@@ -8009,7 +8612,7 @@
           },
           {
             "result": {
-              "duration": 31195,
+              "duration": 29316,
               "status": "passed"
             },
             "line": 307,
@@ -8025,7 +8628,16 @@
         "before": [
           {
             "result": {
-              "duration": 10703629,
+              "duration": 19542752,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13936555,
               "status": "passed"
             },
             "match": {
@@ -8040,7 +8652,7 @@
         "after": [
           {
             "result": {
-              "duration": 171761,
+              "duration": 201621,
               "status": "passed"
             },
             "match": {
@@ -8053,7 +8665,7 @@
         "steps": [
           {
             "result": {
-              "duration": 511814003,
+              "duration": 507596354,
               "status": "passed"
             },
             "line": 302,
@@ -8079,7 +8691,7 @@
           },
           {
             "result": {
-              "duration": 241449,
+              "duration": 206956,
               "status": "passed"
             },
             "line": 303,
@@ -8100,7 +8712,7 @@
           },
           {
             "result": {
-              "duration": 584038,
+              "duration": 515074,
               "status": "passed"
             },
             "line": 304,
@@ -8121,7 +8733,7 @@
           },
           {
             "result": {
-              "duration": 184662,
+              "duration": 107203,
               "status": "passed"
             },
             "line": 305,
@@ -8142,7 +8754,7 @@
           },
           {
             "result": {
-              "duration": 512837625,
+              "duration": 467298645,
               "status": "passed"
             },
             "line": 306,
@@ -8154,7 +8766,7 @@
           },
           {
             "result": {
-              "duration": 71052,
+              "duration": 51645,
               "status": "passed"
             },
             "line": 307,
@@ -8170,7 +8782,16 @@
         "before": [
           {
             "result": {
-              "duration": 17122763,
+              "duration": 12781346,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 23043013,
               "status": "passed"
             },
             "match": {
@@ -8185,7 +8806,7 @@
         "after": [
           {
             "result": {
-              "duration": 248235,
+              "duration": 351322,
               "status": "passed"
             },
             "match": {
@@ -8198,7 +8819,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1798065,
+              "duration": 1316735,
               "status": "passed"
             },
             "line": 329,
@@ -8219,7 +8840,7 @@
           },
           {
             "result": {
-              "duration": 1889794694,
+              "duration": 1674726012,
               "status": "passed"
             },
             "line": 330,
@@ -8231,7 +8852,7 @@
           },
           {
             "result": {
-              "duration": 12117882,
+              "duration": 8845129,
               "status": "passed"
             },
             "line": 331,
@@ -8252,7 +8873,7 @@
           },
           {
             "result": {
-              "duration": 552086944,
+              "duration": 536195820,
               "status": "passed"
             },
             "line": 332,
@@ -8264,7 +8885,7 @@
           },
           {
             "result": {
-              "duration": 2821752,
+              "duration": 2975746,
               "status": "passed"
             },
             "line": 333,
@@ -8280,7 +8901,16 @@
         "before": [
           {
             "result": {
-              "duration": 14781431,
+              "duration": 12272624,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 24121020,
               "status": "passed"
             },
             "match": {
@@ -8295,7 +8925,7 @@
         "after": [
           {
             "result": {
-              "duration": 186236,
+              "duration": 254202,
               "status": "passed"
             },
             "match": {
@@ -8308,7 +8938,7 @@
         "steps": [
           {
             "result": {
-              "duration": 4456456,
+              "duration": 855436,
               "status": "passed"
             },
             "line": 329,
@@ -8329,7 +8959,7 @@
           },
           {
             "result": {
-              "duration": 1877426205,
+              "duration": 1791785589,
               "status": "passed"
             },
             "line": 330,
@@ -8341,7 +8971,7 @@
           },
           {
             "result": {
-              "duration": 517347,
+              "duration": 545432,
               "status": "passed"
             },
             "line": 331,
@@ -8362,7 +8992,7 @@
           },
           {
             "result": {
-              "duration": 563644229,
+              "duration": 548918751,
               "status": "passed"
             },
             "line": 332,
@@ -8374,7 +9004,7 @@
           },
           {
             "result": {
-              "duration": 159422,
+              "duration": 128870,
               "status": "passed"
             },
             "line": 333,
@@ -8400,7 +9030,16 @@
         "before": [
           {
             "result": {
-              "duration": 10406293,
+              "duration": 12512331,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13005671,
               "status": "passed"
             },
             "match": {
@@ -8415,7 +9054,7 @@
         "after": [
           {
             "result": {
-              "duration": 163978,
+              "duration": 178751,
               "status": "passed"
             },
             "match": {
@@ -8428,7 +9067,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1319975,
+              "duration": 1165572,
               "status": "passed"
             },
             "line": 9,
@@ -8449,7 +9088,7 @@
           },
           {
             "result": {
-              "duration": 465252,
+              "duration": 236255,
               "status": "passed"
             },
             "line": 10,
@@ -8470,7 +9109,7 @@
           },
           {
             "result": {
-              "duration": 1597003076,
+              "duration": 1479402533,
               "status": "passed"
             },
             "line": 11,
@@ -8482,7 +9121,7 @@
           },
           {
             "result": {
-              "duration": 32752,
+              "duration": 30011,
               "status": "passed"
             },
             "line": 12,
@@ -8494,7 +9133,7 @@
           },
           {
             "result": {
-              "duration": 4198326,
+              "duration": 2587038,
               "status": "passed"
             },
             "line": 13,
@@ -8510,7 +9149,16 @@
         "before": [
           {
             "result": {
-              "duration": 9246203,
+              "duration": 15364899,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 21366866,
               "status": "passed"
             },
             "match": {
@@ -8525,7 +9173,7 @@
         "after": [
           {
             "result": {
-              "duration": 181480,
+              "duration": 172981,
               "status": "passed"
             },
             "match": {
@@ -8538,7 +9186,7 @@
         "steps": [
           {
             "result": {
-              "duration": 968503,
+              "duration": 569269,
               "status": "passed"
             },
             "line": 9,
@@ -8559,7 +9207,7 @@
           },
           {
             "result": {
-              "duration": 273163,
+              "duration": 103640,
               "status": "passed"
             },
             "line": 10,
@@ -8580,7 +9228,7 @@
           },
           {
             "result": {
-              "duration": 1655159736,
+              "duration": 1451186956,
               "status": "passed"
             },
             "line": 11,
@@ -8592,7 +9240,7 @@
           },
           {
             "result": {
-              "duration": 33755,
+              "duration": 33941,
               "status": "passed"
             },
             "line": 12,
@@ -8604,7 +9252,7 @@
           },
           {
             "result": {
-              "duration": 151853,
+              "duration": 135525,
               "status": "passed"
             },
             "line": 13,
@@ -8620,7 +9268,16 @@
         "before": [
           {
             "result": {
-              "duration": 13129961,
+              "duration": 17744010,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9603022,
               "status": "passed"
             },
             "match": {
@@ -8635,7 +9292,7 @@
         "after": [
           {
             "result": {
-              "duration": 382341,
+              "duration": 228625,
               "status": "passed"
             },
             "match": {
@@ -8648,7 +9305,7 @@
         "steps": [
           {
             "result": {
-              "duration": 909685,
+              "duration": 590825,
               "status": "passed"
             },
             "line": 20,
@@ -8669,7 +9326,7 @@
           },
           {
             "result": {
-              "duration": 174625,
+              "duration": 122441,
               "status": "passed"
             },
             "line": 21,
@@ -8690,7 +9347,7 @@
           },
           {
             "result": {
-              "duration": 1873350833,
+              "duration": 1626978346,
               "status": "passed"
             },
             "line": 22,
@@ -8702,7 +9359,7 @@
           },
           {
             "result": {
-              "duration": 92031,
+              "duration": 33967,
               "status": "passed"
             },
             "line": 23,
@@ -8714,7 +9371,7 @@
           },
           {
             "result": {
-              "duration": 6151659,
+              "duration": 7292981,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -8731,7 +9388,16 @@
         "before": [
           {
             "result": {
-              "duration": 14390912,
+              "duration": 12422587,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 18258315,
               "status": "passed"
             },
             "match": {
@@ -8746,7 +9412,7 @@
         "after": [
           {
             "result": {
-              "duration": 530668,
+              "duration": 193115,
               "status": "passed"
             },
             "match": {
@@ -8759,7 +9425,7 @@
         "steps": [
           {
             "result": {
-              "duration": 809556,
+              "duration": 580571,
               "status": "passed"
             },
             "line": 20,
@@ -8780,7 +9446,7 @@
           },
           {
             "result": {
-              "duration": 231895,
+              "duration": 102774,
               "status": "passed"
             },
             "line": 21,
@@ -8801,7 +9467,7 @@
           },
           {
             "result": {
-              "duration": 1831287386,
+              "duration": 1755684523,
               "status": "passed"
             },
             "line": 22,
@@ -8813,7 +9479,7 @@
           },
           {
             "result": {
-              "duration": 36687,
+              "duration": 73819,
               "status": "passed"
             },
             "line": 23,
@@ -8825,7 +9491,7 @@
           },
           {
             "result": {
-              "duration": 431813,
+              "duration": 359432,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -8842,7 +9508,16 @@
         "before": [
           {
             "result": {
-              "duration": 12203784,
+              "duration": 8943789,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 15573263,
               "status": "passed"
             },
             "match": {
@@ -8857,7 +9532,7 @@
         "after": [
           {
             "result": {
-              "duration": 213432,
+              "duration": 211437,
               "status": "passed"
             },
             "match": {
@@ -8870,7 +9545,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1135799,
+              "duration": 2187042,
               "status": "passed"
             },
             "line": 20,
@@ -8891,7 +9566,7 @@
           },
           {
             "result": {
-              "duration": 555358,
+              "duration": 590682,
               "status": "passed"
             },
             "line": 21,
@@ -8912,7 +9587,7 @@
           },
           {
             "result": {
-              "duration": 1902921045,
+              "duration": 1782961288,
               "status": "passed"
             },
             "line": 22,
@@ -8924,7 +9599,7 @@
           },
           {
             "result": {
-              "duration": 33108,
+              "duration": 35489,
               "status": "passed"
             },
             "line": 23,
@@ -8936,7 +9611,7 @@
           },
           {
             "result": {
-              "duration": 331410,
+              "duration": 341643,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -8953,7 +9628,16 @@
         "before": [
           {
             "result": {
-              "duration": 16627181,
+              "duration": 11630293,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14805292,
               "status": "passed"
             },
             "match": {
@@ -8968,7 +9652,7 @@
         "after": [
           {
             "result": {
-              "duration": 329449,
+              "duration": 195799,
               "status": "passed"
             },
             "match": {
@@ -8981,7 +9665,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1036076,
+              "duration": 667420,
               "status": "passed"
             },
             "line": 20,
@@ -9002,7 +9686,7 @@
           },
           {
             "result": {
-              "duration": 218661,
+              "duration": 116183,
               "status": "passed"
             },
             "line": 21,
@@ -9023,7 +9707,7 @@
           },
           {
             "result": {
-              "duration": 1874895803,
+              "duration": 1724157783,
               "status": "passed"
             },
             "line": 22,
@@ -9035,7 +9719,7 @@
           },
           {
             "result": {
-              "duration": 37476,
+              "duration": 37407,
               "status": "passed"
             },
             "line": 23,
@@ -9047,7 +9731,7 @@
           },
           {
             "result": {
-              "duration": 378217,
+              "duration": 330364,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -9064,7 +9748,16 @@
         "before": [
           {
             "result": {
-              "duration": 13328329,
+              "duration": 15235283,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11999303,
               "status": "passed"
             },
             "match": {
@@ -9079,7 +9772,7 @@
         "after": [
           {
             "result": {
-              "duration": 179479,
+              "duration": 327305,
               "status": "passed"
             },
             "match": {
@@ -9092,7 +9785,7 @@
         "steps": [
           {
             "result": {
-              "duration": 724322,
+              "duration": 515322,
               "status": "passed"
             },
             "line": 20,
@@ -9113,7 +9806,7 @@
           },
           {
             "result": {
-              "duration": 109609,
+              "duration": 91208,
               "status": "passed"
             },
             "line": 21,
@@ -9134,7 +9827,7 @@
           },
           {
             "result": {
-              "duration": 1844278099,
+              "duration": 1755163830,
               "status": "passed"
             },
             "line": 22,
@@ -9146,7 +9839,7 @@
           },
           {
             "result": {
-              "duration": 30604,
+              "duration": 36873,
               "status": "passed"
             },
             "line": 23,
@@ -9158,7 +9851,7 @@
           },
           {
             "result": {
-              "duration": 279266,
+              "duration": 323663,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -9175,7 +9868,16 @@
         "before": [
           {
             "result": {
-              "duration": 10820779,
+              "duration": 17518662,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12011094,
               "status": "passed"
             },
             "match": {
@@ -9190,7 +9892,7 @@
         "after": [
           {
             "result": {
-              "duration": 170024,
+              "duration": 177445,
               "status": "passed"
             },
             "match": {
@@ -9203,7 +9905,7 @@
         "steps": [
           {
             "result": {
-              "duration": 955598,
+              "duration": 629458,
               "status": "passed"
             },
             "line": 20,
@@ -9224,7 +9926,7 @@
           },
           {
             "result": {
-              "duration": 279396,
+              "duration": 113256,
               "status": "passed"
             },
             "line": 21,
@@ -9245,7 +9947,7 @@
           },
           {
             "result": {
-              "duration": 1897349519,
+              "duration": 1799206953,
               "status": "passed"
             },
             "line": 22,
@@ -9257,7 +9959,7 @@
           },
           {
             "result": {
-              "duration": 34830,
+              "duration": 33096,
               "status": "passed"
             },
             "line": 23,
@@ -9269,7 +9971,7 @@
           },
           {
             "result": {
-              "duration": 313053,
+              "duration": 293976,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -9286,7 +9988,16 @@
         "before": [
           {
             "result": {
-              "duration": 11781191,
+              "duration": 9216088,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 16056375,
               "status": "passed"
             },
             "match": {
@@ -9301,7 +10012,7 @@
         "after": [
           {
             "result": {
-              "duration": 211402,
+              "duration": 212851,
               "status": "passed"
             },
             "match": {
@@ -9314,7 +10025,7 @@
         "steps": [
           {
             "result": {
-              "duration": 822300,
+              "duration": 737030,
               "status": "passed"
             },
             "line": 20,
@@ -9335,7 +10046,7 @@
           },
           {
             "result": {
-              "duration": 206693,
+              "duration": 125392,
               "status": "passed"
             },
             "line": 21,
@@ -9356,7 +10067,7 @@
           },
           {
             "result": {
-              "duration": 1860262444,
+              "duration": 1692550387,
               "status": "passed"
             },
             "line": 22,
@@ -9368,7 +10079,7 @@
           },
           {
             "result": {
-              "duration": 43972,
+              "duration": 37505,
               "status": "passed"
             },
             "line": 23,
@@ -9380,7 +10091,7 @@
           },
           {
             "result": {
-              "duration": 376791,
+              "duration": 399111,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -9397,7 +10108,16 @@
         "before": [
           {
             "result": {
-              "duration": 10426979,
+              "duration": 14970620,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 18610699,
               "status": "passed"
             },
             "match": {
@@ -9412,7 +10132,7 @@
         "after": [
           {
             "result": {
-              "duration": 371193,
+              "duration": 287696,
               "status": "passed"
             },
             "match": {
@@ -9425,7 +10145,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1145872,
+              "duration": 724903,
               "status": "passed"
             },
             "line": 20,
@@ -9446,7 +10166,7 @@
           },
           {
             "result": {
-              "duration": 328902,
+              "duration": 146174,
               "status": "passed"
             },
             "line": 21,
@@ -9467,7 +10187,7 @@
           },
           {
             "result": {
-              "duration": 1848188455,
+              "duration": 1726552695,
               "status": "passed"
             },
             "line": 22,
@@ -9479,7 +10199,7 @@
           },
           {
             "result": {
-              "duration": 36857,
+              "duration": 31910,
               "status": "passed"
             },
             "line": 23,
@@ -9491,7 +10211,7 @@
           },
           {
             "result": {
-              "duration": 475088,
+              "duration": 341503,
               "error_message": "java.lang.AssertionError: \nExpected: not null\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded.ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.checkStartAuthorisationWIthPsuAuthentication(ConsentRequestImpliciteStartAuthorizationSuccessfulSteps.java:47)\n\tat ✽.And response contains link startAuthorisationWIthPsuAuthentication(AIS_Embedded.feature:24)\n",
               "status": "failed"
             },
@@ -9518,7 +10238,16 @@
         "before": [
           {
             "result": {
-              "duration": 10793083,
+              "duration": 13440377,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14477939,
               "status": "passed"
             },
             "match": {
@@ -9533,7 +10262,7 @@
         "after": [
           {
             "result": {
-              "duration": 166585,
+              "duration": 244161,
               "status": "passed"
             },
             "match": {
@@ -9546,7 +10275,7 @@
         "steps": [
           {
             "result": {
-              "duration": 40130218,
+              "duration": 43146452,
               "status": "passed"
             },
             "line": 4,
@@ -9567,7 +10296,7 @@
           },
           {
             "result": {
-              "duration": 1509116,
+              "duration": 2123192,
               "status": "passed"
             },
             "line": 5,
@@ -9593,7 +10322,7 @@
           },
           {
             "result": {
-              "duration": 264764250,
+              "duration": 327046453,
               "status": "passed"
             },
             "line": 6,
@@ -9605,7 +10334,7 @@
           },
           {
             "result": {
-              "duration": 100918,
+              "duration": 94439,
               "status": "passed"
             },
             "line": 7,
@@ -9621,7 +10350,16 @@
         "before": [
           {
             "result": {
-              "duration": 7325928,
+              "duration": 8612645,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 20420517,
               "status": "passed"
             },
             "match": {
@@ -9636,7 +10374,7 @@
         "after": [
           {
             "result": {
-              "duration": 180240,
+              "duration": 191984,
               "status": "passed"
             },
             "match": {
@@ -9649,7 +10387,7 @@
         "steps": [
           {
             "result": {
-              "duration": 958841,
+              "duration": 971893,
               "status": "passed"
             },
             "line": 4,
@@ -9670,7 +10408,7 @@
           },
           {
             "result": {
-              "duration": 62796,
+              "duration": 157474,
               "status": "passed"
             },
             "line": 5,
@@ -9696,7 +10434,7 @@
           },
           {
             "result": {
-              "duration": 236998226,
+              "duration": 609327859,
               "status": "passed"
             },
             "line": 6,
@@ -9708,7 +10446,7 @@
           },
           {
             "result": {
-              "duration": 37273,
+              "duration": 29300,
               "status": "passed"
             },
             "line": 7,
@@ -9724,7 +10462,16 @@
         "before": [
           {
             "result": {
-              "duration": 14759568,
+              "duration": 8754820,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8248215,
               "status": "passed"
             },
             "match": {
@@ -9739,7 +10486,7 @@
         "after": [
           {
             "result": {
-              "duration": 285945,
+              "duration": 153683,
               "status": "passed"
             },
             "match": {
@@ -9752,7 +10499,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2499104,
+              "duration": 6518822,
               "status": "passed"
             },
             "line": 4,
@@ -9773,7 +10520,7 @@
           },
           {
             "result": {
-              "duration": 448705,
+              "duration": 123116,
               "status": "passed"
             },
             "line": 5,
@@ -9799,7 +10546,7 @@
           },
           {
             "result": {
-              "duration": 238847364,
+              "duration": 376010719,
               "status": "passed"
             },
             "line": 6,
@@ -9811,7 +10558,7 @@
           },
           {
             "result": {
-              "duration": 62203,
+              "duration": 47322,
               "status": "passed"
             },
             "line": 7,
@@ -9827,7 +10574,16 @@
         "before": [
           {
             "result": {
-              "duration": 16430435,
+              "duration": 10647108,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8950819,
               "status": "passed"
             },
             "match": {
@@ -9842,7 +10598,7 @@
         "after": [
           {
             "result": {
-              "duration": 288654,
+              "duration": 479436,
               "status": "passed"
             },
             "match": {
@@ -9855,7 +10611,7 @@
         "steps": [
           {
             "result": {
-              "duration": 4774521,
+              "duration": 3911333,
               "status": "passed"
             },
             "line": 16,
@@ -9876,7 +10632,7 @@
           },
           {
             "result": {
-              "duration": 204411570,
+              "duration": 232835540,
               "status": "passed"
             },
             "line": 17,
@@ -9888,7 +10644,7 @@
           },
           {
             "result": {
-              "duration": 552627,
+              "duration": 515574,
               "error_message": "java.lang.AssertionError: \nExpected: \u003c400\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(FCS_01.feature:18)\n",
               "status": "failed"
             },
@@ -9905,7 +10661,16 @@
         "before": [
           {
             "result": {
-              "duration": 14040343,
+              "duration": 9830322,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9816917,
               "status": "passed"
             },
             "match": {
@@ -9920,7 +10685,7 @@
         "after": [
           {
             "result": {
-              "duration": 191532,
+              "duration": 226899,
               "status": "passed"
             },
             "match": {
@@ -9933,7 +10698,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1393412,
+              "duration": 840370,
               "status": "passed"
             },
             "line": 16,
@@ -9954,7 +10719,7 @@
           },
           {
             "result": {
-              "duration": 229363866,
+              "duration": 206931733,
               "status": "passed"
             },
             "line": 17,
@@ -9966,7 +10731,7 @@
           },
           {
             "result": {
-              "duration": 417857,
+              "duration": 491899,
               "error_message": "java.lang.AssertionError: \nExpected: \u003c400\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(FCS_01.feature:18)\n",
               "status": "failed"
             },
@@ -9983,7 +10748,16 @@
         "before": [
           {
             "result": {
-              "duration": 12324583,
+              "duration": 15221186,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11346979,
               "status": "passed"
             },
             "match": {
@@ -9998,7 +10772,7 @@
         "after": [
           {
             "result": {
-              "duration": 227864,
+              "duration": 158405,
               "status": "passed"
             },
             "match": {
@@ -10011,7 +10785,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1398813,
+              "duration": 1105474,
               "status": "passed"
             },
             "line": 16,
@@ -10032,7 +10806,7 @@
           },
           {
             "result": {
-              "duration": 6662012,
+              "duration": 7169878,
               "status": "passed"
             },
             "line": 17,
@@ -10044,7 +10818,7 @@
           },
           {
             "result": {
-              "duration": 256580,
+              "duration": 201417,
               "status": "passed"
             },
             "line": 18,
@@ -10076,7 +10850,16 @@
         "before": [
           {
             "result": {
-              "duration": 13760715,
+              "duration": 14738150,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10056740,
               "status": "passed"
             },
             "match": {
@@ -10091,7 +10874,7 @@
         "after": [
           {
             "result": {
-              "duration": 207919,
+              "duration": 124395,
               "status": "passed"
             },
             "match": {
@@ -10104,7 +10887,7 @@
         "steps": [
           {
             "result": {
-              "duration": 13824164,
+              "duration": 14661494,
               "status": "passed"
             },
             "line": 10,
@@ -10135,7 +10918,7 @@
           },
           {
             "result": {
-              "duration": 19687595,
+              "duration": 20436630,
               "status": "passed"
             },
             "line": 11,
@@ -10147,7 +10930,7 @@
           },
           {
             "result": {
-              "duration": 13994274,
+              "duration": 8091398,
               "status": "passed"
             },
             "line": 12,
@@ -10163,7 +10946,16 @@
         "before": [
           {
             "result": {
-              "duration": 16038831,
+              "duration": 17316139,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 21335861,
               "status": "passed"
             },
             "match": {
@@ -10178,7 +10970,7 @@
         "after": [
           {
             "result": {
-              "duration": 293419,
+              "duration": 704662,
               "status": "passed"
             },
             "match": {
@@ -10191,7 +10983,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1302608,
+              "duration": 1902498,
               "status": "passed"
             },
             "line": 10,
@@ -10222,7 +11014,7 @@
           },
           {
             "result": {
-              "duration": 14006535,
+              "duration": 17191124,
               "status": "passed"
             },
             "line": 11,
@@ -10234,7 +11026,7 @@
           },
           {
             "result": {
-              "duration": 211951,
+              "duration": 279239,
               "status": "passed"
             },
             "line": 12,
@@ -10250,7 +11042,16 @@
         "before": [
           {
             "result": {
-              "duration": 16320587,
+              "duration": 8850171,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13172969,
               "status": "passed"
             },
             "match": {
@@ -10265,7 +11066,7 @@
         "after": [
           {
             "result": {
-              "duration": 322739,
+              "duration": 218322,
               "status": "passed"
             },
             "match": {
@@ -10278,7 +11079,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1437800,
+              "duration": 1295200,
               "status": "passed"
             },
             "line": 10,
@@ -10309,7 +11110,7 @@
           },
           {
             "result": {
-              "duration": 39420867,
+              "duration": 38102851,
               "status": "passed"
             },
             "line": 11,
@@ -10321,7 +11122,7 @@
           },
           {
             "result": {
-              "duration": 312692,
+              "duration": 207274,
               "status": "passed"
             },
             "line": 12,
@@ -10343,7 +11144,16 @@
         "before": [
           {
             "result": {
-              "duration": 13435176,
+              "duration": 11250831,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 23431067,
               "status": "passed"
             },
             "match": {
@@ -10358,7 +11168,7 @@
         "after": [
           {
             "result": {
-              "duration": 206466,
+              "duration": 500379,
               "status": "passed"
             },
             "match": {
@@ -10371,7 +11181,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1311069,
+              "duration": 1201599,
               "status": "passed"
             },
             "line": 10,
@@ -10402,7 +11212,7 @@
           },
           {
             "result": {
-              "duration": 15754626,
+              "duration": 24897309,
               "status": "passed"
             },
             "line": 11,
@@ -10414,7 +11224,7 @@
           },
           {
             "result": {
-              "duration": 228911,
+              "duration": 482799,
               "status": "passed"
             },
             "line": 12,
@@ -10436,7 +11246,16 @@
         "before": [
           {
             "result": {
-              "duration": 15933512,
+              "duration": 20808988,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14866415,
               "status": "passed"
             },
             "match": {
@@ -10451,7 +11270,7 @@
         "after": [
           {
             "result": {
-              "duration": 191141,
+              "duration": 531193,
               "status": "passed"
             },
             "match": {
@@ -10464,7 +11283,7 @@
         "steps": [
           {
             "result": {
-              "duration": 23557500,
+              "duration": 16192791,
               "status": "passed"
             },
             "line": 52,
@@ -10495,7 +11314,7 @@
           },
           {
             "result": {
-              "duration": 14725612,
+              "duration": 15726448,
               "status": "passed"
             },
             "line": 53,
@@ -10507,7 +11326,7 @@
           },
           {
             "result": {
-              "duration": 276935,
+              "duration": 412723,
               "status": "passed"
             },
             "line": 54,
@@ -10523,7 +11342,16 @@
         "before": [
           {
             "result": {
-              "duration": 21488300,
+              "duration": 14211818,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 24469134,
               "status": "passed"
             },
             "match": {
@@ -10538,7 +11366,7 @@
         "after": [
           {
             "result": {
-              "duration": 296979,
+              "duration": 147886,
               "status": "passed"
             },
             "match": {
@@ -10551,7 +11379,7 @@
         "steps": [
           {
             "result": {
-              "duration": 3001352,
+              "duration": 1354354,
               "status": "passed"
             },
             "line": 52,
@@ -10582,7 +11410,7 @@
           },
           {
             "result": {
-              "duration": 28345464,
+              "duration": 27246064,
               "status": "passed"
             },
             "line": 53,
@@ -10594,7 +11422,7 @@
           },
           {
             "result": {
-              "duration": 186509,
+              "duration": 182025,
               "status": "passed"
             },
             "line": 54,
@@ -10610,7 +11438,16 @@
         "before": [
           {
             "result": {
-              "duration": 13142079,
+              "duration": 6811230,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12530292,
               "status": "passed"
             },
             "match": {
@@ -10625,7 +11462,7 @@
         "after": [
           {
             "result": {
-              "duration": 498006,
+              "duration": 872261,
               "status": "passed"
             },
             "match": {
@@ -10638,7 +11475,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1645233,
+              "duration": 1076652,
               "status": "passed"
             },
             "line": 52,
@@ -10669,7 +11506,7 @@
           },
           {
             "result": {
-              "duration": 19540538,
+              "duration": 24205053,
               "status": "passed"
             },
             "line": 53,
@@ -10681,7 +11518,7 @@
           },
           {
             "result": {
-              "duration": 247683,
+              "duration": 914978,
               "status": "passed"
             },
             "line": 54,
@@ -10697,7 +11534,16 @@
         "before": [
           {
             "result": {
-              "duration": 13027845,
+              "duration": 13273191,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8654221,
               "status": "passed"
             },
             "match": {
@@ -10712,7 +11558,7 @@
         "after": [
           {
             "result": {
-              "duration": 234328,
+              "duration": 347875,
               "status": "passed"
             },
             "match": {
@@ -10725,7 +11571,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2177989,
+              "duration": 1051766,
               "status": "passed"
             },
             "line": 52,
@@ -10756,7 +11602,7 @@
           },
           {
             "result": {
-              "duration": 21111906,
+              "duration": 17918496,
               "status": "passed"
             },
             "line": 53,
@@ -10768,7 +11614,7 @@
           },
           {
             "result": {
-              "duration": 322670,
+              "duration": 286685,
               "status": "passed"
             },
             "line": 54,
@@ -10784,7 +11630,16 @@
         "before": [
           {
             "result": {
-              "duration": 24504812,
+              "duration": 11342779,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 27643603,
               "status": "passed"
             },
             "match": {
@@ -10799,7 +11654,7 @@
         "after": [
           {
             "result": {
-              "duration": 238470,
+              "duration": 179305,
               "status": "passed"
             },
             "match": {
@@ -10812,7 +11667,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1441951,
+              "duration": 3094495,
               "status": "passed"
             },
             "line": 52,
@@ -10843,7 +11698,7 @@
           },
           {
             "result": {
-              "duration": 19232077,
+              "duration": 26387056,
               "status": "passed"
             },
             "line": 53,
@@ -10855,7 +11710,7 @@
           },
           {
             "result": {
-              "duration": 322031,
+              "duration": 178777,
               "status": "passed"
             },
             "line": 54,
@@ -10877,7 +11732,16 @@
         "before": [
           {
             "result": {
-              "duration": 24964183,
+              "duration": 16879395,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8173420,
               "status": "passed"
             },
             "match": {
@@ -10892,7 +11756,7 @@
         "after": [
           {
             "result": {
-              "duration": 470848,
+              "duration": 313543,
               "status": "passed"
             },
             "match": {
@@ -10905,7 +11769,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2217386,
+              "duration": 1415269,
               "status": "passed"
             },
             "line": 52,
@@ -10936,7 +11800,7 @@
           },
           {
             "result": {
-              "duration": 16455563,
+              "duration": 17695565,
               "status": "passed"
             },
             "line": 53,
@@ -10948,7 +11812,7 @@
           },
           {
             "result": {
-              "duration": 286428,
+              "duration": 180571,
               "status": "passed"
             },
             "line": 54,
@@ -10964,7 +11828,16 @@
         "before": [
           {
             "result": {
-              "duration": 14734540,
+              "duration": 15226494,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10263362,
               "status": "passed"
             },
             "match": {
@@ -10979,7 +11852,7 @@
         "after": [
           {
             "result": {
-              "duration": 5197186,
+              "duration": 138712,
               "status": "passed"
             },
             "match": {
@@ -10992,7 +11865,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2273633544,
+              "duration": 2556876853,
               "status": "passed"
             },
             "line": 75,
@@ -11004,7 +11877,7 @@
           },
           {
             "result": {
-              "duration": 7937162,
+              "duration": 7072910,
               "status": "passed"
             },
             "line": 76,
@@ -11025,7 +11898,7 @@
           },
           {
             "result": {
-              "duration": 2657607191,
+              "duration": 2428960005,
               "status": "passed"
             },
             "line": 77,
@@ -11037,7 +11910,7 @@
           },
           {
             "result": {
-              "duration": 91989,
+              "duration": 76146,
               "status": "passed"
             },
             "line": 78,
@@ -11059,7 +11932,16 @@
         "before": [
           {
             "result": {
-              "duration": 20043323,
+              "duration": 8566648,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12183461,
               "status": "passed"
             },
             "match": {
@@ -11074,7 +11956,7 @@
         "after": [
           {
             "result": {
-              "duration": 247749,
+              "duration": 380365,
               "status": "passed"
             },
             "match": {
@@ -11087,7 +11969,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2306060216,
+              "duration": 2042524359,
               "status": "passed"
             },
             "line": 85,
@@ -11099,7 +11981,7 @@
           },
           {
             "result": {
-              "duration": 4001718,
+              "duration": 4685671,
               "status": "passed"
             },
             "line": 86,
@@ -11125,7 +12007,7 @@
           },
           {
             "result": {
-              "duration": 8796017,
+              "duration": 10562674,
               "status": "passed"
             },
             "line": 87,
@@ -11137,7 +12019,7 @@
           },
           {
             "result": {
-              "duration": 274349,
+              "duration": 275382,
               "status": "passed"
             },
             "line": 88,
@@ -11153,7 +12035,16 @@
         "before": [
           {
             "result": {
-              "duration": 12794496,
+              "duration": 8782551,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8337748,
               "status": "passed"
             },
             "match": {
@@ -11168,7 +12059,7 @@
         "after": [
           {
             "result": {
-              "duration": 149744,
+              "duration": 144351,
               "status": "passed"
             },
             "match": {
@@ -11181,7 +12072,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2302083071,
+              "duration": 2136032692,
               "status": "passed"
             },
             "line": 103,
@@ -11193,7 +12084,7 @@
           },
           {
             "result": {
-              "duration": 9119214,
+              "duration": 10103720,
               "status": "passed"
             },
             "line": 104,
@@ -11214,7 +12105,7 @@
           },
           {
             "result": {
-              "duration": 2562744821,
+              "duration": 2450213686,
               "status": "passed"
             },
             "line": 105,
@@ -11226,7 +12117,7 @@
           },
           {
             "result": {
-              "duration": 104342,
+              "duration": 107897,
               "status": "passed"
             },
             "line": 106,
@@ -11252,7 +12143,16 @@
         "before": [
           {
             "result": {
-              "duration": 16678529,
+              "duration": 8171399,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9920124,
               "status": "passed"
             },
             "match": {
@@ -11267,7 +12167,7 @@
         "after": [
           {
             "result": {
-              "duration": 357873,
+              "duration": 149104,
               "status": "passed"
             },
             "match": {
@@ -11280,7 +12180,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2322836471,
+              "duration": 2087177101,
               "status": "passed"
             },
             "line": 113,
@@ -11292,7 +12192,7 @@
           },
           {
             "result": {
-              "duration": 8145289,
+              "duration": 11470504,
               "status": "passed"
             },
             "line": 114,
@@ -11318,7 +12218,7 @@
           },
           {
             "result": {
-              "duration": 16396312,
+              "duration": 12001940,
               "status": "passed"
             },
             "line": 115,
@@ -11330,7 +12230,7 @@
           },
           {
             "result": {
-              "duration": 457081,
+              "duration": 172666,
               "status": "passed"
             },
             "line": 116,
@@ -11356,7 +12256,16 @@
         "before": [
           {
             "result": {
-              "duration": 26704159,
+              "duration": 10953477,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12882538,
               "status": "passed"
             },
             "match": {
@@ -11371,7 +12280,7 @@
         "after": [
           {
             "result": {
-              "duration": 322959,
+              "duration": 153758,
               "status": "passed"
             },
             "match": {
@@ -11384,7 +12293,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2168442800,
+              "duration": 2146464868,
               "status": "passed"
             },
             "line": 142,
@@ -11396,7 +12305,7 @@
           },
           {
             "result": {
-              "duration": 4594624,
+              "duration": 3800686,
               "status": "passed"
             },
             "line": 143,
@@ -11422,7 +12331,7 @@
           },
           {
             "result": {
-              "duration": 7938969,
+              "duration": 9626062,
               "status": "passed"
             },
             "line": 144,
@@ -11434,7 +12343,7 @@
           },
           {
             "result": {
-              "duration": 212781,
+              "duration": 158270,
               "status": "passed"
             },
             "line": 145,
@@ -11460,7 +12369,16 @@
         "before": [
           {
             "result": {
-              "duration": 13740679,
+              "duration": 12454843,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7198562,
               "status": "passed"
             },
             "match": {
@@ -11475,7 +12393,7 @@
         "after": [
           {
             "result": {
-              "duration": 157591,
+              "duration": 157395,
               "status": "passed"
             },
             "match": {
@@ -11488,7 +12406,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1117887,
+              "duration": 794143,
               "status": "passed"
             },
             "line": 10,
@@ -11519,7 +12437,7 @@
           },
           {
             "result": {
-              "duration": 2331264126,
+              "duration": 2097043131,
               "status": "passed"
             },
             "line": 11,
@@ -11531,7 +12449,7 @@
           },
           {
             "result": {
-              "duration": 3051730,
+              "duration": 2618591,
               "status": "passed"
             },
             "line": 12,
@@ -11547,7 +12465,16 @@
         "before": [
           {
             "result": {
-              "duration": 21501577,
+              "duration": 14117574,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11594000,
               "status": "passed"
             },
             "match": {
@@ -11562,7 +12489,7 @@
         "after": [
           {
             "result": {
-              "duration": 213149,
+              "duration": 440520,
               "status": "passed"
             },
             "match": {
@@ -11575,7 +12502,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2247564420,
+              "duration": 2150265088,
               "status": "passed"
             },
             "line": 24,
@@ -11587,7 +12514,7 @@
           },
           {
             "result": {
-              "duration": 2930369,
+              "duration": 944036,
               "status": "passed"
             },
             "line": 25,
@@ -11608,7 +12535,7 @@
           },
           {
             "result": {
-              "duration": 572074584,
+              "duration": 553612025,
               "status": "passed"
             },
             "line": 26,
@@ -11620,7 +12547,7 @@
           },
           {
             "result": {
-              "duration": 38158,
+              "duration": 125546,
               "status": "passed"
             },
             "line": 27,
@@ -11642,7 +12569,16 @@
         "before": [
           {
             "result": {
-              "duration": 19749881,
+              "duration": 7486682,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14620330,
               "status": "passed"
             },
             "match": {
@@ -11657,7 +12593,7 @@
         "after": [
           {
             "result": {
-              "duration": 153790,
+              "duration": 143051,
               "status": "passed"
             },
             "match": {
@@ -11670,7 +12606,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2257390198,
+              "duration": 2109314667,
               "status": "passed"
             },
             "line": 34,
@@ -11682,7 +12618,7 @@
           },
           {
             "result": {
-              "duration": 1209121,
+              "duration": 1025957,
               "status": "passed"
             },
             "line": 35,
@@ -11708,7 +12644,7 @@
           },
           {
             "result": {
-              "duration": 15347109,
+              "duration": 15408998,
               "status": "passed"
             },
             "line": 36,
@@ -11720,7 +12656,7 @@
           },
           {
             "result": {
-              "duration": 33098,
+              "duration": 33746,
               "status": "passed"
             },
             "line": 37,
@@ -11736,7 +12672,16 @@
         "before": [
           {
             "result": {
-              "duration": 21509431,
+              "duration": 10136738,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9902716,
               "status": "passed"
             },
             "match": {
@@ -11751,7 +12696,7 @@
         "after": [
           {
             "result": {
-              "duration": 221398,
+              "duration": 167358,
               "status": "passed"
             },
             "match": {
@@ -11764,7 +12709,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2120965080,
+              "duration": 2005456743,
               "status": "passed"
             },
             "line": 53,
@@ -11776,7 +12721,7 @@
           },
           {
             "result": {
-              "duration": 571149938,
+              "duration": 487502412,
               "status": "passed"
             },
             "line": 54,
@@ -11788,7 +12733,7 @@
           },
           {
             "result": {
-              "duration": 11712465,
+              "duration": 10660832,
               "status": "passed"
             },
             "line": 55,
@@ -11809,7 +12754,7 @@
           },
           {
             "result": {
-              "duration": 3507034288,
+              "duration": 3282548754,
               "status": "passed"
             },
             "line": 56,
@@ -11821,7 +12766,7 @@
           },
           {
             "result": {
-              "duration": 179262,
+              "duration": 89961,
               "status": "passed"
             },
             "line": 57,
@@ -11843,7 +12788,16 @@
         "before": [
           {
             "result": {
-              "duration": 13041770,
+              "duration": 12303138,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 19264235,
               "status": "passed"
             },
             "match": {
@@ -11858,7 +12812,7 @@
         "after": [
           {
             "result": {
-              "duration": 174209,
+              "duration": 161635,
               "status": "passed"
             },
             "match": {
@@ -11871,7 +12825,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2156431863,
+              "duration": 2129274506,
               "status": "passed"
             },
             "line": 53,
@@ -11883,7 +12837,7 @@
           },
           {
             "result": {
-              "duration": 570721316,
+              "duration": 595109136,
               "status": "passed"
             },
             "line": 54,
@@ -11895,7 +12849,7 @@
           },
           {
             "result": {
-              "duration": 1088396,
+              "duration": 2997127,
               "status": "passed"
             },
             "line": 55,
@@ -11916,7 +12870,7 @@
           },
           {
             "result": {
-              "duration": 2235039769,
+              "duration": 2201465128,
               "status": "passed"
             },
             "line": 56,
@@ -11928,7 +12882,7 @@
           },
           {
             "result": {
-              "duration": 92545,
+              "duration": 89425,
               "status": "passed"
             },
             "line": 57,
@@ -11944,7 +12898,16 @@
         "before": [
           {
             "result": {
-              "duration": 8527452,
+              "duration": 8016054,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 18432777,
               "status": "passed"
             },
             "match": {
@@ -11959,7 +12922,7 @@
         "after": [
           {
             "result": {
-              "duration": 172457,
+              "duration": 144541,
               "status": "passed"
             },
             "match": {
@@ -11972,7 +12935,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2200164783,
+              "duration": 2099998579,
               "status": "passed"
             },
             "line": 66,
@@ -11984,7 +12947,7 @@
           },
           {
             "result": {
-              "duration": 549709018,
+              "duration": 489849332,
               "status": "passed"
             },
             "line": 67,
@@ -11996,7 +12959,7 @@
           },
           {
             "result": {
-              "duration": 2510922,
+              "duration": 847782,
               "status": "passed"
             },
             "line": 68,
@@ -12022,7 +12985,7 @@
           },
           {
             "result": {
-              "duration": 9450029,
+              "duration": 8885274,
               "status": "passed"
             },
             "line": 69,
@@ -12034,7 +12997,7 @@
           },
           {
             "result": {
-              "duration": 33458,
+              "duration": 29649,
               "status": "passed"
             },
             "line": 70,
@@ -12056,7 +13019,16 @@
         "before": [
           {
             "result": {
-              "duration": 14291176,
+              "duration": 5288510,
+              "status": "passed"
+            },
+            "match": {
+              "location": "EmbeddedInitStep.initEmbedded()"
+            }
+          },
+          {
+            "result": {
+              "duration": 15416664,
               "status": "passed"
             },
             "match": {
@@ -12071,7 +13043,7 @@
         "after": [
           {
             "result": {
-              "duration": 205832,
+              "duration": 142043,
               "status": "passed"
             },
             "match": {
@@ -12084,7 +13056,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2317795961,
+              "duration": 2068439862,
               "status": "passed"
             },
             "line": 100,
@@ -12096,7 +13068,7 @@
           },
           {
             "result": {
-              "duration": 597412006,
+              "duration": 582868591,
               "status": "passed"
             },
             "line": 101,
@@ -12108,7 +13080,7 @@
           },
           {
             "result": {
-              "duration": 3467349321,
+              "duration": 3164381672,
               "status": "passed"
             },
             "line": 102,
@@ -12120,7 +13092,7 @@
           },
           {
             "result": {
-              "duration": 1044067,
+              "duration": 1179404,
               "status": "passed"
             },
             "line": 103,
@@ -12146,7 +13118,7 @@
           },
           {
             "result": {
-              "duration": 12610545,
+              "duration": 8528726,
               "status": "passed"
             },
             "line": 104,
@@ -12158,7 +13130,7 @@
           },
           {
             "result": {
-              "duration": 583354,
+              "duration": 304088,
               "status": "passed"
             },
             "line": 105,

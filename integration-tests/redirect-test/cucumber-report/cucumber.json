@@ -6,11 +6,20 @@
         "before": [
           {
             "result": {
-              "duration": 37572165,
+              "duration": 66333332,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 178905219,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -21,7 +30,7 @@
         "after": [
           {
             "result": {
-              "duration": 352269,
+              "duration": 320164,
               "status": "passed"
             },
             "match": {
@@ -34,7 +43,7 @@
         "steps": [
           {
             "result": {
-              "duration": 228706539,
+              "duration": 224716911,
               "status": "passed"
             },
             "line": 10,
@@ -55,7 +64,7 @@
           },
           {
             "result": {
-              "duration": 2164252969,
+              "duration": 1654416667,
               "status": "passed"
             },
             "line": 11,
@@ -67,7 +76,7 @@
           },
           {
             "result": {
-              "duration": 8303014,
+              "duration": 4741020,
               "status": "passed"
             },
             "line": 12,
@@ -89,11 +98,20 @@
         "before": [
           {
             "result": {
-              "duration": 14654349,
+              "duration": 21782522,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10724706,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -104,7 +122,7 @@
         "after": [
           {
             "result": {
-              "duration": 242317,
+              "duration": 225261,
               "status": "passed"
             },
             "match": {
@@ -117,7 +135,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2464891,
+              "duration": 2087804,
               "status": "passed"
             },
             "line": 10,
@@ -138,7 +156,7 @@
           },
           {
             "result": {
-              "duration": 1960636690,
+              "duration": 1691344504,
               "status": "passed"
             },
             "line": 11,
@@ -150,7 +168,7 @@
           },
           {
             "result": {
-              "duration": 73356,
+              "duration": 39063,
               "status": "passed"
             },
             "line": 12,
@@ -180,11 +198,20 @@
         "before": [
           {
             "result": {
-              "duration": 14719064,
+              "duration": 14505363,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8486414,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -195,7 +222,7 @@
         "after": [
           {
             "result": {
-              "duration": 245722,
+              "duration": 241485,
               "status": "passed"
             },
             "match": {
@@ -208,7 +235,7 @@
         "steps": [
           {
             "result": {
-              "duration": 11412322,
+              "duration": 11638754,
               "status": "passed"
             },
             "line": 20,
@@ -229,7 +256,7 @@
           },
           {
             "result": {
-              "duration": 18743578,
+              "duration": 20234399,
               "status": "passed"
             },
             "line": 21,
@@ -241,7 +268,7 @@
           },
           {
             "result": {
-              "duration": 10206176,
+              "duration": 8481151,
               "status": "passed"
             },
             "line": 22,
@@ -257,11 +284,20 @@
         "before": [
           {
             "result": {
-              "duration": 10335361,
+              "duration": 17160397,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13998763,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -272,7 +308,7 @@
         "after": [
           {
             "result": {
-              "duration": 221358,
+              "duration": 235382,
               "status": "passed"
             },
             "match": {
@@ -285,7 +321,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1574416,
+              "duration": 2581071,
               "status": "passed"
             },
             "line": 31,
@@ -306,7 +342,7 @@
           },
           {
             "result": {
-              "duration": 65730507,
+              "duration": 74522947,
               "status": "passed"
             },
             "line": 32,
@@ -318,7 +354,7 @@
           },
           {
             "result": {
-              "duration": 287494,
+              "duration": 265172,
               "status": "passed"
             },
             "line": 33,
@@ -334,11 +370,20 @@
         "before": [
           {
             "result": {
-              "duration": 11496443,
+              "duration": 13694290,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13715937,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -349,7 +394,7 @@
         "after": [
           {
             "result": {
-              "duration": 369577,
+              "duration": 202392,
               "status": "passed"
             },
             "match": {
@@ -362,7 +407,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1786891731,
+              "duration": 1716628411,
               "status": "passed"
             },
             "line": 39,
@@ -383,7 +428,7 @@
           },
           {
             "result": {
-              "duration": 246200651,
+              "duration": 256262980,
               "status": "passed"
             },
             "line": 40,
@@ -404,7 +449,7 @@
           },
           {
             "result": {
-              "duration": 474177820,
+              "duration": 468590646,
               "status": "passed"
             },
             "line": 41,
@@ -416,7 +461,7 @@
           },
           {
             "result": {
-              "duration": 100505,
+              "duration": 48279,
               "status": "passed"
             },
             "line": 42,
@@ -432,11 +477,20 @@
         "before": [
           {
             "result": {
-              "duration": 14335302,
+              "duration": 14239501,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12041555,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -447,7 +501,7 @@
         "after": [
           {
             "result": {
-              "duration": 216033,
+              "duration": 460499,
               "status": "passed"
             },
             "match": {
@@ -460,7 +514,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1752812129,
+              "duration": 1744744632,
               "status": "passed"
             },
             "line": 39,
@@ -481,7 +535,7 @@
           },
           {
             "result": {
-              "duration": 256335697,
+              "duration": 250748393,
               "status": "passed"
             },
             "line": 40,
@@ -502,7 +556,7 @@
           },
           {
             "result": {
-              "duration": 470877165,
+              "duration": 473120960,
               "status": "passed"
             },
             "line": 41,
@@ -514,7 +568,7 @@
           },
           {
             "result": {
-              "duration": 37320,
+              "duration": 117431,
               "status": "passed"
             },
             "line": 42,
@@ -530,11 +584,20 @@
         "before": [
           {
             "result": {
-              "duration": 8279068,
+              "duration": 27461822,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 6960890,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -545,7 +608,7 @@
         "after": [
           {
             "result": {
-              "duration": 252229,
+              "duration": 301294,
               "status": "passed"
             },
             "match": {
@@ -558,7 +621,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1735169214,
+              "duration": 1686478314,
               "status": "passed"
             },
             "line": 39,
@@ -579,7 +642,7 @@
           },
           {
             "result": {
-              "duration": 241567775,
+              "duration": 264737079,
               "status": "passed"
             },
             "line": 40,
@@ -600,7 +663,7 @@
           },
           {
             "result": {
-              "duration": 470740549,
+              "duration": 458909610,
               "status": "passed"
             },
             "line": 41,
@@ -612,7 +675,7 @@
           },
           {
             "result": {
-              "duration": 39018,
+              "duration": 34683,
               "status": "passed"
             },
             "line": 42,
@@ -628,11 +691,20 @@
         "before": [
           {
             "result": {
-              "duration": 10532678,
+              "duration": 19231127,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9248604,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -643,7 +715,7 @@
         "after": [
           {
             "result": {
-              "duration": 204117,
+              "duration": 263286,
               "status": "passed"
             },
             "match": {
@@ -656,7 +728,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1752199924,
+              "duration": 1641171456,
               "status": "passed"
             },
             "line": 39,
@@ -677,7 +749,7 @@
           },
           {
             "result": {
-              "duration": 240456115,
+              "duration": 234979110,
               "status": "passed"
             },
             "line": 40,
@@ -698,7 +770,7 @@
           },
           {
             "result": {
-              "duration": 477300193,
+              "duration": 461522221,
               "status": "passed"
             },
             "line": 41,
@@ -710,7 +782,7 @@
           },
           {
             "result": {
-              "duration": 38979,
+              "duration": 59366,
               "status": "passed"
             },
             "line": 42,
@@ -726,11 +798,20 @@
         "before": [
           {
             "result": {
-              "duration": 12418955,
+              "duration": 22622025,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 15253498,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -741,7 +822,7 @@
         "after": [
           {
             "result": {
-              "duration": 202381,
+              "duration": 213707,
               "status": "passed"
             },
             "match": {
@@ -754,7 +835,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1815243738,
+              "duration": 1733642098,
               "status": "passed"
             },
             "line": 39,
@@ -775,7 +856,7 @@
           },
           {
             "result": {
-              "duration": 217227236,
+              "duration": 239474570,
               "status": "passed"
             },
             "line": 40,
@@ -796,7 +877,7 @@
           },
           {
             "result": {
-              "duration": 506744067,
+              "duration": 509319166,
               "status": "passed"
             },
             "line": 41,
@@ -808,7 +889,7 @@
           },
           {
             "result": {
-              "duration": 44578,
+              "duration": 35971,
               "status": "passed"
             },
             "line": 42,
@@ -824,11 +905,20 @@
         "before": [
           {
             "result": {
-              "duration": 11600940,
+              "duration": 19641443,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13852301,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -839,7 +929,7 @@
         "after": [
           {
             "result": {
-              "duration": 361640,
+              "duration": 216448,
               "status": "passed"
             },
             "match": {
@@ -852,7 +942,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1830404140,
+              "duration": 1709533763,
               "status": "passed"
             },
             "line": 39,
@@ -873,7 +963,7 @@
           },
           {
             "result": {
-              "duration": 294515040,
+              "duration": 249267931,
               "status": "passed"
             },
             "line": 40,
@@ -894,7 +984,7 @@
           },
           {
             "result": {
-              "duration": 510933385,
+              "duration": 463909573,
               "status": "passed"
             },
             "line": 41,
@@ -906,7 +996,7 @@
           },
           {
             "result": {
-              "duration": 108514,
+              "duration": 65957,
               "status": "passed"
             },
             "line": 42,
@@ -922,11 +1012,20 @@
         "before": [
           {
             "result": {
-              "duration": 15979386,
+              "duration": 14542471,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10337160,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -937,7 +1036,7 @@
         "after": [
           {
             "result": {
-              "duration": 229453,
+              "duration": 208622,
               "status": "passed"
             },
             "match": {
@@ -950,7 +1049,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1979493625,
+              "duration": 1701320740,
               "status": "passed"
             },
             "line": 39,
@@ -971,7 +1070,7 @@
           },
           {
             "result": {
-              "duration": 273030276,
+              "duration": 233978050,
               "status": "passed"
             },
             "line": 40,
@@ -992,7 +1091,7 @@
           },
           {
             "result": {
-              "duration": 568723024,
+              "duration": 468440553,
               "status": "passed"
             },
             "line": 41,
@@ -1004,7 +1103,7 @@
           },
           {
             "result": {
-              "duration": 40321,
+              "duration": 44314,
               "status": "passed"
             },
             "line": 42,
@@ -1020,11 +1119,20 @@
         "before": [
           {
             "result": {
-              "duration": 13264988,
+              "duration": 6776151,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10123071,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1035,7 +1143,7 @@
         "after": [
           {
             "result": {
-              "duration": 345056,
+              "duration": 229381,
               "status": "passed"
             },
             "match": {
@@ -1048,7 +1156,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2164070496,
+              "duration": 1565976296,
               "status": "passed"
             },
             "line": 39,
@@ -1069,7 +1177,7 @@
           },
           {
             "result": {
-              "duration": 276624398,
+              "duration": 250637330,
               "status": "passed"
             },
             "line": 40,
@@ -1090,7 +1198,7 @@
           },
           {
             "result": {
-              "duration": 532855577,
+              "duration": 479527937,
               "status": "passed"
             },
             "line": 41,
@@ -1102,7 +1210,7 @@
           },
           {
             "result": {
-              "duration": 39403,
+              "duration": 35832,
               "status": "passed"
             },
             "line": 42,
@@ -1118,11 +1226,20 @@
         "before": [
           {
             "result": {
-              "duration": 20826728,
+              "duration": 16482024,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8220998,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1133,7 +1250,7 @@
         "after": [
           {
             "result": {
-              "duration": 324610,
+              "duration": 188672,
               "status": "passed"
             },
             "match": {
@@ -1146,7 +1263,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1889164222,
+              "duration": 1679454550,
               "status": "passed"
             },
             "line": 39,
@@ -1167,7 +1284,7 @@
           },
           {
             "result": {
-              "duration": 258883063,
+              "duration": 240370708,
               "status": "passed"
             },
             "line": 40,
@@ -1188,7 +1305,7 @@
           },
           {
             "result": {
-              "duration": 527481595,
+              "duration": 444972736,
               "status": "passed"
             },
             "line": 41,
@@ -1200,7 +1317,7 @@
           },
           {
             "result": {
-              "duration": 55065,
+              "duration": 36690,
               "status": "passed"
             },
             "line": 42,
@@ -1216,11 +1333,20 @@
         "before": [
           {
             "result": {
-              "duration": 18855232,
+              "duration": 18604732,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7691371,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1231,7 +1357,7 @@
         "after": [
           {
             "result": {
-              "duration": 200034,
+              "duration": 219511,
               "status": "passed"
             },
             "match": {
@@ -1244,7 +1370,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1890227003,
+              "duration": 1639552887,
               "status": "passed"
             },
             "line": 39,
@@ -1265,7 +1391,7 @@
           },
           {
             "result": {
-              "duration": 222064711,
+              "duration": 235421280,
               "status": "passed"
             },
             "line": 40,
@@ -1286,7 +1412,7 @@
           },
           {
             "result": {
-              "duration": 514215997,
+              "duration": 471224779,
               "status": "passed"
             },
             "line": 41,
@@ -1298,7 +1424,7 @@
           },
           {
             "result": {
-              "duration": 45634,
+              "duration": 89398,
               "status": "passed"
             },
             "line": 42,
@@ -1314,11 +1440,20 @@
         "before": [
           {
             "result": {
-              "duration": 19094803,
+              "duration": 18095047,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10329324,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1329,7 +1464,7 @@
         "after": [
           {
             "result": {
-              "duration": 188954,
+              "duration": 196009,
               "status": "passed"
             },
             "match": {
@@ -1342,7 +1477,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1847152781,
+              "duration": 1615124816,
               "status": "passed"
             },
             "line": 39,
@@ -1363,7 +1498,7 @@
           },
           {
             "result": {
-              "duration": 255103998,
+              "duration": 249239953,
               "status": "passed"
             },
             "line": 40,
@@ -1384,7 +1519,7 @@
           },
           {
             "result": {
-              "duration": 505310499,
+              "duration": 457935853,
               "status": "passed"
             },
             "line": 41,
@@ -1396,7 +1531,7 @@
           },
           {
             "result": {
-              "duration": 38103,
+              "duration": 53609,
               "status": "passed"
             },
             "line": 42,
@@ -1412,11 +1547,20 @@
         "before": [
           {
             "result": {
-              "duration": 17874125,
+              "duration": 18679432,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14653678,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1427,7 +1571,7 @@
         "after": [
           {
             "result": {
-              "duration": 482322,
+              "duration": 517746,
               "status": "passed"
             },
             "match": {
@@ -1440,7 +1584,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1886055245,
+              "duration": 1649721076,
               "status": "passed"
             },
             "line": 39,
@@ -1461,7 +1605,7 @@
           },
           {
             "result": {
-              "duration": 224299651,
+              "duration": 237800183,
               "status": "passed"
             },
             "line": 40,
@@ -1482,7 +1626,7 @@
           },
           {
             "result": {
-              "duration": 451612545,
+              "duration": 505240637,
               "status": "passed"
             },
             "line": 41,
@@ -1494,7 +1638,7 @@
           },
           {
             "result": {
-              "duration": 40852,
+              "duration": 48198,
               "status": "passed"
             },
             "line": 42,
@@ -1510,11 +1654,20 @@
         "before": [
           {
             "result": {
-              "duration": 15387616,
+              "duration": 13741002,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7862153,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1525,7 +1678,7 @@
         "after": [
           {
             "result": {
-              "duration": 356463,
+              "duration": 272409,
               "status": "passed"
             },
             "match": {
@@ -1538,7 +1691,7 @@
         "steps": [
           {
             "result": {
-              "duration": 5268465,
+              "duration": 5780207,
               "status": "passed"
             },
             "line": 60,
@@ -1559,7 +1712,7 @@
           },
           {
             "result": {
-              "duration": 34351604,
+              "duration": 61498385,
               "status": "passed"
             },
             "line": 61,
@@ -1571,7 +1724,7 @@
           },
           {
             "result": {
-              "duration": 388979,
+              "duration": 240938,
               "status": "passed"
             },
             "line": 62,
@@ -1587,11 +1740,20 @@
         "before": [
           {
             "result": {
-              "duration": 14026432,
+              "duration": 11983546,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10650906,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1602,7 +1764,7 @@
         "after": [
           {
             "result": {
-              "duration": 301268,
+              "duration": 218193,
               "status": "passed"
             },
             "match": {
@@ -1615,7 +1777,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1497738,
+              "duration": 1515333,
               "status": "passed"
             },
             "line": 78,
@@ -1636,7 +1798,7 @@
           },
           {
             "result": {
-              "duration": 1846905678,
+              "duration": 1686574179,
               "status": "passed"
             },
             "line": 79,
@@ -1648,7 +1810,7 @@
           },
           {
             "result": {
-              "duration": 12910923,
+              "duration": 9791179,
               "status": "passed"
             },
             "line": 80,
@@ -1669,7 +1831,7 @@
           },
           {
             "result": {
-              "duration": 2538176152,
+              "duration": 1962602694,
               "status": "passed"
             },
             "line": 81,
@@ -1681,7 +1843,7 @@
           },
           {
             "result": {
-              "duration": 128637,
+              "duration": 79104,
               "status": "passed"
             },
             "line": 82,
@@ -1697,11 +1859,20 @@
         "before": [
           {
             "result": {
-              "duration": 19056401,
+              "duration": 7711269,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 6390728,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1712,7 +1883,7 @@
         "after": [
           {
             "result": {
-              "duration": 259752,
+              "duration": 219155,
               "status": "passed"
             },
             "match": {
@@ -1725,7 +1896,7 @@
         "steps": [
           {
             "result": {
-              "duration": 633668955,
+              "duration": 464760380,
               "status": "passed"
             },
             "line": 125,
@@ -1751,7 +1922,7 @@
           },
           {
             "result": {
-              "duration": 64930835,
+              "duration": 26402552,
               "status": "passed"
             },
             "line": 126,
@@ -1772,7 +1943,7 @@
           },
           {
             "result": {
-              "duration": 2819591351,
+              "duration": 1874452505,
               "status": "passed"
             },
             "line": 127,
@@ -1784,7 +1955,7 @@
           },
           {
             "result": {
-              "duration": 101118,
+              "duration": 135072,
               "status": "passed"
             },
             "line": 128,
@@ -1800,11 +1971,20 @@
         "before": [
           {
             "result": {
-              "duration": 22285017,
+              "duration": 7944430,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12278234,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1815,7 +1995,7 @@
         "after": [
           {
             "result": {
-              "duration": 330782,
+              "duration": 260634,
               "status": "passed"
             },
             "match": {
@@ -1828,7 +2008,7 @@
         "steps": [
           {
             "result": {
-              "duration": 562422210,
+              "duration": 466707168,
               "status": "passed"
             },
             "line": 135,
@@ -1854,7 +2034,7 @@
           },
           {
             "result": {
-              "duration": 8168139,
+              "duration": 4378669,
               "status": "passed"
             },
             "line": 136,
@@ -1875,7 +2055,7 @@
           },
           {
             "result": {
-              "duration": 10405907,
+              "duration": 5777371,
               "status": "passed"
             },
             "line": 137,
@@ -1887,7 +2067,7 @@
           },
           {
             "result": {
-              "duration": 63999,
+              "duration": 53244,
               "status": "passed"
             },
             "line": 138,
@@ -1903,11 +2083,20 @@
         "before": [
           {
             "result": {
-              "duration": 21253059,
+              "duration": 12975557,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8992535,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -1918,7 +2107,7 @@
         "after": [
           {
             "result": {
-              "duration": 384270,
+              "duration": 173066,
               "status": "passed"
             },
             "match": {
@@ -1931,7 +2120,7 @@
         "steps": [
           {
             "result": {
-              "duration": 913409399,
+              "duration": 515819484,
               "status": "passed"
             },
             "line": 135,
@@ -1957,7 +2146,7 @@
           },
           {
             "result": {
-              "duration": 3148592,
+              "duration": 906346,
               "status": "passed"
             },
             "line": 136,
@@ -1978,7 +2167,7 @@
           },
           {
             "result": {
-              "duration": 23997473,
+              "duration": 4920894,
               "status": "passed"
             },
             "line": 137,
@@ -1990,7 +2179,7 @@
           },
           {
             "result": {
-              "duration": 146655,
+              "duration": 47549,
               "status": "passed"
             },
             "line": 138,
@@ -2006,11 +2195,20 @@
         "before": [
           {
             "result": {
-              "duration": 33499519,
+              "duration": 15503873,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10634278,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2021,7 +2219,7 @@
         "after": [
           {
             "result": {
-              "duration": 269529,
+              "duration": 210301,
               "status": "passed"
             },
             "match": {
@@ -2034,7 +2232,7 @@
         "steps": [
           {
             "result": {
-              "duration": 652345782,
+              "duration": 494686176,
               "status": "passed"
             },
             "line": 135,
@@ -2060,7 +2258,7 @@
           },
           {
             "result": {
-              "duration": 954612,
+              "duration": 1211499,
               "status": "passed"
             },
             "line": 136,
@@ -2081,7 +2279,7 @@
           },
           {
             "result": {
-              "duration": 544282914,
+              "duration": 465001794,
               "status": "passed"
             },
             "line": 137,
@@ -2093,7 +2291,7 @@
           },
           {
             "result": {
-              "duration": 41141,
+              "duration": 34830,
               "status": "passed"
             },
             "line": 138,
@@ -2109,11 +2307,20 @@
         "before": [
           {
             "result": {
-              "duration": 12841037,
+              "duration": 9625287,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 6548110,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2124,7 +2331,7 @@
         "after": [
           {
             "result": {
-              "duration": 310146,
+              "duration": 350339,
               "status": "passed"
             },
             "match": {
@@ -2137,7 +2344,7 @@
         "steps": [
           {
             "result": {
-              "duration": 531782315,
+              "duration": 526333888,
               "status": "passed"
             },
             "line": 135,
@@ -2163,7 +2370,7 @@
           },
           {
             "result": {
-              "duration": 1032239,
+              "duration": 1327961,
               "status": "passed"
             },
             "line": 136,
@@ -2184,7 +2391,7 @@
           },
           {
             "result": {
-              "duration": 2331875818,
+              "duration": 1965838318,
               "status": "passed"
             },
             "line": 137,
@@ -2196,8 +2403,8 @@
           },
           {
             "result": {
-              "duration": 1527817,
-              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:138)\n",
+              "duration": 2725685,
+              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:53)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:138)\n",
               "status": "failed"
             },
             "line": 138,
@@ -2213,11 +2420,20 @@
         "before": [
           {
             "result": {
-              "duration": 28294097,
+              "duration": 15692584,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9918579,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2228,7 +2444,7 @@
         "after": [
           {
             "result": {
-              "duration": 1204854,
+              "duration": 374677,
               "status": "passed"
             },
             "match": {
@@ -2241,7 +2457,7 @@
         "steps": [
           {
             "result": {
-              "duration": 527977792,
+              "duration": 518489329,
               "status": "passed"
             },
             "line": 135,
@@ -2267,7 +2483,7 @@
           },
           {
             "result": {
-              "duration": 1122597,
+              "duration": 950469,
               "status": "passed"
             },
             "line": 136,
@@ -2288,7 +2504,7 @@
           },
           {
             "result": {
-              "duration": 556650502,
+              "duration": 458878752,
               "status": "passed"
             },
             "line": 137,
@@ -2300,7 +2516,7 @@
           },
           {
             "result": {
-              "duration": 137726,
+              "duration": 131347,
               "status": "passed"
             },
             "line": 138,
@@ -2316,11 +2532,20 @@
         "before": [
           {
             "result": {
-              "duration": 30566054,
+              "duration": 20448325,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11595488,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2331,7 +2556,7 @@
         "after": [
           {
             "result": {
-              "duration": 474025,
+              "duration": 546380,
               "status": "passed"
             },
             "match": {
@@ -2344,7 +2569,7 @@
         "steps": [
           {
             "result": {
-              "duration": 534296655,
+              "duration": 461236087,
               "status": "passed"
             },
             "line": 135,
@@ -2370,7 +2595,7 @@
           },
           {
             "result": {
-              "duration": 1870185,
+              "duration": 4886319,
               "status": "passed"
             },
             "line": 136,
@@ -2391,7 +2616,7 @@
           },
           {
             "result": {
-              "duration": 517632863,
+              "duration": 482312399,
               "status": "passed"
             },
             "line": 137,
@@ -2403,7 +2628,7 @@
           },
           {
             "result": {
-              "duration": 62870,
+              "duration": 98382,
               "status": "passed"
             },
             "line": 138,
@@ -2419,11 +2644,20 @@
         "before": [
           {
             "result": {
-              "duration": 12896021,
+              "duration": 12573042,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7339375,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2434,7 +2668,7 @@
         "after": [
           {
             "result": {
-              "duration": 710546,
+              "duration": 388164,
               "status": "passed"
             },
             "match": {
@@ -2447,7 +2681,7 @@
         "steps": [
           {
             "result": {
-              "duration": 446631825,
+              "duration": 466843309,
               "status": "passed"
             },
             "line": 135,
@@ -2473,7 +2707,7 @@
           },
           {
             "result": {
-              "duration": 1081442,
+              "duration": 1272317,
               "status": "passed"
             },
             "line": 136,
@@ -2494,7 +2728,7 @@
           },
           {
             "result": {
-              "duration": 632727778,
+              "duration": 485317317,
               "status": "passed"
             },
             "line": 137,
@@ -2506,7 +2740,7 @@
           },
           {
             "result": {
-              "duration": 121442,
+              "duration": 64846,
               "status": "passed"
             },
             "line": 138,
@@ -2522,11 +2756,20 @@
         "before": [
           {
             "result": {
-              "duration": 15110697,
+              "duration": 11678819,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13954708,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2537,7 +2780,7 @@
         "after": [
           {
             "result": {
-              "duration": 227281,
+              "duration": 247578,
               "status": "passed"
             },
             "match": {
@@ -2550,7 +2793,7 @@
         "steps": [
           {
             "result": {
-              "duration": 680155469,
+              "duration": 462309805,
               "status": "passed"
             },
             "line": 135,
@@ -2576,7 +2819,7 @@
           },
           {
             "result": {
-              "duration": 883666,
+              "duration": 1466674,
               "status": "passed"
             },
             "line": 136,
@@ -2597,7 +2840,7 @@
           },
           {
             "result": {
-              "duration": 651276306,
+              "duration": 457260016,
               "status": "passed"
             },
             "line": 137,
@@ -2609,7 +2852,7 @@
           },
           {
             "result": {
-              "duration": 52642,
+              "duration": 39436,
               "status": "passed"
             },
             "line": 138,
@@ -2625,11 +2868,20 @@
         "before": [
           {
             "result": {
-              "duration": 21217536,
+              "duration": 12688529,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11022595,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2640,7 +2892,7 @@
         "after": [
           {
             "result": {
-              "duration": 461141,
+              "duration": 449008,
               "status": "passed"
             },
             "match": {
@@ -2653,7 +2905,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1454182,
+              "duration": 1159476,
               "status": "passed"
             },
             "line": 153,
@@ -2674,8 +2926,8 @@
           },
           {
             "result": {
-              "duration": 89883968,
-              "error_message": "com.fasterxml.jackson.core.JsonParseException: Unrecognized token \u0027Internal\u0027: was expecting \u0027null\u0027, \u0027true\u0027, \u0027false\u0027 or NaN\n at [Source: (String)\"Internal Server Error\"; line: 1, column: 9]\n\tat com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1804)\n\tat com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:679)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2839)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2817)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._matchToken(ReaderBasedJsonParser.java:2606)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:1875)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:749)\n\tat com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4141)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4000)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3004)\n\tat de.adorsys.aspsp.xs2a.integtest.util.Context.handleRequestError(Context.java:52)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.AccountListRequestErrofulSteps.psu_sends_get_request(AccountListRequestErrofulSteps.java:89)\n\tat ✽.When PSU sends get request(AIS_01.feature:154)\n",
+              "duration": 69205760,
+              "error_message": "com.fasterxml.jackson.core.JsonParseException: Unrecognized token \u0027Internal\u0027: was expecting \u0027null\u0027, \u0027true\u0027, \u0027false\u0027 or NaN\n at [Source: (String)\"Internal Server Error\"; line: 1, column: 9]\n\tat com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1804)\n\tat com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:679)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2839)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2817)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._matchToken(ReaderBasedJsonParser.java:2606)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:1875)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:749)\n\tat com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4141)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4000)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3004)\n\tat de.adorsys.aspsp.xs2a.integtest.util.Context.handleRequestError(Context.java:51)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.AccountListRequestErrofulSteps.psu_sends_get_request(AccountListRequestErrofulSteps.java:80)\n\tat ✽.When PSU sends get request(AIS_01.feature:154)\n",
               "status": "failed"
             },
             "line": 154,
@@ -2702,11 +2954,20 @@
         "before": [
           {
             "result": {
-              "duration": 44964759,
+              "duration": 10713913,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11439392,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2717,7 +2978,7 @@
         "after": [
           {
             "result": {
-              "duration": 622919,
+              "duration": 208853,
               "status": "passed"
             },
             "match": {
@@ -2730,7 +2991,7 @@
         "steps": [
           {
             "result": {
-              "duration": 565310886,
+              "duration": 517720248,
               "status": "passed"
             },
             "line": 161,
@@ -2756,7 +3017,7 @@
           },
           {
             "result": {
-              "duration": 3309863,
+              "duration": 2678486,
               "status": "passed"
             },
             "line": 162,
@@ -2777,7 +3038,7 @@
           },
           {
             "result": {
-              "duration": 9106938,
+              "duration": 2126514,
               "status": "passed"
             },
             "line": 163,
@@ -2798,7 +3059,7 @@
           },
           {
             "result": {
-              "duration": 2484195994,
+              "duration": 1847323497,
               "status": "passed"
             },
             "line": 164,
@@ -2810,7 +3071,7 @@
           },
           {
             "result": {
-              "duration": 78526,
+              "duration": 71237,
               "status": "passed"
             },
             "line": 165,
@@ -2826,11 +3087,20 @@
         "before": [
           {
             "result": {
-              "duration": 17815536,
+              "duration": 9743531,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7154737,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2841,7 +3111,7 @@
         "after": [
           {
             "result": {
-              "duration": 573211,
+              "duration": 194944,
               "status": "passed"
             },
             "match": {
@@ -2854,7 +3124,7 @@
         "steps": [
           {
             "result": {
-              "duration": 766160576,
+              "duration": 491453315,
               "status": "passed"
             },
             "line": 172,
@@ -2880,7 +3150,7 @@
           },
           {
             "result": {
-              "duration": 40294611,
+              "duration": 314031,
               "status": "passed"
             },
             "line": 173,
@@ -2901,7 +3171,7 @@
           },
           {
             "result": {
-              "duration": 148375465,
+              "duration": 6316151,
               "status": "passed"
             },
             "line": 174,
@@ -2922,7 +3192,7 @@
           },
           {
             "result": {
-              "duration": 55953407,
+              "duration": 8955428,
               "status": "passed"
             },
             "line": 175,
@@ -2934,7 +3204,7 @@
           },
           {
             "result": {
-              "duration": 116236,
+              "duration": 43061,
               "status": "passed"
             },
             "line": 176,
@@ -2950,11 +3220,20 @@
         "before": [
           {
             "result": {
-              "duration": 58305333,
+              "duration": 13844490,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13969765,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -2965,7 +3244,7 @@
         "after": [
           {
             "result": {
-              "duration": 270653,
+              "duration": 385135,
               "status": "passed"
             },
             "match": {
@@ -2978,7 +3257,7 @@
         "steps": [
           {
             "result": {
-              "duration": 602939097,
+              "duration": 485659261,
               "status": "passed"
             },
             "line": 172,
@@ -3004,7 +3283,7 @@
           },
           {
             "result": {
-              "duration": 309546,
+              "duration": 269971,
               "status": "passed"
             },
             "line": 173,
@@ -3025,7 +3304,7 @@
           },
           {
             "result": {
-              "duration": 1117931,
+              "duration": 801290,
               "status": "passed"
             },
             "line": 174,
@@ -3046,7 +3325,7 @@
           },
           {
             "result": {
-              "duration": 6262061,
+              "duration": 6100198,
               "status": "passed"
             },
             "line": 175,
@@ -3058,7 +3337,7 @@
           },
           {
             "result": {
-              "duration": 43896,
+              "duration": 45283,
               "status": "passed"
             },
             "line": 176,
@@ -3074,11 +3353,20 @@
         "before": [
           {
             "result": {
-              "duration": 18914422,
+              "duration": 18226234,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11018789,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3089,7 +3377,7 @@
         "after": [
           {
             "result": {
-              "duration": 214491,
+              "duration": 271359,
               "status": "passed"
             },
             "match": {
@@ -3102,7 +3390,7 @@
         "steps": [
           {
             "result": {
-              "duration": 533762858,
+              "duration": 525494646,
               "status": "passed"
             },
             "line": 172,
@@ -3128,7 +3416,7 @@
           },
           {
             "result": {
-              "duration": 307440,
+              "duration": 299476,
               "status": "passed"
             },
             "line": 173,
@@ -3149,7 +3437,7 @@
           },
           {
             "result": {
-              "duration": 1336785,
+              "duration": 1266206,
               "status": "passed"
             },
             "line": 174,
@@ -3170,7 +3458,7 @@
           },
           {
             "result": {
-              "duration": 545229843,
+              "duration": 472589242,
               "status": "passed"
             },
             "line": 175,
@@ -3182,7 +3470,7 @@
           },
           {
             "result": {
-              "duration": 49101,
+              "duration": 41354,
               "status": "passed"
             },
             "line": 176,
@@ -3198,11 +3486,20 @@
         "before": [
           {
             "result": {
-              "duration": 14850096,
+              "duration": 20548337,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 6764549,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3213,7 +3510,7 @@
         "after": [
           {
             "result": {
-              "duration": 289590,
+              "duration": 169297,
               "status": "passed"
             },
             "match": {
@@ -3226,7 +3523,7 @@
         "steps": [
           {
             "result": {
-              "duration": 493131313,
+              "duration": 482235257,
               "status": "passed"
             },
             "line": 172,
@@ -3252,7 +3549,7 @@
           },
           {
             "result": {
-              "duration": 231957,
+              "duration": 241259,
               "status": "passed"
             },
             "line": 173,
@@ -3273,7 +3570,7 @@
           },
           {
             "result": {
-              "duration": 922751,
+              "duration": 1172051,
               "status": "passed"
             },
             "line": 174,
@@ -3294,7 +3591,7 @@
           },
           {
             "result": {
-              "duration": 2054723898,
+              "duration": 1723078888,
               "status": "passed"
             },
             "line": 175,
@@ -3306,8 +3603,8 @@
           },
           {
             "result": {
-              "duration": 358215,
-              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:176)\n",
+              "duration": 171990,
+              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:53)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:176)\n",
               "status": "failed"
             },
             "line": 176,
@@ -3323,11 +3620,20 @@
         "before": [
           {
             "result": {
-              "duration": 29104497,
+              "duration": 8740051,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9537572,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3338,7 +3644,7 @@
         "after": [
           {
             "result": {
-              "duration": 175008,
+              "duration": 179493,
               "status": "passed"
             },
             "match": {
@@ -3351,7 +3657,7 @@
         "steps": [
           {
             "result": {
-              "duration": 474075634,
+              "duration": 500557223,
               "status": "passed"
             },
             "line": 172,
@@ -3377,7 +3683,7 @@
           },
           {
             "result": {
-              "duration": 288552,
+              "duration": 203297,
               "status": "passed"
             },
             "line": 173,
@@ -3398,7 +3704,7 @@
           },
           {
             "result": {
-              "duration": 907834,
+              "duration": 834814,
               "status": "passed"
             },
             "line": 174,
@@ -3419,7 +3725,7 @@
           },
           {
             "result": {
-              "duration": 528308862,
+              "duration": 463951068,
               "status": "passed"
             },
             "line": 175,
@@ -3431,7 +3737,7 @@
           },
           {
             "result": {
-              "duration": 299949,
+              "duration": 281024,
               "status": "passed"
             },
             "line": 176,
@@ -3447,11 +3753,20 @@
         "before": [
           {
             "result": {
-              "duration": 20446944,
+              "duration": 18105147,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13883103,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3462,7 +3777,7 @@
         "after": [
           {
             "result": {
-              "duration": 1760756,
+              "duration": 326511,
               "status": "passed"
             },
             "match": {
@@ -3475,7 +3790,7 @@
         "steps": [
           {
             "result": {
-              "duration": 514062706,
+              "duration": 509409682,
               "status": "passed"
             },
             "line": 172,
@@ -3501,7 +3816,7 @@
           },
           {
             "result": {
-              "duration": 391726,
+              "duration": 243264,
               "status": "passed"
             },
             "line": 173,
@@ -3522,7 +3837,7 @@
           },
           {
             "result": {
-              "duration": 1135449,
+              "duration": 1165048,
               "status": "passed"
             },
             "line": 174,
@@ -3543,7 +3858,7 @@
           },
           {
             "result": {
-              "duration": 513198863,
+              "duration": 481599674,
               "status": "passed"
             },
             "line": 175,
@@ -3555,7 +3870,7 @@
           },
           {
             "result": {
-              "duration": 51242,
+              "duration": 53452,
               "status": "passed"
             },
             "line": 176,
@@ -3571,11 +3886,20 @@
         "before": [
           {
             "result": {
-              "duration": 10653930,
+              "duration": 8875857,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13033948,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3586,7 +3910,7 @@
         "after": [
           {
             "result": {
-              "duration": 227446,
+              "duration": 220776,
               "status": "passed"
             },
             "match": {
@@ -3599,7 +3923,7 @@
         "steps": [
           {
             "result": {
-              "duration": 631223823,
+              "duration": 535885862,
               "status": "passed"
             },
             "line": 172,
@@ -3625,7 +3949,7 @@
           },
           {
             "result": {
-              "duration": 516396,
+              "duration": 302231,
               "status": "passed"
             },
             "line": 173,
@@ -3646,7 +3970,7 @@
           },
           {
             "result": {
-              "duration": 1298526,
+              "duration": 1680373,
               "status": "passed"
             },
             "line": 174,
@@ -3667,7 +3991,7 @@
           },
           {
             "result": {
-              "duration": 536884161,
+              "duration": 556270706,
               "status": "passed"
             },
             "line": 175,
@@ -3679,7 +4003,7 @@
           },
           {
             "result": {
-              "duration": 38764,
+              "duration": 65080,
               "status": "passed"
             },
             "line": 176,
@@ -3695,11 +4019,20 @@
         "before": [
           {
             "result": {
-              "duration": 15899299,
+              "duration": 12672191,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12766014,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3710,7 +4043,7 @@
         "after": [
           {
             "result": {
-              "duration": 197353,
+              "duration": 192262,
               "status": "passed"
             },
             "match": {
@@ -3723,7 +4056,7 @@
         "steps": [
           {
             "result": {
-              "duration": 505331969,
+              "duration": 436695416,
               "status": "passed"
             },
             "line": 172,
@@ -3749,7 +4082,7 @@
           },
           {
             "result": {
-              "duration": 334814,
+              "duration": 691175,
               "status": "passed"
             },
             "line": 173,
@@ -3770,7 +4103,7 @@
           },
           {
             "result": {
-              "duration": 1105488,
+              "duration": 1993912,
               "status": "passed"
             },
             "line": 174,
@@ -3791,7 +4124,7 @@
           },
           {
             "result": {
-              "duration": 513645948,
+              "duration": 520734286,
               "status": "passed"
             },
             "line": 175,
@@ -3803,7 +4136,7 @@
           },
           {
             "result": {
-              "duration": 37874,
+              "duration": 35702,
               "status": "passed"
             },
             "line": 176,
@@ -3819,11 +4152,20 @@
         "before": [
           {
             "result": {
-              "duration": 19082536,
+              "duration": 19490593,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8256343,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3834,7 +4176,7 @@
         "after": [
           {
             "result": {
-              "duration": 252151,
+              "duration": 168854,
               "status": "passed"
             },
             "match": {
@@ -3847,7 +4189,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1051780,
+              "duration": 954048,
               "status": "passed"
             },
             "line": 190,
@@ -3868,8 +4210,8 @@
           },
           {
             "result": {
-              "duration": 71909478,
-              "error_message": "com.fasterxml.jackson.core.JsonParseException: Unrecognized token \u0027Internal\u0027: was expecting \u0027null\u0027, \u0027true\u0027, \u0027false\u0027 or NaN\n at [Source: (String)\"Internal Server Error\"; line: 1, column: 9]\n\tat com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1804)\n\tat com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:679)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2839)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2817)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._matchToken(ReaderBasedJsonParser.java:2606)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:1875)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:749)\n\tat com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4141)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4000)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3004)\n\tat de.adorsys.aspsp.xs2a.integtest.util.Context.handleRequestError(Context.java:52)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.AccountDetailRequestErrofulSteps.psu_requests_the_account_details(AccountDetailRequestErrofulSteps.java:91)\n\tat ✽.When PSU requests the account details erroful(AIS_01.feature:191)\n",
+              "duration": 57697088,
+              "error_message": "com.fasterxml.jackson.core.JsonParseException: Unrecognized token \u0027Internal\u0027: was expecting \u0027null\u0027, \u0027true\u0027, \u0027false\u0027 or NaN\n at [Source: (String)\"Internal Server Error\"; line: 1, column: 9]\n\tat com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1804)\n\tat com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:679)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2839)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2817)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._matchToken(ReaderBasedJsonParser.java:2606)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:1875)\n\tat com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:749)\n\tat com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4141)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4000)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3004)\n\tat de.adorsys.aspsp.xs2a.integtest.util.Context.handleRequestError(Context.java:51)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.AccountDetailRequestErrofulSteps.psu_requests_the_account_details(AccountDetailRequestErrofulSteps.java:83)\n\tat ✽.When PSU requests the account details erroful(AIS_01.feature:191)\n",
               "status": "failed"
             },
             "line": 191,
@@ -3896,11 +4238,20 @@
         "before": [
           {
             "result": {
-              "duration": 14638838,
+              "duration": 21351122,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 16306195,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -3911,7 +4262,7 @@
         "after": [
           {
             "result": {
-              "duration": 238542,
+              "duration": 191424,
               "status": "passed"
             },
             "match": {
@@ -3924,7 +4275,7 @@
         "steps": [
           {
             "result": {
-              "duration": 535338069,
+              "duration": 500786991,
               "status": "passed"
             },
             "line": 204,
@@ -3949,7 +4300,7 @@
           },
           {
             "result": {
-              "duration": 469261,
+              "duration": 227591,
               "status": "passed"
             },
             "line": 205,
@@ -3970,7 +4321,7 @@
           },
           {
             "result": {
-              "duration": 12385583,
+              "duration": 7585660,
               "status": "passed"
             },
             "line": 206,
@@ -3991,7 +4342,7 @@
           },
           {
             "result": {
-              "duration": 1979967895,
+              "duration": 1742788868,
               "status": "passed"
             },
             "line": 207,
@@ -4003,7 +4354,7 @@
           },
           {
             "result": {
-              "duration": 91513,
+              "duration": 63301,
               "status": "passed"
             },
             "line": 208,
@@ -4019,11 +4370,20 @@
         "before": [
           {
             "result": {
-              "duration": 12400374,
+              "duration": 9292624,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9722929,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -4034,7 +4394,7 @@
         "after": [
           {
             "result": {
-              "duration": 214705,
+              "duration": 169405,
               "status": "passed"
             },
             "match": {
@@ -4047,7 +4407,7 @@
         "steps": [
           {
             "result": {
-              "duration": 513042634,
+              "duration": 466701649,
               "status": "passed"
             },
             "line": 204,
@@ -4072,7 +4432,7 @@
           },
           {
             "result": {
-              "duration": 399288,
+              "duration": 258930,
               "status": "passed"
             },
             "line": 205,
@@ -4093,7 +4453,7 @@
           },
           {
             "result": {
-              "duration": 903288,
+              "duration": 498763,
               "status": "passed"
             },
             "line": 206,
@@ -4114,7 +4474,7 @@
           },
           {
             "result": {
-              "duration": 1877709458,
+              "duration": 1947605032,
               "status": "passed"
             },
             "line": 207,
@@ -4126,7 +4486,7 @@
           },
           {
             "result": {
-              "duration": 34687,
+              "duration": 32176,
               "status": "passed"
             },
             "line": 208,
@@ -4142,11 +4502,20 @@
         "before": [
           {
             "result": {
-              "duration": 10026726,
+              "duration": 6731189,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9281944,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -4157,7 +4526,7 @@
         "after": [
           {
             "result": {
-              "duration": 276349,
+              "duration": 185301,
               "status": "passed"
             },
             "match": {
@@ -4170,7 +4539,7 @@
         "steps": [
           {
             "result": {
-              "duration": 509567060,
+              "duration": 562910369,
               "status": "passed"
             },
             "line": 254,
@@ -4196,7 +4565,7 @@
           },
           {
             "result": {
-              "duration": 679899,
+              "duration": 218410,
               "status": "passed"
             },
             "line": 255,
@@ -4217,7 +4586,7 @@
           },
           {
             "result": {
-              "duration": 13765066,
+              "duration": 8194581,
               "status": "passed"
             },
             "line": 256,
@@ -4263,7 +4632,7 @@
           },
           {
             "result": {
-              "duration": 32828441,
+              "duration": 22357340,
               "status": "passed"
             },
             "line": 257,
@@ -4284,7 +4653,7 @@
           },
           {
             "result": {
-              "duration": 2020422968,
+              "duration": 1818491810,
               "status": "passed"
             },
             "line": 258,
@@ -4296,7 +4665,7 @@
           },
           {
             "result": {
-              "duration": 57376,
+              "duration": 64025,
               "status": "passed"
             },
             "line": 259,
@@ -4312,11 +4681,20 @@
         "before": [
           {
             "result": {
-              "duration": 10345015,
+              "duration": 6473324,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9172578,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -4327,7 +4705,7 @@
         "after": [
           {
             "result": {
-              "duration": 304126,
+              "duration": 193708,
               "status": "passed"
             },
             "match": {
@@ -4340,7 +4718,7 @@
         "steps": [
           {
             "result": {
-              "duration": 547185460,
+              "duration": 461412815,
               "status": "passed"
             },
             "line": 254,
@@ -4366,7 +4744,7 @@
           },
           {
             "result": {
-              "duration": 248872,
+              "duration": 357786,
               "status": "passed"
             },
             "line": 255,
@@ -4387,7 +4765,7 @@
           },
           {
             "result": {
-              "duration": 183283,
+              "duration": 350943,
               "status": "passed"
             },
             "line": 256,
@@ -4433,7 +4811,7 @@
           },
           {
             "result": {
-              "duration": 586044,
+              "duration": 627711,
               "status": "passed"
             },
             "line": 257,
@@ -4454,7 +4832,7 @@
           },
           {
             "result": {
-              "duration": 1843678254,
+              "duration": 1787804604,
               "status": "passed"
             },
             "line": 258,
@@ -4466,7 +4844,7 @@
           },
           {
             "result": {
-              "duration": 96478,
+              "duration": 32534,
               "status": "passed"
             },
             "line": 259,
@@ -4482,11 +4860,20 @@
         "before": [
           {
             "result": {
-              "duration": 11800666,
+              "duration": 12416511,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8401228,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -4497,7 +4884,7 @@
         "after": [
           {
             "result": {
-              "duration": 193253,
+              "duration": 208783,
               "status": "passed"
             },
             "match": {
@@ -4510,7 +4897,7 @@
         "steps": [
           {
             "result": {
-              "duration": 513090550,
+              "duration": 465632429,
               "status": "passed"
             },
             "line": 254,
@@ -4536,7 +4923,7 @@
           },
           {
             "result": {
-              "duration": 234742,
+              "duration": 212468,
               "status": "passed"
             },
             "line": 255,
@@ -4557,7 +4944,7 @@
           },
           {
             "result": {
-              "duration": 377229,
+              "duration": 191937,
               "status": "passed"
             },
             "line": 256,
@@ -4603,7 +4990,7 @@
           },
           {
             "result": {
-              "duration": 521171,
+              "duration": 390319,
               "status": "passed"
             },
             "line": 257,
@@ -4624,7 +5011,7 @@
           },
           {
             "result": {
-              "duration": 1910307898,
+              "duration": 1792353644,
               "status": "passed"
             },
             "line": 258,
@@ -4636,7 +5023,7 @@
           },
           {
             "result": {
-              "duration": 41400,
+              "duration": 32108,
               "status": "passed"
             },
             "line": 259,
@@ -4652,11 +5039,20 @@
         "before": [
           {
             "result": {
-              "duration": 10070706,
+              "duration": 7079467,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12702988,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -4667,7 +5063,7 @@
         "after": [
           {
             "result": {
-              "duration": 194207,
+              "duration": 214964,
               "status": "passed"
             },
             "match": {
@@ -4680,7 +5076,7 @@
         "steps": [
           {
             "result": {
-              "duration": 544642936,
+              "duration": 453169219,
               "status": "passed"
             },
             "line": 254,
@@ -4706,7 +5102,7 @@
           },
           {
             "result": {
-              "duration": 229837,
+              "duration": 281482,
               "status": "passed"
             },
             "line": 255,
@@ -4727,7 +5123,7 @@
           },
           {
             "result": {
-              "duration": 166168,
+              "duration": 171564,
               "status": "passed"
             },
             "line": 256,
@@ -4773,7 +5169,7 @@
           },
           {
             "result": {
-              "duration": 491483,
+              "duration": 366835,
               "status": "passed"
             },
             "line": 257,
@@ -4794,7 +5190,7 @@
           },
           {
             "result": {
-              "duration": 1847438379,
+              "duration": 1695310952,
               "status": "passed"
             },
             "line": 258,
@@ -4806,7 +5202,7 @@
           },
           {
             "result": {
-              "duration": 52136,
+              "duration": 35297,
               "status": "passed"
             },
             "line": 259,
@@ -4822,11 +5218,20 @@
         "before": [
           {
             "result": {
-              "duration": 15082430,
+              "duration": 8600466,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10047397,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -4837,7 +5242,7 @@
         "after": [
           {
             "result": {
-              "duration": 476019,
+              "duration": 185606,
               "status": "passed"
             },
             "match": {
@@ -4850,7 +5255,7 @@
         "steps": [
           {
             "result": {
-              "duration": 539884232,
+              "duration": 470661151,
               "status": "passed"
             },
             "line": 254,
@@ -4876,7 +5281,7 @@
           },
           {
             "result": {
-              "duration": 665780,
+              "duration": 1208159,
               "status": "passed"
             },
             "line": 255,
@@ -4897,7 +5302,7 @@
           },
           {
             "result": {
-              "duration": 150625,
+              "duration": 184319,
               "status": "passed"
             },
             "line": 256,
@@ -4943,7 +5348,7 @@
           },
           {
             "result": {
-              "duration": 775133,
+              "duration": 863906,
               "status": "passed"
             },
             "line": 257,
@@ -4964,7 +5369,7 @@
           },
           {
             "result": {
-              "duration": 1934970788,
+              "duration": 1720897345,
               "status": "passed"
             },
             "line": 258,
@@ -4976,7 +5381,7 @@
           },
           {
             "result": {
-              "duration": 33842,
+              "duration": 28850,
               "status": "passed"
             },
             "line": 259,
@@ -4992,11 +5397,20 @@
         "before": [
           {
             "result": {
-              "duration": 11396199,
+              "duration": 9300791,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8803425,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5007,7 +5421,7 @@
         "after": [
           {
             "result": {
-              "duration": 312737,
+              "duration": 296567,
               "status": "passed"
             },
             "match": {
@@ -5020,7 +5434,7 @@
         "steps": [
           {
             "result": {
-              "duration": 532892067,
+              "duration": 458167208,
               "status": "passed"
             },
             "line": 254,
@@ -5046,7 +5460,7 @@
           },
           {
             "result": {
-              "duration": 224839,
+              "duration": 301636,
               "status": "passed"
             },
             "line": 255,
@@ -5067,7 +5481,7 @@
           },
           {
             "result": {
-              "duration": 154343,
+              "duration": 167932,
               "status": "passed"
             },
             "line": 256,
@@ -5113,7 +5527,7 @@
           },
           {
             "result": {
-              "duration": 410240,
+              "duration": 473003,
               "status": "passed"
             },
             "line": 257,
@@ -5134,7 +5548,7 @@
           },
           {
             "result": {
-              "duration": 2102663253,
+              "duration": 1728784812,
               "status": "passed"
             },
             "line": 258,
@@ -5146,7 +5560,7 @@
           },
           {
             "result": {
-              "duration": 38810,
+              "duration": 39405,
               "status": "passed"
             },
             "line": 259,
@@ -5162,11 +5576,20 @@
         "before": [
           {
             "result": {
-              "duration": 14445091,
+              "duration": 11060686,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9117919,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5177,7 +5600,7 @@
         "after": [
           {
             "result": {
-              "duration": 180257,
+              "duration": 221579,
               "status": "passed"
             },
             "match": {
@@ -5190,7 +5613,7 @@
         "steps": [
           {
             "result": {
-              "duration": 563904537,
+              "duration": 466034536,
               "status": "passed"
             },
             "line": 254,
@@ -5216,7 +5639,7 @@
           },
           {
             "result": {
-              "duration": 190983,
+              "duration": 203933,
               "status": "passed"
             },
             "line": 255,
@@ -5237,7 +5660,7 @@
           },
           {
             "result": {
-              "duration": 143579,
+              "duration": 160456,
               "status": "passed"
             },
             "line": 256,
@@ -5283,7 +5706,7 @@
           },
           {
             "result": {
-              "duration": 366169,
+              "duration": 402622,
               "status": "passed"
             },
             "line": 257,
@@ -5304,7 +5727,7 @@
           },
           {
             "result": {
-              "duration": 2017017657,
+              "duration": 1722401432,
               "status": "passed"
             },
             "line": 258,
@@ -5316,7 +5739,7 @@
           },
           {
             "result": {
-              "duration": 31044,
+              "duration": 42154,
               "status": "passed"
             },
             "line": 259,
@@ -5332,11 +5755,20 @@
         "before": [
           {
             "result": {
-              "duration": 21367667,
+              "duration": 9468594,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9939794,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5347,7 +5779,7 @@
         "after": [
           {
             "result": {
-              "duration": 170755,
+              "duration": 335158,
               "status": "passed"
             },
             "match": {
@@ -5360,7 +5792,7 @@
         "steps": [
           {
             "result": {
-              "duration": 538334035,
+              "duration": 524870392,
               "status": "passed"
             },
             "line": 271,
@@ -5386,7 +5818,7 @@
           },
           {
             "result": {
-              "duration": 289744,
+              "duration": 255301,
               "status": "passed"
             },
             "line": 272,
@@ -5407,7 +5839,7 @@
           },
           {
             "result": {
-              "duration": 6340398,
+              "duration": 4249412,
               "status": "passed"
             },
             "line": 273,
@@ -5428,7 +5860,7 @@
           },
           {
             "result": {
-              "duration": 12274118,
+              "duration": 5697190,
               "status": "passed"
             },
             "line": 274,
@@ -5440,7 +5872,7 @@
           },
           {
             "result": {
-              "duration": 42435,
+              "duration": 73155,
               "status": "passed"
             },
             "line": 275,
@@ -5456,11 +5888,20 @@
         "before": [
           {
             "result": {
-              "duration": 19044569,
+              "duration": 20759190,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13452353,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5471,7 +5912,7 @@
         "after": [
           {
             "result": {
-              "duration": 300403,
+              "duration": 861189,
               "status": "passed"
             },
             "match": {
@@ -5484,7 +5925,7 @@
         "steps": [
           {
             "result": {
-              "duration": 678601173,
+              "duration": 493870765,
               "status": "passed"
             },
             "line": 271,
@@ -5510,7 +5951,7 @@
           },
           {
             "result": {
-              "duration": 268658,
+              "duration": 238940,
               "status": "passed"
             },
             "line": 272,
@@ -5531,7 +5972,7 @@
           },
           {
             "result": {
-              "duration": 489310,
+              "duration": 578991,
               "status": "passed"
             },
             "line": 273,
@@ -5552,7 +5993,7 @@
           },
           {
             "result": {
-              "duration": 15096663,
+              "duration": 5607395,
               "status": "passed"
             },
             "line": 274,
@@ -5564,7 +6005,7 @@
           },
           {
             "result": {
-              "duration": 54214,
+              "duration": 90830,
               "status": "passed"
             },
             "line": 275,
@@ -5580,11 +6021,20 @@
         "before": [
           {
             "result": {
-              "duration": 21903729,
+              "duration": 16615901,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7236293,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5595,7 +6045,7 @@
         "after": [
           {
             "result": {
-              "duration": 264783,
+              "duration": 549392,
               "status": "passed"
             },
             "match": {
@@ -5608,7 +6058,7 @@
         "steps": [
           {
             "result": {
-              "duration": 588777844,
+              "duration": 491857322,
               "status": "passed"
             },
             "line": 271,
@@ -5634,7 +6084,7 @@
           },
           {
             "result": {
-              "duration": 344460,
+              "duration": 211931,
               "status": "passed"
             },
             "line": 272,
@@ -5655,7 +6105,7 @@
           },
           {
             "result": {
-              "duration": 1165060,
+              "duration": 1020397,
               "status": "passed"
             },
             "line": 273,
@@ -5676,7 +6126,7 @@
           },
           {
             "result": {
-              "duration": 23075724,
+              "duration": 5637957,
               "status": "passed"
             },
             "line": 274,
@@ -5688,7 +6138,7 @@
           },
           {
             "result": {
-              "duration": 40470,
+              "duration": 93295,
               "status": "passed"
             },
             "line": 275,
@@ -5704,11 +6154,20 @@
         "before": [
           {
             "result": {
-              "duration": 16848481,
+              "duration": 11667407,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10406418,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5719,7 +6178,7 @@
         "after": [
           {
             "result": {
-              "duration": 157339,
+              "duration": 279963,
               "status": "passed"
             },
             "match": {
@@ -5732,7 +6191,7 @@
         "steps": [
           {
             "result": {
-              "duration": 491213252,
+              "duration": 544165754,
               "status": "passed"
             },
             "line": 271,
@@ -5758,7 +6217,7 @@
           },
           {
             "result": {
-              "duration": 193674,
+              "duration": 209394,
               "status": "passed"
             },
             "line": 272,
@@ -5779,7 +6238,7 @@
           },
           {
             "result": {
-              "duration": 737356,
+              "duration": 798344,
               "status": "passed"
             },
             "line": 273,
@@ -5800,7 +6259,7 @@
           },
           {
             "result": {
-              "duration": 16674037,
+              "duration": 6911320,
               "status": "passed"
             },
             "line": 274,
@@ -5812,7 +6271,7 @@
           },
           {
             "result": {
-              "duration": 46214,
+              "duration": 75352,
               "status": "passed"
             },
             "line": 275,
@@ -5828,11 +6287,20 @@
         "before": [
           {
             "result": {
-              "duration": 19723125,
+              "duration": 23730190,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 19817355,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5843,7 +6311,7 @@
         "after": [
           {
             "result": {
-              "duration": 163818,
+              "duration": 180095,
               "status": "passed"
             },
             "match": {
@@ -5856,7 +6324,7 @@
         "steps": [
           {
             "result": {
-              "duration": 570822214,
+              "duration": 530169126,
               "status": "passed"
             },
             "line": 271,
@@ -5882,7 +6350,7 @@
           },
           {
             "result": {
-              "duration": 509024,
+              "duration": 216368,
               "status": "passed"
             },
             "line": 272,
@@ -5903,7 +6371,7 @@
           },
           {
             "result": {
-              "duration": 2822007,
+              "duration": 954757,
               "status": "passed"
             },
             "line": 273,
@@ -5924,7 +6392,7 @@
           },
           {
             "result": {
-              "duration": 587733642,
+              "duration": 462880802,
               "status": "passed"
             },
             "line": 274,
@@ -5936,7 +6404,7 @@
           },
           {
             "result": {
-              "duration": 35790,
+              "duration": 79720,
               "status": "passed"
             },
             "line": 275,
@@ -5952,11 +6420,20 @@
         "before": [
           {
             "result": {
-              "duration": 23548529,
+              "duration": 14785907,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13224447,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -5967,7 +6444,7 @@
         "after": [
           {
             "result": {
-              "duration": 311891,
+              "duration": 266034,
               "status": "passed"
             },
             "match": {
@@ -5980,7 +6457,7 @@
         "steps": [
           {
             "result": {
-              "duration": 693890380,
+              "duration": 489187058,
               "status": "passed"
             },
             "line": 271,
@@ -6006,7 +6483,7 @@
           },
           {
             "result": {
-              "duration": 216256,
+              "duration": 225806,
               "status": "passed"
             },
             "line": 272,
@@ -6027,7 +6504,7 @@
           },
           {
             "result": {
-              "duration": 904024,
+              "duration": 1278031,
               "status": "passed"
             },
             "line": 273,
@@ -6048,7 +6525,7 @@
           },
           {
             "result": {
-              "duration": 2039838913,
+              "duration": 1716957087,
               "status": "passed"
             },
             "line": 274,
@@ -6060,8 +6537,8 @@
           },
           {
             "result": {
-              "duration": 186194,
-              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:275)\n",
+              "duration": 228408,
+              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:53)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:275)\n",
               "status": "failed"
             },
             "line": 275,
@@ -6077,11 +6554,20 @@
         "before": [
           {
             "result": {
-              "duration": 17797302,
+              "duration": 12975557,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10960911,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -6092,7 +6578,7 @@
         "after": [
           {
             "result": {
-              "duration": 234346,
+              "duration": 739963,
               "status": "passed"
             },
             "match": {
@@ -6105,7 +6591,7 @@
         "steps": [
           {
             "result": {
-              "duration": 502094768,
+              "duration": 444329449,
               "status": "passed"
             },
             "line": 271,
@@ -6131,7 +6617,7 @@
           },
           {
             "result": {
-              "duration": 174302,
+              "duration": 355267,
               "status": "passed"
             },
             "line": 272,
@@ -6152,7 +6638,7 @@
           },
           {
             "result": {
-              "duration": 803770,
+              "duration": 2213492,
               "status": "passed"
             },
             "line": 273,
@@ -6173,7 +6659,7 @@
           },
           {
             "result": {
-              "duration": 525728757,
+              "duration": 473651884,
               "status": "passed"
             },
             "line": 274,
@@ -6185,7 +6671,7 @@
           },
           {
             "result": {
-              "duration": 99077,
+              "duration": 173666,
               "status": "passed"
             },
             "line": 275,
@@ -6201,11 +6687,20 @@
         "before": [
           {
             "result": {
-              "duration": 31797534,
+              "duration": 14650355,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8211671,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -6216,7 +6711,7 @@
         "after": [
           {
             "result": {
-              "duration": 370591,
+              "duration": 158292,
               "status": "passed"
             },
             "match": {
@@ -6229,7 +6724,7 @@
         "steps": [
           {
             "result": {
-              "duration": 591073427,
+              "duration": 463799165,
               "status": "passed"
             },
             "line": 271,
@@ -6255,7 +6750,7 @@
           },
           {
             "result": {
-              "duration": 333463,
+              "duration": 409265,
               "status": "passed"
             },
             "line": 272,
@@ -6276,7 +6771,7 @@
           },
           {
             "result": {
-              "duration": 986259,
+              "duration": 1330375,
               "status": "passed"
             },
             "line": 273,
@@ -6297,7 +6792,7 @@
           },
           {
             "result": {
-              "duration": 548877663,
+              "duration": 465777427,
               "status": "passed"
             },
             "line": 274,
@@ -6309,7 +6804,7 @@
           },
           {
             "result": {
-              "duration": 34258,
+              "duration": 29930,
               "status": "passed"
             },
             "line": 275,
@@ -6325,11 +6820,20 @@
         "before": [
           {
             "result": {
-              "duration": 16653179,
+              "duration": 13843709,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9431917,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -6340,7 +6844,7 @@
         "after": [
           {
             "result": {
-              "duration": 156835,
+              "duration": 160304,
               "status": "passed"
             },
             "match": {
@@ -6353,7 +6857,7 @@
         "steps": [
           {
             "result": {
-              "duration": 593718746,
+              "duration": 467938649,
               "status": "passed"
             },
             "line": 271,
@@ -6379,7 +6883,7 @@
           },
           {
             "result": {
-              "duration": 296543,
+              "duration": 276292,
               "status": "passed"
             },
             "line": 272,
@@ -6400,7 +6904,7 @@
           },
           {
             "result": {
-              "duration": 1080175,
+              "duration": 874540,
               "status": "passed"
             },
             "line": 273,
@@ -6421,7 +6925,7 @@
           },
           {
             "result": {
-              "duration": 509639470,
+              "duration": 477551580,
               "status": "passed"
             },
             "line": 274,
@@ -6433,7 +6937,7 @@
           },
           {
             "result": {
-              "duration": 53249,
+              "duration": 29365,
               "status": "passed"
             },
             "line": 275,
@@ -6449,11 +6953,20 @@
         "before": [
           {
             "result": {
-              "duration": 14761358,
+              "duration": 7833330,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14728520,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -6464,7 +6977,7 @@
         "after": [
           {
             "result": {
-              "duration": 211249,
+              "duration": 287121,
               "status": "passed"
             },
             "match": {
@@ -6477,7 +6990,7 @@
         "steps": [
           {
             "result": {
-              "duration": 534444875,
+              "duration": 549774872,
               "status": "passed"
             },
             "line": 271,
@@ -6503,7 +7016,7 @@
           },
           {
             "result": {
-              "duration": 261426,
+              "duration": 183723,
               "status": "passed"
             },
             "line": 272,
@@ -6524,7 +7037,7 @@
           },
           {
             "result": {
-              "duration": 903477,
+              "duration": 758340,
               "status": "passed"
             },
             "line": 273,
@@ -6545,7 +7058,7 @@
           },
           {
             "result": {
-              "duration": 540842462,
+              "duration": 472102275,
               "status": "passed"
             },
             "line": 274,
@@ -6557,7 +7070,7 @@
           },
           {
             "result": {
-              "duration": 58686,
+              "duration": 62486,
               "status": "passed"
             },
             "line": 275,
@@ -6573,11 +7086,20 @@
         "before": [
           {
             "result": {
-              "duration": 13767761,
+              "duration": 15464224,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 6560898,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -6588,7 +7110,7 @@
         "after": [
           {
             "result": {
-              "duration": 130027,
+              "duration": 133162,
               "status": "passed"
             },
             "match": {
@@ -6601,7 +7123,7 @@
         "steps": [
           {
             "result": {
-              "duration": 495995712,
+              "duration": 460401428,
               "status": "passed"
             },
             "line": 291,
@@ -6627,7 +7149,7 @@
           },
           {
             "result": {
-              "duration": 272377,
+              "duration": 393582,
               "status": "passed"
             },
             "line": 292,
@@ -6648,7 +7170,7 @@
           },
           {
             "result": {
-              "duration": 12602510,
+              "duration": 12482285,
               "status": "passed"
             },
             "line": 293,
@@ -6669,7 +7191,7 @@
           },
           {
             "result": {
-              "duration": 310461,
+              "duration": 64049,
               "status": "passed"
             },
             "line": 294,
@@ -6690,7 +7212,7 @@
           },
           {
             "result": {
-              "duration": 1919935576,
+              "duration": 1716572170,
               "status": "passed"
             },
             "line": 295,
@@ -6702,8 +7224,8 @@
           },
           {
             "result": {
-              "duration": 251347,
-              "error_message": "java.lang.AssertionError: \nExpected: is \"ba8f7012-bdaf-4ada-bbf7-4c004d046ffe\"\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.TransactionDetailRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_detail_of_transaction_get_returned(TransactionDetailRequestSuccessfulSteps.java:104)\n\tat ✽.Then a successful response code and the appropriate detail of transaction get returned(AIS_01.feature:296)\n",
+              "duration": 270476,
+              "error_message": "java.lang.AssertionError: \nExpected: is \"ba8f7012-bdaf-4ada-bbf7-4c004d046ffe\"\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.TransactionDetailRequestSuccessfulSteps.a_successful_response_code_and_the_appropriate_detail_of_transaction_get_returned(TransactionDetailRequestSuccessfulSteps.java:98)\n\tat ✽.Then a successful response code and the appropriate detail of transaction get returned(AIS_01.feature:296)\n",
               "status": "failed"
             },
             "line": 296,
@@ -6719,11 +7241,20 @@
         "before": [
           {
             "result": {
-              "duration": 14420546,
+              "duration": 9069633,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9151760,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -6734,7 +7265,7 @@
         "after": [
           {
             "result": {
-              "duration": 200598,
+              "duration": 165075,
               "status": "passed"
             },
             "match": {
@@ -6747,7 +7278,7 @@
         "steps": [
           {
             "result": {
-              "duration": 587821407,
+              "duration": 493807215,
               "status": "passed"
             },
             "line": 302,
@@ -6773,7 +7304,7 @@
           },
           {
             "result": {
-              "duration": 239611,
+              "duration": 182714,
               "status": "passed"
             },
             "line": 303,
@@ -6794,7 +7325,7 @@
           },
           {
             "result": {
-              "duration": 6442088,
+              "duration": 6071785,
               "status": "passed"
             },
             "line": 304,
@@ -6815,7 +7346,7 @@
           },
           {
             "result": {
-              "duration": 260698,
+              "duration": 472939,
               "status": "passed"
             },
             "line": 305,
@@ -6836,7 +7367,7 @@
           },
           {
             "result": {
-              "duration": 14845465,
+              "duration": 5290380,
               "status": "passed"
             },
             "line": 306,
@@ -6848,7 +7379,7 @@
           },
           {
             "result": {
-              "duration": 63003,
+              "duration": 30222,
               "status": "passed"
             },
             "line": 307,
@@ -6864,11 +7395,20 @@
         "before": [
           {
             "result": {
-              "duration": 7996388,
+              "duration": 10050763,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12793139,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -6879,7 +7419,7 @@
         "after": [
           {
             "result": {
-              "duration": 315731,
+              "duration": 176848,
               "status": "passed"
             },
             "match": {
@@ -6892,7 +7432,7 @@
         "steps": [
           {
             "result": {
-              "duration": 527187528,
+              "duration": 543549975,
               "status": "passed"
             },
             "line": 302,
@@ -6918,7 +7458,7 @@
           },
           {
             "result": {
-              "duration": 220505,
+              "duration": 178057,
               "status": "passed"
             },
             "line": 303,
@@ -6939,7 +7479,7 @@
           },
           {
             "result": {
-              "duration": 1606801,
+              "duration": 448794,
               "status": "passed"
             },
             "line": 304,
@@ -6960,7 +7500,7 @@
           },
           {
             "result": {
-              "duration": 212726,
+              "duration": 116308,
               "status": "passed"
             },
             "line": 305,
@@ -6981,7 +7521,7 @@
           },
           {
             "result": {
-              "duration": 9685977,
+              "duration": 4412295,
               "status": "passed"
             },
             "line": 306,
@@ -6993,7 +7533,7 @@
           },
           {
             "result": {
-              "duration": 44747,
+              "duration": 29489,
               "status": "passed"
             },
             "line": 307,
@@ -7009,11 +7549,20 @@
         "before": [
           {
             "result": {
-              "duration": 11072128,
+              "duration": 15369213,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 4869176,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -7024,7 +7573,7 @@
         "after": [
           {
             "result": {
-              "duration": 218272,
+              "duration": 189489,
               "status": "passed"
             },
             "match": {
@@ -7037,7 +7586,7 @@
         "steps": [
           {
             "result": {
-              "duration": 490969992,
+              "duration": 478939408,
               "status": "passed"
             },
             "line": 302,
@@ -7063,7 +7612,7 @@
           },
           {
             "result": {
-              "duration": 183441,
+              "duration": 174423,
               "status": "passed"
             },
             "line": 303,
@@ -7084,7 +7633,7 @@
           },
           {
             "result": {
-              "duration": 502079,
+              "duration": 417411,
               "status": "passed"
             },
             "line": 304,
@@ -7105,7 +7654,7 @@
           },
           {
             "result": {
-              "duration": 109040,
+              "duration": 84393,
               "status": "passed"
             },
             "line": 305,
@@ -7126,7 +7675,7 @@
           },
           {
             "result": {
-              "duration": 16174988,
+              "duration": 4789544,
               "status": "passed"
             },
             "line": 306,
@@ -7138,7 +7687,7 @@
           },
           {
             "result": {
-              "duration": 64015,
+              "duration": 59591,
               "status": "passed"
             },
             "line": 307,
@@ -7154,11 +7703,20 @@
         "before": [
           {
             "result": {
-              "duration": 16043662,
+              "duration": 18194119,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 4919906,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -7169,7 +7727,7 @@
         "after": [
           {
             "result": {
-              "duration": 188555,
+              "duration": 189308,
               "status": "passed"
             },
             "match": {
@@ -7182,7 +7740,7 @@
         "steps": [
           {
             "result": {
-              "duration": 558150044,
+              "duration": 485606331,
               "status": "passed"
             },
             "line": 302,
@@ -7208,7 +7766,7 @@
           },
           {
             "result": {
-              "duration": 175473,
+              "duration": 192521,
               "status": "passed"
             },
             "line": 303,
@@ -7229,7 +7787,7 @@
           },
           {
             "result": {
-              "duration": 422120,
+              "duration": 487783,
               "status": "passed"
             },
             "line": 304,
@@ -7250,7 +7808,7 @@
           },
           {
             "result": {
-              "duration": 97963,
+              "duration": 105117,
               "status": "passed"
             },
             "line": 305,
@@ -7271,7 +7829,7 @@
           },
           {
             "result": {
-              "duration": 9277563,
+              "duration": 4776165,
               "status": "passed"
             },
             "line": 306,
@@ -7283,7 +7841,7 @@
           },
           {
             "result": {
-              "duration": 33699,
+              "duration": 33712,
               "status": "passed"
             },
             "line": 307,
@@ -7299,11 +7857,20 @@
         "before": [
           {
             "result": {
-              "duration": 11257325,
+              "duration": 15632041,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 4893251,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -7314,7 +7881,7 @@
         "after": [
           {
             "result": {
-              "duration": 173185,
+              "duration": 206198,
               "status": "passed"
             },
             "match": {
@@ -7327,7 +7894,7 @@
         "steps": [
           {
             "result": {
-              "duration": 521750554,
+              "duration": 521742249,
               "status": "passed"
             },
             "line": 302,
@@ -7353,7 +7920,7 @@
           },
           {
             "result": {
-              "duration": 205209,
+              "duration": 221871,
               "status": "passed"
             },
             "line": 303,
@@ -7374,7 +7941,7 @@
           },
           {
             "result": {
-              "duration": 976162,
+              "duration": 616517,
               "status": "passed"
             },
             "line": 304,
@@ -7395,7 +7962,7 @@
           },
           {
             "result": {
-              "duration": 456002,
+              "duration": 106156,
               "status": "passed"
             },
             "line": 305,
@@ -7416,7 +7983,7 @@
           },
           {
             "result": {
-              "duration": 520060378,
+              "duration": 482231243,
               "status": "passed"
             },
             "line": 306,
@@ -7428,7 +7995,7 @@
           },
           {
             "result": {
-              "duration": 31800,
+              "duration": 32752,
               "status": "passed"
             },
             "line": 307,
@@ -7444,11 +8011,20 @@
         "before": [
           {
             "result": {
-              "duration": 12329282,
+              "duration": 14539365,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8474437,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -7459,7 +8035,7 @@
         "after": [
           {
             "result": {
-              "duration": 168028,
+              "duration": 204176,
               "status": "passed"
             },
             "match": {
@@ -7472,7 +8048,7 @@
         "steps": [
           {
             "result": {
-              "duration": 606886898,
+              "duration": 477516401,
               "status": "passed"
             },
             "line": 302,
@@ -7498,7 +8074,7 @@
           },
           {
             "result": {
-              "duration": 263440,
+              "duration": 166090,
               "status": "passed"
             },
             "line": 303,
@@ -7519,7 +8095,7 @@
           },
           {
             "result": {
-              "duration": 570725,
+              "duration": 430289,
               "status": "passed"
             },
             "line": 304,
@@ -7540,7 +8116,7 @@
           },
           {
             "result": {
-              "duration": 115331,
+              "duration": 89154,
               "status": "passed"
             },
             "line": 305,
@@ -7561,7 +8137,7 @@
           },
           {
             "result": {
-              "duration": 2163093818,
+              "duration": 1740964752,
               "status": "passed"
             },
             "line": 306,
@@ -7573,8 +8149,8 @@
           },
           {
             "result": {
-              "duration": 148886,
-              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:307)\n",
+              "duration": 229849,
+              "error_message": "java.lang.AssertionError: \nExpected: \u003c401\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:53)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(AIS_01.feature:307)\n",
               "status": "failed"
             },
             "line": 307,
@@ -7590,11 +8166,20 @@
         "before": [
           {
             "result": {
-              "duration": 14139540,
+              "duration": 9048022,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10264227,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -7605,7 +8190,7 @@
         "after": [
           {
             "result": {
-              "duration": 166727,
+              "duration": 155868,
               "status": "passed"
             },
             "match": {
@@ -7618,7 +8203,7 @@
         "steps": [
           {
             "result": {
-              "duration": 479730512,
+              "duration": 530405656,
               "status": "passed"
             },
             "line": 302,
@@ -7644,7 +8229,7 @@
           },
           {
             "result": {
-              "duration": 284922,
+              "duration": 163388,
               "status": "passed"
             },
             "line": 303,
@@ -7665,7 +8250,7 @@
           },
           {
             "result": {
-              "duration": 619478,
+              "duration": 389787,
               "status": "passed"
             },
             "line": 304,
@@ -7686,7 +8271,7 @@
           },
           {
             "result": {
-              "duration": 168977,
+              "duration": 91863,
               "status": "passed"
             },
             "line": 305,
@@ -7707,7 +8292,7 @@
           },
           {
             "result": {
-              "duration": 523607983,
+              "duration": 585916130,
               "status": "passed"
             },
             "line": 306,
@@ -7719,7 +8304,7 @@
           },
           {
             "result": {
-              "duration": 29705,
+              "duration": 28134,
               "status": "passed"
             },
             "line": 307,
@@ -7735,11 +8320,20 @@
         "before": [
           {
             "result": {
-              "duration": 12153871,
+              "duration": 9966556,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10225144,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -7750,7 +8344,7 @@
         "after": [
           {
             "result": {
-              "duration": 179982,
+              "duration": 162603,
               "status": "passed"
             },
             "match": {
@@ -7763,7 +8357,7 @@
         "steps": [
           {
             "result": {
-              "duration": 495720749,
+              "duration": 430131037,
               "status": "passed"
             },
             "line": 302,
@@ -7789,7 +8383,7 @@
           },
           {
             "result": {
-              "duration": 283429,
+              "duration": 151178,
               "status": "passed"
             },
             "line": 303,
@@ -7810,7 +8404,7 @@
           },
           {
             "result": {
-              "duration": 521979,
+              "duration": 363578,
               "status": "passed"
             },
             "line": 304,
@@ -7831,7 +8425,7 @@
           },
           {
             "result": {
-              "duration": 166947,
+              "duration": 72252,
               "status": "passed"
             },
             "line": 305,
@@ -7852,7 +8446,7 @@
           },
           {
             "result": {
-              "duration": 520037406,
+              "duration": 442419322,
               "status": "passed"
             },
             "line": 306,
@@ -7864,7 +8458,7 @@
           },
           {
             "result": {
-              "duration": 30577,
+              "duration": 29134,
               "status": "passed"
             },
             "line": 307,
@@ -7880,11 +8474,20 @@
         "before": [
           {
             "result": {
-              "duration": 11757785,
+              "duration": 10684725,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10801193,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -7895,7 +8498,7 @@
         "after": [
           {
             "result": {
-              "duration": 166932,
+              "duration": 15116924,
               "status": "passed"
             },
             "match": {
@@ -7908,7 +8511,7 @@
         "steps": [
           {
             "result": {
-              "duration": 586822808,
+              "duration": 558619354,
               "status": "passed"
             },
             "line": 302,
@@ -7934,7 +8537,7 @@
           },
           {
             "result": {
-              "duration": 255829,
+              "duration": 195003,
               "status": "passed"
             },
             "line": 303,
@@ -7955,7 +8558,7 @@
           },
           {
             "result": {
-              "duration": 777622,
+              "duration": 578417,
               "status": "passed"
             },
             "line": 304,
@@ -7976,7 +8579,7 @@
           },
           {
             "result": {
-              "duration": 175716,
+              "duration": 137549,
               "status": "passed"
             },
             "line": 305,
@@ -7997,7 +8600,7 @@
           },
           {
             "result": {
-              "duration": 559626098,
+              "duration": 461870271,
               "status": "passed"
             },
             "line": 306,
@@ -8009,7 +8612,7 @@
           },
           {
             "result": {
-              "duration": 32339,
+              "duration": 26205,
               "status": "passed"
             },
             "line": 307,
@@ -8025,11 +8628,20 @@
         "before": [
           {
             "result": {
-              "duration": 11762331,
+              "duration": 8141934,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8963920,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8040,7 +8652,7 @@
         "after": [
           {
             "result": {
-              "duration": 179965,
+              "duration": 439607,
               "status": "passed"
             },
             "match": {
@@ -8053,7 +8665,7 @@
         "steps": [
           {
             "result": {
-              "duration": 484233147,
+              "duration": 610948281,
               "status": "passed"
             },
             "line": 302,
@@ -8079,7 +8691,7 @@
           },
           {
             "result": {
-              "duration": 273623,
+              "duration": 225450,
               "status": "passed"
             },
             "line": 303,
@@ -8100,7 +8712,7 @@
           },
           {
             "result": {
-              "duration": 853260,
+              "duration": 785502,
               "status": "passed"
             },
             "line": 304,
@@ -8121,7 +8733,7 @@
           },
           {
             "result": {
-              "duration": 245386,
+              "duration": 202041,
               "status": "passed"
             },
             "line": 305,
@@ -8142,7 +8754,7 @@
           },
           {
             "result": {
-              "duration": 520822262,
+              "duration": 515387812,
               "status": "passed"
             },
             "line": 306,
@@ -8154,7 +8766,7 @@
           },
           {
             "result": {
-              "duration": 107986,
+              "duration": 73011,
               "status": "passed"
             },
             "line": 307,
@@ -8180,11 +8792,20 @@
         "before": [
           {
             "result": {
-              "duration": 13919389,
+              "duration": 19477455,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7434842,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8195,7 +8816,7 @@
         "after": [
           {
             "result": {
-              "duration": 193808,
+              "duration": 139752,
               "status": "passed"
             },
             "match": {
@@ -8208,7 +8829,7 @@
         "steps": [
           {
             "result": {
-              "duration": 35648344,
+              "duration": 21224587,
               "status": "passed"
             },
             "line": 4,
@@ -8229,7 +8850,7 @@
           },
           {
             "result": {
-              "duration": 699365,
+              "duration": 625138,
               "status": "passed"
             },
             "line": 5,
@@ -8255,19 +8876,19 @@
           },
           {
             "result": {
-              "duration": 241161671,
+              "duration": 240720410,
               "status": "passed"
             },
             "line": 6,
             "name": "confirmation of funds request is received in xs2a",
             "match": {
-              "location": "CommonSteps.fund_confirmation_is_received()"
+              "location": "CommonFcsSteps.fund_confirmation_is_received()"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 78146,
+              "duration": 69176,
               "status": "passed"
             },
             "line": 7,
@@ -8283,11 +8904,20 @@
         "before": [
           {
             "result": {
-              "duration": 11122920,
+              "duration": 20030517,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 11388057,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8298,7 +8928,7 @@
         "after": [
           {
             "result": {
-              "duration": 201294,
+              "duration": 200973,
               "status": "passed"
             },
             "match": {
@@ -8311,7 +8941,7 @@
         "steps": [
           {
             "result": {
-              "duration": 3633416,
+              "duration": 2472198,
               "status": "passed"
             },
             "line": 4,
@@ -8332,7 +8962,7 @@
           },
           {
             "result": {
-              "duration": 90535,
+              "duration": 269395,
               "status": "passed"
             },
             "line": 5,
@@ -8358,19 +8988,19 @@
           },
           {
             "result": {
-              "duration": 242612786,
+              "duration": 237947040,
               "status": "passed"
             },
             "line": 6,
             "name": "confirmation of funds request is received in xs2a",
             "match": {
-              "location": "CommonSteps.fund_confirmation_is_received()"
+              "location": "CommonFcsSteps.fund_confirmation_is_received()"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 32535,
+              "duration": 30925,
               "status": "passed"
             },
             "line": 7,
@@ -8386,11 +9016,20 @@
         "before": [
           {
             "result": {
-              "duration": 11821784,
+              "duration": 21335469,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 19821561,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8401,7 +9040,7 @@
         "after": [
           {
             "result": {
-              "duration": 203389,
+              "duration": 288101,
               "status": "passed"
             },
             "match": {
@@ -8414,7 +9053,7 @@
         "steps": [
           {
             "result": {
-              "duration": 680005,
+              "duration": 1140499,
               "status": "passed"
             },
             "line": 4,
@@ -8435,7 +9074,7 @@
           },
           {
             "result": {
-              "duration": 47005,
+              "duration": 140122,
               "status": "passed"
             },
             "line": 5,
@@ -8461,19 +9100,19 @@
           },
           {
             "result": {
-              "duration": 231412110,
+              "duration": 224841172,
               "status": "passed"
             },
             "line": 6,
             "name": "confirmation of funds request is received in xs2a",
             "match": {
-              "location": "CommonSteps.fund_confirmation_is_received()"
+              "location": "CommonFcsSteps.fund_confirmation_is_received()"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 38946,
+              "duration": 49122,
               "status": "passed"
             },
             "line": 7,
@@ -8489,11 +9128,20 @@
         "before": [
           {
             "result": {
-              "duration": 12838708,
+              "duration": 18674637,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8046516,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8504,7 +9152,7 @@
         "after": [
           {
             "result": {
-              "duration": 195006,
+              "duration": 915150,
               "status": "passed"
             },
             "match": {
@@ -8517,7 +9165,7 @@
         "steps": [
           {
             "result": {
-              "duration": 5942868,
+              "duration": 4109098,
               "status": "passed"
             },
             "line": 16,
@@ -8538,20 +9186,20 @@
           },
           {
             "result": {
-              "duration": 238167974,
+              "duration": 219857891,
               "status": "passed"
             },
             "line": 17,
             "name": "confirmation of funds request is received in xs2a",
             "match": {
-              "location": "CommonSteps.fund_confirmation_is_received()"
+              "location": "CommonFcsSteps.fund_confirmation_is_received()"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 351003,
-              "error_message": "java.lang.AssertionError: \nExpected: \u003c400\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(FCS_01.feature:18)\n",
+              "duration": 442271,
+              "error_message": "java.lang.AssertionError: \nExpected: \u003c400\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:53)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(FCS_01.feature:18)\n",
               "status": "failed"
             },
             "line": 18,
@@ -8567,11 +9215,20 @@
         "before": [
           {
             "result": {
-              "duration": 12096053,
+              "duration": 14472809,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 21346313,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8582,7 +9239,7 @@
         "after": [
           {
             "result": {
-              "duration": 129527,
+              "duration": 145216,
               "status": "passed"
             },
             "match": {
@@ -8595,7 +9252,7 @@
         "steps": [
           {
             "result": {
-              "duration": 907741,
+              "duration": 1189868,
               "status": "passed"
             },
             "line": 16,
@@ -8616,21 +9273,107 @@
           },
           {
             "result": {
-              "duration": 331149875,
+              "duration": 266385357,
               "status": "passed"
             },
             "line": 17,
             "name": "confirmation of funds request is received in xs2a",
             "match": {
-              "location": "CommonSteps.fund_confirmation_is_received()"
+              "location": "CommonFcsSteps.fund_confirmation_is_received()"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 327800,
-              "error_message": "java.lang.AssertionError: \nExpected: \u003c400\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:59)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(FCS_01.feature:18)\n",
+              "duration": 317377,
+              "error_message": "java.lang.AssertionError: \nExpected: \u003c400\u003e\n     but: was null\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.CommonSteps.checkErrorCodeAndResponse(CommonSteps.java:53)\n\tat ✽.Then an error response code is displayed and an appropriate error response is shown(FCS_01.feature:18)\n",
               "status": "failed"
+            },
+            "line": 18,
+            "name": "an error response code is displayed and an appropriate error response is shown",
+            "match": {
+              "location": "CommonSteps.checkErrorCodeAndResponse()"
+            },
+            "keyword": "Then "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 16237859,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9244734,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
+            }
+          }
+        ],
+        "line": 23,
+        "name": "Request confirmation of funds errorfully",
+        "description": "",
+        "id": "confirmation-of-funds-service---common;request-confirmation-of-funds-errorfully;;4",
+        "after": [
+          {
+            "result": {
+              "duration": 247869,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 920416,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "PSU initiated errorFull card based payment transaction using fund-confirmation-wrong-request-id.json at a PSU – TPP interface",
+            "match": {
+              "arguments": [
+                {
+                  "val": "fund-confirmation-wrong-request-id.json",
+                  "offset": 61
+                }
+              ],
+              "location": "FundConfirmationErrorfulSteps.load_fund_confirmation_card_data(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 5354385,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "confirmation of funds request is received in xs2a",
+            "match": {
+              "location": "CommonFcsSteps.fund_confirmation_is_received()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 282595,
+              "status": "passed"
             },
             "line": 18,
             "name": "an error response code is displayed and an appropriate error response is shown",
@@ -8661,11 +9404,20 @@
         "before": [
           {
             "result": {
-              "duration": 12364345,
+              "duration": 13022661,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8196934,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8676,7 +9428,7 @@
         "after": [
           {
             "result": {
-              "duration": 283992,
+              "duration": 398049,
               "status": "passed"
             },
             "match": {
@@ -8689,7 +9441,7 @@
         "steps": [
           {
             "result": {
-              "duration": 11620802,
+              "duration": 7833130,
               "status": "passed"
             },
             "line": 10,
@@ -8720,7 +9472,7 @@
           },
           {
             "result": {
-              "duration": 32279745,
+              "duration": 10136070,
               "status": "passed"
             },
             "line": 11,
@@ -8732,7 +9484,7 @@
           },
           {
             "result": {
-              "duration": 12960829,
+              "duration": 14159358,
               "status": "passed"
             },
             "line": 12,
@@ -8748,11 +9500,20 @@
         "before": [
           {
             "result": {
-              "duration": 14330085,
+              "duration": 17675409,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 17461907,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8763,7 +9524,7 @@
         "after": [
           {
             "result": {
-              "duration": 206854,
+              "duration": 868770,
               "status": "passed"
             },
             "match": {
@@ -8776,7 +9537,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1159205,
+              "duration": 2477973,
               "status": "passed"
             },
             "line": 10,
@@ -8807,7 +9568,7 @@
           },
           {
             "result": {
-              "duration": 33322289,
+              "duration": 24084848,
               "status": "passed"
             },
             "line": 11,
@@ -8819,7 +9580,7 @@
           },
           {
             "result": {
-              "duration": 216828,
+              "duration": 794197,
               "status": "passed"
             },
             "line": 12,
@@ -8835,11 +9596,20 @@
         "before": [
           {
             "result": {
-              "duration": 27603032,
+              "duration": 19680675,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14186734,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8850,7 +9620,7 @@
         "after": [
           {
             "result": {
-              "duration": 266645,
+              "duration": 201158,
               "status": "passed"
             },
             "match": {
@@ -8863,7 +9633,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1285152,
+              "duration": 2847291,
               "status": "passed"
             },
             "line": 10,
@@ -8894,7 +9664,7 @@
           },
           {
             "result": {
-              "duration": 16104702,
+              "duration": 17367423,
               "status": "passed"
             },
             "line": 11,
@@ -8906,7 +9676,7 @@
           },
           {
             "result": {
-              "duration": 279054,
+              "duration": 189647,
               "status": "passed"
             },
             "line": 12,
@@ -8928,11 +9698,20 @@
         "before": [
           {
             "result": {
-              "duration": 12857646,
+              "duration": 14984370,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 17196896,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -8943,7 +9722,7 @@
         "after": [
           {
             "result": {
-              "duration": 1787715,
+              "duration": 1249577,
               "status": "passed"
             },
             "match": {
@@ -8956,7 +9735,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1884371,
+              "duration": 2513622,
               "status": "passed"
             },
             "line": 10,
@@ -8987,7 +9766,7 @@
           },
           {
             "result": {
-              "duration": 38669509,
+              "duration": 31103482,
               "status": "passed"
             },
             "line": 11,
@@ -8999,7 +9778,7 @@
           },
           {
             "result": {
-              "duration": 2007586,
+              "duration": 589757,
               "status": "passed"
             },
             "line": 12,
@@ -9021,11 +9800,20 @@
         "before": [
           {
             "result": {
-              "duration": 28869495,
+              "duration": 13700288,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 18882900,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9036,7 +9824,7 @@
         "after": [
           {
             "result": {
-              "duration": 232971,
+              "duration": 630983,
               "status": "passed"
             },
             "match": {
@@ -9049,7 +9837,7 @@
         "steps": [
           {
             "result": {
-              "duration": 41274922,
+              "duration": 29937216,
               "status": "passed"
             },
             "line": 52,
@@ -9080,7 +9868,7 @@
           },
           {
             "result": {
-              "duration": 37907929,
+              "duration": 27007209,
               "status": "passed"
             },
             "line": 53,
@@ -9092,7 +9880,7 @@
           },
           {
             "result": {
-              "duration": 157600,
+              "duration": 468130,
               "status": "passed"
             },
             "line": 54,
@@ -9108,11 +9896,20 @@
         "before": [
           {
             "result": {
-              "duration": 13203171,
+              "duration": 19751017,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7825648,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9123,7 +9920,7 @@
         "after": [
           {
             "result": {
-              "duration": 260993,
+              "duration": 2468794,
               "status": "passed"
             },
             "match": {
@@ -9136,7 +9933,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1854977,
+              "duration": 4370346,
               "status": "passed"
             },
             "line": 52,
@@ -9167,7 +9964,7 @@
           },
           {
             "result": {
-              "duration": 38774397,
+              "duration": 28482468,
               "status": "passed"
             },
             "line": 53,
@@ -9179,7 +9976,7 @@
           },
           {
             "result": {
-              "duration": 316925,
+              "duration": 941643,
               "status": "passed"
             },
             "line": 54,
@@ -9195,11 +9992,20 @@
         "before": [
           {
             "result": {
-              "duration": 26892705,
+              "duration": 16957101,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 16615060,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9210,7 +10016,7 @@
         "after": [
           {
             "result": {
-              "duration": 337117,
+              "duration": 265071,
               "status": "passed"
             },
             "match": {
@@ -9223,7 +10029,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1621805,
+              "duration": 1980422,
               "status": "passed"
             },
             "line": 52,
@@ -9254,7 +10060,7 @@
           },
           {
             "result": {
-              "duration": 23713525,
+              "duration": 19146262,
               "status": "passed"
             },
             "line": 53,
@@ -9266,7 +10072,7 @@
           },
           {
             "result": {
-              "duration": 200747,
+              "duration": 214334,
               "status": "passed"
             },
             "line": 54,
@@ -9282,11 +10088,20 @@
         "before": [
           {
             "result": {
-              "duration": 22274935,
+              "duration": 18500293,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14986585,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9297,7 +10112,7 @@
         "after": [
           {
             "result": {
-              "duration": 468888,
+              "duration": 300299,
               "status": "passed"
             },
             "match": {
@@ -9310,7 +10125,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1731308,
+              "duration": 1578615,
               "status": "passed"
             },
             "line": 52,
@@ -9341,7 +10156,7 @@
           },
           {
             "result": {
-              "duration": 47915474,
+              "duration": 21722698,
               "status": "passed"
             },
             "line": 53,
@@ -9353,7 +10168,7 @@
           },
           {
             "result": {
-              "duration": 515089,
+              "duration": 449520,
               "status": "passed"
             },
             "line": 54,
@@ -9369,11 +10184,20 @@
         "before": [
           {
             "result": {
-              "duration": 49491095,
+              "duration": 27350100,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 13715940,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9384,7 +10208,7 @@
         "after": [
           {
             "result": {
-              "duration": 218554,
+              "duration": 202499,
               "status": "passed"
             },
             "match": {
@@ -9397,7 +10221,7 @@
         "steps": [
           {
             "result": {
-              "duration": 1461448,
+              "duration": 1486343,
               "status": "passed"
             },
             "line": 52,
@@ -9428,7 +10252,7 @@
           },
           {
             "result": {
-              "duration": 45060582,
+              "duration": 16477565,
               "status": "passed"
             },
             "line": 53,
@@ -9440,7 +10264,7 @@
           },
           {
             "result": {
-              "duration": 361301,
+              "duration": 392976,
               "status": "passed"
             },
             "line": 54,
@@ -9462,11 +10286,20 @@
         "before": [
           {
             "result": {
-              "duration": 12852278,
+              "duration": 48276175,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10484198,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9477,7 +10310,7 @@
         "after": [
           {
             "result": {
-              "duration": 793537,
+              "duration": 1225098,
               "status": "passed"
             },
             "match": {
@@ -9490,7 +10323,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2477453,
+              "duration": 2463040,
               "status": "passed"
             },
             "line": 52,
@@ -9521,7 +10354,7 @@
           },
           {
             "result": {
-              "duration": 29177762,
+              "duration": 10676890,
               "status": "passed"
             },
             "line": 53,
@@ -9533,7 +10366,7 @@
           },
           {
             "result": {
-              "duration": 1469392,
+              "duration": 294079,
               "status": "passed"
             },
             "line": 54,
@@ -9549,11 +10382,20 @@
         "before": [
           {
             "result": {
-              "duration": 35756939,
+              "duration": 18518000,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 14803727,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9564,7 +10406,7 @@
         "after": [
           {
             "result": {
-              "duration": 176667,
+              "duration": 161502,
               "status": "passed"
             },
             "match": {
@@ -9577,7 +10419,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2911943074,
+              "duration": 2151401058,
               "status": "passed"
             },
             "line": 75,
@@ -9589,7 +10431,7 @@
           },
           {
             "result": {
-              "duration": 25122813,
+              "duration": 8363564,
               "status": "passed"
             },
             "line": 76,
@@ -9610,7 +10452,7 @@
           },
           {
             "result": {
-              "duration": 2890262195,
+              "duration": 2476406868,
               "status": "passed"
             },
             "line": 77,
@@ -9622,7 +10464,7 @@
           },
           {
             "result": {
-              "duration": 85010,
+              "duration": 101602,
               "status": "passed"
             },
             "line": 78,
@@ -9644,11 +10486,20 @@
         "before": [
           {
             "result": {
-              "duration": 24876987,
+              "duration": 13076775,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 5022599,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9659,7 +10510,7 @@
         "after": [
           {
             "result": {
-              "duration": 157264,
+              "duration": 400913,
               "status": "passed"
             },
             "match": {
@@ -9672,7 +10523,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2554254742,
+              "duration": 2041106628,
               "status": "passed"
             },
             "line": 85,
@@ -9684,7 +10535,7 @@
           },
           {
             "result": {
-              "duration": 4569882,
+              "duration": 7018908,
               "status": "passed"
             },
             "line": 86,
@@ -9710,7 +10561,7 @@
           },
           {
             "result": {
-              "duration": 13710061,
+              "duration": 5893183,
               "status": "passed"
             },
             "line": 87,
@@ -9722,7 +10573,7 @@
           },
           {
             "result": {
-              "duration": 186167,
+              "duration": 213508,
               "status": "passed"
             },
             "line": 88,
@@ -9738,11 +10589,20 @@
         "before": [
           {
             "result": {
-              "duration": 23674167,
+              "duration": 11789135,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 5481495,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9753,7 +10613,7 @@
         "after": [
           {
             "result": {
-              "duration": 200395,
+              "duration": 146631,
               "status": "passed"
             },
             "match": {
@@ -9766,7 +10626,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2377315671,
+              "duration": 2052299208,
               "status": "passed"
             },
             "line": 103,
@@ -9778,7 +10638,7 @@
           },
           {
             "result": {
-              "duration": 9278271,
+              "duration": 8790456,
               "status": "passed"
             },
             "line": 104,
@@ -9799,7 +10659,7 @@
           },
           {
             "result": {
-              "duration": 2677500131,
+              "duration": 2373978164,
               "status": "passed"
             },
             "line": 105,
@@ -9811,7 +10671,7 @@
           },
           {
             "result": {
-              "duration": 155396,
+              "duration": 222847,
               "status": "passed"
             },
             "line": 106,
@@ -9837,11 +10697,20 @@
         "before": [
           {
             "result": {
-              "duration": 20801881,
+              "duration": 18701510,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 7545638,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9852,7 +10721,7 @@
         "after": [
           {
             "result": {
-              "duration": 193042,
+              "duration": 195196,
               "status": "passed"
             },
             "match": {
@@ -9865,7 +10734,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2237201617,
+              "duration": 1963747351,
               "status": "passed"
             },
             "line": 113,
@@ -9877,7 +10746,7 @@
           },
           {
             "result": {
-              "duration": 4187347,
+              "duration": 4197005,
               "status": "passed"
             },
             "line": 114,
@@ -9903,7 +10772,7 @@
           },
           {
             "result": {
-              "duration": 12756642,
+              "duration": 5881446,
               "status": "passed"
             },
             "line": 115,
@@ -9915,7 +10784,7 @@
           },
           {
             "result": {
-              "duration": 333763,
+              "duration": 213074,
               "status": "passed"
             },
             "line": 116,
@@ -9941,11 +10810,20 @@
         "before": [
           {
             "result": {
-              "duration": 11592380,
+              "duration": 18229638,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 5198419,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -9956,7 +10834,7 @@
         "after": [
           {
             "result": {
-              "duration": 265633,
+              "duration": 266006,
               "status": "passed"
             },
             "match": {
@@ -9969,7 +10847,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2315095769,
+              "duration": 2032123046,
               "status": "passed"
             },
             "line": 142,
@@ -9981,7 +10859,7 @@
           },
           {
             "result": {
-              "duration": 5046303,
+              "duration": 7520379,
               "status": "passed"
             },
             "line": 143,
@@ -10007,7 +10885,7 @@
           },
           {
             "result": {
-              "duration": 12296523,
+              "duration": 6998815,
               "status": "passed"
             },
             "line": 144,
@@ -10019,7 +10897,7 @@
           },
           {
             "result": {
-              "duration": 239601,
+              "duration": 268078,
               "status": "passed"
             },
             "line": 145,
@@ -10045,11 +10923,20 @@
         "before": [
           {
             "result": {
-              "duration": 12462855,
+              "duration": 16561451,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 5641598,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -10060,7 +10947,7 @@
         "after": [
           {
             "result": {
-              "duration": 190634,
+              "duration": 150234,
               "status": "passed"
             },
             "match": {
@@ -10073,7 +10960,7 @@
         "steps": [
           {
             "result": {
-              "duration": 753633,
+              "duration": 1020072,
               "status": "passed"
             },
             "line": 10,
@@ -10104,7 +10991,7 @@
           },
           {
             "result": {
-              "duration": 2192581111,
+              "duration": 2067815204,
               "status": "passed"
             },
             "line": 11,
@@ -10116,7 +11003,7 @@
           },
           {
             "result": {
-              "duration": 95849,
+              "duration": 77038,
               "status": "passed"
             },
             "line": 12,
@@ -10128,7 +11015,7 @@
           },
           {
             "result": {
-              "duration": 32636,
+              "duration": 31938,
               "status": "passed"
             },
             "line": 13,
@@ -10144,11 +11031,20 @@
         "before": [
           {
             "result": {
-              "duration": 19555644,
+              "duration": 12597334,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8488156,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -10159,7 +11055,7 @@
         "after": [
           {
             "result": {
-              "duration": 181651,
+              "duration": 198132,
               "status": "passed"
             },
             "match": {
@@ -10172,7 +11068,7 @@
         "steps": [
           {
             "result": {
-              "duration": 934253,
+              "duration": 1370843,
               "status": "passed"
             },
             "line": 10,
@@ -10203,7 +11099,7 @@
           },
           {
             "result": {
-              "duration": 2265469653,
+              "duration": 2028966077,
               "status": "passed"
             },
             "line": 11,
@@ -10215,7 +11111,7 @@
           },
           {
             "result": {
-              "duration": 31760,
+              "duration": 49571,
               "status": "passed"
             },
             "line": 12,
@@ -10227,7 +11123,7 @@
           },
           {
             "result": {
-              "duration": 10467,
+              "duration": 12616,
               "status": "passed"
             },
             "line": 13,
@@ -10243,11 +11139,20 @@
         "before": [
           {
             "result": {
-              "duration": 8814620,
+              "duration": 12949481,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 8247107,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -10258,7 +11163,7 @@
         "after": [
           {
             "result": {
-              "duration": 160749,
+              "duration": 155163,
               "status": "passed"
             },
             "match": {
@@ -10271,7 +11176,7 @@
         "steps": [
           {
             "result": {
-              "duration": 6008357,
+              "duration": 6196159,
               "status": "passed"
             },
             "line": 44,
@@ -10302,7 +11207,7 @@
           },
           {
             "result": {
-              "duration": 2279949150,
+              "duration": 2049720696,
               "status": "passed"
             },
             "line": 45,
@@ -10314,7 +11219,7 @@
           },
           {
             "result": {
-              "duration": 48930,
+              "duration": 42465,
               "status": "passed"
             },
             "line": 46,
@@ -10326,7 +11231,7 @@
           },
           {
             "result": {
-              "duration": 12741,
+              "duration": 11181,
               "status": "passed"
             },
             "line": 47,
@@ -10342,11 +11247,20 @@
         "before": [
           {
             "result": {
-              "duration": 11450947,
+              "duration": 6611707,
               "status": "passed"
             },
             "match": {
               "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          },
+          {
+            "result": {
+              "duration": 16158985,
+              "status": "passed"
+            },
+            "match": {
+              "location": "RedirectInitStep.initRedirect()"
             }
           }
         ],
@@ -10357,7 +11271,7 @@
         "after": [
           {
             "result": {
-              "duration": 144772,
+              "duration": 162619,
               "status": "passed"
             },
             "match": {
@@ -10370,7 +11284,7 @@
         "steps": [
           {
             "result": {
-              "duration": 2120063,
+              "duration": 1173487,
               "status": "passed"
             },
             "line": 44,
@@ -10401,7 +11315,7 @@
           },
           {
             "result": {
-              "duration": 2292849999,
+              "duration": 2014849404,
               "status": "passed"
             },
             "line": 45,
@@ -10413,7 +11327,7 @@
           },
           {
             "result": {
-              "duration": 50788,
+              "duration": 29087,
               "status": "passed"
             },
             "line": 46,
@@ -10425,7 +11339,7 @@
           },
           {
             "result": {
-              "duration": 10214,
+              "duration": 9867,
               "status": "passed"
             },
             "line": 47,

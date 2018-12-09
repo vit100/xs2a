@@ -15,66 +15,14 @@
  */
 
 package de.adorsys.aspsp.xs2a.integtest;
-
-import de.adorsys.aspsp.xs2a.integtest.utils.*;
-import de.adorsys.psd2.aspsp.profile.domain.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.client.*;
 
 
 @SpringBootApplication
-public class RedirectTestApp implements ApplicationRunner {
-    @Value("${aspspProfile.baseUrl}")
-    private String profileBaseurl;
-
-    @Autowired
-    @Qualifier("aspsp-profile")
-    private RestTemplate restTemplate;
-
+public class RedirectTestApp{
     public static void main(String[] args) {
-
         SpringApplication.run(RedirectTestApp.class, args);
     }
 
-    @Override
-    public void run(ApplicationArguments applicationArguments){
-        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/sca-approach",HttpEntityUtils.getHttpEntity("REDIRECT"));
-        initProfile(false);
-    }
-
-
-
-
-    private void initProfile(Boolean signingBasketSupported)  {
-        AspspSettings settings = restTemplate.getForObject(
-            profileBaseurl+"/aspsp-profile", AspspSettings.class);
-        settings = new AspspSettings (
-            settings.getFrequencyPerDay(),
-            settings.isCombinedServiceIndicator(),
-            settings.getAvailablePaymentProducts(),
-            settings.getAvailablePaymentTypes(),
-            settings.isTppSignatureRequired(),
-            settings.getPisRedirectUrlToAspsp(),
-            settings.getAisRedirectUrlToAspsp(),
-            settings.getMulticurrencyAccountLevel(),
-            settings.isBankOfferedConsentSupport(),
-            settings.getAvailableBookingStatuses(),
-            settings.getSupportedAccountReferenceFields(),
-            settings.getConsentLifetime(),
-            settings.getTransactionLifetime(),
-            settings.isAllPsd2Support(),
-            settings.isTransactionsWithoutBalancesSupported(),
-            signingBasketSupported,
-            settings.isPaymentCancellationAuthorizationMandated(),
-            settings.isPiisConsentSupported(),
-            settings.isDeltaReportSupported(),
-            settings.getRedirectUrlExpirationTimeMs()
-
-        );
-
-        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/aspsp-settings", HttpEntityUtils.getHttpEntity(settings));
-
-    }
 }

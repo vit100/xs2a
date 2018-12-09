@@ -16,33 +16,24 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.AccountDetails;
-import de.adorsys.psd2.model.TppMessages;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
 
 @Slf4j
 @FeatureFileSteps
@@ -62,15 +53,16 @@ public class AccountDetailRequestErrofulSteps {
     //@Given("^PSU already has an existing (.*) consent (.*)$")
     //in commonStep
 
-   //@And("^account id (.*)$")
+    //@And("^account id (.*)$")
     // account Detail succesful step
 
 
     @And("^PSU wants to get a detail of accounts erroful using (.*)$")
     public void psu_wants_to_get_account_details_erroful_using(String dataFileName) throws IOException {
         TestData<HashMap, TppMessages> data = mapper.readValue(
-                resourceToString("/data-input/ais/account/" + dataFileName, UTF_8),
-                new TypeReference<TestData<HashMap, TppMessages>>() {});
+            resourceToString("/data-input/ais/account/" + dataFileName, UTF_8),
+            new TypeReference<TestData<HashMap, TppMessages>>() {
+            });
 
         context.setTestData(data);
         context.getTestData().getRequest().getHeader().put("Consent-ID", context.getConsentId());
@@ -79,14 +71,14 @@ public class AccountDetailRequestErrofulSteps {
     @When("^PSU requests the account details erroful$")
     public void psu_requests_the_account_details() throws HttpClientErrorException, IOException {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(context.getTestData().getRequest(),
-                context.getAccessToken());
+            context.getAccessToken());
 
         try {
             ResponseEntity<AccountDetails> response = restTemplate.exchange(
-                    context.getBaseUrl() + "/accounts/"+context.getRessourceId()+"?withBalance=false",
-                    HttpMethod.GET,
-                    entity,
-                    AccountDetails.class);
+                context.getBaseUrl() + "/accounts/" + context.getRessourceId() + "?withBalance=false",
+                HttpMethod.GET,
+                entity,
+                AccountDetails.class);
         } catch (RestClientResponseException rex) {
             context.handleRequestError(rex);
         }

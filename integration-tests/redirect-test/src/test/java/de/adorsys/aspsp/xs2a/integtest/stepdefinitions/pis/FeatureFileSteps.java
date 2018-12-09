@@ -1,17 +1,12 @@
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis;
 
-import de.adorsys.aspsp.xs2a.integtest.RedirectTestApp;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootContextLoader;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import de.adorsys.aspsp.xs2a.integtest.*;
+import org.junit.runner.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.context.*;
+import org.springframework.test.context.junit4.*;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = RedirectTestApp.class, loader = SpringBootContextLoader.class)

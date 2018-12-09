@@ -1,25 +1,13 @@
-package de.adorsys.aspsp.xs2a.integtest;
+package de.adorsys.aspsp.xs2a.integtest.stepdefinitions;
 
+import cucumber.api.java.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
 import de.adorsys.aspsp.xs2a.integtest.utils.*;
 import de.adorsys.psd2.aspsp.profile.domain.*;
-import org.junit.runner.RunWith;
-
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
 import org.springframework.web.client.*;
-
-import javax.annotation.*;
-
-
-@RunWith(Cucumber.class)
-@CucumberOptions(
-    features = "src/test/resources/features",
-    glue = "de.adorsys.aspsp.xs2a.integtest.stepdefinitions",
-    format = {"json:cucumber-report/cucumber.json"},
-    tags = {"~@ignore", "~@TestTag"})
-public class CucumberEmbeddedIT {
+@FeatureFileSteps
+public class RedirectInitStep {
     @Value("${aspspProfile.baseUrl}")
     private String profileBaseurl;
 
@@ -27,10 +15,10 @@ public class CucumberEmbeddedIT {
     @Qualifier("aspsp-profile")
     private RestTemplate restTemplate;
 
-    @PostConstruct
-    public void initEmbeddedProfile(){
-        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/sca-approach",HttpEntityUtils.getHttpEntity("EMBEDDED"));
-        initProfile(true);
+    @Before
+    public void initRedirect(){
+        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/sca-approach",HttpEntityUtils.getHttpEntity("REDIRECT"));
+        initProfile(false);
     }
 
     private void initProfile(Boolean signingBasketSupported)  {
@@ -63,7 +51,4 @@ public class CucumberEmbeddedIT {
         this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/aspsp-settings", HttpEntityUtils.getHttpEntity(settings));
 
     }
-
-
 }
-

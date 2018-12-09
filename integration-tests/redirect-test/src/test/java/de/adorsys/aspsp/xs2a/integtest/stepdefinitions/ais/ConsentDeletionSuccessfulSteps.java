@@ -16,30 +16,23 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.Consents;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.core.type.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import org.springframework.web.client.RestTemplate;
+import java.io.*;
+import java.util.*;
 
-import java.io.IOException;
-import java.util.HashMap;
-
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 
 @FeatureFileSteps
@@ -61,14 +54,14 @@ public class ConsentDeletionSuccessfulSteps {
     //@Given("^PSU wants to create a consent (.*)$")
     //    See ConsentRequestExpliciteStartAuthorizationSuccessfulSteps
 
-    @Given ("^PSU wants to delete the consent (.*)$")
+    @Given("^PSU wants to delete the consent (.*)$")
     public void loadTestData(String dataFileName) throws IOException {
-        testService.parseJson("/data-input/ais/consent/deletion/" + dataFileName, new TypeReference<TestData<HashMap, Void >>() {
+        testService.parseJson("/data-input/ais/consent/deletion/" + dataFileName, new TypeReference<TestData<HashMap, Void>>() {
         });
     }
 
     @When("^PSU deletes consent$")
-    public void initiateDeletion () {
+    public void initiateDeletion() {
         HttpEntity entity = HttpEntityUtils.getHttpEntityWithoutBody(
             context.getTestData().getRequest(), context.getAccessToken());
         ResponseEntity<Void> response = restTemplate.exchange(
@@ -82,7 +75,7 @@ public class ConsentDeletionSuccessfulSteps {
 
     @Then("^a successful response code and the appropriate messages get returned$")
     public void checkResponse() {
-    ResponseEntity<Void> actualResponse = context.getActualResponse();
+        ResponseEntity<Void> actualResponse = context.getActualResponse();
 
         assertThat(actualResponse.getStatusCode(), equalTo(context.getTestData().getResponse().getHttpStatus()));
     }
