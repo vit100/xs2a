@@ -16,32 +16,24 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.TppMessages;
-import de.adorsys.psd2.model.TransactionsResponse200Json;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
 
 @Slf4j
 @FeatureFileSteps
@@ -58,7 +50,6 @@ public class TransactionListRequestErrofulSteps {
     private ObjectMapper mapper;
 
 
-
     //@Given("^PSU already has an existing (.*) consent (.*)$")
     //in commonStep
 
@@ -70,7 +61,8 @@ public class TransactionListRequestErrofulSteps {
     public void wants_to_read_all_transactions_erroful_using(String dataFileName) throws IOException {
         TestData<HashMap, TppMessages> data = mapper.readValue(
             resourceToString("/data-input/ais/transaction/" + dataFileName, UTF_8),
-            new TypeReference<TestData<HashMap, TppMessages>>() {});
+            new TypeReference<TestData<HashMap, TppMessages>>() {
+            });
 
         context.setTestData(data);
         context.getTestData().getRequest().getHeader().put("Consent-ID", context.getConsentId());
@@ -78,18 +70,18 @@ public class TransactionListRequestErrofulSteps {
 
 
     @When("^PSU requests the transactions erroful$")
-    public void psu_requests_the_transactions() throws HttpClientErrorException, IOException{
+    public void psu_requests_the_transactions() throws HttpClientErrorException, IOException {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(context.getTestData().getRequest(),
-                context.getAccessToken());
-        String url = context.getBaseUrl() + "/accounts/"+context.getRessourceId()+"/transactions";
-        log.info("////url////  "+url);
-        log.info("////entity request list transaction////  "+entity.toString());
+            context.getAccessToken());
+        String url = context.getBaseUrl() + "/accounts/" + context.getRessourceId() + "/transactions";
+        log.info("////url////  " + url);
+        log.info("////entity request list transaction////  " + entity.toString());
         try {
-                ResponseEntity<TransactionsResponse200Json> response = restTemplate.exchange(
-                        context.getBaseUrl() + "/accounts/"+context.getRessourceId()+"/transactions/?dateFrom=2008-09-15&bookingStatus=both",
-                        HttpMethod.GET,
-                        entity,
-                        TransactionsResponse200Json.class);
+            ResponseEntity<TransactionsResponse200Json> response = restTemplate.exchange(
+                context.getBaseUrl() + "/accounts/" + context.getRessourceId() + "/transactions/?dateFrom=2008-09-15&bookingStatus=both",
+                HttpMethod.GET,
+                entity,
+                TransactionsResponse200Json.class);
         } catch (RestClientResponseException rex) {
             context.handleRequestError(rex);
         }

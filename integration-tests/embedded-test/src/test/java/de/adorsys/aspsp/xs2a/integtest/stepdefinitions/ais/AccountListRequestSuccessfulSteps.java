@@ -16,32 +16,26 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.AccountList;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 @FeatureFileSteps
@@ -58,15 +52,15 @@ public class AccountListRequestSuccessfulSteps {
     private ObjectMapper mapper;
 
 
-
     //@Given("^PSU already has an existing (.*) consent (.*)$")
     //in commonStep
 
     @And("^wants to get a list of accounts using (.*)$")
     public void wants_to_get_a_list_of_accounts_using(String dataFileName) throws IOException {
         TestData<HashMap, AccountList> data = mapper.readValue(
-                resourceToString("/data-input/ais/account/" + dataFileName, UTF_8),
-                new TypeReference<TestData<HashMap, AccountList>>() {});
+            resourceToString("/data-input/ais/account/" + dataFileName, UTF_8),
+            new TypeReference<TestData<HashMap, AccountList>>() {
+            });
 
         context.setTestData(data);
         context.getTestData().getRequest().getHeader().put("Consent-ID", context.getConsentId());
@@ -75,13 +69,13 @@ public class AccountListRequestSuccessfulSteps {
     @When("^PSU requests the list of accounts$")
     public void psu_requests_the_list_of_accounts() {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(context.getTestData().getRequest(),
-                context.getAccessToken());
-        log.info("////entity request list account////  "+entity.toString());
+            context.getAccessToken());
+        log.info("////entity request list account////  " + entity.toString());
         ResponseEntity<AccountList> response = restTemplate.exchange(
-                context.getBaseUrl() + "/accounts",
-                HttpMethod.GET,
-                entity,
-                AccountList.class);
+            context.getBaseUrl() + "/accounts",
+            HttpMethod.GET,
+            entity,
+            AccountList.class);
 
         context.setActualResponse(response);
     }

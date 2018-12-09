@@ -6,6 +6,7 @@ import de.adorsys.aspsp.xs2a.integtest.utils.*;
 import de.adorsys.psd2.aspsp.profile.domain.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.client.*;
+
 @FeatureFileSteps
 public class RedirectInitStep {
     @Value("${aspspProfile.baseUrl}")
@@ -16,15 +17,15 @@ public class RedirectInitStep {
     private RestTemplate restTemplate;
 
     @Before
-    public void initRedirect(){
-        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/sca-approach",HttpEntityUtils.getHttpEntity("REDIRECT"));
+    public void initRedirect() {
+        this.restTemplate.put(profileBaseurl + "/aspsp-profile/for-debug/sca-approach", HttpEntityUtils.getHttpEntity("REDIRECT"));
         initProfile(false);
     }
 
-    private void initProfile(Boolean signingBasketSupported)  {
+    private void initProfile(Boolean signingBasketSupported) {
         AspspSettings settings = restTemplate.getForObject(
-            profileBaseurl+"/aspsp-profile", AspspSettings.class);
-        settings = new AspspSettings (
+            profileBaseurl + "/aspsp-profile", AspspSettings.class);
+        settings = new AspspSettings(
             settings.getFrequencyPerDay(),
             settings.isCombinedServiceIndicator(),
             settings.getAvailablePaymentProducts(),
@@ -48,7 +49,7 @@ public class RedirectInitStep {
 
         );
 
-        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/aspsp-settings", HttpEntityUtils.getHttpEntity(settings));
+        this.restTemplate.put(profileBaseurl + "/aspsp-profile/for-debug/aspsp-settings", HttpEntityUtils.getHttpEntity(settings));
 
     }
 }

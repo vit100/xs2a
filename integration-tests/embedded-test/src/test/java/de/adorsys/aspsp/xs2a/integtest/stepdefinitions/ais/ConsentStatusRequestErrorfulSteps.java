@@ -16,29 +16,23 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.Consents;
-import de.adorsys.psd2.model.TppMessages;
-import de.adorsys.psd2.model.TppMessages404;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
-import java.io.IOException;
-import java.util.UUID;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
+import java.io.*;
+import java.util.*;
+
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
 
 @FeatureFileSteps
 public class ConsentStatusRequestErrorfulSteps {
@@ -52,12 +46,14 @@ public class ConsentStatusRequestErrorfulSteps {
 
     @Autowired
     private ObjectMapper mapper;
+
     @Given("^AISP wants to get the status of that consent and the data (.*) with not existing consent id$")
     public void loadTestData(String dataFileName) throws IOException {
 
         TestData<Consents, TppMessages> data = mapper.readValue(
             resourceToString("/data-input/ais/consent/" + dataFileName, UTF_8),
-            new TypeReference<TestData<Consents, TppMessages>>() {});
+            new TypeReference<TestData<Consents, TppMessages>>() {
+            });
 
         context.setTestData(data);
 

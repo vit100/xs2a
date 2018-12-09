@@ -16,32 +16,26 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import cucumber.api.java.en.Given;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.TransactionDetails;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 @FeatureFileSteps
@@ -61,16 +55,16 @@ public class TransactionDetailRequestSuccessfulSteps {
     //@Given("^PSU already has an existing (.*) consent (.*)$")
     //in commonStep
 
-   //@And("^account id (.*)$")
+    //@And("^account id (.*)$")
     //in AccountDetailRequestSuccessfulSteps
-
 
 
     @Given("^wants to read the transaction details using (.*)$")
     public void wants_to_read_the_transaction_details_using(String dataFileName) throws IOException {
         TestData<HashMap, TransactionDetails> data = mapper.readValue(
             resourceToString("/data-input/ais/transaction/" + dataFileName, UTF_8),
-            new TypeReference<TestData<HashMap, TransactionDetails>>() {});
+            new TypeReference<TestData<HashMap, TransactionDetails>>() {
+            });
 
         context.setTestData(data);
         context.getTestData().getRequest().getHeader().put("Consent-ID", context.getConsentId());
@@ -78,7 +72,7 @@ public class TransactionDetailRequestSuccessfulSteps {
 
     @Given("^resource id (.*)$")
     public void resource_id(String resourceID) {
-       context.setTransactionId(resourceID);
+        context.setTransactionId(resourceID);
     }
 
     @When("^PSU requests the transaction details$")
@@ -86,12 +80,12 @@ public class TransactionDetailRequestSuccessfulSteps {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(context.getTestData().getRequest(),
             context.getAccessToken());
         ResponseEntity<TransactionDetails> response = restTemplate.exchange(
-            context.getBaseUrl() + "/accounts/"+context.getRessourceId()+"/transactions/"+context.getTransactionId(),
+            context.getBaseUrl() + "/accounts/" + context.getRessourceId() + "/transactions/" + context.getTransactionId(),
             HttpMethod.GET,
             entity,
             TransactionDetails.class);
 
-        log.info("////response///// "+response.toString());
+        log.info("////response///// " + response.toString());
         context.setActualResponse(response);
     }
 

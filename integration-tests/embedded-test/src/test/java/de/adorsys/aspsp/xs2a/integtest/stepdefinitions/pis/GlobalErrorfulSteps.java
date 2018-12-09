@@ -16,28 +16,24 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.psd2.model.TppMessages;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import com.fasterxml.jackson.core.type.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 
 @FeatureFileSteps
-public class GlobalErrorfulSteps extends AbstractErrorfulSteps{
+public class GlobalErrorfulSteps extends AbstractErrorfulSteps {
 
     @Autowired
     private Context context;
@@ -57,7 +53,7 @@ public class GlobalErrorfulSteps extends AbstractErrorfulSteps{
 
         assertThat(actualTppMessages.size(), is(equalTo(givenTppMessages.size())));
 
-        for(int i = 0; i < actualTppMessages.size(); i++) {
+        for (int i = 0; i < actualTppMessages.size(); i++) {
             assertThat(actualTppMessages.get(i).getCategory(), equalTo(givenTppMessages.get(i).getCategory()));
             assertThat(actualTppMessages.get(i).getCode(), equalTo(givenTppMessages.get(i).getCode()));
         }
@@ -65,7 +61,7 @@ public class GlobalErrorfulSteps extends AbstractErrorfulSteps{
 
     // Global errorful step for loading the data - Embedded Approach
     @And("^PSU prepares the errorful data (.*) with the payment service (.*)$")
-    public void loadErrorfulDataEmbedded (String dataFileName, String paymentService) throws IOException {
+    public void loadErrorfulDataEmbedded(String dataFileName, String paymentService) throws IOException {
         testService.parseJson("/data-input/pis/embedded/" + dataFileName, new TypeReference<TestData<HashMap, TppMessages>>() {
         });
         context.setPaymentService(paymentService);

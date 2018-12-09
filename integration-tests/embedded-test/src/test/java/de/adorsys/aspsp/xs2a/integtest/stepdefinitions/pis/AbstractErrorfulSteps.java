@@ -16,21 +16,21 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis;
 
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.psd2.model.TppMessages;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class AbstractErrorfulSteps {
 
     @Autowired
     private Context<HashMap, TppMessages> context;
 
-    public void setErrorfulIds (String filename) {
+    public void setErrorfulIds(String filename) {
         final String NOT_EXISTING_PAYMENT_ID_FILE_NAME = "not-existing-paymentId";
         final String NOT_EXISTING_AUTHORISATION_ID_FILE_NAME = "wrong-authorisation-id";
-        if (filename.toLowerCase().contains(NOT_EXISTING_AUTHORISATION_ID_FILE_NAME.toLowerCase())){
+        if (filename.toLowerCase().contains(NOT_EXISTING_AUTHORISATION_ID_FILE_NAME.toLowerCase())) {
             final String WRONG_AUTHORISATION_ID = "11111111-aaaa-xxxx-1111-1x1x1x1x1x1x";
             context.setAuthorisationId(WRONG_AUTHORISATION_ID);
         } else if (filename.toLowerCase().contains(NOT_EXISTING_PAYMENT_ID_FILE_NAME.toLowerCase())) {

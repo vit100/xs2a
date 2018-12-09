@@ -16,21 +16,17 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais.embedded;
 
-import cucumber.api.java.en.And;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.Consents;
-import de.adorsys.psd2.model.ConsentsResponse201;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @FeatureFileSteps
 public class ConsentRequestSuccessfulSteps {
@@ -49,11 +45,11 @@ public class ConsentRequestSuccessfulSteps {
     }
 
     //@After
-    public void resetSigningBasketSupportedProfile(){
+    public void resetSigningBasketSupportedProfile() {
         updateSigningBasketSupported(Boolean.FALSE);
     }
 
-    private void updateSigningBasketSupported(Boolean isSupported){
+    private void updateSigningBasketSupported(Boolean isSupported) {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(isSupported);
         this.restTemplate.put(context.getProfileUrl() + "/aspsp-profile/for-debug/signing-basket-supported", entity);
 

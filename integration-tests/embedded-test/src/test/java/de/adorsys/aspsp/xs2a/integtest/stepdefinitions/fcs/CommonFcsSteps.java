@@ -39,7 +39,6 @@ public class CommonFcsSteps {
     private RestTemplate restTemplate;
 
 
-
     @When("^confirmation of funds request is received in xs2a$")
     public void fund_confirmation_is_received() throws IOException {
         HttpEntity entity = HttpEntityUtils.getHttpEntity(

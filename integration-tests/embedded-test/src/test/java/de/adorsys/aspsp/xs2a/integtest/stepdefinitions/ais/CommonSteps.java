@@ -16,31 +16,23 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.util.AisConsentService;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
-import de.adorsys.psd2.model.TppMessages;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.psd2.model.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.Objects;
+import java.io.*;
+import java.util.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 
 @FeatureFileSteps
-public class CommonSteps{
+public class CommonSteps {
 
     @Autowired
     private Context context;
@@ -49,6 +41,7 @@ public class CommonSteps{
     @Autowired
     @Qualifier("aspsp-profile")
     private RestTemplate restTemplate;
+
     // Common errorful step for checking response code and error response
     @Then("^an error response code is displayed and an appropriate error response is shown$")
     public void checkErrorCodeAndResponse() {
@@ -60,7 +53,7 @@ public class CommonSteps{
 
         assertThat(actualTppMessages.size(), is(equalTo(givenTppMessages.size())));
 
-        for(int i = 0; i < actualTppMessages.size(); i++) {
+        for (int i = 0; i < actualTppMessages.size(); i++) {
             assertThat(actualTppMessages.get(i).getCategory(), equalTo(givenTppMessages.get(i).getCategory()));
             assertThat(actualTppMessages.get(i).getCode(), equalTo(givenTppMessages.get(i).getCode()));
         }
@@ -76,7 +69,7 @@ public class CommonSteps{
     @And("^parameter TPP-Explicit-Authorisation-Preferred is (.*)$")
     public void tppExplicitAuthorisationPreferredHeaderIsTrue(Boolean authPreferred) throws HttpClientErrorException {
         context.getTestData().getRequest().getHeader()
-            .put("TPP-Explicit-Authorisation-Preferred", Objects.nonNull(authPreferred)?authPreferred.toString() :null);
+            .put("TPP-Explicit-Authorisation-Preferred", Objects.nonNull(authPreferred) ? authPreferred.toString() : null);
     }
 
 }

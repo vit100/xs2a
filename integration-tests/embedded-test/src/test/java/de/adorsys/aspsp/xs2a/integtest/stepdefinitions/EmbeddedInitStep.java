@@ -17,15 +17,15 @@ public class EmbeddedInitStep {
     private RestTemplate restTemplate;
 
     @Before
-    public void initEmbedded(){
-        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/sca-approach",HttpEntityUtils.getHttpEntity("EMBEDDED"));
+    public void initEmbedded() {
+        this.restTemplate.put(profileBaseurl + "/aspsp-profile/for-debug/sca-approach", HttpEntityUtils.getHttpEntity("EMBEDDED"));
         initProfile(true);
     }
 
-    private void initProfile(Boolean signingBasketSupported)  {
+    private void initProfile(Boolean signingBasketSupported) {
         AspspSettings settings = restTemplate.getForObject(
-            profileBaseurl+"/aspsp-profile", AspspSettings.class);
-        settings = new AspspSettings (
+            profileBaseurl + "/aspsp-profile", AspspSettings.class);
+        settings = new AspspSettings(
             settings.getFrequencyPerDay(),
             settings.isCombinedServiceIndicator(),
             settings.getAvailablePaymentProducts(),
@@ -49,7 +49,7 @@ public class EmbeddedInitStep {
 
         );
 
-        this.restTemplate.put(profileBaseurl+"/aspsp-profile/for-debug/aspsp-settings", HttpEntityUtils.getHttpEntity(settings));
+        this.restTemplate.put(profileBaseurl + "/aspsp-profile/for-debug/aspsp-settings", HttpEntityUtils.getHttpEntity(settings));
 
     }
 }

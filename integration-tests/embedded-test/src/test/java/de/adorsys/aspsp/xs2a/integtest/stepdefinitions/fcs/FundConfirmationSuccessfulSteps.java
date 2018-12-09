@@ -48,7 +48,7 @@ public class FundConfirmationSuccessfulSteps {
     }
 
     @And("^wants to get a confirmation (.*) of (.*) on his account$")
-    public void psu_want_to_get_confirmation_of_fund(boolean result ,String amount) {
+    public void psu_want_to_get_confirmation_of_fund(boolean result, String amount) {
         context.getTestData().getResponse().getBody().setFundsAvailable(result);
         context.getTestData().getRequest().getBody().getInstructedAmount().setAmount(amount);
     }

@@ -16,36 +16,27 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.ais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.FeatureFileSteps;
-import de.adorsys.aspsp.xs2a.integtest.util.AisConsentService;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
+import com.fasterxml.jackson.core.type.*;
+import com.fasterxml.jackson.databind.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
 import de.adorsys.psd2.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.time.LocalDate;
+import java.io.*;
+import java.time.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.IOUtils.resourceToString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.fromValue ;
+import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.*;
+import static java.nio.charset.StandardCharsets.*;
+import static org.apache.commons.io.IOUtils.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+
 @FeatureFileSteps
 public class ConsentStatusRequestSuccessfulSteps {
 
@@ -67,7 +58,8 @@ public class ConsentStatusRequestSuccessfulSteps {
 
         TestData<Consents, ConsentsResponse201> data = mapper.readValue(
             resourceToString("/data-input/ais/consent/" + dataFileName, UTF_8),
-            new TypeReference<TestData<Consents, ConsentsResponse201>>() {});
+            new TypeReference<TestData<Consents, ConsentsResponse201>>() {
+            });
         data.getRequest().getBody().setValidUntil(LocalDate.now().plusYears(5));
 
         HttpEntity entity = HttpEntityUtils.getHttpEntity(data.getRequest(),
@@ -79,12 +71,14 @@ public class ConsentStatusRequestSuccessfulSteps {
             ConsentsResponse201.class);
         context.setConsentId(response.getBody().getConsentId());
     }
+
     @And("^AISP wants to get the status (.*) of that consent$")
-    public void updateConsentStatus(String dataFileName) throws HttpClientErrorException , IOException{
+    public void updateConsentStatus(String dataFileName) throws HttpClientErrorException, IOException {
 
         TestData<Consents, ConsentStatusResponse200> data = mapper.readValue(
             resourceToString("/data-input/ais/consent/" + dataFileName, UTF_8),
-            new TypeReference<TestData<Consents, ConsentStatusResponse200>>() {});
+            new TypeReference<TestData<Consents, ConsentStatusResponse200>>() {
+            });
         context.setTestData(data);
         de.adorsys.psd2.model.ConsentStatus consentStatus = context.getTestData().getResponse().getBody().getConsentStatus();
         aisConsentService.changeAccountConsentStatus(context.getConsentId(), fromValue(consentStatus.toString()).orElse(null));
@@ -96,7 +90,7 @@ public class ConsentStatusRequestSuccessfulSteps {
         HttpEntity entity = HttpEntityUtils.getHttpEntityWithoutBody(
             context.getTestData().getRequest(), context.getAccessToken());
         try {
-            ResponseEntity<ConsentStatusResponse200> response =  restTemplate.exchange(
+            ResponseEntity<ConsentStatusResponse200> response = restTemplate.exchange(
                 context.getBaseUrl() + "/consents/{consentId}/status",
                 HttpMethod.GET,
                 entity,

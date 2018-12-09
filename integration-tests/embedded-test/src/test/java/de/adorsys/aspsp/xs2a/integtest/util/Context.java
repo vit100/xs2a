@@ -1,17 +1,16 @@
 package de.adorsys.aspsp.xs2a.integtest.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.psd2.model.TppMessages;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.databind.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.psd2.model.*;
+import lombok.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientResponseException;
+import org.springframework.http.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
+import java.io.*;
 
 @Data
 @Component

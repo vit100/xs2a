@@ -16,37 +16,27 @@
 
 package de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import de.adorsys.aspsp.xs2a.integtest.config.AuthConfigProperty;
-import de.adorsys.aspsp.xs2a.integtest.model.TestData;
-import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService;
-import de.adorsys.aspsp.xs2a.integtest.util.Context;
-import de.adorsys.aspsp.xs2a.integtest.utils.HttpEntityUtils;
+import com.fasterxml.jackson.core.type.*;
+import cucumber.api.java.*;
+import cucumber.api.java.en.*;
+import de.adorsys.aspsp.xs2a.integtest.config.*;
+import de.adorsys.aspsp.xs2a.integtest.model.*;
+import de.adorsys.aspsp.xs2a.integtest.stepdefinitions.*;
+import de.adorsys.aspsp.xs2a.integtest.util.*;
+import de.adorsys.aspsp.xs2a.integtest.utils.*;
 import de.adorsys.psd2.model.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.util.*;
+import org.springframework.web.client.*;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.*;
+import java.util.*;
+import java.util.regex.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 @FeatureFileSteps
@@ -104,14 +94,14 @@ public class GlobalSuccessfulSteps {
         context.setPaymentProduct(paymentProduct);
         context.setPaymentService(paymentService);
 
-        testService.parseJson("/data-input/pis/single/" + dataFileName,  new TypeReference<TestData<PaymentInitiationSctJson, PaymentInitationRequestResponse201>>() {
+        testService.parseJson("/data-input/pis/single/" + dataFileName, new TypeReference<TestData<PaymentInitiationSctJson, PaymentInitationRequestResponse201>>() {
         });
     }
 
     // Global Step for single payment initiation
     @When("^PSU sends the single payment initiating request$")
     public void sendSinglePaymentInitiatingRequest() {
-        testService.sendRestCall(HttpMethod.POST,context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentProduct());
+        testService.sendRestCall(HttpMethod.POST, context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentProduct());
     }
 
     // Global Step for the single payment initiation and storage of the paymentId
@@ -120,7 +110,7 @@ public class GlobalSuccessfulSteps {
         context.setPaymentProduct("sepa-credit-transfers");
         context.setPaymentService("payments");
 
-        testService.parseJson("/data-input/pis/single/singlePayInit-successful.json",  new TypeReference<TestData<PaymentInitiationSctJson, PaymentInitationRequestResponse201>>() {
+        testService.parseJson("/data-input/pis/single/singlePayInit-successful.json", new TypeReference<TestData<PaymentInitiationSctJson, PaymentInitationRequestResponse201>>() {
         });
         testService.sendRestCall(HttpMethod.POST, context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentProduct());
         context.setPaymentId(((PaymentInitationRequestResponse201) context.getActualResponse().getBody()).getPaymentId());
@@ -139,7 +129,7 @@ public class GlobalSuccessfulSteps {
     @Then("^a successful response code and the appropriate payment response data are received$")
     public void checkResponseCode() {
         ResponseEntity<PaymentInitationRequestResponse201> actualResponse = context.getActualResponse();
-        PaymentInitationRequestResponse201 givenResponseBody =  (PaymentInitationRequestResponse201) context.getTestData().getResponse().getBody();
+        PaymentInitationRequestResponse201 givenResponseBody = (PaymentInitationRequestResponse201) context.getTestData().getResponse().getBody();
 
         assertThat(actualResponse.getStatusCode(), equalTo(context.getTestData().getResponse().getHttpStatus()));
 
@@ -152,7 +142,6 @@ public class GlobalSuccessfulSteps {
 
         // assertThat(actualResponse.getHeaders().get("X-Request-ID"), equalTo(context.getTestData().getRequest().getHeader().get("x-request-id")));
     }
-
 
 
     //Global Step for starting the authorisation and saving the authorisation id - Embedded Approach
@@ -169,7 +158,7 @@ public class GlobalSuccessfulSteps {
         String regex = "\\/authorisations\\/(.*?)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher((CharSequence) response.getBody().getLinks().get("startAuthorisationWithPsuAuthentication"));
-        while(matcher.find()) {
+        while (matcher.find()) {
             context.setAuthorisationId(matcher.group(1));
         }
     }
@@ -177,9 +166,9 @@ public class GlobalSuccessfulSteps {
     // Global Step for updating the PSU identification data - Embedded Approach
     @And("^PSU updates his identification data$")
     public void updatePsuIdentification() throws IOException {
-        testService.parseJson("/data-input/pis/embedded/" + "updateIdentificationNoSca-successful.json",  new TypeReference<TestData<UpdatePsuAuthentication, UpdatePsuAuthenticationResponse>>() {
+        testService.parseJson("/data-input/pis/embedded/" + "updateIdentificationNoSca-successful.json", new TypeReference<TestData<UpdatePsuAuthentication, UpdatePsuAuthenticationResponse>>() {
         });
-        testService.sendRestCall(HttpMethod.PUT,context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentId() + "/authorisations/" + context.getAuthorisationId());
+        testService.sendRestCall(HttpMethod.PUT, context.getBaseUrl() + "/" + context.getPaymentService() + "/" + context.getPaymentId() + "/authorisations/" + context.getAuthorisationId());
     }
 
     @After
