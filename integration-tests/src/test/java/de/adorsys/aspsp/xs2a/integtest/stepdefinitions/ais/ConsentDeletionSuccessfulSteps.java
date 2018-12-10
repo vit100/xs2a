@@ -77,9 +77,7 @@ public class ConsentDeletionSuccessfulSteps {
             entity,
             Void.class);
         context.setActualResponse(response);
-
     }
-
     @Then("^a successful response code and the appropriate messages get returned$")
     public void checkResponse() {
     ResponseEntity<Void> actualResponse = context.getActualResponse();

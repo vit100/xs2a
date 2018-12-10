@@ -1,0 +1,76 @@
+{
+  "request": {
+    "header": {
+      "x-request-id": "2f77a125-aa7a-45c0-b414-cea25a116035",
+      "consentId ": "w0GeZljKFcca4jvwpp3oe04UTj7mmBIQSazlqSkjCy5Ywp_K46sbrxQG9KSfyzLgOxP0cZGxzcmPymOuJQhjnA==_=_bS6p6XvTWI"
+    },
+    "body": {
+      "access": {
+        "accounts": [
+          {
+            "bban": 89370400440532010000,
+            "currency": "EUR",
+            "iban": "DE89370400440532013000",
+            "maskedPan": "2356xxxxxx1234",
+            "msisdn": "+49(0)911 360698-0",
+            "pan": "2356 5746 3217 1234"
+          }
+        ],
+        "balances": [
+          {
+            "bban": 89370400440532010000,
+            "currency": "EUR",
+            "iban": "DE89370400440532013000",
+            "maskedPan": "2356xxxxxx1234",
+            "msisdn": "+49(0)911 360698-0",
+            "pan": "2356 5746 3217 1234"
+          }
+        ],
+        "transactions": [
+          {
+            "bban": 89370400440532010000,
+            "currency": "EUR",
+            "iban": "DE89370400440532013000",
+            "maskedPan": "2356xxxxxx1234",
+            "msisdn": "+49(0)911 360698-0",
+            "pan": "2356 5746 3217 1234"
+          }
+        ]
+      },
+      "combinedServiceIndicator": false,
+      "frequencyPerDay": 4,
+      "recurringIndicator": false,
+      "validUntil": "2018-10-30"
+    }
+  },
+  "response": {
+    "code": "200",
+    "header": {},
+    "body": {
+      "access": {
+        "accounts": [
+          {
+            "iban": "DE52500105173911841934",
+            "currency": "EUR"
+          }
+        ],
+        "balances": [
+          {
+            "iban": "DE52500105173911841934",
+            "currency": "EUR"
+          }
+        ],
+        "transactions": [
+          {
+            "iban": "DE52500105173911841934",
+            "currency": "EUR"
+          }
+        ]
+      },
+      "recurringIndicator": false,
+      "validUntil": "2018-11-30",
+      "frequencyPerDay": 4,
+      "consentStatus": "received"
+    }
+  }
+}

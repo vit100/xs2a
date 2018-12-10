@@ -1,0 +1,42 @@
+{
+  "request": {
+    "header": {
+      "x-request-id": "99391c7e-ad88-49ec-a2ad-99ddcb1f7721",
+      "date": "Sun, 11 Aug 2019 15:02:37 GMT"
+    },
+    "body": {}
+  },
+  "response": {
+    "code": "200",
+    "header": {},
+    "body": {
+      "access": {
+        "accounts": [
+          {
+            "resourceId": "11111-999999999",
+            "currency": "EUR",
+            "iban": "DE89370400440532013000"
+          }
+        ],
+        "balances": [
+          {
+            "resourceId": "11111-999999999",
+            "currency": "EUR",
+            "iban": "DE89370400440532013000"
+          }
+        ],
+        "transactions": [
+          {
+            "resourceId": "11111-999999999",
+            "currency": "EUR",
+            "iban": "DE89370400440532013000"
+          }
+        ]
+      },
+      "recurringIndicator": false,
+      "validUntil": "2020-10-10",
+      "frequencyPerDay": 4,
+      "consentStatus": "valid"
+    }
+  }
+}

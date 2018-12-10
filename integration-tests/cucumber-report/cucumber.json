@@ -6,7 +6,11 @@
         "before": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 241167043,
+=======
+              "duration": 81923765,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -14,6 +18,7 @@
             }
           }
         ],
+<<<<<<< Updated upstream
         "line": 14,
         "name": "Successful consent request creation (redirect)",
         "description": "",
@@ -11463,12 +11468,20 @@
         ],
         "line": 62,
         "name": "Successful update of identification data (embedded)",
+=======
+        "line": 73,
+        "name": "Successful consent request (redirect)",
+>>>>>>> Stashed changes
         "description": "",
-        "id": "payment-initiation-service---embedded-approach;successful-update-of-identification-data-(embedded);;3",
+        "id": "account-information-service;successful-consent-request-(redirect);;2",
         "after": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 124201,
+=======
+              "duration": 381648,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -11481,6 +11494,7 @@
         "steps": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 1792549353,
               "error_message": "org.springframework.web.client.HttpServerErrorException: 500 null\n\tat org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:89)\n\tat org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:708)\n\tat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:661)\n\tat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:621)\n\tat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:539)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService.sendRestCall(TestService.java:55)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.GlobalSuccessfulSteps.sendSinglePaymentInitiationRequestAndStoreId(GlobalSuccessfulSteps.java:125)\n\tat ✽.Given PSU sends the single payment initiation request and receives the paymentId(PIS_Embedded.feature:53)\n",
               "status": "failed"
@@ -11506,21 +11520,31 @@
           {
             "result": {
               "status": "skipped"
+=======
+              "duration": 900098615,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 55,
-            "name": "PSU wants to update the resource with his identification data updateIdentificationMultipleSca-successful.json",
+            "line": 67,
+            "name": "PSU already has an existing valid consent consent/create-consent-with-access-account.json",
             "match": {
               "arguments": [
                 {
-                  "val": "updateIdentificationMultipleSca-successful.json",
-                  "offset": 62
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "consent/create-consent-with-access-account.json",
+                  "offset": 42
                 }
               ],
-              "location": "UpdateAuthorisationWithIdentificationSuccessfulSteps.loadIdentificationData(String)"
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
             },
             "matchedColumns": [
-              0
+              1,
+              2
             ],
+<<<<<<< Updated upstream
             "keyword": "And "
           },
           {
@@ -11588,10 +11612,13 @@
             "match": {
               "location": "GlobalSuccessfulSteps.sendSinglePaymentInitiationRequestAndStoreId()"
             },
+=======
+>>>>>>> Stashed changes
             "keyword": "Given "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
             },
             "line": 67,
@@ -11604,61 +11631,63 @@
           {
             "result": {
               "status": "skipped"
+=======
+              "duration": 43672337,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
             "line": 68,
-            "name": "PSU prepares the errorful data updateIdentification-no-request-id.json with the payment service payments",
+            "name": "PSU want to get consent using consent-resource-with-access-account.json",
             "match": {
               "arguments": [
                 {
-                  "val": "updateIdentification-no-request-id.json",
-                  "offset": 31
-                },
-                {
-                  "val": "payments",
-                  "offset": 96
+                  "val": "consent-resource-with-access-account.json",
+                  "offset": 30
                 }
               ],
-              "location": "GlobalErrorfulSteps.loadErrorfulDataEmbedded(String,String)"
+              "location": "ConsentRequestSuccessful.psu_want_to_get_consent_using(String)"
             },
             "matchedColumns": [
-              0,
-              1
+              0
             ],
             "keyword": "And "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 623299894,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
             "line": 69,
-            "name": "PSU sends the errorful update authorisation data request",
+            "name": "PSU requests consent",
             "match": {
-              "location": "GlobalErrorfulSteps.sendErrorfulUpdateAuthorisationRequest()"
+              "location": "ConsentRequestSuccessful.requestConsent()"
             },
             "keyword": "When "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 4655910,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
             "line": 70,
-            "name": "an error response code and the appropriate error response are received",
+            "name": "a successful response code and the appropriate consent gets returned",
             "match": {
-              "location": "GlobalErrorfulSteps.checkErrorCodeAndResponse()"
+              "location": "ConsentRequestSuccessful.checkResponseCode()"
             },
             "keyword": "Then "
           }
-        ]
-      },
-      {
-        "comments": [
-          {
-            "line": 108,
-            "value": "#             | payments           | selectAuth-not-existing-paymentId.json   |"
-          }
         ],
-        "before": [
+        "tags": [
           {
+<<<<<<< Updated upstream
             "result": {
               "duration": 8418557,
               "status": "passed"
@@ -11676,6 +11705,33 @@
           {
             "result": {
               "duration": 158971,
+=======
+            "line": 65,
+            "name": "@SCR"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 22084071,
+              "status": "passed"
+            },
+            "match": {
+              "location": "GlobalSuccessfulSteps.loadTestDataIntoDb()"
+            }
+          }
+        ],
+        "line": 74,
+        "name": "Successful consent request (redirect)",
+        "description": "",
+        "id": "account-information-service;successful-consent-request-(redirect);;3",
+        "after": [
+          {
+            "result": {
+              "duration": 227976,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -11688,19 +11744,39 @@
         "steps": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 4512342974,
               "error_message": "org.springframework.web.client.HttpServerErrorException: 500 null\n\tat org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:89)\n\tat org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:708)\n\tat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:661)\n\tat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:621)\n\tat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:539)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService.sendRestCall(TestService.java:55)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.GlobalSuccessfulSteps.sendSinglePaymentInitiationRequestAndStoreId(GlobalSuccessfulSteps.java:125)\n\tat ✽.Given PSU sends the single payment initiation request and receives the paymentId(PIS_Embedded.feature:100)\n",
               "status": "failed"
+=======
+              "duration": 546908418,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 100,
-            "name": "PSU sends the single payment initiation request and receives the paymentId",
+            "line": 67,
+            "name": "PSU already has an existing valid consent consent/create-consent-with-access-balances.json",
             "match": {
-              "location": "GlobalSuccessfulSteps.sendSinglePaymentInitiationRequestAndStoreId()"
+              "arguments": [
+                {
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "consent/create-consent-with-access-balances.json",
+                  "offset": 42
+                }
+              ],
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
             },
+            "matchedColumns": [
+              1,
+              2
+            ],
             "keyword": "Given "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
             },
             "line": 101,
@@ -11724,67 +11800,76 @@
           {
             "result": {
               "status": "skipped"
+=======
+              "duration": 1131384,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 103,
-            "name": "PSU prepares the errorful data selectAuth-no-request-id.json with the payment service payments",
+            "line": 68,
+            "name": "PSU want to get consent using consent-resource-with-access-balances.json",
             "match": {
               "arguments": [
                 {
-                  "val": "selectAuth-no-request-id.json",
-                  "offset": 31
-                },
-                {
-                  "val": "payments",
-                  "offset": 86
+                  "val": "consent-resource-with-access-balances.json",
+                  "offset": 30
                 }
               ],
-              "location": "GlobalErrorfulSteps.loadErrorfulDataEmbedded(String,String)"
+              "location": "ConsentRequestSuccessful.psu_want_to_get_consent_using(String)"
             },
             "matchedColumns": [
-              0,
-              1
+              0
             ],
             "keyword": "And "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 526383317,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 104,
-            "name": "PSU sends the errorful update authorisation data request",
+            "line": 69,
+            "name": "PSU requests consent",
             "match": {
-              "location": "GlobalErrorfulSteps.sendErrorfulUpdateAuthorisationRequest()"
+              "location": "ConsentRequestSuccessful.requestConsent()"
             },
             "keyword": "When "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 36857,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 105,
-            "name": "an error response code and the appropriate error response are received",
+            "line": 70,
+            "name": "a successful response code and the appropriate consent gets returned",
             "match": {
-              "location": "GlobalErrorfulSteps.checkErrorCodeAndResponse()"
+              "location": "ConsentRequestSuccessful.checkResponseCode()"
             },
             "keyword": "Then "
           }
+        ],
+        "tags": [
+          {
+            "line": 65,
+            "name": "@SCR"
+          }
         ]
-      }
-    ],
-    "name": "Payment Initiation Service - Embedded approach",
-    "description": "",
-    "id": "payment-initiation-service---embedded-approach",
-    "keyword": "Feature",
-    "uri": "PIS_Embedded.feature"
-  },
-  {
-    "line": 1,
-    "elements": [
+      },
       {
         "before": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 8759519,
+=======
+              "duration": 28489653,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -11792,14 +11877,18 @@
             }
           }
         ],
-        "line": 16,
-        "name": "Successful payment initiation request for single payments (redirect)",
+        "line": 75,
+        "name": "Successful consent request (redirect)",
         "description": "",
-        "id": "payment-initiation-service---redirect-approach;successful-payment-initiation-request-for-single-payments-(redirect);;2",
+        "id": "account-information-service;successful-consent-request-(redirect);;4",
         "after": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 444770,
+=======
+              "duration": 207647,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -11812,30 +11901,29 @@
         "steps": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 450098,
+=======
+              "duration": 491665738,
+>>>>>>> Stashed changes
               "status": "passed"
             },
-            "line": 10,
-            "name": "PSU wants to initiate a single payment singlePayInit-successful.json using the payment service payments and the payment product sepa-credit-transfers",
+            "line": 67,
+            "name": "PSU already has an existing valid consent consent/create-consent-with-access-transactions.json",
             "match": {
               "arguments": [
                 {
-                  "val": "singlePayInit-successful.json",
-                  "offset": 39
+                  "val": "valid",
+                  "offset": 28
                 },
                 {
-                  "val": "payments",
-                  "offset": 95
-                },
-                {
-                  "val": "sepa-credit-transfers",
-                  "offset": 128
+                  "val": "consent/create-consent-with-access-transactions.json",
+                  "offset": 42
                 }
               ],
-              "location": "GlobalSuccessfulSteps.loadTestData(String,String,String)"
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
             },
             "matchedColumns": [
-              0,
               1,
               2
             ],
@@ -11843,38 +11931,68 @@
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 1791627294,
               "error_message": "org.springframework.web.client.HttpServerErrorException: 500 null\n\tat org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:89)\n\tat org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:708)\n\tat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:661)\n\tat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:621)\n\tat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:539)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService.sendRestCall(TestService.java:55)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.GlobalSuccessfulSteps.sendSinglePaymentInitiatingRequest(GlobalSuccessfulSteps.java:114)\n\tat ✽.When PSU sends the single payment initiating request(PIS_Redirect.feature:11)\n",
               "status": "failed"
+=======
+              "duration": 1071373,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 11,
-            "name": "PSU sends the single payment initiating request",
+            "line": 68,
+            "name": "PSU want to get consent using consent-resource-with-access-transactions.json",
             "match": {
-              "location": "GlobalSuccessfulSteps.sendSinglePaymentInitiatingRequest()"
+              "arguments": [
+                {
+                  "val": "consent-resource-with-access-transactions.json",
+                  "offset": 30
+                }
+              ],
+              "location": "ConsentRequestSuccessful.psu_want_to_get_consent_using(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+<<<<<<< Updated upstream
+              "status": "skipped"
+=======
+              "duration": 494802263,
+              "status": "passed"
+>>>>>>> Stashed changes
+            },
+            "line": 69,
+            "name": "PSU requests consent",
+            "match": {
+              "location": "ConsentRequestSuccessful.requestConsent()"
             },
             "keyword": "When "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 39723,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 12,
-            "name": "a successful response code and the appropriate payment response data are received",
+            "line": 70,
+            "name": "a successful response code and the appropriate consent gets returned",
             "match": {
-              "location": "GlobalSuccessfulSteps.checkResponseCode()"
+              "location": "ConsentRequestSuccessful.checkResponseCode()"
             },
             "keyword": "Then "
-          },
+          }
+        ],
+        "tags": [
           {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 13,
-            "name": "a redirect URL is delivered to the PSU",
-            "match": {
-              "location": "GlobalSuccessfulSteps.checkRedirectUrl()"
-            },
-            "keyword": "And "
+            "line": 65,
+            "name": "@SCR"
           }
         ]
       },
@@ -11882,7 +12000,11 @@
         "before": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 7857178,
+=======
+              "duration": 20939942,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -11890,14 +12012,18 @@
             }
           }
         ],
-        "line": 17,
-        "name": "Successful payment initiation request for single payments (redirect)",
+        "line": 76,
+        "name": "Successful consent request (redirect)",
         "description": "",
-        "id": "payment-initiation-service---redirect-approach;successful-payment-initiation-request-for-single-payments-(redirect);;3",
+        "id": "account-information-service;successful-consent-request-(redirect);;5",
         "after": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 188309,
+=======
+              "duration": 245511,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -11910,30 +12036,29 @@
         "steps": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 839869,
+=======
+              "duration": 515318010,
+>>>>>>> Stashed changes
               "status": "passed"
             },
-            "line": 10,
-            "name": "PSU wants to initiate a single payment singlePayInit-exceeding-amount.json using the payment service payments and the payment product sepa-credit-transfers",
+            "line": 67,
+            "name": "PSU already has an existing valid consent consent/create-global-consent.json",
             "match": {
               "arguments": [
                 {
-                  "val": "singlePayInit-exceeding-amount.json",
-                  "offset": 39
+                  "val": "valid",
+                  "offset": 28
                 },
                 {
-                  "val": "payments",
-                  "offset": 101
-                },
-                {
-                  "val": "sepa-credit-transfers",
-                  "offset": 134
+                  "val": "consent/create-global-consent.json",
+                  "offset": 42
                 }
               ],
-              "location": "GlobalSuccessfulSteps.loadTestData(String,String,String)"
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
             },
             "matchedColumns": [
-              0,
               1,
               2
             ],
@@ -11941,38 +12066,68 @@
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 1799384803,
               "error_message": "org.springframework.web.client.HttpServerErrorException: 500 null\n\tat org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:89)\n\tat org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:708)\n\tat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:661)\n\tat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:621)\n\tat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:539)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService.sendRestCall(TestService.java:55)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.GlobalSuccessfulSteps.sendSinglePaymentInitiatingRequest(GlobalSuccessfulSteps.java:114)\n\tat ✽.When PSU sends the single payment initiating request(PIS_Redirect.feature:11)\n",
               "status": "failed"
+=======
+              "duration": 1143703,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 11,
-            "name": "PSU sends the single payment initiating request",
+            "line": 68,
+            "name": "PSU want to get consent using consent-resource-global-consent.json",
             "match": {
-              "location": "GlobalSuccessfulSteps.sendSinglePaymentInitiatingRequest()"
+              "arguments": [
+                {
+                  "val": "consent-resource-global-consent.json",
+                  "offset": 30
+                }
+              ],
+              "location": "ConsentRequestSuccessful.psu_want_to_get_consent_using(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+<<<<<<< Updated upstream
+              "status": "skipped"
+=======
+              "duration": 496715351,
+              "status": "passed"
+>>>>>>> Stashed changes
+            },
+            "line": 69,
+            "name": "PSU requests consent",
+            "match": {
+              "location": "ConsentRequestSuccessful.requestConsent()"
             },
             "keyword": "When "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 34479,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 12,
-            "name": "a successful response code and the appropriate payment response data are received",
+            "line": 70,
+            "name": "a successful response code and the appropriate consent gets returned",
             "match": {
-              "location": "GlobalSuccessfulSteps.checkResponseCode()"
+              "location": "ConsentRequestSuccessful.checkResponseCode()"
             },
             "keyword": "Then "
-          },
+          }
+        ],
+        "tags": [
           {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 13,
-            "name": "a redirect URL is delivered to the PSU",
-            "match": {
-              "location": "GlobalSuccessfulSteps.checkRedirectUrl()"
-            },
-            "keyword": "And "
+            "line": 65,
+            "name": "@SCR"
           }
         ]
       },
@@ -11980,7 +12135,11 @@
         "before": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 9915638,
+=======
+              "duration": 24298343,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -11988,14 +12147,18 @@
             }
           }
         ],
-        "line": 50,
-        "name": "Payment initiation request for recurring payments (redirect)",
+        "line": 77,
+        "name": "Successful consent request (redirect)",
         "description": "",
-        "id": "payment-initiation-service---redirect-approach;payment-initiation-request-for-recurring-payments-(redirect);;2",
+        "id": "account-information-service;successful-consent-request-(redirect);;6",
         "after": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 132573,
+=======
+              "duration": 189000,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -12008,30 +12171,29 @@
         "steps": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 12016558,
+=======
+              "duration": 495080705,
+>>>>>>> Stashed changes
               "status": "passed"
             },
-            "line": 44,
-            "name": "PSU wants to initiate a recurring payment recPayInit-successful.json using the payment service periodic-payments and the payment product sepa-credit-transfers",
+            "line": 67,
+            "name": "PSU already has an existing valid consent consent/consent-accountList-available-accounts.json",
             "match": {
               "arguments": [
                 {
-                  "val": "recPayInit-successful.json",
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "consent/consent-accountList-available-accounts.json",
                   "offset": 42
-                },
-                {
-                  "val": "periodic-payments",
-                  "offset": 95
-                },
-                {
-                  "val": "sepa-credit-transfers",
-                  "offset": 137
                 }
               ],
-              "location": "PeriodicPaymentSuccessfulSteps.loadTestDataForSuccessfulPeriodicPayment(String,String,String)"
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
             },
             "matchedColumns": [
-              0,
               1,
               2
             ],
@@ -12039,38 +12201,68 @@
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 1789156085,
               "error_message": "org.springframework.web.client.HttpServerErrorException: 500 null\n\tat org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:89)\n\tat org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:708)\n\tat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:661)\n\tat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:621)\n\tat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:539)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService.sendRestCall(TestService.java:55)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.redirect.PeriodicPaymentSuccessfulSteps.sendSuccessfulPeriodicPaymentInitiatingRequest(PeriodicPaymentSuccessfulSteps.java:56)\n\tat ✽.When PSU sends the recurring payment initiating request(PIS_Redirect.feature:45)\n",
               "status": "failed"
+=======
+              "duration": 1144980,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 45,
-            "name": "PSU sends the recurring payment initiating request",
+            "line": 68,
+            "name": "PSU want to get consent using consent-resource-accountList-available-accounts.json",
             "match": {
-              "location": "PeriodicPaymentSuccessfulSteps.sendSuccessfulPeriodicPaymentInitiatingRequest()"
+              "arguments": [
+                {
+                  "val": "consent-resource-accountList-available-accounts.json",
+                  "offset": 30
+                }
+              ],
+              "location": "ConsentRequestSuccessful.psu_want_to_get_consent_using(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+<<<<<<< Updated upstream
+              "status": "skipped"
+=======
+              "duration": 474194275,
+              "status": "passed"
+>>>>>>> Stashed changes
+            },
+            "line": 69,
+            "name": "PSU requests consent",
+            "match": {
+              "location": "ConsentRequestSuccessful.requestConsent()"
             },
             "keyword": "When "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 35906,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 46,
-            "name": "a successful response code and the appropriate payment response data are received",
+            "line": 70,
+            "name": "a successful response code and the appropriate consent gets returned",
             "match": {
-              "location": "GlobalSuccessfulSteps.checkResponseCode()"
+              "location": "ConsentRequestSuccessful.checkResponseCode()"
             },
             "keyword": "Then "
-          },
+          }
+        ],
+        "tags": [
           {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 47,
-            "name": "a redirect URL is delivered to the PSU",
-            "match": {
-              "location": "GlobalSuccessfulSteps.checkRedirectUrl()"
-            },
-            "keyword": "And "
+            "line": 65,
+            "name": "@SCR"
           }
         ]
       },
@@ -12078,7 +12270,11 @@
         "before": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 9422594,
+=======
+              "duration": 26425179,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -12086,14 +12282,18 @@
             }
           }
         ],
-        "line": 51,
-        "name": "Payment initiation request for recurring payments (redirect)",
+        "line": 78,
+        "name": "Successful consent request (redirect)",
         "description": "",
-        "id": "payment-initiation-service---redirect-approach;payment-initiation-request-for-recurring-payments-(redirect);;3",
+        "id": "account-information-service;successful-consent-request-(redirect);;7",
         "after": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 196487,
+=======
+              "duration": 220688,
+>>>>>>> Stashed changes
               "status": "passed"
             },
             "match": {
@@ -12106,30 +12306,29 @@
         "steps": [
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 7458538,
+=======
+              "duration": 459460648,
+>>>>>>> Stashed changes
               "status": "passed"
             },
-            "line": 44,
-            "name": "PSU wants to initiate a recurring payment recPayInit-exceeding-amount.json using the payment service periodic-payments and the payment product sepa-credit-transfers",
+            "line": 67,
+            "name": "PSU already has an existing valid consent consent/bank-offered-consent.json",
             "match": {
               "arguments": [
                 {
-                  "val": "recPayInit-exceeding-amount.json",
+                  "val": "valid",
+                  "offset": 28
+                },
+                {
+                  "val": "consent/bank-offered-consent.json",
                   "offset": 42
-                },
-                {
-                  "val": "periodic-payments",
-                  "offset": 101
-                },
-                {
-                  "val": "sepa-credit-transfers",
-                  "offset": 143
                 }
               ],
-              "location": "PeriodicPaymentSuccessfulSteps.loadTestDataForSuccessfulPeriodicPayment(String,String,String)"
+              "location": "CommonSteps.psu_already_has_an_existing_consent(String,String)"
             },
             "matchedColumns": [
-              0,
               1,
               2
             ],
@@ -12137,46 +12336,76 @@
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "duration": 4541106338,
               "error_message": "org.springframework.web.client.HttpServerErrorException: 500 null\n\tat org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:89)\n\tat org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:708)\n\tat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:661)\n\tat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:621)\n\tat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:539)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.TestService.sendRestCall(TestService.java:55)\n\tat de.adorsys.aspsp.xs2a.integtest.stepdefinitions.pis.redirect.PeriodicPaymentSuccessfulSteps.sendSuccessfulPeriodicPaymentInitiatingRequest(PeriodicPaymentSuccessfulSteps.java:56)\n\tat ✽.When PSU sends the recurring payment initiating request(PIS_Redirect.feature:45)\n",
               "status": "failed"
+=======
+              "duration": 1004229,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 45,
-            "name": "PSU sends the recurring payment initiating request",
+            "line": 68,
+            "name": "PSU want to get consent using bank-offered-resource-consent.json",
             "match": {
-              "location": "PeriodicPaymentSuccessfulSteps.sendSuccessfulPeriodicPaymentInitiatingRequest()"
+              "arguments": [
+                {
+                  "val": "bank-offered-resource-consent.json",
+                  "offset": 30
+                }
+              ],
+              "location": "ConsentRequestSuccessful.psu_want_to_get_consent_using(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+<<<<<<< Updated upstream
+              "status": "skipped"
+=======
+              "duration": 440439379,
+              "status": "passed"
+>>>>>>> Stashed changes
+            },
+            "line": 69,
+            "name": "PSU requests consent",
+            "match": {
+              "location": "ConsentRequestSuccessful.requestConsent()"
             },
             "keyword": "When "
           },
           {
             "result": {
+<<<<<<< Updated upstream
               "status": "skipped"
+=======
+              "duration": 31944,
+              "status": "passed"
+>>>>>>> Stashed changes
             },
-            "line": 46,
-            "name": "a successful response code and the appropriate payment response data are received",
+            "line": 70,
+            "name": "a successful response code and the appropriate consent gets returned",
             "match": {
-              "location": "GlobalSuccessfulSteps.checkResponseCode()"
+              "location": "ConsentRequestSuccessful.checkResponseCode()"
             },
             "keyword": "Then "
-          },
+          }
+        ],
+        "tags": [
           {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 47,
-            "name": "a redirect URL is delivered to the PSU",
-            "match": {
-              "location": "GlobalSuccessfulSteps.checkRedirectUrl()"
-            },
-            "keyword": "And "
+            "line": 65,
+            "name": "@SCR"
           }
         ]
       }
     ],
-    "name": "Payment Initiation Service - Redirect approach",
+    "name": "Account Information Service",
     "description": "",
-    "id": "payment-initiation-service---redirect-approach",
+    "id": "account-information-service",
     "keyword": "Feature",
-    "uri": "PIS_Redirect.feature"
+    "uri": "AIS_01.feature"
   }
 ]

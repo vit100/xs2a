@@ -1,0 +1,29 @@
+{
+  "request": {
+    "header": {
+      "x-request-id": "2f77a125-aa7a-45c0-b414-cea25a116035",
+      "date": "Sun, 11 Aug 2019 15:02:37 GMT"
+    },
+    "body": {
+    }
+  },
+  "response": {
+    "code": "200",
+    "header": {},
+    "body": {
+      "access": {
+        "transactions": [
+          {
+            "resourceId": "11111-999999999",
+            "iban": "DE89370400440532013000",
+            "currency": "EUR"
+          }
+        ]
+      },
+      "recurringIndicator": false,
+      "validUntil": "2020-10-10",
+      "frequencyPerDay": 4,
+      "consentStatus": "valid"
+    }
+  }
+}
