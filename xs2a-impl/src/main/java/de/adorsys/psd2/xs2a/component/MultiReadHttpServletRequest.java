@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
 
 /**
- * This class wraps incoming HttpServletRequest, caches its body and is provided to the spring framework in de.adorsys.psd2.xs2a.web.filter.ContentCachingWrappingFilter.class
+ * This class decorates incoming HttpServletRequest, caches its body and is used by spring framework further
  */
 public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
     private ByteArrayOutputStream cachedBytes;
