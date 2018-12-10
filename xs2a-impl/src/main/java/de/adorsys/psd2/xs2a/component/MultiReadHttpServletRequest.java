@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
 
+/**
+ * This class wraps incoming HttpServletRequest, caches its body and is provided to the spring framework in de.adorsys.psd2.xs2a.web.filter.ContentCachingWrappingFilter.class
+ */
 public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
     private ByteArrayOutputStream cachedBytes;
 
@@ -69,7 +72,7 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
 
         @Override
         public void setReadListener(ReadListener listener) {
-
+            //Empty body is appropriate when is used to cache httpservletbody
         }
 
         @Override

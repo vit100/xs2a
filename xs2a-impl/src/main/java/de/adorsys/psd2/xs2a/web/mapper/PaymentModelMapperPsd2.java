@@ -57,6 +57,7 @@ public class PaymentModelMapperPsd2 {
             PisPaymentInfo paymentInfo = (PisPaymentInfo) payment;
             String paymentResponse = convertResponseToRawData(paymentInfo.getPaymentData());
 
+            //TODO rework this check during refactoring of payment saving https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/517
             if (paymentInfo.getPaymentProduct().contains("pain")) {
                 return paymentResponse;
             }

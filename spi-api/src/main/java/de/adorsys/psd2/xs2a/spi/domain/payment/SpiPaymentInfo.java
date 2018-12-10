@@ -21,6 +21,9 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import lombok.Data;
 
+/**
+ * This class represents a common entity for all types of payments, preserving all payment-specific data as an array of bytes
+ */
 @Data
 public class SpiPaymentInfo implements SpiPayment {
     private String paymentId;
