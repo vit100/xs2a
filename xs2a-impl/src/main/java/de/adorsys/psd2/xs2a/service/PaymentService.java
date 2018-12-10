@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.service;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentStatusFactory;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
@@ -36,6 +35,7 @@ import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisConsentService;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
+import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
@@ -89,6 +89,7 @@ public class PaymentService {
     private final CreateCommonPaymentService createCommonPaymentService;
     private final ReadCommonPaymentService readCommonPaymentService;
     private final Xs2aToSpiPaymentInfoMapper xs2aToSpiPaymentInfoMapper;
+    private final CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
 
     /**
      * Initiates a payment though "payment service" corresponding service method
@@ -114,6 +115,7 @@ public class PaymentService {
             request.setPaymentType(paymentInitiationParameters.getPaymentType());
             request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
             request.setPaymentData((byte[]) payment);
+            request.setTppInfo(tppInfo);
 
             return createCommonPaymentService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
         }
@@ -158,8 +160,8 @@ public class PaymentService {
 
         // TODO should be refactored https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
         if (pisConsent.getPaymentInfo() != null) {
-            PisPaymentInfo paymentInfo = pisConsent.getPaymentInfo();
-            response = readCommonPaymentService.getPayment(paymentInfo, psuData, aspspConsentData);
+            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisConsent.getPaymentInfo());
+            response = readCommonPaymentService.getPayment(commonPayment, psuData, aspspConsentData);
         } else {
             PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
 
@@ -210,7 +212,8 @@ public class PaymentService {
 
         // TODO should be refactored https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
         if (pisConsent.getPaymentInfo() != null) {
-            SpiPaymentInfo request = xs2aToSpiPaymentInfoMapper.mapToXs2aPaymentInfo(pisConsent.getPaymentInfo());
+            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisConsent.getPaymentInfo());
+            SpiPaymentInfo request = xs2aToSpiPaymentInfoMapper.mapToXs2aPaymentInfo(commonPayment);
             spiResponse = commonPaymentSpi.getPaymentStatusById(spiPsuData, request, aspspConsentData);
         } else {
             PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);

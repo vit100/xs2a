@@ -50,7 +50,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="psu_id" type="BIGINT"/>
-            <column name="tpp_info_id" type="BIGINT"/>
+            <column name="tpp_info_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="consent_id" type="BIGINT"/>
         </createTable>
 

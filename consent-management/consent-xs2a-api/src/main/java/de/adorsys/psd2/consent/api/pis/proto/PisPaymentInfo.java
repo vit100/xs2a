@@ -18,6 +18,7 @@ package de.adorsys.psd2.consent.api.pis.proto;
 
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -37,4 +38,7 @@ public class PisPaymentInfo {
 
     @ApiModelProperty(value = "Payment data")
     private byte[] paymentData;
+
+    @ApiModelProperty(value = "Tpp information", required = true)
+    private TppInfo tppInfo;
 }

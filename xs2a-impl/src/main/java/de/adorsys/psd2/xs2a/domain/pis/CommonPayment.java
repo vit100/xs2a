@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.domain.pis;
 
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,4 +30,5 @@ public class CommonPayment {
     private TransactionStatus transactionStatus;
     private PaymentType paymentType;
     private byte[] paymentData;
+    private TppInfo tppInfo;
 }

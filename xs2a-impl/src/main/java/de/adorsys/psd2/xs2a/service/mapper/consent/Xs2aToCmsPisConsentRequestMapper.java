@@ -61,6 +61,7 @@ public class Xs2aToCmsPisConsentRequestMapper {
                             paymentInfo.setPaymentType(dta.getPaymentType());
                             paymentInfo.setTransactionStatus(dta.getTransactionStatus());
                             paymentInfo.setPaymentData(dta.getPaymentData());
+                            paymentInfo.setTppInfo(dta.getTppInfo());
                             return paymentInfo;
                         }
                    )

@@ -67,7 +67,7 @@ public class PisCommonPaymentData {
     private List<PsuData> psuData = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tpp_info_id")
+    @JoinColumn(name = "tpp_info_id", nullable = false)
     @ApiModelProperty(value = "Information about TPP", required = true)
     private TppInfoEntity tppInfo;
 

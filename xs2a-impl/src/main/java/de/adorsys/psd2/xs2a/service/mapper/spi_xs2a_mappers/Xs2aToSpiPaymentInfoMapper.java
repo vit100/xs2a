@@ -16,19 +16,19 @@
 
 package de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers;
 
-import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
+import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentInfo;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Xs2aToSpiPaymentInfoMapper {
 
-    public SpiPaymentInfo mapToXs2aPaymentInfo(PisPaymentInfo paymentInfo) {
-        SpiPaymentInfo info = new SpiPaymentInfo(paymentInfo.getPaymentProduct());
-        info.setPaymentId(paymentInfo.getPaymentId());
-        info.setPaymentType(paymentInfo.getPaymentType());
-        info.setStatus(paymentInfo.getTransactionStatus());
-        info.setPaymentData(paymentInfo.getPaymentData());
+    public SpiPaymentInfo mapToXs2aPaymentInfo(CommonPayment commonPayment) {
+        SpiPaymentInfo info = new SpiPaymentInfo(commonPayment.getPaymentProduct());
+        info.setPaymentId(commonPayment.getPaymentId());
+        info.setPaymentType(commonPayment.getPaymentType());
+        info.setStatus(commonPayment.getTransactionStatus());
+        info.setPaymentData(commonPayment.getPaymentData());
         return info;
     }
 }
