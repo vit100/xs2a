@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Xs2aToSpiPaymentInfoMapper {
 
-    public SpiPaymentInfo mapToXs2aPaymentInfo(CommonPayment commonPayment) {
+    public SpiPaymentInfo mapToSpiPaymentInfo(CommonPayment commonPayment) {
         SpiPaymentInfo info = new SpiPaymentInfo(commonPayment.getPaymentProduct());
         info.setPaymentId(commonPayment.getPaymentId());
         info.setPaymentType(commonPayment.getPaymentType());

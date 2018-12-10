@@ -213,7 +213,7 @@ public class PaymentService {
         // TODO should be refactored https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
         if (pisConsent.getPaymentInfo() != null) {
             CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisConsent.getPaymentInfo());
-            SpiPaymentInfo request = xs2aToSpiPaymentInfoMapper.mapToXs2aPaymentInfo(commonPayment);
+            SpiPaymentInfo request = xs2aToSpiPaymentInfoMapper.mapToSpiPaymentInfo(commonPayment);
             spiResponse = commonPaymentSpi.getPaymentStatusById(spiPsuData, request, aspspConsentData);
         } else {
             PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
@@ -275,21 +275,29 @@ public class PaymentService {
         }
 
         PisConsentResponse pisConsent = pisConsentOptional.get();
-        PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
+        SpiPayment spiPayment = null;
 
-        if (pisPayment == null) {
-            return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
-                       .build();
-        }
+        if (pisConsent.getPaymentInfo() != null) {
+            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisConsent.getPaymentInfo());
+            spiPayment = xs2aToSpiPaymentInfoMapper.mapToSpiPaymentInfo(commonPayment);
+        } else {
+            PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
+            if (pisPayment == null) {
+                return ResponseObject.<CancelPaymentResponse>builder()
+                           .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
+                           .build();
+            }
 
-        Optional<? extends SpiPayment> spiPaymentOptional = spiPaymentFactory.createSpiPaymentByPaymentType(pisPayment, pisConsent.getPaymentProduct(), paymentType);
+            Optional<? extends SpiPayment> spiPaymentOptional = spiPaymentFactory.createSpiPaymentByPaymentType(pisPayment, pisConsent.getPaymentProduct(), paymentType);
 
-        if (!spiPaymentOptional.isPresent()) {
-            log.error("Unknown payment type: {}", paymentType);
-            return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(new MessageError(FORMAT_ERROR))
-                       .build();
+            if (!spiPaymentOptional.isPresent()) {
+                log.error("Unknown payment type: {}", paymentType);
+                return ResponseObject.<CancelPaymentResponse>builder()
+                           .fail(new MessageError(FORMAT_ERROR))
+                           .build();
+            }
+
+            spiPayment = spiPaymentOptional.get();
         }
 
         Optional<PisConsentResponse> consent = pisConsentService.getPisConsentById(paymentId);
@@ -304,9 +312,9 @@ public class PaymentService {
         SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(psuData);
 
         if (profileService.isPaymentCancellationAuthorizationMandated()) {
-            return cancelPaymentService.initiatePaymentCancellation(spiPsuData, spiPaymentOptional.get());
+            return cancelPaymentService.initiatePaymentCancellation(spiPsuData, spiPayment);
         } else {
-            ResponseObject<CancelPaymentResponse> cancellationResponse = cancelPaymentService.cancelPaymentWithoutAuthorisation(spiPsuData, spiPaymentOptional.get());
+            ResponseObject<CancelPaymentResponse> cancellationResponse = cancelPaymentService.cancelPaymentWithoutAuthorisation(spiPsuData, spiPayment);
             pisConsentService.revokeConsentById(paymentId);
             return cancellationResponse;
         }

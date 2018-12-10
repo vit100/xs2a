@@ -44,7 +44,7 @@ public class ReadCommonPaymentService {
     private final SpiToXs2aPaymentInfoMapper spiToXs2aPaymentInfoMapper;
 
     public PaymentInformationResponse<PisPaymentInfo> getPayment(CommonPayment commonPayment, PsuIdData psuData, AspspConsentData aspspConsentData) {
-        SpiPaymentInfo spiPaymentInfo = xs2aToSpiPaymentInfoMapper.mapToXs2aPaymentInfo(commonPayment);
+        SpiPaymentInfo spiPaymentInfo = xs2aToSpiPaymentInfoMapper.mapToSpiPaymentInfo(commonPayment);
 
         SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(psuData);
         SpiResponse<SpiPaymentInfo> spiResponse = commonPaymentSpi.getPaymentById(spiPsuData, spiPaymentInfo, aspspConsentData);
