@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.component;
 
 import org.apache.commons.io.IOUtils;
 
-import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -58,21 +57,6 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
 
         public CachedServletInputStream() {
             input = new ByteArrayInputStream(cachedBytes.toByteArray());
-        }
-
-        @Override
-        public boolean isFinished() {
-            return false;
-        }
-
-        @Override
-        public boolean isReady() {
-            return true;
-        }
-
-        @Override
-        public void setReadListener(ReadListener listener) {
-            //Empty body is appropriate when is used to cache httpservletbody
         }
 
         @Override
