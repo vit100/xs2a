@@ -27,6 +27,7 @@ script:
   - mvn -B -V clean install
   - mvn -B -V javadoc:javadoc
   - mvn -B -V pmd:check
+  - echo $TRAVIS_JDK_VERSION
 
 # Schritte um Release zu veröffentlichen
 before_deploy:
