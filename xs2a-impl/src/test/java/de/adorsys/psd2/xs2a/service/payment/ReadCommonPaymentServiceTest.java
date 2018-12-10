@@ -75,7 +75,7 @@ public class ReadCommonPaymentServiceTest {
 
     @Before
     public void init() {
-        when(xs2aToSpiPaymentInfoMapper.mapToXs2aPaymentInfo(COMMON_PAYMENT)).thenReturn(SPI_PAYMENT_INFO);
+        when(xs2aToSpiPaymentInfoMapper.mapToSpiPaymentInfo(COMMON_PAYMENT)).thenReturn(SPI_PAYMENT_INFO);
         when(psuDataMapper.mapToSpiPsuData(PSU_DATA)).thenReturn(SPI_PSU_DATA);
         when(spiToXs2aPaymentInfoMapper.mapToXs2aPaymentInfo(any())).thenReturn(PIS_PAYMENT_INFO);
         when(commonPaymentSpi.getPaymentById(SPI_PSU_DATA,SPI_PAYMENT_INFO, SOME_ASPSP_CONSENT_DATA)).thenReturn(SpiResponse.<SpiPaymentInfo>builder()
