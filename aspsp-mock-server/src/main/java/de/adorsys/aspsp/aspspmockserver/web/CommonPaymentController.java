@@ -39,7 +39,7 @@ public class CommonPaymentController {
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Created", response = AspspPaymentInfo.class),
         @ApiResponse(code = 204, message = "Payment Failed")})
-    @PostMapping(path = "/")
+    @PostMapping()
     public ResponseEntity<AspspPaymentInfo> createPayment(@RequestBody AspspPaymentInfo aspspPaymentInfo) {
         return paymentService.addPaymentInfo(aspspPaymentInfo)
                    .map(saved -> new ResponseEntity<>(saved, CREATED))
@@ -61,7 +61,7 @@ public class CommonPaymentController {
     @ApiOperation(value = "Returns the status of payment requested by it`s ASPSP identifier", authorizations = {@Authorization(value = "oauth2", scopes = {@AuthorizationScope(scope = "read", description = "Access read API")})})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = AspspTransactionStatus.class),
-        @ApiResponse(code = 204, message = "Payment Not Found")})
+        @ApiResponse(code = 404, message = "Payment Not Found")})
     @GetMapping(path = "/{paymentId}/status")
     public ResponseEntity<AspspTransactionStatus> getPaymentStatusById(@PathVariable("paymentId") String paymentId) {
         return paymentService.getPaymentStatusById(paymentId)
