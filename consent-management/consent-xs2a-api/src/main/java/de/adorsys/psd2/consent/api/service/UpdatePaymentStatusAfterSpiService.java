@@ -28,8 +28,8 @@ public interface UpdatePaymentStatusAfterSpiService {
     /**
      * Updates a Status of Payment object by its ID and PSU ID
      *
-     * @param encryptedPaymentId ID of Payment
+     * @param paymentId ID of Payment
      * @param status             Status of Payment to be set
      */
-    boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status);
+    boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status);
 }

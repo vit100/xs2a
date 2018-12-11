@@ -58,7 +58,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CmsPsuPisServiceInternalTest {
-
     private static final String WRONG_PAYMENT_ID = "wrong payment id";
     private static final String AUTHORISATION_ID = "authorisation id";
     private static final String WRONG_AUTHORISATION_ID = "wrong authorisation id";
@@ -117,10 +116,6 @@ public class CmsPsuPisServiceInternalTest {
         when(pisConsentService.getPsuDataByPaymentId(PAYMENT_ID))
             .thenReturn(Optional.of(psuIdData));
         when(pisConsentService.getPsuDataByPaymentId(WRONG_PAYMENT_ID))
-            .thenReturn(Optional.empty());
-        when(pisConsentService.getDecryptedId(PAYMENT_ID))
-            .thenReturn(Optional.of(PAYMENT_ID));
-        when(pisConsentService.getDecryptedId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
 
         when(psuDataRepository.save(any(PsuData.class)))
@@ -249,7 +244,6 @@ public class CmsPsuPisServiceInternalTest {
     public void updatePaymentStatus_Fail_FinalisedStatus() {
         //Given
         List<PisPaymentData> finalisedPisPaymentDataList = buildFinalisedPisPaymentDataList();
-        when(pisConsentService.getDecryptedId(FINALISED_PAYMENT_ID)).thenReturn(Optional.of(FINALISED_PAYMENT_ID));
         when(pisPaymentDataRepository.findByPaymentId(FINALISED_PAYMENT_ID)).thenReturn(Optional.of(finalisedPisPaymentDataList));
 
         // When
@@ -278,7 +272,6 @@ public class CmsPsuPisServiceInternalTest {
     public void getPaymentByAuthorisationId_Fail_ExpiredRedirectUrl() {
         //Given
         PisConsentAuthorization expectedAuthorisation = buildExpiredAuthorisation();
-        when(pisConsentService.getDecryptedId(EXPIRED_AUTHORISATION_ID)).thenReturn(Optional.of(EXPIRED_AUTHORISATION_ID));
         when(pisConsentAuthorizationRepository.findByExternalId(EXPIRED_AUTHORISATION_ID)).thenReturn(Optional.of(expectedAuthorisation));
 
         // When

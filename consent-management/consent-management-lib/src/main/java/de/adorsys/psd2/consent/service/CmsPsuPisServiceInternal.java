@@ -33,10 +33,10 @@ import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,10 +45,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CmsPsuPisServiceInternal implements CmsPsuPisService {
-
     private final PisPaymentDataRepository pisPaymentDataRepository;
     private final PisConsentAuthorizationRepository pisConsentAuthorizationRepository;
     private final CmsPsuPisMapper cmsPsuPisMapper;
@@ -56,20 +54,33 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final PsuDataRepository psuDataRepository;
     private final PsuDataMapper psuDataMapper;
 
+    public CmsPsuPisServiceInternal(PisPaymentDataRepository pisPaymentDataRepository,
+                                    PisConsentAuthorizationRepository pisConsentAuthorizationRepository,
+                                    CmsPsuPisMapper cmsPsuPisMapper,
+                                    @Qualifier("pisConsentServiceUnencrypted") PisConsentService pisConsentService,
+                                    PsuDataRepository psuDataRepository,
+                                    PsuDataMapper psuDataMapper) {
+        this.pisPaymentDataRepository = pisPaymentDataRepository;
+        this.pisConsentAuthorizationRepository = pisConsentAuthorizationRepository;
+        this.cmsPsuPisMapper = cmsPsuPisMapper;
+        this.pisConsentService = pisConsentService;
+        this.psuDataRepository = psuDataRepository;
+        this.psuDataMapper = psuDataMapper;
+    }
+
     @Override
     @Transactional
-    public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String encryptedPaymentId) {
-        Optional<PisConsent> pisConsent = getPaymentDataList(encryptedPaymentId)
+    public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String paymentId) {
+        Optional<PisConsent> pisConsent = pisPaymentDataRepository.findByPaymentId(paymentId)
                                               .map(lst -> lst.get(0))
                                               .map(PisPaymentData::getConsent);
         return pisConsent.isPresent() && updatePsuData(pisConsent.get(), psuIdData);
     }
 
     @Override
-    public @NotNull Optional<CmsPayment> getPayment(@NotNull PsuIdData psuIdData, @NotNull String encryptedPaymentId) {
-        if (isPsuDataEquals(encryptedPaymentId, psuIdData)) {
-
-            return getPaymentDataList(encryptedPaymentId)
+    public @NotNull Optional<CmsPayment> getPayment(@NotNull PsuIdData psuIdData, @NotNull String paymentId) {
+        if (isPsuDataEquals(paymentId, psuIdData)) {
+            return pisPaymentDataRepository.findByPaymentId(paymentId)
                        .filter(CollectionUtils::isNotEmpty)
                        .map(cmsPsuPisMapper::mapToCmsPayment);
         }
@@ -113,7 +124,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     @Override
     @Transactional
     public boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status) {
-        List<PisPaymentData> list = getPaymentDataList(encryptedPaymentId)
+        List<PisPaymentData> list = pisPaymentDataRepository.findByPaymentId(encryptedPaymentId)
                                         .orElse(Collections.emptyList());
 
         return !CollectionUtils.isEmpty(list)
@@ -129,7 +140,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private boolean validateGivenData(String paymentId, String givenPaymentId, PsuIdData psuIdData) {
-        return pisConsentService.getDecryptedId(givenPaymentId)
+        return Optional.ofNullable(givenPaymentId)
                    .filter(p -> isPsuDataEquals(givenPaymentId, psuIdData))
                    .map(id -> StringUtils.equals(paymentId, id))
                    .orElse(false);
@@ -159,11 +170,6 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
             pisPaymentDataRepository.save(pisPaymentData);
         }
         return true;
-    }
-
-    private Optional<List<PisPaymentData>> getPaymentDataList(String encryptedPaymentId) {
-        return pisConsentService.getDecryptedId(encryptedPaymentId)
-                   .flatMap(pisPaymentDataRepository::findByPaymentId);
     }
 
     private boolean isAuthorisationValidForPsuAndStatus(PsuIdData givenPsuIdData, PisConsentAuthorization authorization) {

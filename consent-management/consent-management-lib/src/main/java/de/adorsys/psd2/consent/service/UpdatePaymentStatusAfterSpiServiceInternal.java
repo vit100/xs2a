@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiService;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
@@ -29,19 +28,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-@Service
+@Service("updatePaymentStatusAfterSpiServiceInternalUnencrypted")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePaymentStatusAfterSpiService {
     private final PisPaymentDataRepository pisPaymentDataRepository;
-    private final PisConsentService pisConsentService;
 
     @Override
     @Transactional
-    public boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status) {
-        List<PisPaymentData> payments = getPaymentDataList(encryptedPaymentId)
+    public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status) {
+        List<PisPaymentData> payments = pisPaymentDataRepository.findByPaymentId(paymentId)
                                             .orElse(Collections.emptyList());
 
         return updateStatusInPaymentDataList(payments, status);
@@ -66,11 +63,6 @@ public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePayment
         }
 
         return true;
-    }
-
-    private Optional<List<PisPaymentData>> getPaymentDataList(String encryptedPaymentId) {
-        return pisConsentService.getDecryptedId(encryptedPaymentId)
-                   .flatMap(pisPaymentDataRepository::findByPaymentId);
     }
 
     private boolean isChangingFinaliseStatus(List<PisPaymentData> payments, TransactionStatus newStatus) {
