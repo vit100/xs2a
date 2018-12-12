@@ -26,13 +26,11 @@ import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisConsent;
 import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
-import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
-import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
-import de.adorsys.psd2.consent.repository.PisConsentRepository;
-import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
+import de.adorsys.psd2.consent.repository.*;
 import de.adorsys.psd2.consent.service.mapper.PisConsentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
@@ -46,9 +44,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -158,8 +156,9 @@ public class PisConsentServiceInternal implements PisConsentService {
             return Optional.empty();
         }
 
+
         return readReceivedConsentByPaymentId(paymentId.get())
-                   .map(pisConsent -> saveNewAuthorisation(pisConsent, authorizationType, psuData))
+                   .map(pisConsent -> saveNewAuthorisation(pisConsent, authorizationType, psuData, pisConsent.getPaymentData()))
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
 
@@ -370,7 +369,7 @@ public class PisConsentServiceInternal implements PisConsentService {
      * @param pisConsent PIS Consent, for which authorisation is performed
      * @return PisConsentAuthorization
      */
-    private PisConsentAuthorization saveNewAuthorisation(PisConsent pisConsent, CmsAuthorisationType authorisationType, PsuIdData psuData) {
+    private PisConsentAuthorization saveNewAuthorisation(PisConsent pisConsent, CmsAuthorisationType authorisationType, PsuIdData psuData, PisCommonPaymentData paymentData) {
         PisConsentAuthorization consentAuthorization = new PisConsentAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
         consentAuthorization.setConsent(pisConsent);
@@ -378,7 +377,24 @@ public class PisConsentServiceInternal implements PisConsentService {
         consentAuthorization.setAuthorizationType(authorisationType);
         consentAuthorization.setPsuData(psuDataMapper.mapToPsuData(psuData));
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
+        consentAuthorization.setPaymentData(enrichPsuData(psuData, paymentData));
         return pisConsentAuthorizationRepository.save(consentAuthorization);
+    }
+
+    private PisCommonPaymentData enrichPsuData(PsuIdData psuData, PisCommonPaymentData paymentData) {
+        List<PsuData> psuDataList = paymentData.getPsuData();
+
+        PsuData newPsuData = psuDataMapper.mapToPsuData(psuData);
+
+        boolean inList = psuDataList.stream()
+                         .anyMatch(psu -> psu.getPsuId().equals(newPsuData.getPsuId()));
+
+        if (!inList) {
+            psuDataList.add(newPsuData);
+            paymentData.setPsuData(psuDataList);
+        }
+
+        return paymentData;
     }
 
     private List<String> readAuthorisationsFromConsent(PisConsent pisConsent, CmsAuthorisationType authorisationType) {

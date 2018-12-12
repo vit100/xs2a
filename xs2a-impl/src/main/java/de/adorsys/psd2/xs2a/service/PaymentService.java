@@ -55,6 +55,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,6 +117,7 @@ public class PaymentService {
             request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
             request.setPaymentData((byte[]) payment);
             request.setTppInfo(tppInfo);
+            request.setPsuDataList(Arrays.asList(paymentInitiationParameters.getPsuData()));
 
             return createCommonPaymentService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
         }
