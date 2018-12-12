@@ -20,10 +20,12 @@ import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class EncryptionDecryptionService {
     private final SecurityDataService securityDataService;
