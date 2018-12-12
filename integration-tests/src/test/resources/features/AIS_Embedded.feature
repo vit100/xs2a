@@ -36,3 +36,18 @@ Feature: Account Information Service - Embedded approach
             | consent-all-accounts-successful.json |         false          |     false      |
             | consent-all-accounts-successful.json |         true           |     null       |
             | consent-all-accounts-successful.json |         false          |     null       |
+    @SASRCC
+    Scenario Outline: Successful Authorisation Sub-Resources request for consent creation (embedded)
+        Given PSU created a consent resource <consent-id>
+        And PSU wants to start the authorisation for consent creation using the authorisation data <authorisation-data>
+        And consent authorisation is started
+        And another consent authorisation is started for this consent
+        And AISP wants to get all Authorisation Sub-Resources
+        When AISP requests Authorisation Sub-Resources
+        Then a successful response code and the array of authorisationIds in response gets returned
+
+        Examples:
+            |consent-id                             |authorisation-data                |
+            |consent-all-accounts-successful.json   |startAuth-successful.json |
+            |consent-all-accounts-successful.json   |consent-all-Auth-successful.json |
+
