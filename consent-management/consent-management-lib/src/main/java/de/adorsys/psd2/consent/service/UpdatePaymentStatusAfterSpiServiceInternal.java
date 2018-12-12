@@ -17,31 +17,42 @@
 package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiService;
+import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Service("updatePaymentStatusAfterSpiServiceInternalUnencrypted")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePaymentStatusAfterSpiService {
     private final PisPaymentDataRepository pisPaymentDataRepository;
+    private final PisConsentService pisConsentService;
+    private final CommonPaymentDataService commonPaymentDataService;
 
     @Override
     @Transactional
-    public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status) {
-        List<PisPaymentData> payments = pisPaymentDataRepository.findByPaymentId(paymentId)
-                                            .orElse(Collections.emptyList());
+    public boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status) {
+        Optional<List<PisPaymentData>> list = getPaymentDataList(encryptedPaymentId);
 
-        return updateStatusInPaymentDataList(payments, status);
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
+        if (list.isPresent()) {
+            return updateStatusInPaymentDataList(list.get(), status);
+        } else {
+            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(encryptedPaymentId);
+
+            return paymentDataOptional.isPresent()
+                       && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
+        }
     }
 
     private boolean updateStatusInPaymentDataList(List<PisPaymentData> payments, TransactionStatus newStatus) {

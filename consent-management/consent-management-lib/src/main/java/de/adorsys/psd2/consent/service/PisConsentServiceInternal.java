@@ -26,9 +26,10 @@ import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisConsent;
 import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
-import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
+import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
 import de.adorsys.psd2.consent.repository.PisConsentRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
@@ -39,6 +40,7 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +67,8 @@ public class PisConsentServiceInternal implements PisConsentService {
     private final PsuDataMapper psuDataMapper;
     private final PisConsentAuthorizationRepository pisConsentAuthorizationRepository;
     private final PisPaymentDataRepository pisPaymentDataRepository;
+    private final PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
+    private final SecurityDataService securityDataService;
     private final AspspProfileService aspspProfileService;
 
     /**
@@ -143,8 +147,14 @@ public class PisConsentServiceInternal implements PisConsentService {
     @Transactional
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType,
                                                                                PsuIdData psuData) {
-        return pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
-                   .map(list -> saveNewAuthorization(list.get(0).getConsent(), authorizationType, psuData))
+        Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
+        if (!paymentId.isPresent()) {
+            log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
+            return Optional.empty();
+        }
+
+        return readReceivedConsentByPaymentId(paymentId.get())
+                   .map(pisConsent -> saveNewAuthorisation(pisConsent, authorizationType, psuData))
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
 
@@ -208,7 +218,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     public void updatePaymentConsent(PisConsentRequest request, String consentId) {
         Optional<PisConsent> pisConsentById = pisConsentRepository.findByExternalId(consentId);
         pisConsentById
-            .ifPresent(pisConsent -> pisPaymentDataRepository.save(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent)));
+            .ifPresent(pisConsent -> savePaymentData(pisConsent, request));
     }
 
     /**
@@ -238,30 +248,20 @@ public class PisConsentServiceInternal implements PisConsentService {
     /**
      * Reads authorisation IDs data by payment Id and type of authorization
      *
-     * @param paymentId         Payment ID
-     * @param authorisationType type of authorization required to create. Can be  CREATED or CANCELLED
+     * @param paymentId id of the payment
+     * @param authorisationType  type of authorization required to create. Can be  CREATED or CANCELLED
      * @return response contains authorisation IDs
      */
     @Override
-    public Optional<List<String>> getAuthorisationsByPaymentId(String paymentId, CmsAuthorisationType authorisationType) {
-        Optional<List<PisPaymentData>> paymentDataListOptional = pisPaymentDataRepository.findByPaymentId(paymentId);
-        if (!paymentDataListOptional.isPresent()) {
+    public Optional<List<String>> getAuthorisationsByPaymentId(String encryptedPaymentId, CmsAuthorisationType authorisationType) {
+        Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
+        if (!paymentId.isPresent()) {
+            log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
             return Optional.empty();
         }
 
-        List<PisPaymentData> paymentDataList = paymentDataListOptional.get();
-        if (paymentDataList.isEmpty()) {
-            return Optional.of(Collections.emptyList());
-        }
-
-        List<String> authorisationIds = paymentDataList.get(0).getConsent()
-                                            .getAuthorizations()
-                                            .stream()
-                                            .filter(auth -> auth.getAuthorizationType() == authorisationType)
-                                            .map(PisConsentAuthorization::getExternalId)
-                                            .collect(Collectors.toList());
-
-        return Optional.of(authorisationIds);
+        return readReceivedConsentByPaymentId(paymentId.get())
+                   .map(cnst -> readAuthorisationsFromConsent(cnst, authorisationType));
     }
 
     /**
@@ -271,10 +271,14 @@ public class PisConsentServiceInternal implements PisConsentService {
      * @return response contains data of Psu
      */
     @Override
-    public Optional<PsuIdData> getPsuDataByPaymentId(String paymentId) {
-        return pisPaymentDataRepository.findByPaymentId(paymentId)
-                   .map(l -> l.get(0))
-                   .map(PisPaymentData::getConsent)
+    public Optional<PsuIdData> getPsuDataByPaymentId(String encryptedPaymentId) {
+        Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
+        if (!paymentId.isPresent()) {
+            log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
+            return Optional.empty();
+        }
+
+        return readPisConsentByPaymentId(paymentId.get())
                    .map(pc -> psuDataMapper.mapToPsuIdData(pc.getPsuData()));
     }
 
@@ -300,21 +304,68 @@ public class PisConsentServiceInternal implements PisConsentService {
         return pisConsentRepository.save(consent);
     }
 
+    private Optional<PisConsent> readReceivedConsentByPaymentId(String paymentId) {
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
+        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
+                                              .filter(CollectionUtils::isNotEmpty)
+                                              .map(list -> list.get(0).getConsent());
+
+        if (!consentOpt.isPresent()) {
+            consentOpt = pisCommonPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, RECEIVED)
+                             .map(PisCommonPaymentData::getConsent);
+        }
+
+        return consentOpt;
+    }
+
+    private Optional<PisConsent> readPisConsentByPaymentId(String paymentId) {
+        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
+        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
+                                              .filter(CollectionUtils::isNotEmpty)
+                                              .map(list -> list.get(0).getConsent());
+
+        if (!consentOpt.isPresent()) {
+            consentOpt = pisCommonPaymentDataRepository.findByPaymentId(paymentId)
+                             .map(PisCommonPaymentData::getConsent);
+        }
+
+        return consentOpt;
+    }
+
+    private void savePaymentData(PisConsent pisConsent, PisConsentRequest request) {
+        boolean isCommonPayment = CollectionUtils.isEmpty(request.getPayments()) && request.getPaymentInfo() != null;
+        // todo implementation should be changed  https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
+
+        if (isCommonPayment) {
+            pisCommonPaymentDataRepository.save(pisConsentMapper.mapToPisCommonPaymentData(request.getPaymentInfo(), pisConsent));
+        } else {
+            pisPaymentDataRepository.save(pisConsentMapper.mapToPisPaymentDataList(request.getPayments(), pisConsent));
+        }
+    }
+
     /**
-     * Creates PIS consent authorization entity and stores it into database
+     * Creates PIS consent authorisation entity and stores it into database
      *
-     * @param pisConsent PIS Consent, for which authorization is performed
+     * @param pisConsent PIS Consent, for which authorisation is performed
      * @return PisConsentAuthorization
      */
-    private PisConsentAuthorization saveNewAuthorization(PisConsent pisConsent, CmsAuthorisationType authorizationType, PsuIdData psuData) {
+    private PisConsentAuthorization saveNewAuthorisation(PisConsent pisConsent, CmsAuthorisationType authorisationType, PsuIdData psuData) {
         PisConsentAuthorization consentAuthorization = new PisConsentAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
         consentAuthorization.setConsent(pisConsent);
         consentAuthorization.setScaStatus(STARTED);
-        consentAuthorization.setAuthorizationType(authorizationType);
+        consentAuthorization.setAuthorizationType(authorisationType);
         consentAuthorization.setPsuData(psuDataMapper.mapToPsuData(psuData));
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
         return pisConsentAuthorizationRepository.save(consentAuthorization);
+    }
+
+    private List<String> readAuthorisationsFromConsent(PisConsent pisConsent, CmsAuthorisationType authorisationType) {
+        return pisConsent.getAuthorizations()
+                   .stream()
+                   .filter(auth -> auth.getAuthorizationType() == authorisationType)
+                   .map(PisConsentAuthorization::getExternalId)
+                   .collect(Collectors.toList());
     }
 
     private ScaStatus doUpdateConsentAuthorisation(UpdatePisConsentPsuDataRequest request, PisConsentAuthorization pisConsentAuthorisation) {
