@@ -47,7 +47,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -68,7 +67,6 @@ public class PisConsentServiceInternal implements PisConsentService {
     private final PisConsentAuthorizationRepository pisConsentAuthorizationRepository;
     private final PisPaymentDataRepository pisPaymentDataRepository;
     private final PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
-    private final SecurityDataService securityDataService;
     private final AspspProfileService aspspProfileService;
 
     /**
@@ -147,13 +145,7 @@ public class PisConsentServiceInternal implements PisConsentService {
     @Transactional
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType,
                                                                                PsuIdData psuData) {
-        Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
-        if (!paymentId.isPresent()) {
-            log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
-            return Optional.empty();
-        }
-
-        return readReceivedConsentByPaymentId(paymentId.get())
+        return readReceivedConsentByPaymentId(paymentId)
                    .map(pisConsent -> saveNewAuthorisation(pisConsent, authorizationType, psuData))
                    .map(c -> new CreatePisConsentAuthorisationResponse(c.getExternalId()));
     }
@@ -248,19 +240,13 @@ public class PisConsentServiceInternal implements PisConsentService {
     /**
      * Reads authorisation IDs data by payment Id and type of authorization
      *
-     * @param paymentId id of the payment
-     * @param authorisationType  type of authorization required to create. Can be  CREATED or CANCELLED
+     * @param paymentId         id of the payment
+     * @param authorisationType type of authorization required to create. Can be  CREATED or CANCELLED
      * @return response contains authorisation IDs
      */
     @Override
-    public Optional<List<String>> getAuthorisationsByPaymentId(String encryptedPaymentId, CmsAuthorisationType authorisationType) {
-        Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
-        if (!paymentId.isPresent()) {
-            log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
-            return Optional.empty();
-        }
-
-        return readReceivedConsentByPaymentId(paymentId.get())
+    public Optional<List<String>> getAuthorisationsByPaymentId(String paymentId, CmsAuthorisationType authorisationType) {
+        return readReceivedConsentByPaymentId(paymentId)
                    .map(cnst -> readAuthorisationsFromConsent(cnst, authorisationType));
     }
 
@@ -271,14 +257,8 @@ public class PisConsentServiceInternal implements PisConsentService {
      * @return response contains data of Psu
      */
     @Override
-    public Optional<PsuIdData> getPsuDataByPaymentId(String encryptedPaymentId) {
-        Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
-        if (!paymentId.isPresent()) {
-            log.warn("Payment Id has not encrypted: {}", encryptedPaymentId);
-            return Optional.empty();
-        }
-
-        return readPisConsentByPaymentId(paymentId.get())
+    public Optional<PsuIdData> getPsuDataByPaymentId(String paymentId) {
+        return readPisConsentByPaymentId(paymentId)
                    .map(pc -> psuDataMapper.mapToPsuIdData(pc.getPsuData()));
     }
 

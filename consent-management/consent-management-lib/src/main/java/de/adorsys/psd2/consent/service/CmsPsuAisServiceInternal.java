@@ -144,8 +144,8 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
         return consent;
     }
 
-    private Optional<AisConsent> getActualAisConsent(String encryptedConsentId) {
-        return aisConsentRepository.findByExternalId(encryptedConsentId)
+    private Optional<AisConsent> getActualAisConsent(String consentId) {
+        return aisConsentRepository.findByExternalId(consentId)
                    .filter(c -> !c.getConsentStatus().isFinalisedStatus());
     }
 

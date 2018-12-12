@@ -35,7 +35,6 @@ import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -61,38 +60,35 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final PsuDataMapper psuDataMapper;
 
     public CmsPsuPisServiceInternal(PisPaymentDataRepository pisPaymentDataRepository,
+                                    PisCommonPaymentDataRepository pisCommonPaymentDataRepository,
                                     PisConsentAuthorizationRepository pisConsentAuthorizationRepository,
                                     CmsPsuPisMapper cmsPsuPisMapper,
                                     @Qualifier("pisConsentServiceUnencrypted") PisConsentService pisConsentService,
+                                    CommonPaymentDataService commonPaymentDataService,
                                     PsuDataRepository psuDataRepository,
                                     PsuDataMapper psuDataMapper) {
         this.pisPaymentDataRepository = pisPaymentDataRepository;
+        this.pisCommonPaymentDataRepository = pisCommonPaymentDataRepository;
         this.pisConsentAuthorizationRepository = pisConsentAuthorizationRepository;
         this.cmsPsuPisMapper = cmsPsuPisMapper;
         this.pisConsentService = pisConsentService;
+        this.commonPaymentDataService = commonPaymentDataService;
         this.psuDataRepository = psuDataRepository;
         this.psuDataMapper = psuDataMapper;
     }
 
     @Override
     @Transactional
-    public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String encryptedPaymentId) {
-        Optional<String> paymentId = pisConsentService.getDecryptedId(encryptedPaymentId);
-
-        if (!paymentId.isPresent()) {
-            log.warn("Payment Id is not encrypted: {}", encryptedPaymentId);
-            return false;
-        }
-
-        Optional<PisConsent> pisConsent = getPisConsentByPaymentId(paymentId.get());
+    public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String paymentId) {
+        Optional<PisConsent> pisConsent = getPisConsentByPaymentId(paymentId);
 
         return pisConsent.isPresent() && updatePsuData(pisConsent.get(), psuIdData);
     }
 
     @Override
-    public @NotNull Optional<CmsPayment> getPayment(@NotNull PsuIdData psuIdData, @NotNull String encryptedPaymentId) {
-        if (isPsuDataEquals(encryptedPaymentId, psuIdData)) {
-            Optional<List<PisPaymentData>> list = getPaymentDataList(encryptedPaymentId);
+    public @NotNull Optional<CmsPayment> getPayment(@NotNull PsuIdData psuIdData, @NotNull String paymentId) {
+        if (isPsuDataEquals(paymentId, psuIdData)) {
+            Optional<List<PisPaymentData>> list = pisPaymentDataRepository.findByPaymentId(paymentId);
 
             // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
             if (list.isPresent()) {
@@ -100,7 +96,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                            .filter(CollectionUtils::isNotEmpty)
                            .map(cmsPsuPisMapper::mapToCmsPayment);
             } else {
-                return commonPaymentDataService.getPisCommonPaymentData(encryptedPaymentId)
+                return commonPaymentDataService.getPisCommonPaymentData(paymentId)
                            .map(cmsPsuPisMapper::mapToCmsPayment);
             }
         }
@@ -143,14 +139,14 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
 
     @Override
     @Transactional
-    public boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status) {
-        Optional<List<PisPaymentData>> list = getPaymentDataList(encryptedPaymentId);
+    public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status) {
+        Optional<List<PisPaymentData>> list = pisPaymentDataRepository.findByPaymentId(paymentId);
 
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         if (list.isPresent()) {
             return updateStatusInPaymentDataList(list.get(), status);
         } else {
-            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(encryptedPaymentId);
+            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId);
 
             return paymentDataOptional.isPresent()
                        && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
@@ -166,7 +162,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private boolean validateGivenData(String paymentId, String givenPaymentId, PsuIdData psuIdData) {
-        return Optional.ofNullable(givenPaymentId)
+        return Optional.of(givenPaymentId)
                    .filter(p -> isPsuDataEquals(givenPaymentId, psuIdData))
                    .map(id -> StringUtils.equals(paymentId, id))
                    .orElse(false);
@@ -181,8 +177,8 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                    .isPresent();
     }
 
-    private boolean isPsuDataEquals(String encryptedPaymentId, PsuIdData psuIdData) {
-        return pisConsentService.getPsuDataByPaymentId(encryptedPaymentId)
+    private boolean isPsuDataEquals(String paymentId, PsuIdData psuIdData) {
+        return pisConsentService.getPsuDataByPaymentId(paymentId)
                    .map(p -> p.contentEquals(psuIdData))
                    .orElse(false);
     }

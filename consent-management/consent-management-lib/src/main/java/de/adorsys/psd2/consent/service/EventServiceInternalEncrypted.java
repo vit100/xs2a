@@ -19,14 +19,12 @@ package de.adorsys.psd2.consent.service;
 import de.adorsys.psd2.consent.api.service.EventService;
 import de.adorsys.psd2.xs2a.core.event.Event;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Slf4j
 @Primary
 @Service
 @RequiredArgsConstructor
