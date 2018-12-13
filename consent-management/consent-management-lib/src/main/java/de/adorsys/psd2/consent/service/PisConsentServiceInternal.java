@@ -30,7 +30,10 @@ import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisConsent;
 import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
-import de.adorsys.psd2.consent.repository.*;
+import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
+import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
+import de.adorsys.psd2.consent.repository.PisConsentRepository;
+import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.consent.service.mapper.PisConsentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
@@ -382,19 +385,28 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     private PisCommonPaymentData enrichPsuData(PsuIdData psuData, PisCommonPaymentData paymentData) {
-        List<PsuData> psuDataList = paymentData.getPsuData();
-
-        PsuData newPsuData = psuDataMapper.mapToPsuData(psuData);
-
-        boolean inList = psuDataList.stream()
-                         .anyMatch(psu -> psu.getPsuId().equals(newPsuData.getPsuId()));
-
-        if (!inList) {
-            psuDataList.add(newPsuData);
+        if (!isPsuDataInList(psuData, paymentData)) {
+            List<PsuData> psuDataList = paymentData.getPsuData();
+            psuDataList.add(psuDataMapper.mapToPsuData(psuData));
             paymentData.setPsuData(psuDataList);
         }
 
         return paymentData;
+    }
+
+    private boolean isPsuDataInList(PsuIdData psuData, PisCommonPaymentData paymentData) {
+        if ((paymentData == null)
+                || (psuData == null)
+                || StringUtils.isBlank(psuData.getPsuId())) {
+            return false;
+        }
+
+        List<PsuData> psuDataList = paymentData.getPsuData();
+
+        PsuData newPsuData = psuDataMapper.mapToPsuData(psuData);
+
+        return psuDataList.stream()
+                   .anyMatch(psu -> psu.getPsuId().equals(newPsuData.getPsuId()));
     }
 
     private List<String> readAuthorisationsFromConsent(PisConsent pisConsent, CmsAuthorisationType authorisationType) {
