@@ -35,11 +35,11 @@ import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +49,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final PisPaymentDataRepository pisPaymentDataRepository;
     private final PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
@@ -58,24 +59,6 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final CommonPaymentDataService commonPaymentDataService;
     private final PsuDataRepository psuDataRepository;
     private final PsuDataMapper psuDataMapper;
-
-    public CmsPsuPisServiceInternal(PisPaymentDataRepository pisPaymentDataRepository,
-                                    PisCommonPaymentDataRepository pisCommonPaymentDataRepository,
-                                    PisConsentAuthorizationRepository pisConsentAuthorizationRepository,
-                                    CmsPsuPisMapper cmsPsuPisMapper,
-                                    @Qualifier("pisConsentServiceUnencrypted") PisConsentService pisConsentService,
-                                    CommonPaymentDataService commonPaymentDataService,
-                                    PsuDataRepository psuDataRepository,
-                                    PsuDataMapper psuDataMapper) {
-        this.pisPaymentDataRepository = pisPaymentDataRepository;
-        this.pisCommonPaymentDataRepository = pisCommonPaymentDataRepository;
-        this.pisConsentAuthorizationRepository = pisConsentAuthorizationRepository;
-        this.cmsPsuPisMapper = cmsPsuPisMapper;
-        this.pisConsentService = pisConsentService;
-        this.commonPaymentDataService = commonPaymentDataService;
-        this.psuDataRepository = psuDataRepository;
-        this.psuDataMapper = psuDataMapper;
-    }
 
     @Override
     @Transactional

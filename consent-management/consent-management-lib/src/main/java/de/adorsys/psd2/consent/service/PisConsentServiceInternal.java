@@ -129,11 +129,6 @@ public class PisConsentServiceInternal implements PisConsentService {
                    .map(con -> con.getConsentStatus() == status);
     }
 
-    @Override
-    public Optional<String> getDecryptedId(String encryptedId) {
-        return Optional.empty();
-    }
-
     /**
      * Create consent authorization
      *

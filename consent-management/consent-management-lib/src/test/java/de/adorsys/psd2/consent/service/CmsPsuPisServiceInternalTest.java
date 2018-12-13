@@ -124,10 +124,6 @@ public class CmsPsuPisServiceInternalTest {
             .thenReturn(Optional.of(psuIdData));
         when(pisConsentService.getPsuDataByPaymentId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
-        when(pisConsentService.getDecryptedId(PAYMENT_ID))
-            .thenReturn(Optional.of(PAYMENT_ID));
-        when(pisConsentService.getDecryptedId(WRONG_PAYMENT_ID))
-            .thenReturn(Optional.empty());
 
         when(commonPaymentDataService.getPisCommonPaymentData(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());

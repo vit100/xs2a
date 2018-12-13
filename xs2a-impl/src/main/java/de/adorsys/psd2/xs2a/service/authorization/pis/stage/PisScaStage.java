@@ -19,7 +19,7 @@ package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
-import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
@@ -42,7 +42,7 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
     protected final PaymentAuthorisationSpi paymentAuthorisationSpi;
     protected final PaymentCancellationSpi paymentCancellationSpi;
     protected final PisConsentDataService pisConsentDataService;
-    protected final PisConsentService pisConsentService;
+    protected final PisConsentServiceEncrypted pisConsentService;
     protected final CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
     protected final Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper;
     protected final Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper;
@@ -58,7 +58,7 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
     protected PaymentSpi getPaymentService(GetPisConsentAuthorisationResponse pisConsentAuthorisationResponse, PaymentType paymentType) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         if (pisConsentAuthorisationResponse.getPaymentInfo() != null) {
-           return applicationContext.getBean(CommonPaymentSpi.class);
+            return applicationContext.getBean(CommonPaymentSpi.class);
         }
 
         if (PaymentType.SINGLE == paymentType) {

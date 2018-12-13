@@ -25,66 +25,49 @@ import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Primary
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PisConsentServiceInternalEncrypted implements PisConsentService {
+public class PisConsentServiceInternalEncrypted implements PisConsentServiceEncrypted {
     private final EncryptionDecryptionService encryptionDecryptionService;
     private final PisConsentService pisConsentService;
 
     @Override
     @Transactional
     public Optional<CreatePisConsentResponse> createPaymentConsent(PisConsentRequest request) {
-        Optional<CreatePisConsentResponse> response = pisConsentService.createPaymentConsent(request);
-        if (!response.isPresent()) {
-            return Optional.empty();
-        }
-
-        String consentId = response.get().getConsentId();
-        Optional<String> encryptedId = encryptionDecryptionService.encryptConsentId(consentId);
-        return encryptedId.map(CreatePisConsentResponse::new);
+        return pisConsentService.createPaymentConsent(request)
+                   .map(CreatePisConsentResponse::getConsentId)
+                   .flatMap(encryptionDecryptionService::encryptConsentId)
+                   .map(CreatePisConsentResponse::new);
     }
 
     @Override
     public Optional<ConsentStatus> getConsentStatusById(String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.getConsentStatusById(decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(pisConsentService::getConsentStatusById);
     }
 
     @Override
     public Optional<PisConsentResponse> getConsentById(String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.getConsentById(decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(pisConsentService::getConsentById);
     }
 
     @Override
     @Transactional
     public Optional<Boolean> updateConsentStatusById(String encryptedConsentId, ConsentStatus status) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.updateConsentStatusById(decryptedConsentId.get(), status);
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(id -> pisConsentService.updateConsentStatusById(id, status));
     }
 
     @Override
@@ -97,12 +80,8 @@ public class PisConsentServiceInternalEncrypted implements PisConsentService {
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorization(String encryptedPaymentId,
                                                                                CmsAuthorisationType authorisationType,
                                                                                PsuIdData psuData) {
-        Optional<String> decryptedPaymentId = encryptionDecryptionService.decryptPaymentId(encryptedPaymentId);
-        if (!decryptedPaymentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.createAuthorization(decryptedPaymentId.get(), authorisationType, psuData);
+        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+                   .flatMap(id -> pisConsentService.createAuthorization(id, authorisationType, psuData));
     }
 
     @Override
@@ -110,12 +89,8 @@ public class PisConsentServiceInternalEncrypted implements PisConsentService {
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorizationCancellation(String encryptedPaymentId,
                                                                                            CmsAuthorisationType authorisationType,
                                                                                            PsuIdData psuData) {
-        Optional<String> decryptedPaymentId = encryptionDecryptionService.decryptPaymentId(encryptedPaymentId);
-        if (!decryptedPaymentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.createAuthorizationCancellation(decryptedPaymentId.get(), authorisationType, psuData);
+        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+                   .flatMap(id -> pisConsentService.createAuthorizationCancellation(id, authorisationType, psuData));
     }
 
     @Override
@@ -135,12 +110,8 @@ public class PisConsentServiceInternalEncrypted implements PisConsentService {
     @Override
     @Transactional
     public void updatePaymentConsent(PisConsentRequest request, String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return;
-        }
-
-        pisConsentService.updatePaymentConsent(request, decryptedConsentId.get());
+        encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+            .ifPresent(id -> pisConsentService.updatePaymentConsent(request, id));
     }
 
     @Override
@@ -156,31 +127,19 @@ public class PisConsentServiceInternalEncrypted implements PisConsentService {
     @Override
     public Optional<List<String>> getAuthorisationsByPaymentId(String encryptedPaymentId,
                                                                CmsAuthorisationType authorisationType) {
-        Optional<String> decryptedPaymentId = encryptionDecryptionService.decryptPaymentId(encryptedPaymentId);
-        if (!decryptedPaymentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.getAuthorisationsByPaymentId(decryptedPaymentId.get(), authorisationType);
+        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+                   .flatMap(id -> pisConsentService.getAuthorisationsByPaymentId(id, authorisationType));
     }
 
     @Override
     public Optional<PsuIdData> getPsuDataByPaymentId(String encryptedPaymentId) {
-        Optional<String> decryptedPaymentId = encryptionDecryptionService.decryptPaymentId(encryptedPaymentId);
-        if (!decryptedPaymentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.getPsuDataByPaymentId(decryptedPaymentId.get());
+        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+                   .flatMap(pisConsentService::getPsuDataByPaymentId);
     }
 
     @Override
     public Optional<PsuIdData> getPsuDataByConsentId(String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return pisConsentService.getPsuDataByConsentId(decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(pisConsentService::getPsuDataByConsentId);
     }
 }

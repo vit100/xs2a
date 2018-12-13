@@ -18,64 +18,48 @@ package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
+import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Primary
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class AisConsentServiceInternalEncrypted implements AisConsentService {
+public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncrypted {
     private final EncryptionDecryptionService encryptionDecryptionService;
     private final AisConsentService aisConsentService;
 
     @Override
     @Transactional
     public Optional<String> createConsent(CreateAisConsentRequest request) {
-        Optional<String> response = aisConsentService.createConsent(request);
-        if (!response.isPresent()) {
-            return Optional.empty();
-        }
-
-        return encryptionDecryptionService.encryptConsentId(response.get());
+        return aisConsentService.createConsent(request)
+                   .flatMap(encryptionDecryptionService::encryptConsentId);
     }
 
     @Override
     public Optional<ConsentStatus> getConsentStatusById(String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return aisConsentService.getConsentStatusById(decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(aisConsentService::getConsentStatusById);
     }
 
     @Override
     @Transactional
     public boolean updateConsentStatusById(String encryptedConsentId, ConsentStatus status) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return false;
-        }
-
-        return aisConsentService.updateConsentStatusById(decryptedConsentId.get(), status);
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .map(id -> aisConsentService.updateConsentStatusById(id, status))
+                   .orElse(false);
     }
 
     @Override
     public Optional<AisAccountConsent> getAisAccountConsentById(String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return aisConsentService.getAisAccountConsentById(decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(aisConsentService::getAisAccountConsentById);
     }
 
     @Override
@@ -96,39 +80,23 @@ public class AisConsentServiceInternalEncrypted implements AisConsentService {
     @Override
     @Transactional
     public Optional<String> updateAccountAccess(String encryptedConsentId, AisAccountAccessInfo request) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        Optional<String> response = aisConsentService.updateAccountAccess(decryptedConsentId.get(), request);
-        if (!response.isPresent()) {
-            return Optional.empty();
-        }
-
-        return encryptionDecryptionService.encryptConsentId(response.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(decrypted -> aisConsentService.updateAccountAccess(decrypted, request))
+                   .flatMap(encryptionDecryptionService::encryptConsentId);
     }
 
     @Override
     @Transactional
     public Optional<String> createAuthorization(String encryptedConsentId, AisConsentAuthorizationRequest request) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return aisConsentService.createAuthorization(decryptedConsentId.get(), request);
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(id -> aisConsentService.createAuthorization(id, request));
     }
 
     @Override
     public Optional<AisConsentAuthorizationResponse> getAccountConsentAuthorizationById(String authorisationId,
                                                                                         String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return aisConsentService.getAccountConsentAuthorizationById(authorisationId, decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(id -> aisConsentService.getAccountConsentAuthorizationById(authorisationId, id));
     }
 
     @Override
@@ -139,21 +107,13 @@ public class AisConsentServiceInternalEncrypted implements AisConsentService {
 
     @Override
     public Optional<PsuIdData> getPsuDataByConsentId(String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return aisConsentService.getPsuDataByConsentId(decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(aisConsentService::getPsuDataByConsentId);
     }
 
     @Override
     public Optional<List<String>> getAuthorisationsByConsentId(String encryptedConsentId) {
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptConsentId(encryptedConsentId);
-        if (!decryptedConsentId.isPresent()) {
-            return Optional.empty();
-        }
-
-        return aisConsentService.getAuthorisationsByConsentId(decryptedConsentId.get());
+        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+                   .flatMap(aisConsentService::getAuthorisationsByConsentId);
     }
 }

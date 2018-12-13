@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.api.service;
 
 /**
- * EventService without any encryption/decryption. Should not be used in XS2A directly.
+ * UpdatePaymentStatusAfterSpiService with enabled encryption and decryption
  */
-public interface EventService extends EventServiceBase {
+public interface UpdatePaymentStatusAfterSpiServiceEncrypted extends UpdatePaymentStatusAfterSpiServiceBase {
 }

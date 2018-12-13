@@ -17,22 +17,23 @@
 package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.service.EventService;
+import de.adorsys.psd2.consent.api.service.EventServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.event.Event;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Primary
 @Service
 @RequiredArgsConstructor
-public class EventServiceInternalEncrypted implements EventService {
+public class EventServiceInternalEncrypted implements EventServiceEncrypted {
     private final EncryptionDecryptionService encryptionDecryptionService;
     private final EventService eventService;
 
     @Override
+    @Transactional
     public boolean recordEvent(@NotNull Event event) {
         String encryptedConsentId = event.getConsentId();
         String decryptedConsentId = Optional.ofNullable(encryptedConsentId)

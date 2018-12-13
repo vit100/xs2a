@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.api.service;
 
 /**
- * EventService without any encryption/decryption. Should not be used in XS2A directly.
+ * AisConsentService with enabled encryption and decryption
  */
-public interface EventService extends EventServiceBase {
+public interface AisConsentServiceEncrypted extends AisConsentServiceBase {
 }
