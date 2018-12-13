@@ -34,7 +34,7 @@ public class UpdatePaymentStatusAfterSpiServiceInternalEncrypted implements Upda
     @Override
     @Transactional
     public boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status) {
-        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+        return encryptionDecryptionService.decryptId(encryptedPaymentId)
                    .map(id -> updatePaymentStatusAfterSpiService.updatePaymentStatus(id, status))
                    .orElse(false);
     }

@@ -49,9 +49,9 @@ public class UpdatePaymentStatusAfterSpiServiceInternalEncryptedTest {
 
     @Before
     public void setUp() {
-        when(encryptionDecryptionService.decryptPaymentId(ENCRYPTED_PAYMENT_ID)).thenReturn(Optional.of(DECRYPTED_PAYMENT_ID));
-        when(encryptionDecryptionService.decryptPaymentId(WRONG_ENCRYPTED_PAYMENT_ID)).thenReturn(Optional.of(WRONG_DECRYPTED_PAYMENT_ID));
-        when(encryptionDecryptionService.decryptPaymentId(UNDECRYPTABLE_PAYMENT_ID)).thenReturn(Optional.empty());
+        when(encryptionDecryptionService.decryptId(ENCRYPTED_PAYMENT_ID)).thenReturn(Optional.of(DECRYPTED_PAYMENT_ID));
+        when(encryptionDecryptionService.decryptId(WRONG_ENCRYPTED_PAYMENT_ID)).thenReturn(Optional.of(WRONG_DECRYPTED_PAYMENT_ID));
+        when(encryptionDecryptionService.decryptId(UNDECRYPTABLE_PAYMENT_ID)).thenReturn(Optional.empty());
         when(updatePaymentStatusAfterSpiService.updatePaymentStatus(eq(DECRYPTED_PAYMENT_ID), any())).thenReturn(true);
         when(updatePaymentStatusAfterSpiService.updatePaymentStatus(eq(WRONG_DECRYPTED_PAYMENT_ID), any())).thenReturn(false);
     }

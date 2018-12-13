@@ -30,37 +30,31 @@ import java.util.Optional;
 public class EncryptionDecryptionService {
     private final SecurityDataService securityDataService;
 
-    public Optional<String> encryptConsentId(@NotNull String consentId) {
-        Optional<String> encryptedConsentId = securityDataService.encryptId(consentId);
+    /**
+     * Encrypts given id of payment or consent
+     *
+     * @param id id to encrypt
+     * @return Encrypted id if it was successfully encrypted
+     */
+    public Optional<String> encryptId(@NotNull String id) {
+        Optional<String> encryptedConsentId = securityDataService.encryptId(id);
         if (!encryptedConsentId.isPresent()) {
-            log.warn("Couldn't encrypt consent ID: {}", consentId);
+            log.warn("Couldn't encrypt ID: {}", id);
         }
 
         return encryptedConsentId;
     }
 
-    public Optional<String> decryptConsentId(@NotNull String encryptedConsentId) {
-        Optional<String> decryptedId = securityDataService.decryptId(encryptedConsentId);
+    /**
+     * Decrypts given encrypted id of payment or consent
+     *
+     * @param encryptedId id to decrypt
+     * @return Original id if it was successfully decrypted
+     */
+    public Optional<String> decryptId(@NotNull String encryptedId) {
+        Optional<String> decryptedId = securityDataService.decryptId(encryptedId);
         if (!decryptedId.isPresent()) {
-            log.warn("Couldn't decrypt consent ID: {}", encryptedConsentId);
-        }
-
-        return decryptedId;
-    }
-
-    public Optional<String> encryptPaymentId(@NotNull String paymentId) {
-        Optional<String> encryptedPaymentId = securityDataService.encryptId(paymentId);
-        if (!encryptedPaymentId.isPresent()) {
-            log.warn("Couldn't encrypt payment ID: {}", paymentId);
-        }
-
-        return encryptedPaymentId;
-    }
-
-    public Optional<String> decryptPaymentId(@NotNull String encryptedPaymentId) {
-        Optional<String> decryptedId = securityDataService.decryptId(encryptedPaymentId);
-        if (!decryptedId.isPresent()) {
-            log.warn("Couldn't decrypt payment ID: {}", encryptedPaymentId);
+            log.warn("Couldn't decrypt ID: {}", encryptedId);
         }
 
         return decryptedId;

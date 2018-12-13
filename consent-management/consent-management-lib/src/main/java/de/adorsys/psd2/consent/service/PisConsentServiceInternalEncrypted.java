@@ -47,32 +47,32 @@ public class PisConsentServiceInternalEncrypted implements PisConsentServiceEncr
     public Optional<CreatePisConsentResponse> createPaymentConsent(PisConsentRequest request) {
         return pisConsentService.createPaymentConsent(request)
                    .map(CreatePisConsentResponse::getConsentId)
-                   .flatMap(encryptionDecryptionService::encryptConsentId)
+                   .flatMap(encryptionDecryptionService::encryptId)
                    .map(CreatePisConsentResponse::new);
     }
 
     @Override
     public Optional<ConsentStatus> getConsentStatusById(String encryptedConsentId) {
-        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+        return encryptionDecryptionService.decryptId(encryptedConsentId)
                    .flatMap(pisConsentService::getConsentStatusById);
     }
 
     @Override
     public Optional<PisConsentResponse> getConsentById(String encryptedConsentId) {
-        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+        return encryptionDecryptionService.decryptId(encryptedConsentId)
                    .flatMap(pisConsentService::getConsentById);
     }
 
     @Override
     @Transactional
     public Optional<Boolean> updateConsentStatusById(String encryptedConsentId, ConsentStatus status) {
-        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+        return encryptionDecryptionService.decryptId(encryptedConsentId)
                    .flatMap(id -> pisConsentService.updateConsentStatusById(id, status));
     }
 
     @Override
     public Optional<String> getDecryptedId(String encryptedId) {
-        return encryptionDecryptionService.decryptPaymentId(encryptedId);
+        return encryptionDecryptionService.decryptId(encryptedId);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class PisConsentServiceInternalEncrypted implements PisConsentServiceEncr
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorization(String encryptedPaymentId,
                                                                                CmsAuthorisationType authorisationType,
                                                                                PsuIdData psuData) {
-        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+        return encryptionDecryptionService.decryptId(encryptedPaymentId)
                    .flatMap(id -> pisConsentService.createAuthorization(id, authorisationType, psuData));
     }
 
@@ -89,7 +89,7 @@ public class PisConsentServiceInternalEncrypted implements PisConsentServiceEncr
     public Optional<CreatePisConsentAuthorisationResponse> createAuthorizationCancellation(String encryptedPaymentId,
                                                                                            CmsAuthorisationType authorisationType,
                                                                                            PsuIdData psuData) {
-        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+        return encryptionDecryptionService.decryptId(encryptedPaymentId)
                    .flatMap(id -> pisConsentService.createAuthorizationCancellation(id, authorisationType, psuData));
     }
 
@@ -110,7 +110,7 @@ public class PisConsentServiceInternalEncrypted implements PisConsentServiceEncr
     @Override
     @Transactional
     public void updatePaymentConsent(PisConsentRequest request, String encryptedConsentId) {
-        encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+        encryptionDecryptionService.decryptId(encryptedConsentId)
             .ifPresent(id -> pisConsentService.updatePaymentConsent(request, id));
     }
 
@@ -127,19 +127,19 @@ public class PisConsentServiceInternalEncrypted implements PisConsentServiceEncr
     @Override
     public Optional<List<String>> getAuthorisationsByPaymentId(String encryptedPaymentId,
                                                                CmsAuthorisationType authorisationType) {
-        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+        return encryptionDecryptionService.decryptId(encryptedPaymentId)
                    .flatMap(id -> pisConsentService.getAuthorisationsByPaymentId(id, authorisationType));
     }
 
     @Override
     public Optional<PsuIdData> getPsuDataByPaymentId(String encryptedPaymentId) {
-        return encryptionDecryptionService.decryptPaymentId(encryptedPaymentId)
+        return encryptionDecryptionService.decryptId(encryptedPaymentId)
                    .flatMap(pisConsentService::getPsuDataByPaymentId);
     }
 
     @Override
     public Optional<PsuIdData> getPsuDataByConsentId(String encryptedConsentId) {
-        return encryptionDecryptionService.decryptConsentId(encryptedConsentId)
+        return encryptionDecryptionService.decryptId(encryptedConsentId)
                    .flatMap(pisConsentService::getPsuDataByConsentId);
     }
 }

@@ -53,11 +53,11 @@ public class AisConsentServiceInternalEncryptedTest {
 
     @Before
     public void setUp() {
-        when(encryptionDecryptionService.encryptConsentId(DECRYPTED_CONSENT_ID))
+        when(encryptionDecryptionService.encryptId(DECRYPTED_CONSENT_ID))
             .thenReturn(Optional.of(ENCRYPTED_CONSENT_ID));
-        when(encryptionDecryptionService.decryptConsentId(ENCRYPTED_CONSENT_ID))
+        when(encryptionDecryptionService.decryptId(ENCRYPTED_CONSENT_ID))
             .thenReturn(Optional.of(DECRYPTED_CONSENT_ID));
-        when(encryptionDecryptionService.decryptConsentId(UNDECRYPTABLE_CONSENT_ID))
+        when(encryptionDecryptionService.decryptId(UNDECRYPTABLE_CONSENT_ID))
             .thenReturn(Optional.empty());
 
         when(aisConsentService.createConsent(any()))

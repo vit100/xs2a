@@ -62,7 +62,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void encryptConsentId_success() {
         // When
-        Optional<String> actual = encryptionDecryptionService.encryptConsentId(CONSENT_ID);
+        Optional<String> actual = encryptionDecryptionService.encryptId(CONSENT_ID);
 
         // Then
         assertTrue(actual.isPresent());
@@ -72,7 +72,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void encryptConsentId_failure() {
         // When
-        Optional<String> actual = encryptionDecryptionService.encryptConsentId(UNENCRYPTABLE_CONSENT_ID);
+        Optional<String> actual = encryptionDecryptionService.encryptId(UNENCRYPTABLE_CONSENT_ID);
 
         // Then
         assertFalse(actual.isPresent());
@@ -81,7 +81,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void decryptConsentId_success() {
         // When
-        Optional<String> actual = encryptionDecryptionService.decryptConsentId(ENCRYPTED_CONSENT_ID);
+        Optional<String> actual = encryptionDecryptionService.decryptId(ENCRYPTED_CONSENT_ID);
 
         // Then
         assertTrue(actual.isPresent());
@@ -91,7 +91,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void decryptConsentId_failure() {
         // When
-        Optional<String> actual = encryptionDecryptionService.decryptConsentId(UNDECRYPTABLE_CONSENT_ID);
+        Optional<String> actual = encryptionDecryptionService.decryptId(UNDECRYPTABLE_CONSENT_ID);
 
         // Then
         assertFalse(actual.isPresent());
@@ -100,7 +100,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void encryptPaymentId_success() {
         // When
-        Optional<String> actual = encryptionDecryptionService.encryptPaymentId(PAYMENT_ID);
+        Optional<String> actual = encryptionDecryptionService.encryptId(PAYMENT_ID);
 
         // Then
         assertTrue(actual.isPresent());
@@ -110,7 +110,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void encryptPaymentId_failure() {
         // When
-        Optional<String> actual = encryptionDecryptionService.encryptPaymentId(UNENCRYPTABLE_PAYMENT_ID);
+        Optional<String> actual = encryptionDecryptionService.encryptId(UNENCRYPTABLE_PAYMENT_ID);
 
         // Then
         assertFalse(actual.isPresent());
@@ -119,7 +119,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void decryptPaymentId_success() {
         // When
-        Optional<String> actual = encryptionDecryptionService.decryptPaymentId(ENCRYPTED_PAYMENT_ID);
+        Optional<String> actual = encryptionDecryptionService.decryptId(ENCRYPTED_PAYMENT_ID);
 
         // Then
         assertTrue(actual.isPresent());
@@ -129,7 +129,7 @@ public class EncryptionDecryptionServiceTest {
     @Test
     public void decryptPaymentId_failure() {
         // When
-        Optional<String> actual = encryptionDecryptionService.decryptPaymentId(UNDECRYPTABLE_PAYMENT_ID);
+        Optional<String> actual = encryptionDecryptionService.decryptId(UNDECRYPTABLE_PAYMENT_ID);
 
         // Then
         assertFalse(actual.isPresent());

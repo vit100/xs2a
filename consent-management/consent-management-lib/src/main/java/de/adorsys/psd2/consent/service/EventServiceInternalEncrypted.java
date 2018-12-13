@@ -37,12 +37,12 @@ public class EventServiceInternalEncrypted implements EventServiceEncrypted {
     public boolean recordEvent(@NotNull Event event) {
         String encryptedConsentId = event.getConsentId();
         String decryptedConsentId = Optional.ofNullable(encryptedConsentId)
-                                        .flatMap(encryptionDecryptionService::decryptConsentId)
+                                        .flatMap(encryptionDecryptionService::decryptId)
                                         .orElse(null);
 
         String encryptedPaymentId = event.getPaymentId();
         String decryptedPaymentId = Optional.ofNullable(encryptedPaymentId)
-                                        .flatMap(encryptionDecryptionService::decryptPaymentId)
+                                        .flatMap(encryptionDecryptionService::decryptId)
                                         .orElse(null);
 
         Event decryptedEvent = new Event(event.getTimestamp(), decryptedConsentId, decryptedPaymentId,
