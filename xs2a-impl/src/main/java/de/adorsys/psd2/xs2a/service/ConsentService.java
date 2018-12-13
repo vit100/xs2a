@@ -38,6 +38,7 @@ import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
+import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiResponseStatusToXs2aMessageErrorCodeMapper;
@@ -46,6 +47,7 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapp
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.service.validator.CreateConsentRequestValidator;
 import de.adorsys.psd2.xs2a.service.validator.ValidationResult;
+import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.consent.SpiAccountAccess;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
@@ -57,7 +59,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
 import static de.adorsys.psd2.xs2a.domain.consent.Xs2aAccountAccessType.ALL_ACCOUNTS;
@@ -65,7 +70,8 @@ import static de.adorsys.psd2.xs2a.domain.consent.Xs2aAccountAccessType.ALL_ACCO
 
 @Service
 @RequiredArgsConstructor
-public class ConsentService { //TODO change format of consentRequest to mandatory obtain PSU-Id and only return data which belongs to certain PSU tobe changed upon v1.1
+//TODO Refactor Service: split responsibilities https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/569
+public class ConsentService {
     private final Xs2aAisConsentMapper aisConsentMapper;
     private final SpiToXs2aAccountAccessMapper spiToXs2aAccountAccessMapper;
     private final Xs2aAisConsentMapper consentMapper;
@@ -78,6 +84,7 @@ public class ConsentService { //TODO change format of consentRequest to mandator
     private final PisScaAuthorisationService pisAuthorizationService;
     private final PisPsuDataService pisPsuDataService;
     private final TppService tppService;
+    private final SpiContextDataProvider spiContextDataProvider;
     private final AuthorisationMethodService authorisationMethodService;
     private final AisConsentSpi aisConsentSpi;
     private final CreateConsentRequestValidator createConsentRequestValidator;
@@ -113,10 +120,11 @@ public class ConsentService { //TODO change format of consentRequest to mandator
             return ResponseObject.<CreateConsentResponse>builder().fail(new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_400))).build();
         }
 
-        SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(psuData);
         AccountConsent accountConsent = getValidatedAccountConsent(consentId);
 
-        SpiResponse<SpiAccountAccess> initiateAisConsentSpiResponse = aisConsentSpi.initiateAisConsent(spiPsuData, aisConsentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
+        SpiContextData contextData = spiContextDataProvider.provide(psuData, tppInfo);
+
+        SpiResponse<SpiAccountAccess> initiateAisConsentSpiResponse = aisConsentSpi.initiateAisConsent(contextData, aisConsentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
         aisConsentDataService.updateAspspConsentData(initiateAisConsentSpiResponse.getAspspConsentData());
 
         if (initiateAisConsentSpiResponse.hasError()) {
@@ -173,8 +181,11 @@ public class ConsentService { //TODO change format of consentRequest to mandator
         AccountConsent accountConsent = getValidatedAccountConsent(consentId);
 
         if (accountConsent != null) {
-            SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(accountConsent.getPsuData());
-            SpiResponse<VoidResponse> revokeAisConsentResponse = aisConsentSpi.revokeAisConsent(spiPsuData, aisConsentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
+            // TODO this is not correct. https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/569
+            // PSU Data here should be provided from actual request headers. Data in consent is provided in consent
+            SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+
+            SpiResponse<VoidResponse> revokeAisConsentResponse = aisConsentSpi.revokeAisConsent(contextData, aisConsentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
             aisConsentDataService.updateAspspConsentData(revokeAisConsentResponse.getAspspConsentData());
 
             if (revokeAisConsentResponse.hasError()) {

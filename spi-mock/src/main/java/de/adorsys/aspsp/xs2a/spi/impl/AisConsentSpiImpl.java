@@ -23,6 +23,7 @@ import de.adorsys.aspsp.xs2a.spi.impl.service.KeycloakInvokerService;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.exception.RestException;
+import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
@@ -34,7 +35,7 @@ import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse.VoidResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,7 +56,7 @@ import static de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStat
 
 @Component
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AisConsentSpiImpl implements AisConsentSpi {
     private final AspspRemoteUrls remoteSpiUrls;
     @Qualifier("aspspRestTemplate")
@@ -69,7 +70,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     private static final String TEST_MESSAGE = "Test message";
 
     @Override
-    public SpiResponse<SpiAccountAccess> initiateAisConsent(@NotNull SpiPsuData spiPsuData, SpiAccountConsent accountConsent, AspspConsentData initialAspspConsentData) {
+    public SpiResponse<SpiAccountAccess> initiateAisConsent(@NotNull SpiContextData spiContextData, SpiAccountConsent accountConsent, AspspConsentData initialAspspConsentData) {
         log.info("AisConsentSpi initiateAisConsent() mock implementation");
 
         return SpiResponse.<SpiAccountAccess>builder()
@@ -80,7 +81,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     }
 
     @Override
-    public SpiResponse<VoidResponse> revokeAisConsent(@NotNull SpiPsuData spiPsuData, SpiAccountConsent accountConsent, AspspConsentData aspspConsentData) {
+    public SpiResponse<VoidResponse> revokeAisConsent(@NotNull SpiContextData spiContextData, SpiAccountConsent accountConsent, AspspConsentData aspspConsentData) {
         log.info("AisConsentSpi revokeAisConsent() mock implementation");
         return SpiResponse.<VoidResponse>builder()
                    .payload(SpiResponse.voidResponse())
@@ -90,7 +91,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     }
 
     @Override
-    public SpiResponse<SpiAuthorisationStatus> authorisePsu(@NotNull SpiPsuData psuData, String password, SpiAccountConsent accountConsent, AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiAuthorisationStatus> authorisePsu(@NotNull SpiContextData spiContextData, @NotNull SpiPsuData psuData, String password, SpiAccountConsent accountConsent, @NotNull AspspConsentData aspspConsentData) {
         try {
             Optional<SpiAspspAuthorisationData> accessToken = keycloakInvokerService.obtainAuthorisationData(psuData.getPsuId(), password);
             SpiAuthorisationStatus spiAuthorisationStatus = accessToken.map(t -> SUCCESS)
@@ -114,13 +115,13 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     }
 
     @Override
-    public SpiResponse<List<SpiAuthenticationObject>> requestAvailableScaMethods(@NotNull SpiPsuData psuData,
+    public SpiResponse<List<SpiAuthenticationObject>> requestAvailableScaMethods(@NotNull SpiContextData spiContextData,
                                                                                  SpiAccountConsent accountConsent,
-                                                                                 AspspConsentData aspspConsentData) {
+                                                                                 @NotNull AspspConsentData aspspConsentData) {
         try {
             ResponseEntity<List<SpiAuthenticationObject>> response = aspspRestTemplate.exchange(
                 remoteSpiUrls.getScaMethods(), HttpMethod.GET, null, new ParameterizedTypeReference<List<SpiAuthenticationObject>>() {
-                }, psuData.getPsuId());
+                }, spiContextData.getPsuData().getPsuId());
             List<SpiAuthenticationObject> spiScaMethods = Optional.ofNullable(response.getBody())
                                                               .orElseGet(Collections::emptyList);
             return new SpiResponse<>(spiScaMethods, aspspConsentData);
@@ -139,12 +140,12 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     }
 
     @Override
-    public @NotNull SpiResponse<SpiAuthorizationCodeResult> requestAuthorisationCode(@NotNull SpiPsuData psuData,
+    public @NotNull SpiResponse<SpiAuthorizationCodeResult> requestAuthorisationCode(@NotNull SpiContextData spiContextData,
                                                                                      @NotNull String authenticationMethodId,
                                                                                      @NotNull SpiAccountConsent accountConsent,
                                                                                      @NotNull AspspConsentData aspspConsentData) {
         try {
-            aspspRestTemplate.exchange(remoteSpiUrls.getGenerateTanConfirmationForAis(), HttpMethod.POST, null, Void.class, psuData.getPsuId());
+            aspspRestTemplate.exchange(remoteSpiUrls.getGenerateTanConfirmationForAis(), HttpMethod.POST, null, Void.class, spiContextData.getPsuData().getPsuId());
             return SpiResponse.<SpiAuthorizationCodeResult>builder()
                        // TODO We need to return real payload data from ASPSP https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/489
                        .payload(getDefaultSpiAuthorizationCodeResult())
@@ -165,7 +166,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     }
 
     @Override
-    public @NotNull SpiResponse<VoidResponse> verifyScaAuthorisation(@NotNull SpiPsuData psuData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiAccountConsent accountConsent, @NotNull AspspConsentData aspspConsentData) {
+    public @NotNull SpiResponse<VoidResponse> verifyScaAuthorisation(@NotNull SpiContextData spiContextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiAccountConsent accountConsent, @NotNull AspspConsentData aspspConsentData) {
         try {
             aspspRestTemplate.exchange(remoteSpiUrls.applyStrongUserAuthorisationForAis(), HttpMethod.PUT, new HttpEntity<>(spiScaConfirmation), Void.class);
             return SpiResponse.<VoidResponse>builder()
