@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 import static de.adorsys.psd2.consent.api.TypeAccess.*;
 import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
 
-@Service("aisConsentServiceUnencrypted")
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 // TODO temporary solution to switch off Hibernate dirty check. Need to understand why objects are changed here. https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/364

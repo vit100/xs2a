@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("eventServiceInternalUnencrypted")
+@Service
 @RequiredArgsConstructor
 public class EventServiceInternal implements EventService {
     private final EventMapper eventMapper;

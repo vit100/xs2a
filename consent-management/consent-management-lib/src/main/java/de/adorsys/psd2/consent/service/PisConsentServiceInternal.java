@@ -57,7 +57,7 @@ import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.STARTED;
 
 @Slf4j
-@Service("pisConsentServiceUnencrypted")
+@Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PisConsentServiceInternal implements PisConsentService {

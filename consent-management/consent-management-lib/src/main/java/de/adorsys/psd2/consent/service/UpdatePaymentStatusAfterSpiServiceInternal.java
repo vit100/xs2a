@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Service("updatePaymentStatusAfterSpiServiceInternalUnencrypted")
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePaymentStatusAfterSpiService {
