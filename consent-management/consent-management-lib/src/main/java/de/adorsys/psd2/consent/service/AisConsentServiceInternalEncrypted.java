@@ -44,8 +44,7 @@ public class AisConsentServiceInternalEncrypted implements AisConsentService {
             return Optional.empty();
         }
 
-        String consentId = response.get();
-        return encryptionDecryptionService.encryptConsentId(consentId);
+        return encryptionDecryptionService.encryptConsentId(response.get());
     }
 
     @Override
@@ -107,8 +106,7 @@ public class AisConsentServiceInternalEncrypted implements AisConsentService {
             return Optional.empty();
         }
 
-        String consentId = response.get();
-        return encryptionDecryptionService.encryptConsentId(consentId);
+        return encryptionDecryptionService.encryptConsentId(response.get());
     }
 
     @Override
