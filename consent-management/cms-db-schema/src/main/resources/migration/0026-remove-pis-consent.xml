@@ -18,11 +18,4 @@
 <databaseChangeLog logicalFilePath="db.changelog-1.0.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-
-    <changeSet author="msh@adorsys.com.ua" id="2018-12-10-2">
-        <comment>Remove status column from tpp_info table</comment>
-
-        <dropColumn columnName="status" tableName="tpp_info"/>
-    </changeSet>
-
 </databaseChangeLog>
