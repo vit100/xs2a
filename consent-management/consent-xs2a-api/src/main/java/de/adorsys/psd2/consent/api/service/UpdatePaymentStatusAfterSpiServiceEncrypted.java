@@ -17,7 +17,9 @@
 package de.adorsys.psd2.consent.api.service;
 
 /**
- * UpdatePaymentStatusAfterSpiService with enabled encryption and decryption
+ * UpdatePaymentStatusAfterSpiService with enabled encryption and decryption.
+ * Service to be used to update payment status ONLY after getting SPI service result.
+ * Should not be used for any other business logic purposes.
  */
 public interface UpdatePaymentStatusAfterSpiServiceEncrypted extends UpdatePaymentStatusAfterSpiServiceBase {
 }
