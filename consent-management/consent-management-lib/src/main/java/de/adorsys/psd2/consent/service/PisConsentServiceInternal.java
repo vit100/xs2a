@@ -395,8 +395,8 @@ public class PisConsentServiceInternal implements PisConsentService {
     }
 
     private boolean isPsuDataInList(PsuIdData psuData, PisCommonPaymentData paymentData) {
-        if ((paymentData == null)
-                || (psuData == null)
+        if (paymentData == null
+                || psuData == null
                 || StringUtils.isBlank(psuData.getPsuId())) {
             return false;
         }
