@@ -18,6 +18,7 @@ package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.service.EventService;
 import de.adorsys.psd2.consent.api.service.EventServiceEncrypted;
+import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.event.Event;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class EventServiceInternalEncrypted implements EventServiceEncrypted {
-    private final EncryptionDecryptionService encryptionDecryptionService;
+    private final SecurityDataService securityDataService;
     private final EventService eventService;
 
     @Override
@@ -37,12 +38,12 @@ public class EventServiceInternalEncrypted implements EventServiceEncrypted {
     public boolean recordEvent(@NotNull Event event) {
         String encryptedConsentId = event.getConsentId();
         String decryptedConsentId = Optional.ofNullable(encryptedConsentId)
-                                        .flatMap(encryptionDecryptionService::decryptId)
+                                        .flatMap(securityDataService::decryptId)
                                         .orElse(null);
 
         String encryptedPaymentId = event.getPaymentId();
         String decryptedPaymentId = Optional.ofNullable(encryptedPaymentId)
-                                        .flatMap(encryptionDecryptionService::decryptId)
+                                        .flatMap(securityDataService::decryptId)
                                         .orElse(null);
 
         Event decryptedEvent = new Event(event.getTimestamp(), decryptedConsentId, decryptedPaymentId,

@@ -25,6 +25,7 @@ import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
@@ -62,21 +63,21 @@ public class PisConsentServiceInternalEncryptedTest {
     @Mock
     private PisConsentService pisConsentService;
     @Mock
-    private EncryptionDecryptionService encryptionDecryptionService;
+    private SecurityDataService securityDataService;
 
     @Before
     public void setUp() {
-        when(encryptionDecryptionService.encryptId(DECRYPTED_CONSENT_ID))
+        when(securityDataService.encryptId(DECRYPTED_CONSENT_ID))
             .thenReturn(Optional.of(ENCRYPTED_CONSENT_ID));
-        when(encryptionDecryptionService.decryptId(ENCRYPTED_CONSENT_ID))
+        when(securityDataService.decryptId(ENCRYPTED_CONSENT_ID))
             .thenReturn(Optional.of(DECRYPTED_CONSENT_ID));
-        when(encryptionDecryptionService.decryptId(UNDECRYPTABLE_CONSENT_ID))
+        when(securityDataService.decryptId(UNDECRYPTABLE_CONSENT_ID))
             .thenReturn(Optional.empty());
-        when(encryptionDecryptionService.encryptId(DECRYPTED_PAYMENT_ID))
+        when(securityDataService.encryptId(DECRYPTED_PAYMENT_ID))
             .thenReturn(Optional.of(ENCRYPTED_PAYMENT_ID));
-        when(encryptionDecryptionService.decryptId(ENCRYPTED_PAYMENT_ID))
+        when(securityDataService.decryptId(ENCRYPTED_PAYMENT_ID))
             .thenReturn(Optional.of(DECRYPTED_PAYMENT_ID));
-        when(encryptionDecryptionService.decryptId(UNDECRYPTABLE_PAYMENT_ID))
+        when(securityDataService.decryptId(UNDECRYPTABLE_PAYMENT_ID))
             .thenReturn(Optional.empty());
 
         when(pisConsentService.createPaymentConsent(buildPisConsentRequest()))

@@ -17,6 +17,7 @@
 package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.service.EventService;
+import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.event.Event;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,15 +47,15 @@ public class EventServiceInternalEncryptedTest {
     @Mock
     private EventService eventService;
     @Mock
-    private EncryptionDecryptionService encryptionDecryptionService;
+    private SecurityDataService securityDataService;
 
     @Before
     public void setUp() {
         when(eventService.recordEvent(buildEvent(DECRYPTED_CONSENT_ID, DECRYPTED_PAYMENT_ID))).thenReturn(true);
-        when(encryptionDecryptionService.decryptId(ENCRYPTED_PAYMENT_ID)).thenReturn(Optional.of(DECRYPTED_PAYMENT_ID));
-        when(encryptionDecryptionService.decryptId(UNDECRYPTABLE_PAYMENT_ID)).thenReturn(Optional.empty());
-        when(encryptionDecryptionService.decryptId(ENCRYPTED_CONSENT_ID)).thenReturn(Optional.of(DECRYPTED_CONSENT_ID));
-        when(encryptionDecryptionService.decryptId(UNDECRYPTABLE_CONSENT_ID)).thenReturn(Optional.empty());
+        when(securityDataService.decryptId(ENCRYPTED_PAYMENT_ID)).thenReturn(Optional.of(DECRYPTED_PAYMENT_ID));
+        when(securityDataService.decryptId(UNDECRYPTABLE_PAYMENT_ID)).thenReturn(Optional.empty());
+        when(securityDataService.decryptId(ENCRYPTED_CONSENT_ID)).thenReturn(Optional.of(DECRYPTED_CONSENT_ID));
+        when(securityDataService.decryptId(UNDECRYPTABLE_CONSENT_ID)).thenReturn(Optional.empty());
     }
 
     @Test

@@ -19,6 +19,7 @@ package de.adorsys.psd2.consent.service;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
 import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
+import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
@@ -32,33 +33,33 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncrypted {
-    private final EncryptionDecryptionService encryptionDecryptionService;
+    private final SecurityDataService securityDataService;
     private final AisConsentService aisConsentService;
 
     @Override
     @Transactional
     public Optional<String> createConsent(CreateAisConsentRequest request) {
         return aisConsentService.createConsent(request)
-                   .flatMap(encryptionDecryptionService::encryptId);
+                   .flatMap(securityDataService::encryptId);
     }
 
     @Override
     public Optional<ConsentStatus> getConsentStatusById(String encryptedConsentId) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(aisConsentService::getConsentStatusById);
     }
 
     @Override
     @Transactional
     public boolean updateConsentStatusById(String encryptedConsentId, ConsentStatus status) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .map(id -> aisConsentService.updateConsentStatusById(id, status))
                    .orElse(false);
     }
 
     @Override
     public Optional<AisAccountConsent> getAisAccountConsentById(String encryptedConsentId) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(aisConsentService::getAisAccountConsentById);
     }
 
@@ -66,7 +67,7 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
     @Transactional
     public void checkConsentAndSaveActionLog(AisConsentActionRequest encryptedRequest) {
         String consentId = encryptedRequest.getConsentId();
-        Optional<String> decryptedConsentId = encryptionDecryptionService.decryptId(consentId);
+        Optional<String> decryptedConsentId = securityDataService.decryptId(consentId);
         if (!decryptedConsentId.isPresent()) {
             return;
         }
@@ -80,22 +81,22 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
     @Override
     @Transactional
     public Optional<String> updateAccountAccess(String encryptedConsentId, AisAccountAccessInfo request) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(decrypted -> aisConsentService.updateAccountAccess(decrypted, request))
-                   .flatMap(encryptionDecryptionService::encryptId);
+                   .flatMap(securityDataService::encryptId);
     }
 
     @Override
     @Transactional
     public Optional<String> createAuthorization(String encryptedConsentId, AisConsentAuthorizationRequest request) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(id -> aisConsentService.createAuthorization(id, request));
     }
 
     @Override
     public Optional<AisConsentAuthorizationResponse> getAccountConsentAuthorizationById(String authorisationId,
                                                                                         String encryptedConsentId) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(id -> aisConsentService.getAccountConsentAuthorizationById(authorisationId, id));
     }
 
@@ -107,13 +108,13 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
 
     @Override
     public Optional<PsuIdData> getPsuDataByConsentId(String encryptedConsentId) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(aisConsentService::getPsuDataByConsentId);
     }
 
     @Override
     public Optional<List<String>> getAuthorisationsByConsentId(String encryptedConsentId) {
-        return encryptionDecryptionService.decryptId(encryptedConsentId)
+        return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(aisConsentService::getAuthorisationsByConsentId);
     }
 }

@@ -19,6 +19,7 @@ package de.adorsys.psd2.consent.service;
 import de.adorsys.psd2.consent.api.ActionStatus;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
+import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import org.junit.Before;
@@ -49,15 +50,15 @@ public class AisConsentServiceInternalEncryptedTest {
     @Mock
     private AisConsentService aisConsentService;
     @Mock
-    private EncryptionDecryptionService encryptionDecryptionService;
+    private SecurityDataService securityDataService;
 
     @Before
     public void setUp() {
-        when(encryptionDecryptionService.encryptId(DECRYPTED_CONSENT_ID))
+        when(securityDataService.encryptId(DECRYPTED_CONSENT_ID))
             .thenReturn(Optional.of(ENCRYPTED_CONSENT_ID));
-        when(encryptionDecryptionService.decryptId(ENCRYPTED_CONSENT_ID))
+        when(securityDataService.decryptId(ENCRYPTED_CONSENT_ID))
             .thenReturn(Optional.of(DECRYPTED_CONSENT_ID));
-        when(encryptionDecryptionService.decryptId(UNDECRYPTABLE_CONSENT_ID))
+        when(securityDataService.decryptId(UNDECRYPTABLE_CONSENT_ID))
             .thenReturn(Optional.empty());
 
         when(aisConsentService.createConsent(any()))
