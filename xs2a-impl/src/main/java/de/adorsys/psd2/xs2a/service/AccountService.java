@@ -27,6 +27,7 @@ import de.adorsys.psd2.xs2a.domain.account.*;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAccountAccess;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.service.consent.AccountReferenceInConsentUpdater;
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
@@ -40,7 +41,6 @@ import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
 import de.adorsys.psd2.xs2a.spi.service.AccountSpi;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -73,6 +73,7 @@ public class AccountService {
     private final AspspProfileServiceWrapper aspspProfileService;
     private final AisConsentDataService aisConsentDataService;
     private final Xs2aEventService xs2aEventService;
+    private final AccountReferenceInConsentUpdater accountReferenceUpdater;
 
     /**
      * Gets AccountDetails list based on accounts in provided AIS-consent, depending on withBalance variable and
@@ -107,9 +108,7 @@ public class AccountService {
         }
 
         List<Xs2aAccountDetails> accountDetails = accountDetailsMapper.mapToXs2aAccountDetailsList(spiResponse.getPayload());
-        updateResourceId(accountConsent.getAccess(), accountDetails);
-
-        aisConsentService.updateAccountAccess(consentId, consentMapper.mapToAisAccountAccessInfo(accountConsent.getAccess()));
+        accountReferenceUpdater.updateAccountReferences(consentId, accountDetails);
 
         ResponseObject<Map<String, List<Xs2aAccountDetails>>> response = ResponseObject.<Map<String,
                                                                                                 List<Xs2aAccountDetails>>>builder()
@@ -164,7 +163,6 @@ public class AccountService {
 
         SpiAccountDetails spiAccountDetails = spiResponse.getPayload();
 
-        //noinspection ConstantConditions - although @NotNull on paylod inside SpiResponse is set, but it couldn't be guaranteed by SPI implementation
         if (spiAccountDetails == null) {
             return ResponseObject.<Xs2aAccountDetails>builder()
                        .fail(new MessageError(new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_404)))
@@ -221,7 +219,6 @@ public class AccountService {
                        .build();
         }
 
-        //noinspection ConstantConditions - although @NotNull on paylod inside SpiResponse is set, but it couldn't beguaranteed by SPI implementation
         if (spiResponse.getPayload() == null) {
             return ResponseObject.<Xs2aBalancesReport>builder()
                        .fail(new MessageError(RESOURCE_UNKNOWN_404))
@@ -311,7 +308,6 @@ public class AccountService {
 
         SpiTransactionReport spiTransactionReport = spiResponse.getPayload();
 
-        //noinspection ConstantConditions - although @NotNull on paylod inside SpiResponse is set, but it couldn't be guaranteed by SPI implementation
         if (spiTransactionReport == null) {
             return ResponseObject.<Xs2aTransactionsReport>builder()
                        .fail(new MessageError(RESOURCE_UNKNOWN_404))
@@ -382,7 +378,6 @@ public class AccountService {
 
         SpiTransaction payload = spiResponse.getPayload();
 
-        //noinspection ConstantConditions - although @NotNull on paylod inside SpiResponse is set, but it couldn't be guaranteed by SPI implementation
         if (payload == null) {
             return ResponseObject.<Xs2aAccountReport>builder().fail(new MessageError(RESOURCE_UNKNOWN_404)).build();
         }
@@ -425,56 +420,6 @@ public class AccountService {
             }
             return !consentService.isValidAccountByAccess(accountReference.getResourceId(), accountReferences);
         }).orElse(true);
-    }
-
-    private void updateResourceId(Xs2aAccountAccess accountAccess, List<Xs2aAccountDetails> accountDetailsList) {
-        for (Xs2aAccountDetails accountDetails : accountDetailsList) {
-            if (CollectionUtils.isNotEmpty(accountAccess.getAccounts())) {
-                updateResourceId(accountAccess.getAccounts(), accountDetails, accountDetails.getResourceId());
-            }
-            if (CollectionUtils.isNotEmpty(accountAccess.getBalances())) {
-                updateResourceId(accountAccess.getBalances(), accountDetails, accountDetails.getResourceId());
-            }
-            if (CollectionUtils.isNotEmpty(accountAccess.getTransactions())) {
-                updateResourceId(accountAccess.getTransactions(), accountDetails,
-                                 accountDetails.getResourceId());
-            }
-        }
-    }
-
-    private void updateResourceId(List<Xs2aAccountReference> consentAccountReferences, Xs2aAccountDetails spiAccountReference, String resourceId) {
-        consentAccountReferences.stream()
-            .filter(xs2aAccountReference -> isSameAccountReference(xs2aAccountReference, spiAccountReference))
-            .findFirst()
-            .ifPresent(xs2aAccountReference -> xs2aAccountReference.setResourceId(resourceId));
-    }
-
-    private boolean isSameAccountReference(Xs2aAccountReference accountReference, Xs2aAccountDetails accountDetails) {
-        boolean same = Optional.ofNullable(accountReference.getIban())
-                           .map(iban -> StringUtils.equals(iban, accountDetails.getIban()))
-                           .orElse(false);
-
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getBban())
-                       .map(bban -> StringUtils.equals(bban, accountDetails.getBban()))
-                       .orElse(false);
-        }
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getMaskedPan())
-                       .map(maskedpan -> StringUtils.equals(maskedpan, accountDetails.getMaskedPan()))
-                       .orElse(false);
-        }
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getMsisdn())
-                       .map(msisdn -> StringUtils.equals(msisdn, accountDetails.getMsisdn()))
-                       .orElse(false);
-        }
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getPan())
-                       .map(pan -> StringUtils.equals(pan, accountDetails.getPan()))
-                       .orElse(false);
-        }
-        return same;
     }
 
     private Optional<SpiAccountReference> findAccountReference(List<Xs2aAccountReference> references, String resourceId) {

@@ -23,15 +23,14 @@ import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
-import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountDetails;
-import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
-import de.adorsys.psd2.xs2a.domain.consent.*;
+import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
+import de.adorsys.psd2.xs2a.domain.consent.AccountConsentAuthorization;
+import de.adorsys.psd2.xs2a.domain.consent.CreateConsentReq;
+import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentAuthorisationMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.psd2.xs2a.service.profile.FrequencyPerDateCalculationService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -111,56 +110,6 @@ public class Xs2aAisConsentService {
      */
     public void consentActionLog(String tppId, String consentId, ActionStatus actionStatus) {
         aisConsentService.checkConsentAndSaveActionLog(new AisConsentActionRequest(tppId, consentId, actionStatus));
-    }
-
-    public void updateResourceId(Xs2aAccountAccess accountAccess, List<Xs2aAccountDetails> accountDetailsList) {
-        for (Xs2aAccountDetails accountDetails: accountDetailsList) {
-            if (CollectionUtils.isNotEmpty(accountAccess.getAccounts())) {
-                updateResourceId(accountAccess.getAccounts(), accountDetails, accountDetails.getResourceId());
-            }
-            if (CollectionUtils.isNotEmpty(accountAccess.getBalances())) {
-                updateResourceId(accountAccess.getBalances(), accountDetails, accountDetails.getResourceId());
-            }
-            if (CollectionUtils.isNotEmpty(accountAccess.getTransactions())) {
-                updateResourceId(accountAccess.getTransactions(), accountDetails,
-                    accountDetails.getResourceId());
-            }
-        }
-    }
-
-    private void updateResourceId(List<Xs2aAccountReference> consentAccountReferences, Xs2aAccountDetails spiAccountReference, String resourceId) {
-        consentAccountReferences.stream()
-            .filter(xs2aAccountReference -> isSameAccountReference(xs2aAccountReference, spiAccountReference))
-            .findFirst()
-            .ifPresent(xs2aAccountReference -> xs2aAccountReference.setResourceId(resourceId));
-    }
-
-    private boolean isSameAccountReference(Xs2aAccountReference accountReference, Xs2aAccountDetails accountDetails) {
-        boolean same = Optional.ofNullable(accountReference.getIban())
-            .map(iban -> StringUtils.equals(iban, accountDetails.getIban()))
-            .orElse(false);
-
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getBban())
-                .map(bban -> StringUtils.equals(bban, accountDetails.getBban()))
-                .orElse(false);
-        }
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getMaskedPan())
-                .map(maskedpan -> StringUtils.equals(maskedpan, accountDetails.getMaskedPan()))
-                .orElse(false);
-        }
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getMsisdn())
-                .map(msisdn -> StringUtils.equals(msisdn, accountDetails.getMsisdn()))
-                .orElse(false);
-        }
-        if (!same) {
-            same = Optional.ofNullable(accountReference.getPan())
-                .map(pan -> StringUtils.equals(pan, accountDetails.getPan()))
-                .orElse(false);
-        }
-        return same;
     }
 
     /**
