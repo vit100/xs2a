@@ -17,15 +17,15 @@
 package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
-import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
-import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.config.CmsRestException;
 import de.adorsys.psd2.consent.config.PisConsentRemoteUrls;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
@@ -48,18 +48,18 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PisConsentServiceRemote implements PisConsentService {
+public class PisCommonPaymentServiceRemote implements PisCommonPaymentService {
     @Qualifier("consentRestTemplate")
     private final RestTemplate consentRestTemplate;
     private final PisConsentRemoteUrls remotePisConsentUrls;
 
     @Override
-    public Optional<CreatePisCommonPaymentResponse> createPaymentConsent(PisPaymentInfo request) {
+    public Optional<CreatePisCommonPaymentResponse> createCommonPayment(PisPaymentInfo request) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsent(), request, CreatePisCommonPaymentResponse.class).getBody());
     }
 
     @Override
-    public Optional<ConsentStatus> getConsentStatusById(String consentId) {
+    public Optional<ConsentStatus> getPisCommonPaymentStatusById(String paymentId) {
         return Optional.empty();
     }
 
@@ -70,7 +70,7 @@ public class PisConsentServiceRemote implements PisConsentService {
     }
 
     @Override
-    public Optional<Boolean> updateConsentStatusById(String consentId, ConsentStatus status) {
+    public Optional<Boolean> updateCommonPaymentStatusById(String consentId, ConsentStatus status) {
         HttpStatus statusCode = consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentStatus(), HttpMethod.PUT,
                                                              null, Void.class, consentId, status).getStatusCode();
 
@@ -84,45 +84,45 @@ public class PisConsentServiceRemote implements PisConsentService {
     }
 
     @Override
-    public Optional<CreatePisConsentAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
+    public Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsentAuthorisation(),
-                                                                     psuData, CreatePisConsentAuthorisationResponse.class, paymentId)
+                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId)
                                        .getBody());
     }
 
     @Override
-    public Optional<CreatePisConsentAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
+    public Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisConsentUrls.createPisConsentAuthorisationCancellation(),
-                                                                     psuData, CreatePisConsentAuthorisationResponse.class, paymentId)
+                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId)
                                        .getBody());
     }
 
     @Override
-    public Optional<UpdatePisConsentPsuDataResponse> updateConsentAuthorisation(String authorisationId, UpdatePisConsentPsuDataRequest request) {
+    public Optional<UpdatePisCommonPaymentPsuDataResponse> updateCommonPaymentAuthorisation(String authorisationId, UpdatePisCommonPaymentPsuDataRequest request) {
         return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentAuthorisation(), HttpMethod.PUT, new HttpEntity<>(request),
-                                                                UpdatePisConsentPsuDataResponse.class, request.getAuthorizationId()).getBody());
+                                                                UpdatePisCommonPaymentPsuDataResponse.class, request.getAuthorizationId()).getBody());
     }
 
     @Override
-    public Optional<UpdatePisConsentPsuDataResponse> updateConsentCancellationAuthorisation(String authorisationId, UpdatePisConsentPsuDataRequest request) {
+    public Optional<UpdatePisCommonPaymentPsuDataResponse> updateCommonPaymentCancellationAuthorisation(String authorisationId, UpdatePisCommonPaymentPsuDataRequest request) {
         return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentCancellationAuthorisation(), HttpMethod.PUT, new HttpEntity<>(request),
-                                                                UpdatePisConsentPsuDataResponse.class, request.getAuthorizationId()).getBody());
+                                                                UpdatePisCommonPaymentPsuDataResponse.class, request.getAuthorizationId()).getBody());
     }
 
     @Override
-    public void updatePaymentConsent(PisCommonPaymentRequest request, String paymentId) {
+    public void updateCommonPayment(PisCommonPaymentRequest request, String paymentId) {
         consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentPayment(), HttpMethod.PUT, new HttpEntity<>(request), Void.class, paymentId);
     }
 
     @Override
-    public Optional<GetPisConsentAuthorisationResponse> getPisConsentAuthorisationById(String authorizationId) {
-        return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.getPisConsentAuthorisationById(), HttpMethod.GET, null, GetPisConsentAuthorisationResponse.class, authorizationId)
+    public Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorizationId) {
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.getPisConsentAuthorisationById(), HttpMethod.GET, null, GetPisCommonPaymentAuthorisationResponse.class, authorizationId)
                                        .getBody());
     }
 
     @Override
-    public Optional<GetPisConsentAuthorisationResponse> getPisConsentCancellationAuthorisationById(String cancellationId) {
-        return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.getPisConsentCancellationAuthorisationById(), HttpMethod.GET, null, GetPisConsentAuthorisationResponse.class, cancellationId)
+    public Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId) {
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisConsentUrls.getPisConsentCancellationAuthorisationById(), HttpMethod.GET, null, GetPisCommonPaymentAuthorisationResponse.class, cancellationId)
                                        .getBody());
     }
 

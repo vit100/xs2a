@@ -16,18 +16,22 @@
 
 package de.adorsys.psd2.consent.api.pis.authorisation;
 
-import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.consent.api.pis.PisPayment;
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
+import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class UpdatePisConsentPsuDataRequest {
-    private String paymentId;
-    private String authorizationId;
-    private PsuIdData psuData;
-    private String password;
-    private String authenticationMethodId;
+public class GetPisCommonPaymentAuthorisationResponse {
+    private String psuId;
     private ScaStatus scaStatus;
-    private String paymentService;
-    private String scaAuthenticationData;
+    private String paymentId;
+    private String password;
+    private List<PisPayment> payments;
+    private PaymentType paymentType;
+    private String paymentProduct;
+    private PisPaymentInfo paymentInfo;
 }

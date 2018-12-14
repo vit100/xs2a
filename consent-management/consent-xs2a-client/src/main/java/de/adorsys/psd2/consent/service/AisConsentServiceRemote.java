@@ -116,7 +116,7 @@ public class AisConsentServiceRemote implements AisConsentService {
                 }, encryptedConsentId);
             return Optional.ofNullable(request.getBody());
         } catch (CmsRestException cmsRestException) {
-            log.warn("No authorisation found by consentId {}", encryptedConsentId);
+            log.warn("No authorisation found by paymentId {}", encryptedConsentId);
         }
         return Optional.empty();
     }

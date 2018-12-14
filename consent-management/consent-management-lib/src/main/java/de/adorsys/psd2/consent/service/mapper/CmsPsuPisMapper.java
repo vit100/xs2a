@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CmsPsuPisMapper {
-    private final PisConsentMapper pisConsentMapper;
+    private final PisCommonPaymentMapper pisCommonPaymentMapper;
 
     public CmsPayment mapToCmsPayment(@NotNull PisCommonPaymentData paymentData) {
         CmsCommonPayment cmsCommonPayment = new CmsCommonPayment(paymentData.getPaymentProduct());
@@ -71,7 +71,7 @@ public class CmsPsuPisMapper {
         periodicPayment.setCreditorAccount(mapToCmsAccountReference(pisPaymentData.getCreditorAccount()));
         periodicPayment.setCreditorAgent(pisPaymentData.getCreditorAgent());
         periodicPayment.setCreditorName(pisPaymentData.getCreditorName());
-        periodicPayment.setCreditorAddress(pisConsentMapper.mapToCmsAddress(pisPaymentData.getCreditorAddress()));
+        periodicPayment.setCreditorAddress(pisCommonPaymentMapper.mapToCmsAddress(pisPaymentData.getCreditorAddress()));
         periodicPayment.setRemittanceInformationUnstructured(pisPaymentData.getRemittanceInformationUnstructured());
         periodicPayment.setPaymentStatus(pisPaymentData.getTransactionStatus());
         periodicPayment.setRequestedExecutionDate(pisPaymentData.getRequestedExecutionDate());
@@ -111,7 +111,7 @@ public class CmsPsuPisMapper {
         singlePayment.setCreditorAccount(mapToCmsAccountReference(pisPaymentData.getCreditorAccount()));
         singlePayment.setCreditorAgent(pisPaymentData.getCreditorAgent());
         singlePayment.setCreditorName(pisPaymentData.getCreditorName());
-        singlePayment.setCreditorAddress(pisConsentMapper.mapToCmsAddress(pisPaymentData.getCreditorAddress()));
+        singlePayment.setCreditorAddress(pisCommonPaymentMapper.mapToCmsAddress(pisPaymentData.getCreditorAddress()));
         singlePayment.setRemittanceInformationUnstructured(pisPaymentData.getRemittanceInformationUnstructured());
         singlePayment.setPaymentStatus(pisPaymentData.getTransactionStatus());
         singlePayment.setRequestedExecutionDate(pisPaymentData.getRequestedExecutionDate());

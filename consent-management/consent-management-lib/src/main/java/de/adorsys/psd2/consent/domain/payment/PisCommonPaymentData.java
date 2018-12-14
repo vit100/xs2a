@@ -71,8 +71,8 @@ public class PisCommonPaymentData {
     @OneToMany(mappedBy = "paymentData",
         cascade = CascadeType.ALL,
         orphanRemoval = true)
-    @ApiModelProperty(value = "List of authorizations related to the consent", required = true)
-    private List<PisConsentAuthorization> authorizations = new ArrayList<>();
+    @ApiModelProperty(value = "List of authorizations", required = true)
+    private List<PisAuthorization> authorizations = new ArrayList<>();
 
     @OneToMany(mappedBy = "paymentData",
         cascade = CascadeType.ALL,

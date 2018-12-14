@@ -17,48 +17,48 @@
 package de.adorsys.psd2.consent.api.service;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
-import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface PisConsentService {
+public interface PisCommonPaymentService {
 
-    Optional<CreatePisCommonPaymentResponse> createPaymentConsent(PisPaymentInfo request);
+    Optional<CreatePisCommonPaymentResponse> createCommonPayment(PisPaymentInfo request);
 
     /**
-     * Retrieves consent status from pis consent by consent identifier
+     * Retrieves common payment status from pis payment by payment identifier
      *
-     * @param consentId String representation of pis consent identifier
-     * @return Information about the status of a consent
+     * @param paymentId String representation of pis payment identifier
+     * @return Information about the status of a common payment
      */
-    Optional<ConsentStatus> getConsentStatusById(String consentId);
+    Optional<TransactionStatus> getPisCommonPaymentStatusById(String paymentId);
 
     /**
-     * Reads full information of pis consent by consent identifier
+     * Reads full information of pis payment by payment identifier
      *
-     * @param paymentId String representation of pis consent identifier
-     * @return Response containing full information about pis consent
+     * @param paymentId String representation of pis payment identifier
+     * @return Response containing full information about pis payment
      */
     Optional<PisCommonPaymentResponse> getCommonPaymentById(String paymentId);
 
     /**
-     * Updates pis consent status by consent identifier
+     * Updates pis payment status by payment identifier
      *
-     * @param consentId String representation of pis consent identifier
-     * @param status    new consent status
+     * @param paymentId String representation of pis payment identifier
+     * @param status    new payment status
      * @return Response containing result of status changing
      */
-    Optional<Boolean> updateConsentStatusById(String consentId, ConsentStatus status);
+    Optional<Boolean> updateCommonPaymentStatusById(String paymentId, TransactionStatus status);
 
     /**
      * Gets original decrypted Id from encrypted string
@@ -69,50 +69,50 @@ public interface PisConsentService {
     Optional<String> getDecryptedId(String encryptedId);
 
     /**
-     * Creates consent authorization
+     * Creates payment authorization
      *
      * @param paymentId         String representation of the payment identifier
      * @param authorizationType Type of authorisation
      * @param psuData           Information about PSU
      * @return Response containing authorization id
      */
-    Optional<CreatePisConsentAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData);
+    Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData);
 
     /**
-     * Creates consent authorization cancellation
+     * Creates payment authorization cancellation
      *
      * @param paymentId         String representation of the payment identifier
      * @param authorizationType Type of authorisation
      * @param psuData           Information about PSU
      * @return Response containing authorization id
      */
-    Optional<CreatePisConsentAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData);
+    Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData);
 
     /**
-     * Updates consent authorization
+     * Updates payment authorization
      *
      * @param authorisationId String representation of the authorisation identifier
      * @param request         Incoming request for updating authorization
      * @return Response containing SCA status, available and chosen Sca method
      */
-    Optional<UpdatePisConsentPsuDataResponse> updateConsentAuthorisation(String authorisationId, UpdatePisConsentPsuDataRequest request);
+    Optional<UpdatePisCommonPaymentPsuDataResponse> updateCommonPaymentAuthorisation(String authorisationId, UpdatePisCommonPaymentPsuDataRequest request);
 
     /**
-     * Updates consent cancellation authorization
+     * Updates payment cancellation authorization
      *
      * @param authorizationId String representation of the authorisation identifier
      * @param request         Incoming request for updating authorization
      * @return Response containing SCA status, available and chosen Sca method
      */
-    Optional<UpdatePisConsentPsuDataResponse> updateConsentCancellationAuthorisation(String authorizationId, UpdatePisConsentPsuDataRequest request);
+    Optional<UpdatePisCommonPaymentPsuDataResponse> updateCommonPaymentCancellationAuthorisation(String authorizationId, UpdatePisCommonPaymentPsuDataRequest request);
 
     /**
-     * Updates PIS consent payment data and stores it into database
+     * Updates PIS payment data and stores it into database
      *
-     * @param request   PIS consent request for update payment data
+     * @param request   PIS payment request for update payment data
      * @param paymentId Payment ID
      */
-    void updatePaymentConsent(PisCommonPaymentRequest request, String paymentId);
+    void updateCommonPayment(PisCommonPaymentRequest request, String paymentId);
 
     /**
      * Get information about Authorisation by authorisation identifier
@@ -120,7 +120,7 @@ public interface PisConsentService {
      * @param authorisationId String representation of the authorisation identifier
      * @return Response containing information about Authorisation
      */
-    Optional<GetPisConsentAuthorisationResponse> getPisConsentAuthorisationById(String authorisationId);
+    Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorisationId);
 
     /**
      * Get information about Authorisation by cancellation identifier
@@ -128,7 +128,7 @@ public interface PisConsentService {
      * @param cancellationId String representation of the cancellation identifier
      * @return Response containing information about Authorisation
      */
-    Optional<GetPisConsentAuthorisationResponse> getPisConsentCancellationAuthorisationById(String cancellationId);
+    Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId);
 
     /**
      * Gets list of payment authorisation IDs by payment ID and authorisation type
@@ -146,12 +146,4 @@ public interface PisConsentService {
      * @return Response containing information about PSU
      */
     Optional<PsuIdData> getPsuDataByPaymentId(String paymentId);
-
-    /**
-     * Get information about PSU by consent identifier
-     *
-     * @param consentId String representation of pis consent identifier
-     * @return Response containing information about PSU
-     */
-    Optional<PsuIdData> getPsuDataByConsentId(String consentId);
 }

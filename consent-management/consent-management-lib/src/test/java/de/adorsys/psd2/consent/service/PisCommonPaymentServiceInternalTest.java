@@ -19,13 +19,13 @@ package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.domain.AspspConsentDataEntity;
+import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisConsent;
-import de.adorsys.psd2.consent.domain.payment.PisConsentAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
-import de.adorsys.psd2.consent.repository.PisConsentAuthorizationRepository;
+import de.adorsys.psd2.consent.repository.PisAuthorizationRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.consent.service.security.EncryptedData;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
@@ -44,14 +44,14 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PisConsentServiceInternalTest {
+public class PisCommonPaymentServiceInternalTest {
 
     @InjectMocks
-    private PisConsentServiceInternal pisConsentService;
+    private PisCommonPaymentServiceInternal pisConsentService;
     @Mock
     private PisPaymentDataRepository pisPaymentDataRepository;
     @Mock
-    private PisConsentAuthorizationRepository pisConsentAuthorizationRepository;
+    private PisAuthorizationRepository pisAuthorizationRepository;
     @Mock
     SecurityDataService securityDataService;
 
@@ -63,7 +63,7 @@ public class PisConsentServiceInternalTest {
     private final String paymentIdWrong = "5bbdcb28ca10e8e14a41b12f";
     private static final byte[] ENCRYPTED_CONSENT_DATA = "test data".getBytes();
     private PisPaymentData pisPaymentData;
-    private List<PisConsentAuthorization> pisConsentAuthorizationList = new ArrayList();
+    private List<PisAuthorization> pisAuthorizationList = new ArrayList();
     private CmsAspspConsentDataBase64 cmsAspspConsentDataBase64;
     private static final String FINALISED_AUTHORISATION_ID = "9b112130-6a96-4941-a220-2da8a4af2c65";
     private static final String FINALISED_CANCELLATION_AUTHORISATION_ID = "2a112130-6a96-4941-a220-2da8a4af2c65";
@@ -73,7 +73,7 @@ public class PisConsentServiceInternalTest {
         cmsAspspConsentDataBase64 = buildUpdateBlobRequest();
         pisConsent = buildConsent();
         pisPaymentData = buildPaymentData(pisConsent);
-        pisConsentAuthorizationList.add(buildPisConsentAuthorisation(EXTERNAL_CONSENT_ID));
+        pisAuthorizationList.add(buildPisConsentAuthorisation(EXTERNAL_CONSENT_ID));
         when(securityDataService.decryptId(EXTERNAL_CONSENT_ID)).thenReturn(Optional.of(EXTERNAL_CONSENT_ID));
         when(securityDataService.decryptId(EXTERNAL_CONSENT_ID_NOT_EXIST)).thenReturn(Optional.of(EXTERNAL_CONSENT_ID_NOT_EXIST));
         when(securityDataService.encryptConsentData(EXTERNAL_CONSENT_ID, cmsAspspConsentDataBase64.getAspspConsentDataBase64()))
@@ -90,8 +90,8 @@ public class PisConsentServiceInternalTest {
         //Assert
         //noinspection OptionalGetWithoutIsPresent
         assertTrue(authorizationByPaymentId.isPresent());
-        assertEquals(authorizationByPaymentId.get().size(), pisConsentAuthorizationList.size());
-        assertEquals(authorizationByPaymentId.get().get(0), pisConsentAuthorizationList.get(0).getExternalId());
+        assertEquals(authorizationByPaymentId.get().size(), pisAuthorizationList.size());
+        assertEquals(authorizationByPaymentId.get().get(0), pisAuthorizationList.get(0).getExternalId());
     }
 
     @Test
@@ -111,14 +111,14 @@ public class PisConsentServiceInternalTest {
         ScaStatus expectedScaStatus = ScaStatus.STARTED;
         ScaStatus actualScaStatus = ScaStatus.FINALISED;
 
-        UpdatePisConsentPsuDataRequest updatePisConsentPsuDataRequest = buildUpdatePisConsentPsuDataRequest(expectedScaStatus);
-        PisConsentAuthorization finalisedConsentAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
+        UpdatePisCommonPaymentPsuDataRequest updatePisCommonPaymentPsuDataRequest = buildUpdatePisConsentPsuDataRequest(expectedScaStatus);
+        PisAuthorization finalisedConsentAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
 
-        when(pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_AUTHORISATION_ID, CmsAuthorisationType.CREATED))
+        when(pisAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_AUTHORISATION_ID, CmsAuthorisationType.CREATED))
             .thenReturn(Optional.of(finalisedConsentAuthorization));
 
         //When
-        Optional<UpdatePisConsentPsuDataResponse> updatePisConsentPsuDataResponse = pisConsentService.updateConsentAuthorisation(FINALISED_AUTHORISATION_ID, updatePisConsentPsuDataRequest);
+        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisConsentPsuDataResponse = pisConsentService.updateCommonPaymentAuthorisation(FINALISED_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
 
         //Then
         assertTrue(updatePisConsentPsuDataResponse.isPresent());
@@ -131,14 +131,14 @@ public class PisConsentServiceInternalTest {
         ScaStatus expectedScaStatus = ScaStatus.STARTED;
         ScaStatus actualScaStatus = ScaStatus.FINALISED;
 
-        PisConsentAuthorization finalisedCancellationAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
-        UpdatePisConsentPsuDataRequest updatePisConsentPsuDataRequest = buildUpdatePisConsentPsuDataRequest(expectedScaStatus);
+        PisAuthorization finalisedCancellationAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
+        UpdatePisCommonPaymentPsuDataRequest updatePisCommonPaymentPsuDataRequest = buildUpdatePisConsentPsuDataRequest(expectedScaStatus);
 
-        when(pisConsentAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_CANCELLATION_AUTHORISATION_ID, CmsAuthorisationType.CANCELLED))
+        when(pisAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_CANCELLATION_AUTHORISATION_ID, CmsAuthorisationType.CANCELLED))
             .thenReturn(Optional.of(finalisedCancellationAuthorization));
 
         //When
-        Optional<UpdatePisConsentPsuDataResponse> updatePisConsentPsuDataResponse = pisConsentService.updateConsentCancellationAuthorisation(FINALISED_CANCELLATION_AUTHORISATION_ID, updatePisConsentPsuDataRequest);
+        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisConsentPsuDataResponse = pisConsentService.updateCommonPaymentCancellationAuthorisation(FINALISED_CANCELLATION_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
 
         //Then
         assertTrue(updatePisConsentPsuDataResponse.isPresent());
@@ -146,18 +146,18 @@ public class PisConsentServiceInternalTest {
 
     }
 
-    private UpdatePisConsentPsuDataRequest buildUpdatePisConsentPsuDataRequest(ScaStatus status) {
-        UpdatePisConsentPsuDataRequest request = new UpdatePisConsentPsuDataRequest();
+    private UpdatePisCommonPaymentPsuDataRequest buildUpdatePisConsentPsuDataRequest(ScaStatus status) {
+        UpdatePisCommonPaymentPsuDataRequest request = new UpdatePisCommonPaymentPsuDataRequest();
         request.setAuthorizationId(FINALISED_AUTHORISATION_ID);
         request.setScaStatus(status);
         return request;
     }
 
-    private PisConsentAuthorization buildFinalisedConsentAuthorisation(ScaStatus status) {
-        PisConsentAuthorization pisConsentAuthorization = new PisConsentAuthorization();
-        pisConsentAuthorization.setExternalId(FINALISED_AUTHORISATION_ID);
-        pisConsentAuthorization.setScaStatus(status);
-        return pisConsentAuthorization;
+    private PisAuthorization buildFinalisedConsentAuthorisation(ScaStatus status) {
+        PisAuthorization pisAuthorization = new PisAuthorization();
+        pisAuthorization.setExternalId(FINALISED_AUTHORISATION_ID);
+        pisAuthorization.setScaStatus(status);
+        return pisAuthorization;
     }
 
     private PisConsent buildConsent() {
@@ -165,7 +165,7 @@ public class PisConsentServiceInternalTest {
         pisConsent.setId(CONSENT_ID);
         pisConsent.setExternalId(EXTERNAL_CONSENT_ID);
         pisConsent.setConsentStatus(RECEIVED);
-        pisConsent.setAuthorizations(pisConsentAuthorizationList);
+        pisConsent.setAuthorizations(pisAuthorizationList);
         return pisConsent;
     }
 
@@ -174,11 +174,11 @@ public class PisConsentServiceInternalTest {
             Base64.getEncoder().encodeToString("decrypted consent data".getBytes()));
     }
 
-    private PisConsentAuthorization buildPisConsentAuthorisation(String externalId) {
-        PisConsentAuthorization pisConsentAuthorization = new PisConsentAuthorization();
-        pisConsentAuthorization.setExternalId(externalId);
-        pisConsentAuthorization.setAuthorizationType(CmsAuthorisationType.CANCELLED);
-        return pisConsentAuthorization;
+    private PisAuthorization buildPisConsentAuthorisation(String externalId) {
+        PisAuthorization pisAuthorization = new PisAuthorization();
+        pisAuthorization.setExternalId(externalId);
+        pisAuthorization.setAuthorizationType(CmsAuthorisationType.CANCELLED);
+        return pisAuthorization;
     }
 
     private PisPaymentData buildPaymentData(PisConsent pisConsent) {

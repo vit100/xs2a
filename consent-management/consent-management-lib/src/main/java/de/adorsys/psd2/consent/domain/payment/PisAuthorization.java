@@ -26,9 +26,9 @@ import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 @Data
-@ToString(exclude = "consent")
+@ToString(exclude = "paymentData")
 @Entity(name = "pis_consent_authorization")
-public class PisConsentAuthorization {
+public class PisAuthorization {
     @Id
     @Column(name = "authorization_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pis_consent_authorization_generator")

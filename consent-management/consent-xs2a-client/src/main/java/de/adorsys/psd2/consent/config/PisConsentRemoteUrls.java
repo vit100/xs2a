@@ -39,7 +39,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String updatePisConsentStatus() {
-        return consentServiceBaseUrl + "/pis/consent/{consentId}/status/{status}";
+        return consentServiceBaseUrl + "/pis/consent/{paymentId}/status/{status}";
     }
 
     /**
@@ -48,7 +48,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String getPisConsentStatusById() {
-        return consentServiceBaseUrl + "/pis/consent/{consentId}/status";
+        return consentServiceBaseUrl + "/pis/consent/{paymentId}/status";
     }
 
     /**
@@ -57,11 +57,11 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String getPisConsentById() {
-        return consentServiceBaseUrl + "/pis/consent/{consentId}";
+        return consentServiceBaseUrl + "/pis/consent/{paymentId}";
     }
 
     /**
-     * @return String consentId
+     * @return String paymentId
      * Method: POST
      * PathVariables: String paymentId
      */

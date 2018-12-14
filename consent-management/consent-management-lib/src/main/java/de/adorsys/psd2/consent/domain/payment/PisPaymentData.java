@@ -22,7 +22,6 @@ import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -31,7 +30,6 @@ import java.time.OffsetDateTime;
 import java.util.Currency;
 
 @Data
-@ToString(exclude = "consent")
 @Entity(name = "pis_payment_data")
 @ApiModel(description = "pis payment entity", value = "PisPaymentData")
 public class PisPaymentData {
@@ -131,7 +129,6 @@ public class PisPaymentData {
     @JoinColumn(name = "common_payment_id", nullable = false)
     @ApiModelProperty(value = "Detailed information about payment", required = true)
     private PisCommonPaymentData paymentData;
-
     @Column(name = "transaction_status")
     @Enumerated(value = EnumType.STRING)
     @ApiModelProperty(name = "transactionStatus", example = "ACCP")

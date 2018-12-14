@@ -19,19 +19,15 @@ package de.adorsys.psd2.consent.service.mapper;
 import de.adorsys.psd2.consent.api.CmsAddress;
 import de.adorsys.psd2.consent.api.pis.CmsRemittance;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
-import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.payment.*;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
-import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,21 +35,10 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PisConsentMapper {
+public class PisCommonPaymentMapper {
     private final TppInfoMapper tppInfoMapper;
     private final PsuDataMapper psuDataMapper;
     private final AccountReferenceMapper accountReferenceMapper;
-
-    public PisConsent mapToPisConsent(PisConsentRequest request) {
-        PisConsent consent = new PisConsent();
-        consent.setPayments(mapToPisPaymentDataList(request.getPayments(), consent));
-        consent.setTppInfo(tppInfoMapper.mapToTppInfoEntity(request.getTppInfo()));
-        consent.setPaymentType(request.getPaymentType());
-        consent.setPaymentProduct(request.getPaymentProduct());
-        consent.setConsentStatus(ConsentStatus.RECEIVED);
-        consent.setPsuData(psuDataMapper.mapToPsuData(request.getPsuData()));
-        return consent;
-    }
 
     public List<PisPaymentData> mapToPisPaymentDataList(List<PisPayment> payments, PisCommonPaymentData pisCommonPayment) {
         if (CollectionUtils.isEmpty(payments)) {
@@ -109,13 +94,13 @@ public class PisConsentMapper {
                    }).orElse(null);
     }
 
-    public GetPisConsentAuthorisationResponse mapToGetPisConsentAuthorizationResponse(PisConsentAuthorization pis) {
-        GetPisConsentAuthorisationResponse response = new GetPisConsentAuthorisationResponse();
-        response.setPayments(mapToPisPaymentList(pis.getConsent().getPayments()));
-        response.setPaymentType(pis.getConsent().getPaymentType());
+    public GetPisCommonPaymentAuthorisationResponse mapToGetPisConsentAuthorizationResponse(PisAuthorization pis) {
+        GetPisCommonPaymentAuthorisationResponse response = new GetPisCommonPaymentAuthorisationResponse();
+        response.setPayments(mapToPisPaymentList(pis.getPaymentData().getPayments()));
+        response.setPaymentType(pis.getPaymentData().getPaymentType());
         response.setScaStatus(pis.getScaStatus());
-        response.setConsentId(pis.getConsent().getExternalId());
-        response.setPaymentInfo(mapToPisPaymentInfo(pis.getConsent().getPaymentData()));
+        response.setPaymentId(pis.getPaymentData().getPaymentId());
+        response.setPaymentInfo(mapToPisPaymentInfo(pis.getPaymentData()));
 
         return response;
     }

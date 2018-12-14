@@ -16,17 +16,20 @@
 
 package de.adorsys.psd2.consent.api.pis.authorisation;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-@ApiModel(description = "PIS consent authorisation", value = "PisConsentAuthorisation")
-public class CreatePisConsentAuthorisationResponse {
-    @NotNull
-    @ApiModelProperty(value = "ID of the Authorisation", required = true, example = "6dc3d5b3-5023-7848-3853-f7200a64e80d")
-    private String authorizationId;
+public class UpdatePisCommonPaymentPsuDataResponse {
+    private ScaStatus scaStatus;
+    private String chosenScaMethod;
+    private List<String> availableScaMethods;
+
+    public UpdatePisCommonPaymentPsuDataResponse(ScaStatus scaStatus) {
+        this.scaStatus = scaStatus;
+    }
 }

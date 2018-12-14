@@ -35,12 +35,12 @@ public interface CmsAspspEventService {
     List<Event> getEventsForPeriod(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end);
 
     /**
-     * Returns a list of Event objects, recorded in given time period and with the given consentId
+     * Returns a list of Event objects, recorded in given time period and with the given paymentId
      *
      * @param start     First date of the period
      * @param end       Last date of the period
      * @param consentId Id of the consent
-     * @return List of Event objects, recorded in given time period and with a given consentId
+     * @return List of Event objects, recorded in given time period and with a given paymentId
      */
     List<Event> getEventsForPeriodAndConsentId(@NotNull OffsetDateTime start, @NotNull OffsetDateTime end, @NotNull String consentId);
 

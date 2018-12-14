@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiService;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
@@ -38,7 +38,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePaymentStatusAfterSpiService {
     private final PisPaymentDataRepository pisPaymentDataRepository;
-    private final PisConsentService pisConsentService;
+    private final PisCommonPaymentService pisCommonPaymentService;
     private final CommonPaymentDataService commonPaymentDataService;
 
     @Override
@@ -79,7 +79,7 @@ public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePayment
     }
 
     private Optional<List<PisPaymentData>> getPaymentDataList(String encryptedPaymentId) {
-        return pisConsentService.getDecryptedId(encryptedPaymentId)
+        return pisCommonPaymentService.getDecryptedId(encryptedPaymentId)
                    .flatMap(pisPaymentDataRepository::findByPaymentId);
     }
 
