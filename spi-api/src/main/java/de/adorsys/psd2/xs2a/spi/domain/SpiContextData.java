@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.client.cms.model.pis;
+package de.adorsys.psd2.xs2a.spi.domain;
 
-import de.adorsys.psd2.consent.client.cms.RestCmsRequestMethod;
-import de.adorsys.psd2.consent.client.core.HttpMethod;
-import de.adorsys.psd2.consent.client.core.util.HttpUriParams;
+import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
+import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
+import lombok.Value;
+import org.jetbrains.annotations.NotNull;
 
-public class GetPaymentIdByEncryptedStringMethod extends RestCmsRequestMethod<Void, String> {
-    private static final String GET_PIS_CONSENT_ASPSP_DATA_URI = "api/v1/pis/payment/{payment-id}";
-
-    public GetPaymentIdByEncryptedStringMethod(HttpUriParams uriParams) {
-        super(HttpMethod.GET, GET_PIS_CONSENT_ASPSP_DATA_URI, uriParams);
-    }
+/**
+ * This object represents known Context of call, provided by this or previous requests in scope of one process (e.g. one payment or one AIS consent)
+ */
+@Value
+@NotNull
+public class SpiContextData {
+    private SpiPsuData psuData;
+    private TppInfo tppInfo;
 }
-
