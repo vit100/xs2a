@@ -36,19 +36,18 @@ public class EventServiceInternalEncrypted implements EventServiceEncrypted {
     @Override
     @Transactional
     public boolean recordEvent(@NotNull Event event) {
-        String encryptedConsentId = event.getConsentId();
-        String decryptedConsentId = Optional.ofNullable(encryptedConsentId)
-                                        .flatMap(securityDataService::decryptId)
-                                        .orElse(null);
-
-        String encryptedPaymentId = event.getPaymentId();
-        String decryptedPaymentId = Optional.ofNullable(encryptedPaymentId)
-                                        .flatMap(securityDataService::decryptId)
-                                        .orElse(null);
+        String decryptedConsentId = decryptId(event.getConsentId());
+        String decryptedPaymentId = decryptId(event.getPaymentId());
 
         Event decryptedEvent = new Event(event.getTimestamp(), decryptedConsentId, decryptedPaymentId,
                                          event.getPayload(), event.getEventOrigin(), event.getEventType());
 
         return eventService.recordEvent(decryptedEvent);
+    }
+
+    private String decryptId(String id) {
+        return Optional.ofNullable(id)
+                   .flatMap(securityDataService::decryptId)
+                   .orElse(null);
     }
 }
