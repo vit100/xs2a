@@ -21,9 +21,10 @@ import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisati
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 
@@ -32,7 +33,7 @@ import java.util.Optional;
 
 public interface PisConsentService {
 
-    Optional<CreatePisConsentResponse> createPaymentConsent(PisConsentRequest request);
+    Optional<CreatePisCommonPaymentResponse> createPaymentConsent(PisPaymentInfo request);
 
     /**
      * Retrieves consent status from pis consent by consent identifier
@@ -45,10 +46,10 @@ public interface PisConsentService {
     /**
      * Reads full information of pis consent by consent identifier
      *
-     * @param consentId String representation of pis consent identifier
+     * @param paymentId String representation of pis consent identifier
      * @return Response containing full information about pis consent
      */
-    Optional<PisConsentResponse> getConsentById(String consentId);
+    Optional<PisCommonPaymentResponse> getCommonPaymentById(String paymentId);
 
     /**
      * Updates pis consent status by consent identifier
@@ -109,9 +110,9 @@ public interface PisConsentService {
      * Updates PIS consent payment data and stores it into database
      *
      * @param request   PIS consent request for update payment data
-     * @param consentId Consent ID
+     * @param paymentId Payment ID
      */
-    void updatePaymentConsent(PisConsentRequest request, String consentId);
+    void updatePaymentConsent(PisCommonPaymentRequest request, String paymentId);
 
     /**
      * Get information about Authorisation by authorisation identifier
@@ -132,7 +133,7 @@ public interface PisConsentService {
     /**
      * Gets list of payment authorisation IDs by payment ID and authorisation type
      *
-     * @param paymentId String representation of the payment identifier
+     * @param paymentId         String representation of the payment identifier
      * @param authorisationType Type of authorisation
      * @return Response containing information about authorisation IDs
      */

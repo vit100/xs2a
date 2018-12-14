@@ -20,16 +20,18 @@ import de.adorsys.psd2.consent.api.CmsAddress;
 import de.adorsys.psd2.consent.api.pis.CmsRemittance;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
+import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.payment.*;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,29 +55,29 @@ public class PisConsentMapper {
         return consent;
     }
 
-    public List<PisPaymentData> mapToPisPaymentDataList(List<PisPayment> payments, PisConsent consent) {
+    public List<PisPaymentData> mapToPisPaymentDataList(List<PisPayment> payments, PisCommonPaymentData pisCommonPayment) {
         if (CollectionUtils.isEmpty(payments)) {
             return Collections.emptyList();
         }
 
         return payments.stream()
-                   .map(p -> mapToPisPaymentData(p, consent))
+                   .map(p -> mapToPisPaymentData(p, pisCommonPayment))
                    .collect(Collectors.toList());
     }
 
-    public PisCommonPaymentData mapToPisCommonPaymentData(PisPaymentInfo paymentInfo, PisConsent consent) {
+    public PisCommonPaymentData mapToPisCommonPaymentData(PisPaymentInfo paymentInfo) {
         PisCommonPaymentData commonPaymentData = new PisCommonPaymentData();
         commonPaymentData.setPaymentId(paymentInfo.getPaymentId());
         commonPaymentData.setPaymentType(paymentInfo.getPaymentType());
         commonPaymentData.setPaymentProduct(paymentInfo.getPaymentProduct());
-        commonPaymentData.setTransactionStatus(TransactionStatus.RCVD);
+        commonPaymentData.setTransactionStatus(paymentInfo.getTransactionStatus());
         commonPaymentData.setPayment(paymentInfo.getPaymentData());
         commonPaymentData.setTppInfo(tppInfoMapper.mapToTppInfoEntity(paymentInfo.getTppInfo()));
-        commonPaymentData.setConsent(consent);
+        commonPaymentData.setPsuData(psuDataMapper.mapToCmsPsuDataList(paymentInfo.getPsuData()));
         return commonPaymentData;
     }
 
-    private PisPaymentData mapToPisPaymentData(PisPayment payment, PisConsent consent) {
+    private PisPaymentData mapToPisPaymentData(PisPayment payment, PisCommonPaymentData pisCommonPayment) {
         return Optional.ofNullable(payment)
                    .map(pm -> {
                        PisPaymentData pisPaymentData = new PisPaymentData();
@@ -100,7 +102,7 @@ public class PisConsentMapper {
                        pisPaymentData.setExecutionRule(pm.getExecutionRule());
                        pisPaymentData.setFrequency(pm.getFrequency());
                        pisPaymentData.setDayOfExecution(pm.getDayOfExecution());
-                       pisPaymentData.setConsent(consent);
+                       pisPaymentData.setPaymentData(pisCommonPayment);
                        pisPaymentData.setTransactionStatus(TransactionStatus.RCVD);
 
                        return pisPaymentData;
@@ -118,18 +120,17 @@ public class PisConsentMapper {
         return response;
     }
 
-    public Optional<PisConsentResponse> mapToPisConsentResponse(PisConsent pisConsent) {
-        return Optional.ofNullable(pisConsent)
-                   .map(pc -> {
-                       PisConsentResponse response = new PisConsentResponse();
-                       response.setPayments(mapToPisPaymentList(pc.getPayments()));
-                       response.setExternalId(pc.getExternalId());
-                       response.setConsentStatus(pc.getConsentStatus());
-                       response.setPaymentType(pc.getPaymentType());
-                       response.setPaymentProduct(pc.getPaymentProduct());
-                       response.setTppInfo(tppInfoMapper.mapToTppInfo(pc.getTppInfo()));
-                       response.setPsuData(psuDataMapper.mapToPsuIdData(pisConsent.getPsuData()));
-                       response.setPaymentInfo(mapToPisPaymentInfo(pc.getPaymentData()));
+    public Optional<PisCommonPaymentResponse> mapToPisCommonPaymentResponse(PisCommonPaymentData commonPaymentData) {
+        return Optional.ofNullable(commonPaymentData)
+                   .map(cmd -> {
+                       PisCommonPaymentResponse response = new PisCommonPaymentResponse();
+                       response.setPayments(mapToPisPaymentList(cmd.getPayments()));
+                       response.setExternalId(cmd.getPaymentId());
+                       response.setPaymentType(cmd.getPaymentType());
+                       response.setPaymentProduct(cmd.getPaymentProduct());
+                       response.setTppInfo(tppInfoMapper.mapToTppInfo(cmd.getTppInfo()));
+                       response.setPsuData(psuDataMapper.mapToPsuIdDataList(commonPaymentData.getPsuData()));
+                       response.setPaymentData(cmd.getPayment());
                        return response;
                    });
     }

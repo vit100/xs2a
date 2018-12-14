@@ -17,8 +17,7 @@
 package de.adorsys.psd2.xs2a.service;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentStatusFactory;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
@@ -34,7 +33,7 @@ import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
@@ -133,7 +132,7 @@ public class PaymentServiceTest {
     private ReadPaymentStatusService readPaymentStatusService;
 
     @Mock
-    private PisConsentResponse pisConsentResponse;
+    private PisConsentResponse pisCommonPaymentResponse;
     @Mock
     private PisPayment pisPayment;
     @Mock
@@ -150,10 +149,10 @@ public class PaymentServiceTest {
         when(paymentMapper.mapToTransactionStatus(SpiTransactionStatus.ACCP)).thenReturn(TransactionStatus.ACCP);
         when(paymentMapper.mapToTransactionStatus(SpiTransactionStatus.RJCT)).thenReturn(TransactionStatus.RJCT);
         when(paymentMapper.mapToTransactionStatus(null)).thenReturn(null);
-        when(xs2aPisConsentMapper.mapToXs2aPisConsent(any(), any())).thenReturn(getXs2aPisConsent());
+        when(xs2aPisConsentMapper.mapToXs2aPisCommonPayment(any(), any())).thenReturn(getXs2aPisConsent());
         when(psuDataMapper.mapToSpiPsuData(PSU_ID_DATA))
             .thenReturn(SPI_PSU_DATA);
-        when(xs2aPisConsentMapper.mapToXs2aPisConsent(new CreatePisConsentResponse("TEST"), PSU_ID_DATA)).thenReturn(getXs2aPisConsent());
+        when(xs2aPisConsentMapper.mapToXs2aPisCommonPayment(new CreatePisCommonPaymentResponse("TEST"), PSU_ID_DATA)).thenReturn(getXs2aPisConsent());
         when(pisConsentDataService.getInternalPaymentIdByEncryptedString("TEST")).thenReturn("TEST");
 
         //Status by ID
@@ -427,8 +426,8 @@ public class PaymentServiceTest {
         return bulkPayment;
     }
 
-    private Xs2aPisConsent getXs2aPisConsent() {
-        return new Xs2aPisConsent("TEST", PSU_ID_DATA);
+    private Xs2aPisCommonPayment getXs2aPisConsent() {
+        return new Xs2aPisCommonPayment("TEST", PSU_ID_DATA);
     }
 
     private PaymentInitiationParameters buildPaymentInitiationParameters(PaymentType type) {

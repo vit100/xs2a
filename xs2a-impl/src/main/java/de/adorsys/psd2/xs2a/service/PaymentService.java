@@ -17,7 +17,7 @@
 package de.adorsys.psd2.xs2a.service;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentFactory;
 import de.adorsys.psd2.xs2a.config.factory.ReadPaymentStatusFactory;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
@@ -28,7 +28,7 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
@@ -55,6 +55,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -103,10 +104,10 @@ public class PaymentService {
 
         TppInfo tppInfo = tppService.getTppInfo();
         tppInfo.setTppRedirectUri(paymentInitiationParameters.getTppRedirectUri());
-        Xs2aPisConsent pisConsent = xs2aPisConsentMapper.mapToXs2aPisConsent(pisConsentService.createPisConsent(paymentInitiationParameters, tppInfo), paymentInitiationParameters.getPsuData());
-        if (StringUtils.isBlank(pisConsent.getConsentId())) {
+        Xs2aPisCommonPayment pisCommonPayment = xs2aPisConsentMapper.mapToXs2aPisCommonPayment(pisConsentService.createCommonPayment(paymentInitiationParameters, tppInfo), paymentInitiationParameters.getPsuData());
+        if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
             return ResponseObject.builder()
-                       .fail(new MessageError(CONSENT_UNKNOWN_400))
+                       .fail(new MessageError(PAYMENT_FAILED))
                        .build();
         }
 
@@ -116,16 +117,17 @@ public class PaymentService {
             request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
             request.setPaymentData((byte[]) payment);
             request.setTppInfo(tppInfo);
+            request.setPsuData(Collections.singletonList(paymentInitiationParameters.getPsuData()));
 
-            return createCommonPaymentService.createPayment(request, paymentInitiationParameters, tppInfo, pisConsent);
+            return createCommonPaymentService.createPayment(request, paymentInitiationParameters, tppInfo, pisCommonPayment);
         }
 
         if (paymentInitiationParameters.getPaymentType() == SINGLE) {
-            return createSinglePaymentService.createPayment((SinglePayment) payment, paymentInitiationParameters, tppInfo, pisConsent);
+            return createSinglePaymentService.createPayment((SinglePayment) payment, paymentInitiationParameters, tppInfo, pisCommonPayment);
         } else if (paymentInitiationParameters.getPaymentType() == PERIODIC) {
-            return createPeriodicPaymentService.createPayment((PeriodicPayment) payment, paymentInitiationParameters, tppInfo, pisConsent);
+            return createPeriodicPaymentService.createPayment((PeriodicPayment) payment, paymentInitiationParameters, tppInfo, pisCommonPayment);
         } else {
-            return createBulkPaymentService.createPayment((BulkPayment) payment, paymentInitiationParameters, tppInfo, pisConsent);
+            return createBulkPaymentService.createPayment((BulkPayment) payment, paymentInitiationParameters, tppInfo, pisCommonPayment);
         }
     }
 
@@ -144,26 +146,25 @@ public class PaymentService {
     public ResponseObject getPaymentById(PaymentType paymentType, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED);
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(paymentId);
-        // aspspConsentData.getConsentId() is used as a temporary solution for getting PisConsent by payment id. Please, don't use this approach in any places
-        Optional<PisConsentResponse> pisConsentOptional = pisConsentService.getPisConsentById(aspspConsentData.getConsentId());
+        Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisConsentService.getPisCommonPaymentById(paymentId);
 
-        if (!pisConsentOptional.isPresent()) {
+        if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.builder()
-                       .fail(new MessageError(FORMAT_ERROR, "Consent not found"))
+                       .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
                        .build();
         }
 
-        PisConsentResponse pisConsent = pisConsentOptional.get();
+        PisCommonPaymentResponse commonPaymentResponse = pisCommonPaymentOptional.get();
 
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
         PaymentInformationResponse response;
 
         // TODO should be refactored https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
-        if (pisConsent.getPaymentInfo() != null) {
-            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisConsent.getPaymentInfo());
+        if (commonPaymentResponse.getPaymentData() != null) {
+            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(commonPaymentResponse);
             response = readCommonPaymentService.getPayment(commonPayment, psuData, aspspConsentData);
         } else {
-            PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
+            PisPayment pisPayment = getPisPaymentFromConsent(commonPaymentResponse);
 
             if (pisPayment == null) {
                 return ResponseObject.builder()
@@ -172,7 +173,7 @@ public class PaymentService {
             }
 
             ReadPaymentService<PaymentInformationResponse> readPaymentService = readPaymentFactory.getService(paymentType.getValue());
-            response = readPaymentService.getPayment(pisPayment, pisConsent.getPaymentProduct(), psuData, aspspConsentData); //NOT USED IN 1.2
+            response = readPaymentService.getPayment(pisPayment, commonPaymentResponse.getPaymentProduct(), psuData, aspspConsentData); //NOT USED IN 1.2
         }
 
         if (response.hasError()) {
@@ -196,27 +197,26 @@ public class PaymentService {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
 
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(paymentId);
-        // aspspConsentData.getConsentId() is used as a temporary solution for getting PisConsent by payment id. Please, don't use this approach in any places
-        Optional<PisConsentResponse> pisConsentOptional = pisConsentService.getPisConsentById(aspspConsentData.getConsentId());
+        Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisConsentService.getPisCommonPaymentById(paymentId);
 
-        if (!pisConsentOptional.isPresent()) {
+        if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.<TransactionStatus>builder()
-                       .fail(new MessageError(FORMAT_ERROR, "Consent not found"))
+                       .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
                        .build();
         }
 
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
-        PisConsentResponse pisConsent = pisConsentOptional.get();
+        PisCommonPaymentResponse pisCommonPaymentResponse = pisCommonPaymentOptional.get();
         SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(psuData);
         SpiResponse<SpiTransactionStatus> spiResponse;
 
         // TODO should be refactored https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
-        if (pisConsent.getPaymentInfo() != null) {
-            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisConsent.getPaymentInfo());
+        if (pisCommonPaymentResponse.getPaymentData() != null) {
+            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisCommonPaymentResponse);
             SpiPaymentInfo request = xs2aToSpiPaymentInfoMapper.mapToSpiPaymentInfo(commonPayment);
             spiResponse = commonPaymentSpi.getPaymentStatusById(spiPsuData, request, aspspConsentData);
         } else {
-            PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
+            PisPayment pisPayment = getPisPaymentFromConsent(pisCommonPaymentResponse);
 
             if (pisPayment == null) {
                 return ResponseObject.<TransactionStatus>builder()
@@ -225,7 +225,7 @@ public class PaymentService {
             }
 
             ReadPaymentStatusService readPaymentStatusService = readPaymentStatusFactory.getService(ReadPaymentStatusFactory.SERVICE_PREFIX + paymentType.getValue());
-            spiResponse = readPaymentStatusService.readPaymentStatus(pisPayment, pisConsent.getPaymentProduct(), spiPsuData, aspspConsentData);
+            spiResponse = readPaymentStatusService.readPaymentStatus(pisPayment, pisCommonPaymentResponse.getPaymentProduct(), spiPsuData, aspspConsentData);
         }
 
         pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
@@ -265,30 +265,29 @@ public class PaymentService {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.PAYMENT_CANCELLATION_REQUEST_RECEIVED);
 
         AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(paymentId);
-        // aspspConsentData.getConsentId() is used as a temporary solution for getting PisConsent by payment id. Please, don't use this approach in any places
-        Optional<PisConsentResponse> pisConsentOptional = pisConsentService.getPisConsentById(aspspConsentData.getConsentId());
+        Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisConsentService.getPisCommonPaymentById(paymentId);
 
-        if (!pisConsentOptional.isPresent()) {
+        if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.<CancelPaymentResponse>builder()
                        .fail(new MessageError(FORMAT_ERROR, "Consent not found"))
                        .build();
         }
 
-        PisConsentResponse pisConsent = pisConsentOptional.get();
+        PisCommonPaymentResponse pisCommonPaymentResponse = pisCommonPaymentOptional.get();
         SpiPayment spiPayment = null;
 
-        if (pisConsent.getPaymentInfo() != null) {
-            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisConsent.getPaymentInfo());
+        if (pisCommonPaymentResponse.getPaymentData() != null) {
+            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisCommonPaymentResponse);
             spiPayment = xs2aToSpiPaymentInfoMapper.mapToSpiPaymentInfo(commonPayment);
         } else {
-            PisPayment pisPayment = getPisPaymentFromConsent(pisConsent);
+            PisPayment pisPayment = getPisPaymentFromConsent(pisCommonPaymentResponse);
             if (pisPayment == null) {
                 return ResponseObject.<CancelPaymentResponse>builder()
                            .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
                            .build();
             }
 
-            Optional<? extends SpiPayment> spiPaymentOptional = spiPaymentFactory.createSpiPaymentByPaymentType(pisPayment, pisConsent.getPaymentProduct(), paymentType);
+            Optional<? extends SpiPayment> spiPaymentOptional = spiPaymentFactory.createSpiPaymentByPaymentType(pisPayment, pisCommonPaymentResponse.getPaymentProduct(), paymentType);
 
             if (!spiPaymentOptional.isPresent()) {
                 log.error("Unknown payment type: {}", paymentType);
@@ -300,9 +299,9 @@ public class PaymentService {
             spiPayment = spiPaymentOptional.get();
         }
 
-        Optional<PisConsentResponse> consent = pisConsentService.getPisConsentById(paymentId);
+        Optional<PisCommonPaymentResponse> commonPayment = pisConsentService.getPisCommonPaymentById(paymentId);
 
-        if (consent.isPresent() && isFinalisedPayment(consent.get())) {
+        if (commonPayment.isPresent() && isFinalisedPayment(commonPayment.get())) {
             return ResponseObject.<CancelPaymentResponse>builder()
                        .fail(new MessageError(FORMAT_ERROR, "Payment is finalised already and cannot be cancelled"))
                        .build();
@@ -320,7 +319,7 @@ public class PaymentService {
         }
     }
 
-    private boolean isFinalisedPayment(PisConsentResponse consent) {
+    private boolean isFinalisedPayment(PisCommonPaymentResponse consent) {
         List<PisPayment> finalisedPayments = consent.getPayments().stream()
                                                  .filter(p -> p.getTransactionStatus().isFinalisedStatus())
                                                  .collect(Collectors.toList());
@@ -328,9 +327,10 @@ public class PaymentService {
         return CollectionUtils.isNotEmpty(finalisedPayments);
     }
 
-    private PisPayment getPisPaymentFromConsent(PisConsentResponse pisConsentResponse) {
-        return Optional.of(pisConsentResponse)
-                   .map(PisConsentResponse::getPayments)
+    private PisPayment getPisPaymentFromConsent(PisCommonPaymentResponse pisCommonPaymentResponse) {
+        return Optional.of(pisCommonPaymentResponse)
+                   .map(PisCommonPaymentResponse::getPayments)
+                   .filter(CollectionUtils::isNotEmpty)
                    .map(payments -> payments.get(0))
                    .orElse(null);
     }

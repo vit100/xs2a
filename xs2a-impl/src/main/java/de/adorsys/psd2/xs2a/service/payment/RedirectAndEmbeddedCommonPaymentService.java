@@ -18,7 +18,7 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
@@ -44,9 +44,9 @@ public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPayment
     private final SpiErrorMapper spiErrorMapper;
 
     @Override
-    public CommonPaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, Xs2aPisConsent pisConsent) {
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(pisConsent.getConsentId());
-        SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(pisConsent.getPsuData());
+    public CommonPaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, Xs2aPisCommonPayment commonPayment) {
+        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(commonPayment.getPaymentId());
+        SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(commonPayment.getPsuData());
 
         SpiResponse<SpiPaymentInitiationResponse> spiResponse = commonPaymentSpi.initiatePayment(spiPsuData, mapToSpiPaymentRequest(payment, paymentProduct), aspspConsentData);
         pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());

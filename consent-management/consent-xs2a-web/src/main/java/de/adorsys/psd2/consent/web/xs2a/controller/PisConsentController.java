@@ -22,9 +22,10 @@ import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisati
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -45,9 +46,9 @@ public class PisConsentController {
 
     @PostMapping(path = "/")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CreatePisConsentResponse.class),
+        @ApiResponse(code = 200, message = "OK", response = CreatePisCommonPaymentResponse.class),
         @ApiResponse(code = 400, message = "Bad request")})
-    public ResponseEntity<CreatePisConsentResponse> createPaymentConsent(@RequestBody PisConsentRequest request) {
+    public ResponseEntity<CreatePisCommonPaymentResponse> createPaymentConsent(@RequestBody PisPaymentInfo request) {
         return pisConsentService.createPaymentConsent(request)
                    .map(c -> new ResponseEntity<>(c, HttpStatus.CREATED))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
@@ -69,12 +70,12 @@ public class PisConsentController {
     @GetMapping(path = "/{consent-id}")
     @ApiOperation(value = "")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = PisConsentResponse.class),
+        @ApiResponse(code = 200, message = "OK", response = PisCommonPaymentResponse.class),
         @ApiResponse(code = 400, message = "Bad request")})
-    public ResponseEntity<PisConsentResponse> getConsentById(
+    public ResponseEntity<PisCommonPaymentResponse> getConsentById(
         @ApiParam(name = "consent-id", value = "The payment consent identification assigned to the created payment consent.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
-        @PathVariable("consent-id") String consentId) {
-        return pisConsentService.getConsentById(consentId)
+        @PathVariable("consent-id") String paymentId) {
+        return pisConsentService.getCommonPaymentById(paymentId)
                    .map(pc -> new ResponseEntity<>(pc, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
@@ -205,10 +206,10 @@ public class PisConsentController {
     // TODO return correct error code in case consent was not found https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/408
     @PutMapping(path = "/{consent-id}/payment")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CreatePisConsentResponse.class),
+        @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 400, message = "Bad request")})
-    public ResponseEntity<Void> updatePaymentConsent(@RequestBody PisConsentRequest request, @PathVariable("consent-id") String consentId) {
-        pisConsentService.updatePaymentConsent(request, consentId);
+    public ResponseEntity<Void> updatePaymentConsent(@RequestBody PisCommonPaymentRequest request, @PathVariable("consent-id") String paymentId) {
+        pisConsentService.updatePaymentConsent(request, paymentId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

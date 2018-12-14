@@ -22,9 +22,7 @@ import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisati
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.service.PisConsentService;
 import de.adorsys.psd2.consent.web.xs2a.controller.PisConsentController;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
@@ -83,10 +81,10 @@ public class PisConsentControllerTest {
     @Test
     public void createPaymentConsent_Success() {
         //Given
-        ResponseEntity<CreatePisConsentResponse> expected = new ResponseEntity<>(new CreatePisConsentResponse(CONSENT_ID), HttpStatus.CREATED);
+        ResponseEntity<CreatePisCommonPaymentResponse> expected = new ResponseEntity<>(new CreatePisCommonPaymentResponse(CONSENT_ID), HttpStatus.CREATED);
 
         //When
-        ResponseEntity<CreatePisConsentResponse> actual = pisConsentController.createPaymentConsent(getPisConsentRequest());
+        ResponseEntity<CreatePisCommonPaymentResponse> actual = pisConsentController.createPaymentConsent(getPisConsentRequest());
 
         //Then
         assertEquals(actual, expected);
@@ -96,10 +94,10 @@ public class PisConsentControllerTest {
     public void createPaymentConsent_Failure() {
         //Given
         when(pisConsentService.createPaymentConsent(getPisConsentRequest())).thenReturn(Optional.empty());
-        ResponseEntity<CreatePisConsentResponse> expected = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        ResponseEntity<CreatePisCommonPaymentResponse> expected = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         //When
-        ResponseEntity<CreatePisConsentResponse> actual = pisConsentController.createPaymentConsent(getPisConsentRequest());
+        ResponseEntity<CreatePisCommonPaymentResponse> actual = pisConsentController.createPaymentConsent(getPisConsentRequest());
 
         //Then
         assertEquals(actual, expected);
@@ -276,8 +274,8 @@ public class PisConsentControllerTest {
         return new PisConsentRequest();
     }
 
-    private CreatePisConsentResponse getCreatePisConsentResponse() {
-        return new CreatePisConsentResponse(CONSENT_ID);
+    private CreatePisCommonPaymentResponse getCreatePisConsentResponse() {
+        return new CreatePisCommonPaymentResponse(CONSENT_ID);
     }
 
     private PisConsentResponse getPisConsentResponse() {

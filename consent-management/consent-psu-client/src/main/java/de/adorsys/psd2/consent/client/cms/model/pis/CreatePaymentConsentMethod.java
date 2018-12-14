@@ -16,12 +16,11 @@
 
 package de.adorsys.psd2.consent.client.cms.model.pis;
 
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.client.cms.RestCmsRequestMethod;
 import de.adorsys.psd2.consent.client.core.HttpMethod;
 
-public class CreatePaymentConsentMethod extends RestCmsRequestMethod<PisConsentRequest, CreatePisConsentResponse> {
+public class CreatePaymentConsentMethod extends RestCmsRequestMethod<PisConsentRequest, CreatePisCommonPaymentResponse> {
     private static final String CREATE_PAYMENT_CONSENT_URI = "api/v1/pis/consent/";
 
     public CreatePaymentConsentMethod(final PisConsentRequest request) {

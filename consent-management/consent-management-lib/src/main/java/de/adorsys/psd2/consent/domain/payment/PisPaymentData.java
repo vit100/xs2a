@@ -128,9 +128,9 @@ public class PisPaymentData {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "consent_id", nullable = false)
-    @ApiModelProperty(value = "Detailed information about consent", required = true)
-    private PisConsent consent;
+    @JoinColumn(name = "common_payment_id", nullable = false)
+    @ApiModelProperty(value = "Detailed information about payment", required = true)
+    private PisCommonPaymentData paymentData;
 
     @Column(name = "transaction_status")
     @Enumerated(value = EnumType.STRING)

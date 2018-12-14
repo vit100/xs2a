@@ -20,6 +20,9 @@ import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class PsuDataMapper {
 
@@ -39,5 +42,17 @@ public class PsuDataMapper {
             psuData.getPsuCorporateId(),
             psuData.getPsuCorporateIdType()
         );
+    }
+
+    public List<PsuData> mapToCmsPsuDataList(List<PsuIdData> psuIdDataList) {
+        return psuIdDataList.stream()
+                   .map(this::mapToPsuData)
+                   .collect(Collectors.toList());
+    }
+
+    public List<PsuIdData> mapToPsuIdDataList(List<PsuData> psuIdDataList) {
+        return psuIdDataList.stream()
+                   .map(this::mapToPsuIdData)
+                   .collect(Collectors.toList());
     }
 }

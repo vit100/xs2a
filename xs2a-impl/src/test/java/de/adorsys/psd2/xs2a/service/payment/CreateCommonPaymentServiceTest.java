@@ -22,7 +22,7 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.core.tpp.TppRole;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
@@ -51,7 +51,7 @@ public class CreateCommonPaymentServiceTest {
     private static final PsuIdData PSU_DATA = new PsuIdData(null, null, null, null);
     private final TppInfo TPP_INFO = buildTppInfo();
     private static final String PRODUCT = "sepa-credit-transfers";
-    private final Xs2aPisConsent CONSENT = buildXs2aPisConsent();
+    private final Xs2aPisCommonPayment CONSENT = buildXs2aPisConsent();
     private final CommonPayment COMMON_PAYMENT = buildCommonPayment();
 
     @InjectMocks
@@ -95,8 +95,8 @@ public class CreateCommonPaymentServiceTest {
         return request;
     }
 
-    private Xs2aPisConsent buildXs2aPisConsent() {
-        return new Xs2aPisConsent(CONSENT_ID, PSU_DATA);
+    private Xs2aPisCommonPayment buildXs2aPisConsent() {
+        return new Xs2aPisCommonPayment(CONSENT_ID, PSU_DATA);
     }
 
     private PaymentInitiationParameters buildPaymentInitiationParameters() {

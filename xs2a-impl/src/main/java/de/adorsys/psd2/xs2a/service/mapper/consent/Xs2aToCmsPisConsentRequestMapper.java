@@ -20,7 +20,7 @@ import de.adorsys.psd2.consent.api.CmsAddress;
 import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.consent.api.pis.CmsRemittance;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
 @Component
 public class Xs2aToCmsPisConsentRequestMapper {
 
-    public PisConsentRequest mapToCmsPisConsentRequest(CommonPayment paymentInitRequest) {
-        PisConsentRequest request = new PisConsentRequest();
+    public PisCommonPaymentRequest mapToCmsPisConsentRequest(CommonPayment paymentInitRequest) {
+        PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(Collections.emptyList());
         request.setPaymentInfo(mapToPisPaymentInfo(paymentInitRequest));
         request.setPaymentId(paymentInitRequest.getPaymentId());
@@ -49,6 +49,7 @@ public class Xs2aToCmsPisConsentRequestMapper {
         request.setPaymentProduct(paymentInitRequest.getPaymentProduct());
         // TODO put real tppInfo data https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/406
         request.setTppInfo(new TppInfo());
+        request.setPsuData(paymentInitRequest.getPsuData());
         return request;
     }
 
@@ -68,8 +69,8 @@ public class Xs2aToCmsPisConsentRequestMapper {
                    .orElse(null);
     }
 
-    public PisConsentRequest mapToCmsSinglePisConsentRequest(SinglePayment singlePayment, String paymentProduct) {
-        PisConsentRequest request = new PisConsentRequest();
+    public PisCommonPaymentRequest mapToCmsSinglePisConsentRequest(SinglePayment singlePayment, String paymentProduct) {
+        PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(Collections.singletonList(mapToPisPaymentForSinglePayment(singlePayment)));
         request.setPaymentProduct(paymentProduct);
         // TODO put real tppInfo data https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/406
@@ -77,8 +78,8 @@ public class Xs2aToCmsPisConsentRequestMapper {
         return request;
     }
 
-    public PisConsentRequest mapToCmsPeriodicPisConsentRequest(PeriodicPayment periodicPayment, String paymentProduct) {
-        PisConsentRequest request = new PisConsentRequest();
+    public PisCommonPaymentRequest mapToCmsPeriodicPisConsentRequest(PeriodicPayment periodicPayment, String paymentProduct) {
+        PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(Collections.singletonList(mapToPisPaymentForPeriodicPayment(periodicPayment)));
         request.setPaymentProduct(paymentProduct);
         // TODO put real tppInfo data https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/406
@@ -86,8 +87,8 @@ public class Xs2aToCmsPisConsentRequestMapper {
         return request;
     }
 
-    public PisConsentRequest mapToCmsBulkPisConsentRequest(BulkPayment bulkPayment, String paymentProduct) {
-        PisConsentRequest request = new PisConsentRequest();
+    public PisCommonPaymentRequest mapToCmsBulkPisConsentRequest(BulkPayment bulkPayment, String paymentProduct) {
+        PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(mapToListPisPayment(bulkPayment.getPayments()));
         request.setPaymentProduct(paymentProduct);
         request.setPaymentType(PaymentType.BULK);

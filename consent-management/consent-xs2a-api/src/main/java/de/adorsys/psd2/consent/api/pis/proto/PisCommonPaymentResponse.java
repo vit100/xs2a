@@ -17,7 +17,6 @@
 package de.adorsys.psd2.consent.api.pis.proto;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
@@ -28,8 +27,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@ApiModel(description = "Pis payment initialisation consent response", value = "PisConsentResponse")
-public class PisConsentResponse {
+@ApiModel(description = "Pis payment initialisation common payment response", value = "PisCommonPaymentResponse")
+public class PisCommonPaymentResponse {
     @ApiModelProperty(value = "Payment data", required = true)
     private List<PisPayment> payments;
 
@@ -42,15 +41,12 @@ public class PisConsentResponse {
     @ApiModelProperty(value = "Tpp information", required = true)
     private TppInfo tppInfo;
 
-    @ApiModelProperty(value = "An external exposed identification of the created payment consent", required = true, example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
+    @ApiModelProperty(value = "An external exposed identification of the created common payment", required = true, example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
     private String externalId;
 
-    @ApiModelProperty(value = "The following code values are permitted 'received', 'valid', 'rejected', 'expired', 'revoked by psu', 'terminated by tpp'. These values might be extended by ASPSP.", required = true, example = "VALID")
-    private ConsentStatus consentStatus;
-
-    @ApiModelProperty(value = "Corresponding PSU", required = true)
-    private PsuIdData psuData;
+    @ApiModelProperty(value = "List of corresponding PSU", required = true)
+    private List<PsuIdData> psuData;
 
     @ApiModelProperty(value = "Payment info")
-    private PisPaymentInfo paymentInfo;
+    private byte[] paymentData;
 }

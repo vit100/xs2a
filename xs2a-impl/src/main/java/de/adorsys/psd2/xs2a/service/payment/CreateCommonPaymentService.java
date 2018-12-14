@@ -19,7 +19,7 @@ package de.adorsys.psd2.xs2a.service.payment;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.consent.Xsa2CreatePisConsentAuthorisationResponse;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
@@ -48,32 +48,32 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
      *
      * @param payment                     payment information
      * @param paymentInitiationParameters payment initiation parameters
-     * @param pisConsent                  consent information
+     * @param pisCommonPayment            common payment information
      * @param tppInfo                     information about particular TPP
      * @return Response containing information about created common payment or corresponding error
      */
     @Override
-    public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisConsent pisConsent) {
-        String externalPaymentId = pisConsent.getConsentId();
+    public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisCommonPayment pisCommonPayment) {
+        String externalPaymentId = pisCommonPayment.getPaymentId();
 
         // we need to get decrypted payment ID
         String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
         payment.setPaymentId(internalPaymentId);
 
-        PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisConsent);
+        PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisCommonPayment);
 
-        response.setPisConsentId(pisConsent.getConsentId());
+        response.setPisConsentId(pisCommonPayment.getPaymentId());
 
         payment.setTransactionStatus(response.getTransactionStatus());
 
-        pisConsentService.updatePaymentInPisConsent(payment, pisConsent.getConsentId());
+        pisConsentService.updatePaymentInPisConsent(payment, pisCommonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {
             Optional<Xsa2CreatePisConsentAuthorisationResponse> consentAuthorisation = pisScaAuthorisationService.createConsentAuthorisation(externalPaymentId, payment.getPaymentType(), paymentInitiationParameters.getPsuData());
             if (!consentAuthorisation.isPresent()) {
                 return ResponseObject.<PaymentInitiationResponse>builder()
-                           .fail(new MessageError(MessageErrorCode.CONSENT_INVALID))
+                           .fail(new MessageError(MessageErrorCode.PAYMENT_FAILED))
                            .build();
             }
 

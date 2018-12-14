@@ -20,7 +20,7 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.consent.Xsa2CreatePisConsentAuthorisationResponse;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
@@ -47,33 +47,33 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
     /**
      * Initiates periodic payment
      *
-     * @param periodicPayment Periodic payment information
-     * @param paymentInitiationParameters  payment initiation parameters
-     * @param pisConsent  consent information
-     * @param tppInfo  information about particular TPP
+     * @param periodicPayment             Periodic payment information
+     * @param paymentInitiationParameters payment initiation parameters
+     * @param commonPayment               common payment information
+     * @param tppInfo                     information about particular TPP
      * @return Response containing information about created periodic payment or corresponding error
      */
     @Override
-    public ResponseObject<PeriodicPaymentInitiationResponse> createPayment(PeriodicPayment periodicPayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisConsent pisConsent) {
-        String externalPaymentId = pisConsent.getConsentId();
+    public ResponseObject<PeriodicPaymentInitiationResponse> createPayment(PeriodicPayment periodicPayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisCommonPayment commonPayment) {
+        String externalPaymentId = commonPayment.getPaymentId();
 
         // we need to get decrypted payment ID
         String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
         periodicPayment.setPaymentId(internalPaymentId);
 
-        PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisConsent);
-        response.setPisConsentId(pisConsent.getConsentId());
+        PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);
+        response.setPisConsentId(commonPayment.getPaymentId());
 
         periodicPayment.setTransactionStatus(response.getTransactionStatus());
 
-        pisConsentService.updatePeriodicPaymentInPisConsent(periodicPayment, paymentInitiationParameters, pisConsent.getConsentId());
+        pisConsentService.updatePeriodicPaymentInPisConsent(periodicPayment, paymentInitiationParameters, commonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {
             Optional<Xsa2CreatePisConsentAuthorisationResponse> consentAuthorisation = pisScaAuthorisationService.createConsentAuthorisation(externalPaymentId, PaymentType.PERIODIC, paymentInitiationParameters.getPsuData());
             if (!consentAuthorisation.isPresent()) {
                 return ResponseObject.<PeriodicPaymentInitiationResponse>builder()
-                           .fail(new MessageError(MessageErrorCode.CONSENT_INVALID))
+                           .fail(new MessageError(MessageErrorCode.PAYMENT_FAILED))
                            .build();
             }
             Xsa2CreatePisConsentAuthorisationResponse authorisationResponse = consentAuthorisation.get();

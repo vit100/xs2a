@@ -24,7 +24,7 @@ import de.adorsys.psd2.xs2a.core.tpp.TppRole;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisConsent;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPaymentInitiationResponse;
@@ -110,8 +110,8 @@ public class CreatePeriodicPaymentTest {
         return reference;
     }
 
-    private Xs2aPisConsent buildXs2aPisConsent() {
-        return new Xs2aPisConsent(CONSENT_ID, PSU_ID_DATA);
+    private Xs2aPisCommonPayment buildXs2aPisConsent() {
+        return new Xs2aPisCommonPayment(CONSENT_ID, PSU_ID_DATA);
     }
 
     private PaymentInitiationParameters buildPaymentInitiationParameters() {

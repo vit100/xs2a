@@ -24,9 +24,7 @@ import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.pis.CmsRemittance;
 import de.adorsys.psd2.consent.api.pis.PisConsentStatusResponse;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.client.cms.CmsServiceInvoker;
 import de.adorsys.psd2.consent.client.cms.model.ais.*;
 import de.adorsys.psd2.consent.client.cms.model.piis.GetPiisConsentListByAccountReferenceMethod;
@@ -241,7 +239,7 @@ public class CmsExecutor {
      * @param cmsServiceInvoker Service, performing rest call
      */
     private static void createPaymentConsent(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
-        Optional<CreatePisConsentResponse> createPisResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new CreatePaymentConsentMethod(buildPisConsentRequest())));
+        Optional<CreatePisCommonPaymentResponse> createPisResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new CreatePaymentConsentMethod(buildPisConsentRequest())));
         createPisResponse.ifPresent(resp -> logger.info("Consent ID: " + resp.getConsentId()));
     }
 

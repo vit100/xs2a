@@ -42,10 +42,6 @@ public class PisConsentAuthorization {
     @JoinColumn(name = "psu_id")
     private PsuData psuData;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "consent_id")
-    private PisConsent consent;
-
     @Column(name = "sca_status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private ScaStatus scaStatus;
@@ -60,9 +56,8 @@ public class PisConsentAuthorization {
     @Column(name = "expiration_timestamp")
     private OffsetDateTime redirectUrlExpirationTimestamp;
 
-    //TODO make this field madatory after pisConsent is removed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/517
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
+    @JoinColumn(name = "payment_id", nullable = false)
     private PisCommonPaymentData paymentData;
 
     public boolean isNotExpired() {

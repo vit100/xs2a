@@ -29,7 +29,7 @@ import java.util.List;
 
 @Data
 @ApiModel(description = "Pis payment initialisation consent request", value = "PisConsentRequest")
-public class PisConsentRequest {
+public class PisCommonPaymentRequest {
     @ApiModelProperty(value = "Payment data", required = true)
     private List<PisPayment> payments;
 
@@ -43,7 +43,7 @@ public class PisConsentRequest {
     private TppInfo tppInfo;
 
     @ApiModelProperty(value = "Corresponding PSU", required = true)
-    private PsuIdData psuData;
+    private List<PsuIdData> psuData;
 
     @ApiModelProperty(value = "External Payment Id", example = "32454656712432")
     private String paymentId;

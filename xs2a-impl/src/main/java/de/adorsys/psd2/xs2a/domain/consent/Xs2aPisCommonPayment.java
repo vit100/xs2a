@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.api.pis.proto;
+package de.adorsys.psd2.xs2a.domain.consent;
 
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.Value;
 
 @Value
-public class CreatePisConsentResponse {
-    private String consentId;
+public class Xs2aPisCommonPayment {
+    private String paymentId;
+    private PsuIdData psuData;
 }
