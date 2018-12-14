@@ -18,6 +18,9 @@ package de.adorsys.psd2.consent.api.service;
 
 /**
  * EventService with enabled encryption and decryption
+ *
+ * @see de.adorsys.psd2.consent.api.service.EventServiceBase
+ * @see de.adorsys.psd2.consent.api.service.EventService
  */
 public interface EventServiceEncrypted extends EventServiceBase {
 }

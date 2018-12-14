@@ -18,6 +18,9 @@ package de.adorsys.psd2.consent.api.service;
 
 /**
  * AisConsentService with enabled encryption and decryption
+ *
+ * @see de.adorsys.psd2.consent.api.service.AisConsentServiceBase
+ * @see de.adorsys.psd2.consent.api.service.AisConsentService
  */
 public interface AisConsentServiceEncrypted extends AisConsentServiceBase {
 }

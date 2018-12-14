@@ -19,6 +19,13 @@ package de.adorsys.psd2.consent.api.service;
 import de.adorsys.psd2.xs2a.core.event.Event;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Base version of EventService that contains all method declarations.
+ * Should not be implemented directly, consider using one of the interfaces that extends this one.
+ *
+ * @see de.adorsys.psd2.consent.api.service.EventService
+ * @see de.adorsys.psd2.consent.api.service.EventServiceEncrypted
+ */
 interface EventServiceBase {
     /**
      * Records new Event in the CMS

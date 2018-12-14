@@ -20,6 +20,9 @@ import java.util.Optional;
 
 /**
  * PisConsentService with enabled encryption and decryption
+ *
+ * @see de.adorsys.psd2.consent.api.service.PisConsentServiceBase
+ * @see de.adorsys.psd2.consent.api.service.PisConsentService
  */
 public interface PisConsentServiceEncrypted extends PisConsentServiceBase {
     /**

@@ -23,6 +23,13 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Base version of AisConsentService that contains all method declarations.
+ * Should not be implemented directly, consider using one of the interfaces that extends this one.
+ *
+ * @see de.adorsys.psd2.consent.api.service.AisConsentService
+ * @see de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted
+ */
 interface AisConsentServiceBase {
 
     /**

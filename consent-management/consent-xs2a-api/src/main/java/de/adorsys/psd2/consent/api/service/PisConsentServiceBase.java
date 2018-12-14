@@ -30,6 +30,13 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Base version of PisConsentService that contains all method declarations.
+ * Should not be implemented directly, consider using one of the interfaces that extends this one.
+ *
+ * @see de.adorsys.psd2.consent.api.service.PisConsentService
+ * @see de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted
+ */
 interface PisConsentServiceBase {
 
     Optional<CreatePisConsentResponse> createPaymentConsent(PisConsentRequest request);
