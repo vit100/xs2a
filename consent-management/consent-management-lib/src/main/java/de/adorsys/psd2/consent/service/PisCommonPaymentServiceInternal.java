@@ -313,8 +313,8 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     private Optional<PisCommonPaymentData> readReceivedCommonPaymentDataByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisCommonPaymentData> commonPaymentData = pisPaymentDataRepository.findByPaymentIdAndPaymentDataTransactionStatus(paymentId, TransactionStatus.RCVD)
-                                                     .filter(CollectionUtils::isNotEmpty)
-                                                     .map(list -> list.get(0).getPaymentData());
+                                                               .filter(CollectionUtils::isNotEmpty)
+                                                               .map(list -> list.get(0).getPaymentData());
 
         if (!commonPaymentData.isPresent()) {
             commonPaymentData = pisCommonPaymentDataRepository.findByPaymentIdAndTransactionStatus(paymentId, TransactionStatus.RCVD);
@@ -326,8 +326,8 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     private Optional<PisCommonPaymentData> readPisCommonPaymentDataByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         Optional<PisCommonPaymentData> commonPaymentDa = pisPaymentDataRepository.findByPaymentId(paymentId)
-                                                           .filter(CollectionUtils::isNotEmpty)
-                                                           .map(list -> list.get(0).getPaymentData());
+                                                             .filter(CollectionUtils::isNotEmpty)
+                                                             .map(list -> list.get(0).getPaymentData());
         if (!commonPaymentDa.isPresent()) {
             commonPaymentDa = pisCommonPaymentDataRepository.findByPaymentId(paymentId);
         }
@@ -361,6 +361,12 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
 
         PsuData newPsuData = psuDataMapper.mapToPsuData(psuData);
+
+        if (newPsuData == null // todo implementation should be changed  https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
+                && (paymentData.getPsuData().size() == 1)) {
+            newPsuData = paymentData.getPsuData().get(0);
+        }
+
         PisCommonPaymentData commonPaymentData = pisCommonPaymentMapper.enrichPsuData(newPsuData, paymentData);
 
         consentAuthorization.setPsuData(newPsuData);
