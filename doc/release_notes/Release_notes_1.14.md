@@ -53,18 +53,7 @@ Also ulr paths in CmsPsuAisConsentController and CmsPsuPisController were change
 | GET    | Gets payment by redirect id | psu-api/v1/pis/consent/{payment-id}/redirect/{redirect-id} | psu-api/v1/pis/consent/{payment-id}/redirects/{redirect-id} |
 
 ## Removed encryption from CmsPsuAisService and CmsPsuPisService
-From now on the following methods in CmsPsuAisService and CmsPsuPisService(and corresponding endpoints of consent
- management system) take unencrypted consent or payment id instead of the encrypted one:
-* CmsPsuAisService:
-  * getConsent (GET psu-api/v1/ais/consent/{consent-id})
-  * updateAuthorisationStatus (PUT psu-api/v1/ais/consent/{consent-id}/authorizations/{authorization-id}/status/{status})
-  * confirmConsent (PUT psu-api/v1/ais/consent/{consent-id}/confirm-consent)
-  * rejectConsent (PUT psu-api/v1/ais/consent/{consent-id}/reject-consent)
-  * revokeConsent (PUT psu-api/v1/ais/consent/{consent-id}/revoke-consent)
-* CmsPsuPisService:
-  * getPayment (GET psu-api/v1/pis/consent/{payment-id})
-  * updateAuthorisationStatus (PUT psu-api/v1/pis/consent/{payment-id}/{authorisation-id}/status/{status})
-  * updatePaymentStatus (PUT psu-api/v1/pis/consent/{payment-id}/status/{status})
+From now on all methods in CmsPsuAisService and CmsPsuPisService(and corresponding endpoints of consent management system) take unencrypted consent or payment id instead of the encrypted one.
 
 This unencrypted id can be acquired from the consent or payment object itself after receiving it by redirect id(via 
-GET /psu-api/v1/pis/consent/redirects/{redirect-id} or GET /psu-api/v1/ais/consent/redirects/{redirect-id})
+GET /psu-api/v1/ais/consent/redirects/{redirect-id} or GET /psu-api/v1/pis/consent/redirects/{redirect-id})
