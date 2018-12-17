@@ -143,15 +143,14 @@ public class PisConsentServiceRemote implements PisConsentService {
 
     @Override
     public Optional<ScaStatus> getAuthorisationScaStatus(String paymentId, String authorisationId, CmsAuthorisationType authorisationType) {
-        String url = getAuthorisationSubResourcesUrl(authorisationType);
+        String url = getAuthorisationScaStatusUrl(authorisationType);
         try {
-            ResponseEntity<List<String>> request = consentRestTemplate.exchange(
+            ResponseEntity<ScaStatus> request = consentRestTemplate.exchange(
                 url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<String>>() {
-                }, paymentId);
+                ScaStatus.class, paymentId, authorisationId);
             return Optional.ofNullable(request.getBody());
         } catch (CmsRestException cmsRestException) {
-            log.warn("No authorisation found by paymentId {}", paymentId);
+            log.warn("Couldn't get authorisation SCA Status by paymentId {} and authorisationId {}", paymentId, authorisationId);
         }
         return Optional.empty();
     }
@@ -178,5 +177,17 @@ public class PisConsentServiceRemote implements PisConsentService {
     public Optional<PsuIdData> getPsuDataByConsentId(String consentId) {
         return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisConsentUrls.getPsuDataByConsentId(), PsuIdData.class, consentId)
                                        .getBody());
+    }
+
+    private String getAuthorisationScaStatusUrl(CmsAuthorisationType authorisationType) {
+        switch (authorisationType) {
+            case CREATED:
+                return remotePisConsentUrls.getAuthorisationScaStatus();
+            case CANCELLED:
+                return null;
+            default:
+                log.error("Unknown payment authorisation type {}", authorisationType);
+                throw new IllegalArgumentException("Unknown payment authorisation type " + authorisationType);
+        }
     }
 }
