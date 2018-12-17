@@ -31,7 +31,7 @@ import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.exception.MessageError;
-import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
@@ -73,7 +73,7 @@ public class PaymentService {
     private final SpiPaymentFactory spiPaymentFactory;
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final Xs2aUpdatePaymentStatusAfterSpiService updatePaymentStatusAfterSpiService;
-    private final PisConsentDataService pisConsentDataService;
+    private final PisCommonPaymentDataService pisCommonPaymentDataService;
     private final PisPsuDataService pisPsuDataService;
     private final TppService tppService;
     private final CreateSinglePaymentService createSinglePaymentService;
@@ -145,7 +145,7 @@ public class PaymentService {
      */
     public ResponseObject getPaymentById(PaymentType paymentType, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED);
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(paymentId);
+        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(paymentId);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
 
         if (!pisCommonPaymentOptional.isPresent()) {
@@ -196,7 +196,7 @@ public class PaymentService {
     public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
 
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(paymentId);
+        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(paymentId);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
 
         if (!pisCommonPaymentOptional.isPresent()) {
@@ -228,7 +228,7 @@ public class PaymentService {
             spiResponse = readPaymentStatusService.readPaymentStatus(pisPayment, pisCommonPaymentResponse.getPaymentProduct(), spiContextData, aspspConsentData);
         }
 
-        pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
+        pisCommonPaymentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
             ErrorHolder errorHolder = spiErrorMapper.mapToErrorHolder(spiResponse);

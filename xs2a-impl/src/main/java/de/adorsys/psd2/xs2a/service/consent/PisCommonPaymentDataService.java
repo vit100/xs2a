@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PisConsentDataService {
+public class PisCommonPaymentDataService {
     private final PisCommonPaymentService pisCommonPaymentService;
     private final AspspDataService aspspDataService;
 

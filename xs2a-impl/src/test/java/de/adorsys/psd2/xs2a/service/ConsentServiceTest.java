@@ -605,7 +605,7 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.createPisConsentAuthorization(PAYMENT_ID, PaymentType.SINGLE, PSU_ID_DATA);
+        consentService.createPisAuthorization(PAYMENT_ID, PaymentType.SINGLE, PSU_ID_DATA);
 
         // Then
         verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture());
@@ -622,7 +622,7 @@ public class ConsentServiceTest {
         Xs2aUpdatePisCommonPaymentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
 
         // When
-        consentService.updatePisConsentPsuData(request);
+        consentService.updatePisCommonPaymentPsuData(request);
 
         // Then
         verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture(), any());
@@ -639,7 +639,7 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.createPisConsentCancellationAuthorization(PAYMENT_ID, PaymentType.SINGLE);
+        consentService.createPisCancellationAuthorization(PAYMENT_ID, PaymentType.SINGLE);
 
         // Then
         verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture());

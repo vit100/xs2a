@@ -28,7 +28,7 @@ import de.adorsys.psd2.xs2a.domain.pis.PeriodicPaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
-    private final PisConsentDataService pisConsentDataService;
+    private final PisCommonPaymentDataService pisCommonPaymentDataService;
 
     /**
      * Initiates periodic payment
@@ -58,7 +58,7 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
         String externalPaymentId = commonPayment.getPaymentId();
 
         // we need to get decrypted payment ID
-        String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
+        String internalPaymentId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
         periodicPayment.setPaymentId(internalPaymentId);
 
         PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);

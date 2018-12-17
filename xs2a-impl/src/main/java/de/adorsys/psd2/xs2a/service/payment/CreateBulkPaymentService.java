@@ -29,7 +29,7 @@ import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
-    private final PisConsentDataService pisConsentDataService;
+    private final PisCommonPaymentDataService pisCommonPaymentDataService;
 
     /**
      * Initiates bulk payment
@@ -60,7 +60,7 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
         String externalPaymentId = commonPayment.getPaymentId();
 
         // we need to get decrypted payment ID
-        String internalPaymentId = pisConsentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
+        String internalPaymentId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
         bulkPayment.setPaymentId(internalPaymentId);
 
         BulkPaymentInitiationResponse response = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);

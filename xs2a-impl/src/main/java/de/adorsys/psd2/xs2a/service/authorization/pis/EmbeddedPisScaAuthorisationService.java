@@ -44,7 +44,7 @@ public class EmbeddedPisScaAuthorisationService implements PisScaAuthorisationSe
      */
     @Override
     public Optional<Xsa2CreatePisAuthorisationResponse> createCommonPaymentAuthorisation(String paymentId, PaymentType paymentType, PsuIdData psuData) {
-        return pisConsentMapper.mapToXsa2CreatePisConsentAuthorizationResponse(authorisationService.createPisConsentAuthorisation(paymentId, psuData), paymentType);
+        return pisConsentMapper.mapToXsa2CreatePisAuthorizationResponse(authorisationService.createPisConsentAuthorisation(paymentId, psuData), paymentType);
     }
 
     /**
@@ -68,7 +68,7 @@ public class EmbeddedPisScaAuthorisationService implements PisScaAuthorisationSe
      */
     @Override
     public Optional<Xs2aCreatePisCancellationAuthorisationResponse> createCommonPaymentCancellationAuthorisation(String paymentId, PaymentType paymentType, PsuIdData psuData) {
-        return pisConsentMapper.mapToXs2aCreatePisConsentCancellationAuthorisationResponse(authorisationService.createPisConsentAuthorisationCancellation(paymentId, psuData), paymentType);
+        return pisConsentMapper.mapToXs2aCreatePisCancellationAuthorisationResponse(authorisationService.createPisConsentAuthorisationCancellation(paymentId, psuData), paymentType);
     }
 
     /**

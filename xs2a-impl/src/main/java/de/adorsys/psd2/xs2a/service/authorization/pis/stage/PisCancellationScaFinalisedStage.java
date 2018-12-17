@@ -35,7 +35,7 @@ public class PisCancellationScaFinalisedStage extends PisScaStage<Xs2aUpdatePisC
     }
 
     @Override
-    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisConsentAuthorisationResponse) {
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisCommonPaymentAuthorisationResponse) {
         return new Xs2aUpdatePisCommonPaymentPsuDataResponse(FINALISED);
     }
 }

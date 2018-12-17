@@ -21,7 +21,7 @@ import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPaymentInitiationResponse;
-import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aPaymentMapper;
@@ -40,16 +40,16 @@ public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPayment
     private final CommonPaymentSpi commonPaymentSpi;
     private final SpiToXs2aPaymentMapper spiToXs2aPaymentMapper;
     private final SpiContextDataProvider spiContextDataProvider;
-    private final PisConsentDataService pisConsentDataService;
+    private final PisCommonPaymentDataService pisCommonPaymentDataService;
     private final SpiErrorMapper spiErrorMapper;
 
     @Override
     public CommonPaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, Xs2aPisCommonPayment commonPayment) {
         SpiContextData spiContextData = spiContextDataProvider.provide(commonPayment.getPsuData(), tppInfo);
 
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(commonPayment.getPaymentId());
+        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(commonPayment.getPaymentId());
         SpiResponse<SpiPaymentInitiationResponse> spiResponse = commonPaymentSpi.initiatePayment(spiContextData, mapToSpiPaymentRequest(payment, paymentProduct), aspspConsentData);
-        pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
+        pisCommonPaymentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
             return new CommonPaymentInitiationResponse(spiErrorMapper.mapToErrorHolder(spiResponse));

@@ -281,7 +281,7 @@ public class ConsentService {
     }
 
     // TODO extract this method to PaymentAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
-    public ResponseObject<Xsa2CreatePisAuthorisationResponse> createPisConsentAuthorization(String paymentId, PaymentType paymentType, PsuIdData psuData) {
+    public ResponseObject<Xsa2CreatePisAuthorisationResponse> createPisAuthorization(String paymentId, PaymentType paymentType, PsuIdData psuData) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PAYMENT_AUTHORISATION_REQUEST_RECEIVED);
 
         return pisAuthorizationService.createCommonPaymentAuthorisation(paymentId, paymentType, psuData)
@@ -294,7 +294,7 @@ public class ConsentService {
     }
 
     // TODO extract this method to PaymentAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
-    public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisConsentPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
+    public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
         xs2aEventService.recordPisTppRequest(request.getPaymentId(), EventType.UPDATE_PAYMENT_AUTHORISATION_PSU_DATA_REQUEST_RECEIVED, request);
         Xs2aUpdatePisCommonPaymentPsuDataResponse response = pisAuthorizationService.updateCommonPaymentPsuData(request);
 
@@ -309,7 +309,7 @@ public class ConsentService {
     }
 
     // TODO extract this method to PaymentCancellationAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
-    public ResponseObject<Xs2aCreatePisCancellationAuthorisationResponse> createPisConsentCancellationAuthorization(String paymentId, PaymentType paymentType) {
+    public ResponseObject<Xs2aCreatePisCancellationAuthorisationResponse> createPisCancellationAuthorization(String paymentId, PaymentType paymentType) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PAYMENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
 
         List<PsuIdData> psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);

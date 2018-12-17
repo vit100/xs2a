@@ -22,7 +22,7 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
 import de.adorsys.psd2.xs2a.exception.MessageError;
-import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aCancelPaymentMapper;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
@@ -42,7 +42,7 @@ import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_403;
 public class CancelPaymentService {
     private final PaymentCancellationSpi paymentCancellationSpi;
     private final SpiToXs2aCancelPaymentMapper spiToXs2aCancelPaymentMapper;
-    private final PisConsentDataService pisConsentDataService;
+    private final PisCommonPaymentDataService pisCommonPaymentDataService;
     private final SpiContextDataProvider spiContextDataProvider;
 
     /**
@@ -55,9 +55,9 @@ public class CancelPaymentService {
     public ResponseObject<CancelPaymentResponse> cancelPaymentWithoutAuthorisation(PsuIdData psuData, SpiPayment payment) {
         SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuData);
 
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(payment.getPaymentId());
+        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(payment.getPaymentId());
         SpiResponse<SpiResponse.VoidResponse> spiResponse = paymentCancellationSpi.cancelPaymentWithoutSca(spiContextData, payment, aspspConsentData);
-        pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
+        pisCommonPaymentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
             return ResponseObject.<CancelPaymentResponse>builder()
@@ -83,9 +83,9 @@ public class CancelPaymentService {
     public ResponseObject<CancelPaymentResponse> initiatePaymentCancellation(PsuIdData psuData, SpiPayment payment) {
         SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuData);
 
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(payment.getPaymentId());
+        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(payment.getPaymentId());
         SpiResponse<SpiPaymentCancellationResponse> spiResponse = paymentCancellationSpi.initiatePaymentCancellation(spiContextData, payment, aspspConsentData);
-        pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
+        pisCommonPaymentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
             return ResponseObject.<CancelPaymentResponse>builder()
