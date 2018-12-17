@@ -34,6 +34,13 @@ public class PaymentAuthorisationService {
     private final Xs2aEventService xs2aEventService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
 
+    /**
+     * Gets SCA status of payment initiation authorisation
+     *
+     * @param paymentId       ASPSP identifier of the payment, associated with the authorisation
+     * @param authorisationId authorisation identifier
+     * @return Response containing SCA status of authorisation or corresponding error
+     */
     public ResponseObject<ScaStatus> getPaymentInitiationAuthorisationScaStatus(String paymentId, String authorisationId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_AUTHORISATION_SCA_STATUS);
 
