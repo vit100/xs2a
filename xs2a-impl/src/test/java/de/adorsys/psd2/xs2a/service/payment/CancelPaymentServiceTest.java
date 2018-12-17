@@ -118,7 +118,7 @@ public class CancelPaymentServiceTest {
     public void cancelPaymentWithAuthorisation_Success() {
         //When
         ResponseObject<CancelPaymentResponse> response =
-            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(PAYMENT_ID));
+            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(PAYMENT_ID), PAYMENT_ID);
 
         //Than
         assertThat(response.hasError()).isFalse();
@@ -129,7 +129,7 @@ public class CancelPaymentServiceTest {
     public void cancelPaymentWithAuthorisation_Failure_WrongId() {
         //When
         ResponseObject<CancelPaymentResponse> response =
-            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(WRONG_PAYMENT_ID));
+            cancelPaymentService.initiatePaymentCancellation(getSpiPsuData(), getSpiPayment(WRONG_PAYMENT_ID), WRONG_PAYMENT_ID);
 
         //Than
         assertThat(response.hasError()).isTrue();

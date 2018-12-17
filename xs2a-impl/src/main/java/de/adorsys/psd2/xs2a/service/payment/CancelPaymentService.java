@@ -80,10 +80,10 @@ public class CancelPaymentService {
      * @param payment Payment to be cancelled
      * @return Response containing information about cancelled payment or corresponding error
      */
-    public ResponseObject<CancelPaymentResponse> initiatePaymentCancellation(PsuIdData psuData, SpiPayment payment) {
+    public ResponseObject<CancelPaymentResponse> initiatePaymentCancellation(PsuIdData psuData, SpiPayment payment, String encryptedPaymentId) {
         SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuData);
 
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(payment.getPaymentId());
+        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(encryptedPaymentId);
         SpiResponse<SpiPaymentCancellationResponse> spiResponse = paymentCancellationSpi.initiatePaymentCancellation(spiContextData, payment, aspspConsentData);
         pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 

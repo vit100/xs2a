@@ -311,7 +311,7 @@ public class PaymentService {
         PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
 
         if (profileService.isPaymentCancellationAuthorizationMandated()) {
-            return cancelPaymentService.initiatePaymentCancellation(psuData, spiPayment);
+            return cancelPaymentService.initiatePaymentCancellation(psuData, spiPayment, paymentId);
         } else {
             ResponseObject<CancelPaymentResponse> cancellationResponse = cancelPaymentService.cancelPaymentWithoutAuthorisation(psuData, spiPayment);
             pisConsentService.revokeConsentById(paymentId);
