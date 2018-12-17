@@ -22,13 +22,13 @@ import de.adorsys.psd2.xs2a.domain.Links;
 import lombok.Data;
 
 @Data
-public class Xs2aCreatePisConsentCancellationAuthorisationResponse {
+public class Xs2aCreatePisCancellationAuthorisationResponse {
     private String authorizationId;
     private ScaStatus scaStatus;
     private PaymentType paymentType;
     private Links links = new Links();
 
-    public Xs2aCreatePisConsentCancellationAuthorisationResponse(String authorizationId, ScaStatus scaStatus, PaymentType paymentType) {
+    public Xs2aCreatePisCancellationAuthorisationResponse(String authorizationId, ScaStatus scaStatus, PaymentType paymentType) {
         this.authorizationId = authorizationId;
         this.scaStatus = scaStatus;
         this.paymentType = paymentType;

@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package de.adorsys.psd2.xs2a.service;
 
@@ -37,10 +38,10 @@ import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
-import de.adorsys.psd2.xs2a.service.consent.Xs2aPisConsentService;
+import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
-import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
 import de.adorsys.psd2.xs2a.service.payment.*;
@@ -96,7 +97,7 @@ public class PaymentServiceTest {
     @Mock
     private ReadPaymentFactory readPaymentFactory;
     @Mock
-    private Xs2aPisConsentService pisConsentService;
+    private Xs2aPisCommonPaymentService pisConsentService;
     @Mock
     private PisConsentDataService pisConsentDataService;
     @Mock
@@ -108,7 +109,7 @@ public class PaymentServiceTest {
     @Mock
     private CreateBulkPaymentService createBulkPaymentService;
     @Mock
-    private Xs2aPisConsentMapper xs2aPisConsentMapper;
+    private Xs2aPisCommonPaymentMapper xs2aPisConsentMapper;
     @Mock
     private SinglePaymentSpi singlePaymentSpi;
     @Mock
@@ -479,3 +480,4 @@ public class PaymentServiceTest {
     }
 
 }
+*/

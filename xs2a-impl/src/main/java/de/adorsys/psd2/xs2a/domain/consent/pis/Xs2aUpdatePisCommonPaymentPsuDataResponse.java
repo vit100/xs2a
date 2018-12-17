@@ -26,7 +26,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Xs2aUpdatePisConsentPsuDataResponse {
+public class Xs2aUpdatePisCommonPaymentPsuDataResponse {
     private String psuId;
     private ErrorHolder errorHolder;
     private String psuMessage;
@@ -39,16 +39,16 @@ public class Xs2aUpdatePisConsentPsuDataResponse {
     private ChallengeData challengeData;
     private Links links = new Links();
 
-    public Xs2aUpdatePisConsentPsuDataResponse(ScaStatus scaStatus, List<Xs2aAuthenticationObject> availableScaMethods) {
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse(ScaStatus scaStatus, List<Xs2aAuthenticationObject> availableScaMethods) {
         this.scaStatus = scaStatus;
         this.availableScaMethods = availableScaMethods;
     }
 
-    public Xs2aUpdatePisConsentPsuDataResponse(ScaStatus scaStatus) {
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse(ScaStatus scaStatus) {
         this(scaStatus, null);
     }
 
-    public Xs2aUpdatePisConsentPsuDataResponse(ErrorHolder errorHolder) {
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse(ErrorHolder errorHolder) {
         this(ScaStatus.FAILED);
         this.errorHolder = errorHolder;
     }

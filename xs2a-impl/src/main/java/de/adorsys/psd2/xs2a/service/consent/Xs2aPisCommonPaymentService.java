@@ -33,7 +33,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class Xs2aPisConsentService {
+public class Xs2aPisCommonPaymentService {
     private final PisCommonPaymentService pisCommonPaymentService;
     private final Xs2aToCmsPisConsentRequestMapper xs2aToCmsPisConsentRequestMapper;
 
@@ -79,9 +79,5 @@ public class Xs2aPisConsentService {
     public void updateBulkPaymentInPisConsent(BulkPayment bulkPayment, PaymentInitiationParameters paymentInitiationParameters, String paymentId) {
         PisCommonPaymentRequest pisCommonPaymentRequest = xs2aToCmsPisConsentRequestMapper.mapToCmsBulkPisConsentRequest(bulkPayment, paymentInitiationParameters.getPaymentProduct());
         pisCommonPaymentService.updateCommonPayment(pisCommonPaymentRequest, paymentId);
-    }
-
-    public Optional<Boolean> revokeConsentById(String consentId) {
-        return pisCommonPaymentService.updateCommonPaymentStatusById(consentId, TransactionStatus.RJCT);
     }
 }

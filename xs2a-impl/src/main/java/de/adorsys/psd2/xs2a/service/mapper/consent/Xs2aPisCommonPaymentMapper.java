@@ -17,41 +17,42 @@
 package de.adorsys.psd2.xs2a.service.mapper.consent;
 
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aCreatePisConsentCancellationAuthorisationResponse;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aCreatePisCancellationAuthorisationResponse;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
-import de.adorsys.psd2.xs2a.domain.consent.Xsa2CreatePisConsentAuthorisationResponse;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.domain.consent.Xsa2CreatePisAuthorisationResponse;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class Xs2aPisConsentMapper {
+public class Xs2aPisCommonPaymentMapper {
 
-    public Optional<Xsa2CreatePisConsentAuthorisationResponse> mapToXsa2CreatePisConsentAuthorizationResponse(CreatePisAuthorisationResponse response, PaymentType paymentType) {
-        return Optional.of(new Xsa2CreatePisConsentAuthorisationResponse(response.getAuthorizationId(), ScaStatus.RECEIVED, paymentType));
+    public Optional<Xsa2CreatePisAuthorisationResponse> mapToXsa2CreatePisConsentAuthorizationResponse(CreatePisAuthorisationResponse response, PaymentType paymentType) {
+        return Optional.of(new Xsa2CreatePisAuthorisationResponse(response.getAuthorizationId(), ScaStatus.RECEIVED, paymentType));
     }
 
-    public Optional<Xs2aCreatePisConsentCancellationAuthorisationResponse> mapToXs2aCreatePisConsentCancellationAuthorisationResponse(CreatePisAuthorisationResponse response, PaymentType paymentType) {
-        return Optional.of(new Xs2aCreatePisConsentCancellationAuthorisationResponse(response.getAuthorizationId(), ScaStatus.RECEIVED, paymentType));
+    public Optional<Xs2aCreatePisCancellationAuthorisationResponse> mapToXs2aCreatePisConsentCancellationAuthorisationResponse(CreatePisAuthorisationResponse response, PaymentType paymentType) {
+        return Optional.of(new Xs2aCreatePisCancellationAuthorisationResponse(response.getAuthorizationId(), ScaStatus.RECEIVED, paymentType));
     }
 
     public Xs2aPisCommonPayment mapToXs2aPisCommonPayment(CreatePisCommonPaymentResponse response, PsuIdData psuData) {
         return new Xs2aPisCommonPayment(response.getConsentId(), psuData);
     }
 
-    public UpdatePisConsentPsuDataRequest mapToCmsUpdateConsentPsuDataReq(Xs2aUpdatePisConsentPsuDataRequest updatePsuDataRequest,
-                                                                          Xs2aUpdatePisConsentPsuDataResponse updatePsuDataResponse) {
+    public UpdatePisCommonPaymentPsuDataRequest mapToCmsUpdateConsentPsuDataReq(Xs2aUpdatePisCommonPaymentPsuDataRequest updatePsuDataRequest,
+                                                                                Xs2aUpdatePisCommonPaymentPsuDataResponse updatePsuDataResponse) {
         return Optional.ofNullable(updatePsuDataResponse)
                    .map(data -> {
-                       UpdatePisConsentPsuDataRequest request = new UpdatePisConsentPsuDataRequest();
+                       UpdatePisCommonPaymentPsuDataRequest request = new UpdatePisCommonPaymentPsuDataRequest();
                        request.setPsuData(request.getPsuData());
                        request.setPaymentId(updatePsuDataRequest.getPaymentId());
                        request.setAuthorizationId(updatePsuDataRequest.getAuthorizationId());
@@ -62,13 +63,13 @@ public class Xs2aPisConsentMapper {
                    .orElse(null);
     }
 
-    private String getAuthenticationMethodId(Xs2aUpdatePisConsentPsuDataResponse data) {
+    private String getAuthenticationMethodId(Xs2aUpdatePisCommonPaymentPsuDataResponse data) {
         return Optional.ofNullable(data.getChosenScaMethod())
                    .map(Xs2aAuthenticationObject::getAuthenticationMethodId)
                    .orElse(null);
     }
 
-    public SpiScaConfirmation buildSpiScaConfirmation(Xs2aUpdatePisConsentPsuDataRequest request, String consentId, String paymentId) {
+    public SpiScaConfirmation buildSpiScaConfirmation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, String consentId, String paymentId) {
         SpiScaConfirmation paymentConfirmation = new SpiScaConfirmation();
         paymentConfirmation.setPaymentId(paymentId);
         paymentConfirmation.setTanNumber(request.getScaAuthenticationData());

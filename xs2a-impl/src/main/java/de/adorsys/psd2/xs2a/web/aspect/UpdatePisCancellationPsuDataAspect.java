@@ -20,8 +20,8 @@ import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.Links;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.xs2a.service.message.MessageService;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.web.controller.PaymentController;
@@ -31,17 +31,17 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class UpdatePisConsentCancellationPsuDataAspect extends AbstractLinkAspect<PaymentController> {
+public class UpdatePisCancellationPsuDataAspect extends AbstractLinkAspect<PaymentController> {
     private final static String PSU_CANCELLATION_AUTHORISATION_URL = "/v1/{paymentService}/{paymentId}/cancellation-authorisations/{authorisationId}";
 
-    public UpdatePisConsentCancellationPsuDataAspect(AspspProfileServiceWrapper aspspProfileService, MessageService messageService) {
+    public UpdatePisCancellationPsuDataAspect(AspspProfileServiceWrapper aspspProfileService, MessageService messageService) {
         super(aspspProfileService, messageService);
     }
 
     @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updatePisConsentCancellationPsuData(..)) && args( request)", returning = "result", argNames = "result,request")
-    public ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> updatePisConsentCancellationAuthorizationAspect(ResponseObject<Xs2aUpdatePisConsentPsuDataResponse> result, Xs2aUpdatePisConsentPsuDataRequest request) {
+    public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisConsentCancellationAuthorizationAspect(ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> result, Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
         if (!result.hasError()) {
-            Xs2aUpdatePisConsentPsuDataResponse body = result.getBody();
+            Xs2aUpdatePisCommonPaymentPsuDataResponse body = result.getBody();
             Links links = buildLink(request);
 
             if (isScaStatusMethodAuthenticated(body.getScaStatus())) {
@@ -63,7 +63,7 @@ public class UpdatePisConsentCancellationPsuDataAspect extends AbstractLinkAspec
         return enrichErrorTextMessage(result);
     }
 
-    private Links buildLink(Xs2aUpdatePisConsentPsuDataRequest request) {
+    private Links buildLink(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
         Links links = new Links();
         links.setSelf(buildPath("/v1/{paymentService}/{paymentId}", request.getPaymentService(), request.getPaymentId()));
         links.setStatus(buildPath("/v1/{paymentService}/{paymentId}/status", request.getPaymentService(), request.getPaymentId()));

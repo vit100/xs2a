@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package de.adorsys.psd2.xs2a.service;
 
@@ -31,8 +32,8 @@ import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.*;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.xs2a.exception.MessageCategory;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.ais.AisAuthorizationService;
@@ -597,8 +598,8 @@ public class ConsentServiceTest {
 
     @Test
     public void createPisConsentAuthorization_Success_ShouldRecordEvent() {
-        when(pisScaAuthorisationService.createConsentAuthorisation(PAYMENT_ID, PaymentType.SINGLE, PSU_ID_DATA))
-            .thenReturn(Optional.of(new Xsa2CreatePisConsentAuthorisationResponse(null, null, null)));
+        when(pisScaAuthorisationService.createCommonPaymentAuthorisation(PAYMENT_ID, PaymentType.SINGLE, PSU_ID_DATA))
+            .thenReturn(Optional.of(new Xsa2CreatePisAuthorisationResponse(null, null, null)));
 
         // Given:
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
@@ -614,11 +615,11 @@ public class ConsentServiceTest {
     @Test
     public void updatePisConsentPsuData_Success_ShouldRecordEvent() {
         when(pisScaAuthorisationService.updateConsentPsuData(any()))
-            .thenReturn(new Xs2aUpdatePisConsentPsuDataResponse(ScaStatus.STARTED));
+            .thenReturn(new Xs2aUpdatePisCommonPaymentPsuDataResponse(ScaStatus.STARTED));
 
         // Given:
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
-        Xs2aUpdatePisConsentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
+        Xs2aUpdatePisCommonPaymentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
 
         // When
         consentService.updatePisConsentPsuData(request);
@@ -631,7 +632,7 @@ public class ConsentServiceTest {
     @Test
     public void createPisConsentCancellationAuthorization_Success_ShouldRecordEvent() {
         when(pisScaAuthorisationService.createConsentCancellationAuthorisation(anyString(), any(), any()))
-            .thenReturn(Optional.of(new Xs2aCreatePisConsentCancellationAuthorisationResponse(null, null, null)));
+            .thenReturn(Optional.of(new Xs2aCreatePisCancellationAuthorisationResponse(null, null, null)));
         when(pisPsuDataService.getPsuDataByPaymentId(anyString())).thenReturn(PSU_ID_DATA);
 
         // Given:
@@ -647,11 +648,11 @@ public class ConsentServiceTest {
 
     @Test
     public void updatePisConsentCancellationPsuData_Success_ShouldRecordEvent() {
-        when(pisScaAuthorisationService.updateConsentCancellationPsuData(any()))
-            .thenReturn(new Xs2aUpdatePisConsentPsuDataResponse(ScaStatus.STARTED));
+        when(pisScaAuthorisationService.updateCommonPaymentCancellationPsuData(any()))
+            .thenReturn(new Xs2aUpdatePisCommonPaymentPsuDataResponse(ScaStatus.STARTED));
 
         // Given:
-        Xs2aUpdatePisConsentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
+        Xs2aUpdatePisCommonPaymentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
@@ -668,7 +669,7 @@ public class ConsentServiceTest {
             .thenReturn(Optional.of(new Xs2aPaymentCancellationAuthorisationSubResource(Collections.emptyList())));
 
         // Given:
-        Xs2aUpdatePisConsentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
+        Xs2aUpdatePisCommonPaymentPsuDataRequest request = buildXs2aUpdatePisConsentPsuDataRequest();
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
@@ -722,9 +723,11 @@ public class ConsentServiceTest {
         assertThat(authorisationIds.get(0)).isEqualTo(CONSENT_ID);
     }
 
-    /**
+    */
+/**
      * Basic test AccountDetails used in all cases
-     */
+     *//*
+
     private SpiAccountDetails getSpiDetails(String accId, String iban, Currency currency) {
         return new SpiAccountDetails(accId, iban, null, null, null, null, currency, null, null, null, null, null, null, null, null, Collections.emptyList());
     }
@@ -813,8 +816,8 @@ public class ConsentServiceTest {
         return request;
     }
 
-    private Xs2aUpdatePisConsentPsuDataRequest buildXs2aUpdatePisConsentPsuDataRequest() {
-        Xs2aUpdatePisConsentPsuDataRequest request = new Xs2aUpdatePisConsentPsuDataRequest();
+    private Xs2aUpdatePisCommonPaymentPsuDataRequest buildXs2aUpdatePisConsentPsuDataRequest() {
+        Xs2aUpdatePisCommonPaymentPsuDataRequest request = new Xs2aUpdatePisCommonPaymentPsuDataRequest();
         request.setAuthorizationId(AUTHORISATION_ID);
         request.setPaymentId(PAYMENT_ID);
         return request;
@@ -831,3 +834,4 @@ public class ConsentServiceTest {
         return new TppRedirectUri("redirectUri", "nokRedirectUri");
     }
 }
+*/

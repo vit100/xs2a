@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "api/v1/pis")
@@ -39,7 +41,7 @@ public class PisPsuDataController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
-    public ResponseEntity<PsuIdData> getPsuDataByPaymentId(
+    public ResponseEntity<List<PsuIdData>> getPsuDataByPaymentId(
         @ApiParam(name = "payment-id", value = "The payment identification.", example = "32454656712432")
         @PathVariable("payment-id") String paymentId) {
         return pisCommonPaymentService.getPsuDataListByPaymentId(paymentId)
@@ -47,16 +49,16 @@ public class PisPsuDataController {
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(path = "/consent/{consent-id}/psu-data")
+/*    @GetMapping(path = "/consent/{consent-id}/psu-data")
     @ApiOperation(value = "Get aspsp consent data identified by given consent id.")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
-    public ResponseEntity<PsuIdData> getPsuDataByConsentId(
+    public ResponseEntity<List<PsuIdData>> getPsuDataByConsentId(
         @ApiParam(name = "consent-id", value = "The consent identification.", example = "32454656712432")
         @PathVariable("consent-id") String consentId) {
-        return pisCommonPaymentService.getPsuDataByConsentId(consentId)
+        return pisCommonPaymentService.getPsuDataListByPaymentId(consentId)
                    .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    }*/
 }

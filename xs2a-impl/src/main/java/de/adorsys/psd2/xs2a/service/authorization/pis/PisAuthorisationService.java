@@ -18,16 +18,15 @@ package de.adorsys.psd2.xs2a.service.authorization.pis;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.xs2a.config.factory.PisScaStageAuthorisationFactory;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.xs2a.service.authorization.pis.stage.PisScaStage;
-import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ import static de.adorsys.psd2.xs2a.config.factory.PisScaStageAuthorisationFactor
 public class PisAuthorisationService {
     private final PisCommonPaymentService pisCommonPaymentService;
     private final PisScaStageAuthorisationFactory pisScaStageAuthorisationFactory;
-    private final Xs2aPisConsentMapper pisConsentMapper;
+    private final Xs2aPisCommonPaymentMapper pisConsentMapper;
 
     /**
      * Sends a POST request to CMS to store created consent authorization
@@ -63,12 +62,12 @@ public class PisAuthorisationService {
      * @param request Provides transporting data when updating consent authorization
      * @return update consent authorization response, which contains payment id, authorization id, sca status, psu message and links
      */
-    public Xs2aUpdatePisConsentPsuDataResponse updatePisConsentAuthorisation(Xs2aUpdatePisConsentPsuDataRequest request) {
-        GetPisConsentAuthorisationResponse response = pisConsentService.getPisConsentAuthorisationById(request.getAuthorizationId())
-                                                          .orElse(null);
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse updatePisConsentAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
+        GetPisCommonPaymentAuthorisationResponse response = pisCommonPaymentService.getPisCommonPaymentAuthorisationById(request.getAuthorizationId())
+                                                                .orElse(null);
 
-        PisScaStage<Xs2aUpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, Xs2aUpdatePisConsentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(SERVICE_PREFIX + response.getScaStatus().name());
-        Xs2aUpdatePisConsentPsuDataResponse stageResponse = service.apply(request, response);
+        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(SERVICE_PREFIX + response.getScaStatus().name());
+        Xs2aUpdatePisCommonPaymentPsuDataResponse stageResponse = service.apply(request, response);
 
         if (!stageResponse.hasError()) {
             doUpdatePisConsentAuthorisation(pisConsentMapper.mapToCmsUpdateConsentPsuDataReq(request, stageResponse));
@@ -83,12 +82,12 @@ public class PisAuthorisationService {
      * @param request Provides transporting data when updating consent cancellation authorisation
      * @return update consent authorisation response, which contains payment id, authorisation id, sca status, psu message and links
      */
-    public Xs2aUpdatePisConsentPsuDataResponse updatePisConsentCancellationAuthorisation(Xs2aUpdatePisConsentPsuDataRequest request) {
-        GetPisConsentAuthorisationResponse response = pisCommonPaymentService.getPisConsentCancellationAuthorisationById(request.getAuthorizationId())
-                                                          .orElse(null);
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse updatePisConsentCancellationAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
+        GetPisCommonPaymentAuthorisationResponse response = pisCommonPaymentService.getPisCommonPaymentCancellationAuthorisationById(request.getAuthorizationId())
+                                                                .orElse(null);
 
-        PisScaStage<Xs2aUpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, Xs2aUpdatePisConsentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(CANCELLATION_SERVICE_PREFIX + response.getScaStatus().name());
-        Xs2aUpdatePisConsentPsuDataResponse stageResponse = service.apply(request, response);
+        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(CANCELLATION_SERVICE_PREFIX + response.getScaStatus().name());
+        Xs2aUpdatePisCommonPaymentPsuDataResponse stageResponse = service.apply(request, response);
 
         if (!stageResponse.hasError()) {
             doUpdatePisConsentCancellationAuthorisation(pisConsentMapper.mapToCmsUpdateConsentPsuDataReq(request, stageResponse));
@@ -97,12 +96,12 @@ public class PisAuthorisationService {
         return stageResponse;
     }
 
-    public void doUpdatePisConsentAuthorisation(UpdatePisConsentPsuDataRequest request) {
-        pisCommonPaymentService.updateConsentAuthorisation(request.getAuthorizationId(), request);
+    public void doUpdatePisConsentAuthorisation(UpdatePisCommonPaymentPsuDataRequest request) {
+        pisCommonPaymentService.updateCommonPaymentAuthorisation(request.getAuthorizationId(), request);
     }
 
-    public void doUpdatePisConsentCancellationAuthorisation(UpdatePisConsentPsuDataRequest request) {
-        pisCommonPaymentService.updateConsentCancellationAuthorisation(request.getAuthorizationId(), request);
+    public void doUpdatePisConsentCancellationAuthorisation(UpdatePisCommonPaymentPsuDataRequest request) {
+        pisCommonPaymentService.updateCommonPaymentCancellationAuthorisation(request.getAuthorizationId(), request);
     }
 
     /**
@@ -112,7 +111,7 @@ public class PisAuthorisationService {
      * @param psuData   PsuIdData container of authorisation data about PSU
      * @return long representation of identifier of stored consent authorization cancellation
      */
-    public CreatePisConsentAuthorisationResponse createPisConsentAuthorisationCancellation(String paymentId, PsuIdData psuData) {
+    public CreatePisAuthorisationResponse createPisConsentAuthorisationCancellation(String paymentId, PsuIdData psuData) {
         return pisCommonPaymentService.createAuthorizationCancellation(paymentId, CmsAuthorisationType.CANCELLED, psuData)
                    .orElse(null);
     }

@@ -23,11 +23,10 @@ import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.TppInfoEntity;
 import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
-import de.adorsys.psd2.consent.domain.payment.PisConsent;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.consent.psu.api.CmsPsuPisService;
-import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisAuthorizationRepository;
+import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PsuDataRepository;
 import de.adorsys.psd2.consent.service.mapper.CmsPsuPisMapper;
@@ -70,9 +69,9 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
             return false;
         }
 
-        Optional<PisConsent> pisConsent = getPisConsentByPaymentId(paymentId.get());
+        Optional<PisCommonPaymentData> commonPaymentOpt = getPisCommonPaymentByPaymentId(paymentId.get());
 
-        return pisConsent.isPresent() && updatePsuData(pisConsent.get(), psuIdData);
+        return commonPaymentOpt.isPresent() && updatePsuData(commonPaymentOpt.get(), psuIdData);
     }
 
     @Override
@@ -117,14 +116,14 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     public boolean updateAuthorisationStatus(@NotNull PsuIdData psuIdData, @NotNull String paymentId,
                                              @NotNull String authorisationId, @NotNull ScaStatus status) {
 
-        Optional<PisAuthorization> pisConsentAuthorisation = pisAuthorizationRepository.findByExternalId(authorisationId);
+        Optional<PisAuthorization> pisAuthorisation = pisAuthorizationRepository.findByExternalId(authorisationId);
 
-        boolean isValid = pisConsentAuthorisation
-                              .map(auth -> auth.getConsent().getPayments().get(0).getPaymentId())
+        boolean isValid = pisAuthorisation
+                              .map(auth -> auth.getPaymentData().getPayments().get(0).getPaymentId())
                               .map(id -> validateGivenData(id, paymentId, psuIdData))
                               .orElse(false);
 
-        return isValid && updateAuthorisationStatusAndSaveAuthorisation(pisConsentAuthorisation.get(), status);
+        return isValid && updateAuthorisationStatusAndSaveAuthorisation(pisAuthorisation.get(), status);
     }
 
     @Override
@@ -143,9 +142,9 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         }
     }
 
-    private boolean updatePsuData(PisConsent pisConsent, PsuIdData psuIdData) {
+    private boolean updatePsuData(PisCommonPaymentData commonPayment, PsuIdData psuIdData) {
         PsuData newPsuData = psuDataMapper.mapToPsuData(psuIdData);
-        newPsuData.setId(pisConsent.getPsuData().getId());
+        newPsuData.setId(commonPayment.getPsuData().get(0).getId()); // TODO rework psudata list
 
         return Optional.ofNullable(psuDataRepository.save(newPsuData))
                    .isPresent();
@@ -158,18 +157,18 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                    .orElse(false);
     }
 
-    private boolean updateAuthorisationStatusAndSaveAuthorisation(PisAuthorization pisConsentAuthorisation, ScaStatus status) {
-        if (pisConsentAuthorisation.getScaStatus().isFinalisedStatus()) {
+    private boolean updateAuthorisationStatusAndSaveAuthorisation(PisAuthorization pisAuthorisation, ScaStatus status) {
+        if (pisAuthorisation.getScaStatus().isFinalisedStatus()) {
             return false;
         }
-        pisConsentAuthorisation.setScaStatus(status);
-        return Optional.ofNullable(pisAuthorizationRepository.save(pisConsentAuthorisation))
+        pisAuthorisation.setScaStatus(status);
+        return Optional.ofNullable(pisAuthorizationRepository.save(pisAuthorisation))
                    .isPresent();
     }
 
     private boolean isPsuDataEquals(String encryptedPaymentId, PsuIdData psuIdData) {
         return pisCommonPaymentService.getPsuDataListByPaymentId(encryptedPaymentId)
-                   .map(p -> p.contentEquals(psuIdData))
+                   .map(p -> p.get(0).contentEquals(psuIdData)) // TODO rework psudata list
                    .orElse(false);
     }
 
@@ -195,9 +194,9 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private CmsPaymentResponse buildCmsPaymentResponse(PisAuthorization authorisation) {
-        PisConsent consent = authorisation.getConsent();
-        CmsPayment payment = cmsPsuPisMapper.mapToCmsPayment(consent.getPayments());
-        TppInfoEntity tppInfo = consent.getTppInfo();
+        PisCommonPaymentData commonPayment = authorisation.getPaymentData();
+        CmsPayment payment = cmsPsuPisMapper.mapToCmsPayment(commonPayment.getPayments());
+        TppInfoEntity tppInfo = commonPayment.getTppInfo();
 
         String tppOkRedirectUri = tppInfo.getRedirectUri();
         String tppNokRedirectUri = tppInfo.getNokRedirectUri();
@@ -214,17 +213,16 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         pisAuthorizationRepository.save(authorisation);
     }
 
-    private Optional<PisConsent> getPisConsentByPaymentId(String paymentId) {
+    private Optional<PisCommonPaymentData> getPisCommonPaymentByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
-        Optional<PisConsent> consentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
+        Optional<PisCommonPaymentData> commonPaymentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
                                               .filter(CollectionUtils::isNotEmpty)
-                                              .map(list -> list.get(0).getConsent());
+                                              .map(list -> list.get(0).getPaymentData());
 
-        if (!consentOpt.isPresent()) {
-            consentOpt = pisCommonPaymentDataRepository.findByPaymentId(paymentId)
-                             .map(PisCommonPaymentData::getConsent);
+        if (!commonPaymentOpt.isPresent()) {
+            commonPaymentOpt = pisCommonPaymentDataRepository.findByPaymentId(paymentId);
         }
 
-        return consentOpt;
+        return commonPaymentOpt;
     }
 }

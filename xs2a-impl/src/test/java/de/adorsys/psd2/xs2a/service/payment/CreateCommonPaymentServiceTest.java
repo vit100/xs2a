@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package de.adorsys.psd2.xs2a.service.payment;
 
@@ -30,7 +31,7 @@ import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
-import de.adorsys.psd2.xs2a.service.consent.Xs2aPisConsentService;
+import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +60,7 @@ public class CreateCommonPaymentServiceTest {
     @Mock
     private ScaCommonPaymentService scaCommonPaymentService;
     @Mock
-    private Xs2aPisConsentService pisConsentService;
+    private Xs2aPisCommonPaymentService pisCommonPaymentService;
     @Mock
     private PisScaAuthorisationService pisScaAuthorisationService;
     @Mock
@@ -123,3 +124,4 @@ public class CreateCommonPaymentServiceTest {
         return tppInfo;
     }
 }
+*/

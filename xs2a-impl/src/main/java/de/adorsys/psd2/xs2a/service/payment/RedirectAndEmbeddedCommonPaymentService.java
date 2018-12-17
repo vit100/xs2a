@@ -47,7 +47,7 @@ public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPayment
     public CommonPaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, Xs2aPisCommonPayment commonPayment) {
         SpiContextData spiContextData = spiContextDataProvider.provide(commonPayment.getPsuData(), tppInfo);
 
-        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(commonPayment.getConsentId());
+        AspspConsentData aspspConsentData = pisConsentDataService.getAspspConsentData(commonPayment.getPaymentId());
         SpiResponse<SpiPaymentInitiationResponse> spiResponse = commonPaymentSpi.initiatePayment(spiContextData, mapToSpiPaymentRequest(payment, paymentProduct), aspspConsentData);
         pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 

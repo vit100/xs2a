@@ -17,15 +17,15 @@
 package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
 
 
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
 
 @Service("PIS_CANC_PSUAUTHENTICATED")
-public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, Xs2aUpdatePisConsentPsuDataResponse> {
+public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final SpiContextDataProvider spiContextDataProvider;
     private final PaymentCancellationSpi paymentCancellationSpi;
     private final PisConsentDataService pisConsentDataService;
@@ -58,7 +58,7 @@ public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdate
     }
 
     @Override
-    public Xs2aUpdatePisConsentPsuDataResponse apply(Xs2aUpdatePisConsentPsuDataRequest request, GetPisConsentAuthorisationResponse pisConsentAuthorisationResponse) {
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisConsentAuthorisationResponse) {
         PaymentType paymentType = pisConsentAuthorisationResponse.getPaymentType();
         String paymentProduct = pisConsentAuthorisationResponse.getPaymentProduct();
         SpiPayment payment = mapToSpiPayment(pisConsentAuthorisationResponse, paymentType, paymentProduct);
@@ -72,7 +72,7 @@ public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdate
         pisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
-            return new Xs2aUpdatePisConsentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
+            return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
         }
 
         SpiAuthorizationCodeResult authorizationCodeResult = spiResponse.getPayload();
@@ -80,13 +80,13 @@ public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdate
         if (authorizationCodeResult.isEmpty()) {
             ErrorHolder errorHolder = ErrorHolder.builder(MessageErrorCode.SCA_METHOD_UNKNOWN)
                                           .build();
-            return new Xs2aUpdatePisConsentPsuDataResponse(errorHolder);
+            return new Xs2aUpdatePisCommonPaymentPsuDataResponse(errorHolder);
         }
 
         SpiAuthenticationObject spiAuthenticationObject = authorizationCodeResult.getSelectedScaMethod();
         ChallengeData challengeData = mapToChallengeData(authorizationCodeResult);
 
-        Xs2aUpdatePisConsentPsuDataResponse response = new Xs2aUpdatePisConsentPsuDataResponse(SCAMETHODSELECTED);
+        Xs2aUpdatePisCommonPaymentPsuDataResponse response = new Xs2aUpdatePisCommonPaymentPsuDataResponse(SCAMETHODSELECTED);
         response.setPsuId(psuData.getPsuId());
         response.setChosenScaMethod(spiToXs2aAuthenticationObjectMapper.mapToXs2aAuthenticationObject(spiAuthenticationObject));
         response.setChallengeData(challengeData);
@@ -94,7 +94,7 @@ public class PisCancellationScaAuthenticatedStage extends PisScaStage<Xs2aUpdate
     }
 
     private ChallengeData mapToChallengeData(SpiAuthorizationCodeResult authorizationCodeResult) {
-        if(authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
+        if (authorizationCodeResult != null && !authorizationCodeResult.isEmpty()) {
             return authorizationCodeResult.getChallengeData();
         }
         return null;

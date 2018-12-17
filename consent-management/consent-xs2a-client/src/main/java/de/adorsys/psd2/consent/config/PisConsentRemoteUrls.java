@@ -30,7 +30,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String createPisConsent() {
-        return consentServiceBaseUrl + "/pis/consent/";
+        return consentServiceBaseUrl + "/pis/common-payments/";
     }
 
     /**
@@ -39,7 +39,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String updatePisConsentStatus() {
-        return consentServiceBaseUrl + "/pis/consent/{paymentId}/status/{status}";
+        return consentServiceBaseUrl + "/pis/common-payments/{paymentId}/status/{status}";
     }
 
     /**
@@ -48,7 +48,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String getPisConsentStatusById() {
-        return consentServiceBaseUrl + "/pis/consent/{paymentId}/status";
+        return consentServiceBaseUrl + "/pis/common-payments/{paymentId}/status";
     }
 
     /**
@@ -57,7 +57,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String getPisConsentById() {
-        return consentServiceBaseUrl + "/pis/consent/{paymentId}";
+        return consentServiceBaseUrl + "/pis/common-payments/{paymentId}";
     }
 
     /**
@@ -66,7 +66,7 @@ public class PisConsentRemoteUrls {
      * PathVariables: String paymentId
      */
     public String createPisConsentAuthorisation() {
-        return consentServiceBaseUrl + "/pis/consent/{payment-id}/authorizations";
+        return consentServiceBaseUrl + "/pis/common-payments/{payment-id}/authorizations";
     }
 
     /**
@@ -75,7 +75,7 @@ public class PisConsentRemoteUrls {
      * PathVariables: String paymentId
      */
     public String createPisConsentAuthorisationCancellation() {
-        return consentServiceBaseUrl + "/pis/consent/{payment-id}/cancellation-authorisations";
+        return consentServiceBaseUrl + "/pis/common-payments/{payment-id}/cancellation-authorisations";
     }
 
     /**
@@ -84,23 +84,23 @@ public class PisConsentRemoteUrls {
      * PathVariables: String paymentId
      */
     public String getCancellationAuthorisationSubResources() {
-        return consentServiceBaseUrl + "/pis/consent/{payment-id}/cancellation-authorisations";
+        return consentServiceBaseUrl + "/pis/common-payments/{payment-id}/cancellation-authorisations";
     }
 
     public String updatePisConsentAuthorisation() {
-        return consentServiceBaseUrl + "/pis/consent/authorizations/{authorization-id}";
+        return consentServiceBaseUrl + "/pis/common-payments/authorizations/{authorization-id}";
     }
 
     public String updatePisConsentCancellationAuthorisation() {
-        return consentServiceBaseUrl + "/pis/consent/cancellation-authorisations/{cancellation-id}";
+        return consentServiceBaseUrl + "/pis/common-payments/cancellation-authorisations/{cancellation-id}";
     }
 
     public String getPisConsentAuthorisationById() {
-        return consentServiceBaseUrl + "/pis/consent/authorizations/{authorization-id}";
+        return consentServiceBaseUrl + "/pis/common-payments/authorizations/{authorization-id}";
     }
 
     public String getPisConsentCancellationAuthorisationById() {
-        return consentServiceBaseUrl + "/pis/consent/cancellation-authorisations/{cancellation-id}";
+        return consentServiceBaseUrl + "/pis/common-payments/cancellation-authorisations/{cancellation-id}";
     }
 
     /**
@@ -118,7 +118,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String updatePisConsentPayment() {
-        return consentServiceBaseUrl + "/pis/consent/{consent-id}/payment";
+        return consentServiceBaseUrl + "/pis/common-payments/{consent-id}/payment";
     }
 
     /**
@@ -127,7 +127,7 @@ public class PisConsentRemoteUrls {
      * @return String
      */
     public String getPsuDataByConsentId() {
-        return consentServiceBaseUrl + "/pis/consent/{consent-id}/psu-data";
+        return consentServiceBaseUrl + "/pis/common-payments/{consent-id}/psu-data";
     }
 
     /**
@@ -145,6 +145,6 @@ public class PisConsentRemoteUrls {
      * PathVariables: String paymentId
      */
     public String getAuthorisationSubResources() {
-        return consentServiceBaseUrl + "/pis/consent/{payment-id}/authorisations";
+        return consentServiceBaseUrl + "/pis/common-payments/{payment-id}/authorisations";
     }
 }

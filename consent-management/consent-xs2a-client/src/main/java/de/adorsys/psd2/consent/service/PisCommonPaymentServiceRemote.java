@@ -71,9 +71,9 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentService {
     }
 
     @Override
-    public Optional<Boolean> updateCommonPaymentStatusById(String consentId, TransactionStatus status) {
+    public Optional<Boolean> updateCommonPaymentStatusById(String paymentId, TransactionStatus status) {
         HttpStatus statusCode = consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentStatus(), HttpMethod.PUT,
-                                                             null, Void.class, consentId, status).getStatusCode();
+                                                             null, Void.class, paymentId, status).getStatusCode();
 
         return Optional.of(statusCode == HttpStatus.OK);
     }

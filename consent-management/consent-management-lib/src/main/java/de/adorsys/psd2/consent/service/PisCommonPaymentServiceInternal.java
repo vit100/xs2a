@@ -328,7 +328,7 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
                                                      .map(list -> list.get(0).getPaymentData());
 
         if (!commonPaymentData.isPresent()) {
-            commonPaymentData = pisCommonPaymentDataRepository.findByPaymentIdAndConsent_ConsentStatus(paymentId, TransactionStatus.RCVD);
+            commonPaymentData = pisCommonPaymentDataRepository.findByPaymentIdAndTransactionStatus(paymentId, TransactionStatus.RCVD);
         }
 
         return commonPaymentData;

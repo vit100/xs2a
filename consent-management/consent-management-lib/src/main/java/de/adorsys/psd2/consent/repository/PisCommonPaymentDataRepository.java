@@ -23,7 +23,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface PisCommonPaymentDataRepository extends CrudRepository<PisCommonPaymentData, Long> {
-    Optional<PisCommonPaymentData> findByPaymentIdAndConsent_ConsentStatus(String paymentId, TransactionStatus status);// todo method should be changed to  findByPaymentIdAndTransactionStatus https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
+    Optional<PisCommonPaymentData> findByPaymentIdAndTransactionStatus(String paymentId, TransactionStatus status);// todo method should be changed to  findByPaymentIdAndTransactionStatus https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
 
     Optional<PisCommonPaymentData> findByPaymentId(String paymentId);
 }

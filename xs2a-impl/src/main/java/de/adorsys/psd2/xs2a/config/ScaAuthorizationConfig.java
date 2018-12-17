@@ -22,7 +22,7 @@ import de.adorsys.psd2.xs2a.service.authorization.ais.*;
 import de.adorsys.psd2.xs2a.service.authorization.pis.*;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
-import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisConsentMapper;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import de.adorsys.psd2.xs2a.service.payment.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +74,7 @@ public class ScaAuthorizationConfig {
 
     @Bean
     public PisScaAuthorisationService pisAuthorizationService(PisAuthorisationService authorisationService,
-                                                              Xs2aPisConsentMapper pisConsentMapper) {
+                                                              Xs2aPisCommonPaymentMapper pisConsentMapper) {
         ScaApproach scaApproach = getScaApproach();
         if (OAUTH == scaApproach) {
             return new OauthPisScaAuthorisationService();
