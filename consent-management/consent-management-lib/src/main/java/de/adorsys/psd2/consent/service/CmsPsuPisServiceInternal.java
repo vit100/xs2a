@@ -168,7 +168,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private boolean isPsuDataEquals(String encryptedPaymentId, PsuIdData psuIdData) {
-        return pisCommonPaymentService.getPsuDataByPaymentId(encryptedPaymentId)
+        return pisCommonPaymentService.getPsuDataListByPaymentId(encryptedPaymentId)
                    .map(p -> p.contentEquals(psuIdData))
                    .orElse(false);
     }

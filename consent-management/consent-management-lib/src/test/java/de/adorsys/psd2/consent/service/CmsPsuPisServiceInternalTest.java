@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package de.adorsys.psd2.consent.service;
 
@@ -46,10 +47,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.Currency;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
@@ -121,9 +119,9 @@ public class CmsPsuPisServiceInternalTest {
         when(cmsPsuPisMapper.mapToCmsPayment(buildPisPaymentDataList()))
             .thenReturn(cmsPayment);
 
-        when(pisCommonPaymentService.getPsuDataByPaymentId(PAYMENT_ID))
-            .thenReturn(Optional.of(psuIdData));
-        when(pisCommonPaymentService.getPsuDataByPaymentId(WRONG_PAYMENT_ID))
+        when(pisCommonPaymentService.getPsuDataListByPaymentId(PAYMENT_ID))
+            .thenReturn(Optional.of(Arrays.asList(psuIdData)));
+        when(pisCommonPaymentService.getPsuDataListByPaymentId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
         when(pisCommonPaymentService.getDecryptedId(PAYMENT_ID))
             .thenReturn(Optional.of(PAYMENT_ID));
@@ -455,3 +453,4 @@ public class CmsPsuPisServiceInternalTest {
         );
     }
 }
+*/

@@ -312,8 +312,8 @@ public class ConsentService {
     public ResponseObject<Xs2aCreatePisConsentCancellationAuthorisationResponse> createPisConsentCancellationAuthorization(String paymentId, PaymentType paymentType) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PAYMENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
 
-        PsuIdData psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
-        return pisAuthorizationService.createConsentCancellationAuthorisation(paymentId, paymentType, psuData)
+        List<PsuIdData> psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
+        return pisAuthorizationService.createConsentCancellationAuthorisation(paymentId, paymentType, psuData.get(0)) // todo !!!!!!!!!!
                    .map(resp -> ResponseObject.<Xs2aCreatePisConsentCancellationAuthorisationResponse>builder()
                                     .body(resp)
                                     .build())

@@ -25,7 +25,7 @@ public class AisConsentRemoteUrls {
     private String consentServiceBaseUrl;
 
     /**
-     * @return String paymentId
+     * @return String consentId
      * Method: POST
      * Body: AisConsentRequest request
      */
@@ -36,7 +36,7 @@ public class AisConsentRemoteUrls {
     /**
      * @return SpiAccountConsent consent
      * Method: GET
-     * PathVariable: String paymentId
+     * PathVariable: String consentId
      */
     public String getAisConsentById() {
         return consentServiceBaseUrl + "/ais/consent/{consent-id}";
@@ -45,7 +45,7 @@ public class AisConsentRemoteUrls {
     /**
      * @return ConsentStatus status
      * Method: GET
-     * PathVariable: String paymentId
+     * PathVariable: String consentId
      */
     public String getAisConsentStatusById() {
         return consentServiceBaseUrl + "/ais/consent/{consent-id}/status";
@@ -54,7 +54,7 @@ public class AisConsentRemoteUrls {
     /**
      * @return VOID
      * Method: PUT
-     * PathVariables: String paymentId, ConsentStatus consentStatus
+     * PathVariables: String consentId, ConsentStatus consentStatus
      */
     public String updateAisConsentStatus() {
         return consentServiceBaseUrl + "/ais/consent/{consent-id}/status/{status}";
@@ -70,18 +70,18 @@ public class AisConsentRemoteUrls {
     }
 
     /**
-     * @return String paymentId
+     * @return String consentId
      * Method: POST
-     * PathVariables: String paymentId
+     * PathVariables: String consentId
      */
     public String createAisConsentAuthorization() {
         return consentServiceBaseUrl + "/ais/consent/{consent-id}/authorizations";
     }
 
     /**
-     * @return String paymentId
+     * @return String consentId
      * Method: PUT
-     * PathVariables: String paymentId, String authorizationId
+     * PathVariables: String consentId, String authorizationId
      */
     public String updateAisConsentAuthorization() {
         return consentServiceBaseUrl + "/ais/consent/authorizations/{authorization-id}";
@@ -90,7 +90,7 @@ public class AisConsentRemoteUrls {
     /**
      * @return SpiAccountConsentAuthorization consent
      * Method: GET
-     * PathVariables: String paymentId, String authorizationId
+     * PathVariables: String consentId, String authorizationId
      */
     public String getAisConsentAuthorizationById() {
         return consentServiceBaseUrl + "/ais/consent/{consent-id}/authorizations/{authorization-id}";
@@ -117,7 +117,7 @@ public class AisConsentRemoteUrls {
     /**
      * @return List of consent authorisation IDs
      * Method: GET
-     * PathVariables: String paymentId
+     * PathVariables: String consentId
      */
     public String getAuthorisationSubResources() {
         return consentServiceBaseUrl + "/ais/consent/{consent-id}/authorisations";

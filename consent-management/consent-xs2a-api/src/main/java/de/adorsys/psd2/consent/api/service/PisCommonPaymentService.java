@@ -140,10 +140,10 @@ public interface PisCommonPaymentService {
     Optional<List<String>> getAuthorisationsByPaymentId(String paymentId, CmsAuthorisationType authorisationType);
 
     /**
-     * Get information about PSU by payment identifier
+     * Get information about PSU list by payment identifier
      *
      * @param paymentId String representation of the payment identifier
      * @return Response containing information about PSU
      */
-    Optional<PsuIdData> getPsuDataByPaymentId(String paymentId);
+    Optional<List<PsuIdData>> getPsuDataListByPaymentId(String paymentId);
 }

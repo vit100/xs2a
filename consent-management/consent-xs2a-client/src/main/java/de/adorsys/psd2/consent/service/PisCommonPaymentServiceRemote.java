@@ -28,7 +28,7 @@ import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.config.CmsRestException;
 import de.adorsys.psd2.consent.config.PisConsentRemoteUrls;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +41,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +60,7 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentService {
     }
 
     @Override
-    public Optional<ConsentStatus> getPisCommonPaymentStatusById(String paymentId) {
+    public Optional<TransactionStatus> getPisCommonPaymentStatusById(String paymentId) {
         return Optional.empty();
     }
 
@@ -70,7 +71,7 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentService {
     }
 
     @Override
-    public Optional<Boolean> updateCommonPaymentStatusById(String consentId, ConsentStatus status) {
+    public Optional<Boolean> updateCommonPaymentStatusById(String consentId, TransactionStatus status) {
         HttpStatus statusCode = consentRestTemplate.exchange(remotePisConsentUrls.updatePisConsentStatus(), HttpMethod.PUT,
                                                              null, Void.class, consentId, status).getStatusCode();
 
@@ -154,14 +155,9 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentService {
     }
 
     @Override
-    public Optional<PsuIdData> getPsuDataByPaymentId(String paymentId) {
-        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisConsentUrls.getPsuDataByPaymentId(), PsuIdData.class, paymentId)
-                                       .getBody());
-    }
-
-    @Override
-    public Optional<PsuIdData> getPsuDataByConsentId(String consentId) {
-        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisConsentUrls.getPsuDataByConsentId(), PsuIdData.class, consentId)
-                                       .getBody());
+    public Optional<List<PsuIdData>> getPsuDataListByPaymentId(String paymentId) {
+        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisConsentUrls.getPsuDataByPaymentId(), PsuIdData[].class, paymentId)
+                                   .getBody())
+                   .map(Arrays::asList);
     }
 }

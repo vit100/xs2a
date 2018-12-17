@@ -42,7 +42,7 @@ public class PisPsuDataController {
     public ResponseEntity<PsuIdData> getPsuDataByPaymentId(
         @ApiParam(name = "payment-id", value = "The payment identification.", example = "32454656712432")
         @PathVariable("payment-id") String paymentId) {
-        return pisCommonPaymentService.getPsuDataByPaymentId(paymentId)
+        return pisCommonPaymentService.getPsuDataListByPaymentId(paymentId)
                    .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

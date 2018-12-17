@@ -17,10 +17,11 @@
 package de.adorsys.psd2.xs2a.service.authorization.pis;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
+import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.consent.api.service.PisConsentService;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.xs2a.config.factory.PisScaStageAuthorisationFactory;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisConsentPsuDataRequest;
@@ -40,7 +41,7 @@ import static de.adorsys.psd2.xs2a.config.factory.PisScaStageAuthorisationFactor
 @RequiredArgsConstructor
 // TODO this class takes low-level communication to Consent-management-system. Should be migrated to consent-services package. All XS2A business-logic should be removed from here to XS2A services. https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/332
 public class PisAuthorisationService {
-    private final PisConsentService pisConsentService;
+    private final PisCommonPaymentService pisCommonPaymentService;
     private final PisScaStageAuthorisationFactory pisScaStageAuthorisationFactory;
     private final Xs2aPisConsentMapper pisConsentMapper;
 
@@ -51,8 +52,8 @@ public class PisAuthorisationService {
      * @param psuData   PsuIdData container of authorisation data about PSU
      * @return long representation of identifier of stored consent authorization
      */
-    public CreatePisConsentAuthorisationResponse createPisConsentAuthorisation(String paymentId, PsuIdData psuData) {
-        return pisConsentService.createAuthorization(paymentId, CmsAuthorisationType.CREATED, psuData)
+    public CreatePisAuthorisationResponse createPisConsentAuthorisation(String paymentId, PsuIdData psuData) {
+        return pisCommonPaymentService.createAuthorization(paymentId, CmsAuthorisationType.CREATED, psuData)
                    .orElse(null);
     }
 
@@ -83,7 +84,7 @@ public class PisAuthorisationService {
      * @return update consent authorisation response, which contains payment id, authorisation id, sca status, psu message and links
      */
     public Xs2aUpdatePisConsentPsuDataResponse updatePisConsentCancellationAuthorisation(Xs2aUpdatePisConsentPsuDataRequest request) {
-        GetPisConsentAuthorisationResponse response = pisConsentService.getPisConsentCancellationAuthorisationById(request.getAuthorizationId())
+        GetPisConsentAuthorisationResponse response = pisCommonPaymentService.getPisConsentCancellationAuthorisationById(request.getAuthorizationId())
                                                           .orElse(null);
 
         PisScaStage<Xs2aUpdatePisConsentPsuDataRequest, GetPisConsentAuthorisationResponse, Xs2aUpdatePisConsentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(CANCELLATION_SERVICE_PREFIX + response.getScaStatus().name());
@@ -97,11 +98,11 @@ public class PisAuthorisationService {
     }
 
     public void doUpdatePisConsentAuthorisation(UpdatePisConsentPsuDataRequest request) {
-        pisConsentService.updateConsentAuthorisation(request.getAuthorizationId(), request);
+        pisCommonPaymentService.updateConsentAuthorisation(request.getAuthorizationId(), request);
     }
 
     public void doUpdatePisConsentCancellationAuthorisation(UpdatePisConsentPsuDataRequest request) {
-        pisConsentService.updateConsentCancellationAuthorisation(request.getAuthorizationId(), request);
+        pisCommonPaymentService.updateConsentCancellationAuthorisation(request.getAuthorizationId(), request);
     }
 
     /**
@@ -112,7 +113,7 @@ public class PisAuthorisationService {
      * @return long representation of identifier of stored consent authorization cancellation
      */
     public CreatePisConsentAuthorisationResponse createPisConsentAuthorisationCancellation(String paymentId, PsuIdData psuData) {
-        return pisConsentService.createAuthorizationCancellation(paymentId, CmsAuthorisationType.CANCELLED, psuData)
+        return pisCommonPaymentService.createAuthorizationCancellation(paymentId, CmsAuthorisationType.CANCELLED, psuData)
                    .orElse(null);
     }
 
@@ -123,7 +124,7 @@ public class PisAuthorisationService {
      * @return list of consent authorisation IDs
      */
     public Optional<List<String>> getCancellationAuthorisationSubResources(String paymentId) {
-        return pisConsentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CANCELLED);
+        return pisCommonPaymentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CANCELLED);
     }
 
     /**
@@ -133,6 +134,6 @@ public class PisAuthorisationService {
      * @return list of consent authorisation IDs
      */
     public Optional<List<String>> getAuthorisationSubResources(String paymentId) {
-        return pisConsentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CREATED);
+        return pisCommonPaymentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CREATED);
     }
 }
