@@ -107,6 +107,13 @@ public class EmbeddedPisScaAuthorisationService implements PisScaAuthorisationSe
                    .map(Xs2aAuthorisationSubResources::new);
     }
 
+    /**
+     * Gets SCA status of authorisation
+     *
+     * @param paymentId       ASPSP identifier of the payment, associated with the authorisation
+     * @param authorisationId authorisation identifier
+     * @return SCA status
+     */
     @Override
     public Optional<ScaStatus> getAuthorisationScaStatus(String paymentId, String authorisationId) {
         return authorisationService.getAuthorisationScaStatus(paymentId, authorisationId);
