@@ -48,17 +48,4 @@ public class PisPsuDataController {
                    .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-/*    @GetMapping(path = "/consent/{consent-id}/psu-data")
-    @ApiOperation(value = "Get aspsp consent data identified by given consent id.")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK"),
-        @ApiResponse(code = 404, message = "Not Found")})
-    public ResponseEntity<List<PsuIdData>> getPsuDataByConsentId(
-        @ApiParam(name = "consent-id", value = "The consent identification.", example = "32454656712432")
-        @PathVariable("consent-id") String consentId) {
-        return pisCommonPaymentService.getPsuDataListByPaymentId(consentId)
-                   .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
-                   .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }*/
 }

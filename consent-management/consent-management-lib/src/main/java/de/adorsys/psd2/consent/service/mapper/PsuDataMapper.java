@@ -18,15 +18,21 @@ package de.adorsys.psd2.consent.service.mapper;
 
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class PsuDataMapper {
-
     public PsuData mapToPsuData(PsuIdData psuData) {
+        if (psuData == null
+                || StringUtils.isBlank(psuData.getPsuId())) {
+            return null;
+        }
+
         return new PsuData(
             psuData.getPsuId(),
             psuData.getPsuIdType(),
@@ -36,15 +42,23 @@ public class PsuDataMapper {
     }
 
     public PsuIdData mapToPsuIdData(PsuData psuData) {
-        return new PsuIdData(
-            psuData.getPsuId(),
-            psuData.getPsuIdType(),
-            psuData.getPsuCorporateId(),
-            psuData.getPsuCorporateIdType()
-        );
+        if (psuData == null
+                || StringUtils.isBlank(psuData.getPsuId())) {
+            return null;
+        }
+
+        return Optional.ofNullable(psuData)
+                   .map(psu ->
+                            new PsuIdData(
+                                psu.getPsuId(),
+                                psu.getPsuIdType(),
+                                psu.getPsuCorporateId(),
+                                psu.getPsuCorporateIdType()
+                            )
+                   ).orElse(null);
     }
 
-    public List<PsuData> mapToCmsPsuDataList(List<PsuIdData> psuIdDataList) {
+    public List<PsuData> mapToPsuDataList(List<PsuIdData> psuIdDataList) {
         return psuIdDataList.stream()
                    .map(this::mapToPsuData)
                    .collect(Collectors.toList());

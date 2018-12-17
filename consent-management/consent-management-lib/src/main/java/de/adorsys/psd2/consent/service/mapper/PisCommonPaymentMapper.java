@@ -22,10 +22,13 @@ import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
+import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.payment.*;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -58,9 +61,37 @@ public class PisCommonPaymentMapper {
         commonPaymentData.setTransactionStatus(paymentInfo.getTransactionStatus());
         commonPaymentData.setPayment(paymentInfo.getPaymentData());
         commonPaymentData.setTppInfo(tppInfoMapper.mapToTppInfoEntity(paymentInfo.getTppInfo()));
-        commonPaymentData.setPsuData(psuDataMapper.mapToCmsPsuDataList(paymentInfo.getPsuData()));
+        commonPaymentData.setPsuData(psuDataMapper.mapToPsuDataList(paymentInfo.getPsuData()));
         return commonPaymentData;
     }
+
+    public PisCommonPaymentData enrichPsuData(PsuIdData psuData, PisCommonPaymentData paymentData) {
+        return enrichPsuData(psuDataMapper.mapToPsuData(psuData), paymentData);
+    }
+
+    public PisCommonPaymentData enrichPsuData(PsuData newPsuData, PisCommonPaymentData paymentData) {
+        if (isPsuDataEmpty(newPsuData)
+                || isPsuDataInList(newPsuData, paymentData)) {
+            return paymentData;
+        }
+
+        List<PsuData> psuDataList = paymentData.getPsuData();
+        psuDataList.add(newPsuData);
+        paymentData.setPsuData(psuDataList);
+
+        return paymentData;
+    }
+
+    private boolean isPsuDataEmpty(PsuData psuData) {
+        return psuData == null
+                   || StringUtils.isBlank(psuData.getPsuId());
+    }
+
+    public boolean isPsuDataInList(PsuData psuData, PisCommonPaymentData paymentData) {
+        return paymentData.getPsuData().stream()
+                   .anyMatch(psu -> psu.getPsuId().equals(psuData.getPsuId()));
+    }
+
 
     private PisPaymentData mapToPisPaymentData(PisPayment payment, PisCommonPaymentData pisCommonPayment) {
         return Optional.ofNullable(payment)
@@ -129,6 +160,7 @@ public class PisCommonPaymentMapper {
                             paymentInfo.setPaymentType(dta.getPaymentType());
                             paymentInfo.setTransactionStatus(dta.getTransactionStatus());
                             paymentInfo.setPaymentData(dta.getPayment());
+                            paymentInfo.setPsuDataList(psuDataMapper.mapToPsuIdDataList(dta.getPsuData()));
                             paymentInfo.setTppInfo(tppInfoMapper.mapToTppInfo(dta.getTppInfo()));
 
                             return paymentInfo;

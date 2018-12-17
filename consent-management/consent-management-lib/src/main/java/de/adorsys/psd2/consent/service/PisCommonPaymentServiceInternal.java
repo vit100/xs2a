@@ -27,6 +27,7 @@ import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
+import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.repository.PisAuthorizationRepository;
@@ -283,18 +284,6 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
                    .map(pc -> psuDataMapper.mapToPsuIdDataList(pc.getPsuData()));
     }
 
-/*    *//**
-     * Reads Psu data by encrypted common payment Id
-     *
-     * @param encryptedPaymentId encrypted Consent ID
-     * @return response contains data of Psu
-     *//*
-    @Override
-    public Optional<PsuIdData> getPsuDataByConsentId(String encryptedPaymentId) {
-        return getPisCommonPaymentById(encryptedPaymentId)
-                   .map(pc -> psuDataMapper.mapToPsuIdData(pc.getPsuData()));
-    }*/
-
     private Optional<PisCommonPaymentData> getActualPisCommonPayment(String encryptedPaymentId) {
         Optional<String> paymentIdDecrypted = securityDataService.decryptId(encryptedPaymentId);
         if (!paymentIdDecrypted.isPresent()) {
@@ -369,8 +358,14 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
         consentAuthorization.setPaymentData(paymentData);
         consentAuthorization.setScaStatus(STARTED);
         consentAuthorization.setAuthorizationType(authorisationType);
-        consentAuthorization.setPsuData(psuDataMapper.mapToPsuData(psuData));
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
+
+        PsuData newPsuData = psuDataMapper.mapToPsuData(psuData);
+        PisCommonPaymentData commonPaymentData = pisCommonPaymentMapper.enrichPsuData(newPsuData, paymentData);
+
+        consentAuthorization.setPsuData(newPsuData);
+        consentAuthorization.setPaymentData(commonPaymentData);
+
         return pisAuthorizationRepository.save(consentAuthorization);
     }
 

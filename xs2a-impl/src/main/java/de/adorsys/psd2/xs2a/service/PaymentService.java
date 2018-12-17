@@ -117,7 +117,7 @@ public class PaymentService {
             request.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
             request.setPaymentData((byte[]) payment);
             request.setTppInfo(tppInfo);
-            request.setPsuData(Collections.singletonList(paymentInitiationParameters.getPsuData()));
+            request.setPsuDataList(Collections.singletonList(paymentInitiationParameters.getPsuData()));
 
             return createCommonPaymentService.createPayment(request, paymentInitiationParameters, tppInfo, pisCommonPayment);
         }

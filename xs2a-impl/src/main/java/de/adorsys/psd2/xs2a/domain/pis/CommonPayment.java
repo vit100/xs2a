@@ -32,5 +32,5 @@ public class CommonPayment {
     private PaymentType paymentType;
     private byte[] paymentData;
     private TppInfo tppInfo;
-    private List<PsuIdData> psuData;
+    private List<PsuIdData> psuDataList;
 }
