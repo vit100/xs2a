@@ -25,6 +25,4 @@ import java.util.Optional;
 public interface PisConsentAuthorizationRepository extends CrudRepository<PisConsentAuthorization, Long> {
     Optional<PisConsentAuthorization> findByExternalId(String externalId);
     Optional<PisConsentAuthorization> findByExternalIdAndAuthorizationType(String externalId, CmsAuthorisationType authorizationType);
-
-    Optional<PisConsentAuthorization> findByExternalIdAndConsent_Payments_PaymentId(String externalId, String paymentId);
 }
