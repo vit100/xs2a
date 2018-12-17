@@ -247,12 +247,12 @@ public class PisConsentServiceInternal implements PisConsentService {
 
     @Override
     public Optional<ScaStatus> getAuthorisationScaStatus(String paymentId, String authorisationId, CmsAuthorisationType authorisationType) {
-        Optional<PisConsent> consent = readReceivedConsentByPaymentId(paymentId);
+        Optional<PisConsent> consent = readPisConsentByPaymentId(paymentId);
         if (!consent.isPresent()) {
             return Optional.empty();
         }
 
-        Optional<PisConsentAuthorization> authorisation = findAuthorisationByIdInConsent(authorisationId,
+        Optional<PisConsentAuthorization> authorisation = findAuthorisationInConsentById(authorisationId,
                                                                                          consent.get(),
                                                                                          CmsAuthorisationType.CREATED);
         return authorisation.map(PisConsentAuthorization::getScaStatus);
@@ -356,7 +356,7 @@ public class PisConsentServiceInternal implements PisConsentService {
                    .collect(Collectors.toList());
     }
 
-    private Optional<PisConsentAuthorization> findAuthorisationByIdInConsent(String authorisationId, PisConsent pisConsent, CmsAuthorisationType authorisationType) {
+    private Optional<PisConsentAuthorization> findAuthorisationInConsentById(String authorisationId, PisConsent pisConsent, CmsAuthorisationType authorisationType) {
         return pisConsent.getAuthorizations()
                    .stream()
                    .filter(auth -> auth.getAuthorizationType() == authorisationType)
