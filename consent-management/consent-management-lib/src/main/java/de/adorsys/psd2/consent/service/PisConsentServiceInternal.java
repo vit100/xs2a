@@ -44,10 +44,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -281,6 +281,39 @@ public class PisConsentServiceInternal implements PisConsentService {
                                             .collect(Collectors.toList());
 
         return Optional.of(authorisationIds);
+    }
+
+    @Override
+    public Optional<ScaStatus> getAuthorisationScaStatus(String encryptedPaymentId, String authorisationId, CmsAuthorisationType authorisationType) {
+        Optional<String> paymentId = securityDataService.decryptId(encryptedPaymentId);
+        if (!paymentId.isPresent()) {
+            log.warn("Payment ID couldn't be decrypted: {}", encryptedPaymentId);
+            return Optional.empty();
+        }
+
+        Optional<List<PisPaymentData>> paymentDataListOptional = pisPaymentDataRepository.findByPaymentId(paymentId.get());
+        if (!paymentDataListOptional.isPresent()) {
+            return Optional.empty();
+        }
+
+        List<PisPaymentData> paymentDataList = paymentDataListOptional.get();
+        if (paymentDataList.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Optional<List<PisConsentAuthorization>> authorisations = pisPaymentDataRepository.findByPaymentId(paymentId.get())
+                                                                     .map(list -> list.get(0))
+                                                                     .map(PisPaymentData::getConsent)
+                                                                     .map(PisConsent::getAuthorizations);
+        if (!authorisations.isPresent()) {
+            return Optional.empty();
+        }
+
+        Optional<PisConsentAuthorization> authorisation = authorisations.get().stream()
+                                                              .filter(a -> a.getExternalId().equals(authorisationId))
+                                                              .findAny();
+
+        return authorisation.map(PisConsentAuthorization::getScaStatus);
     }
 
     /**

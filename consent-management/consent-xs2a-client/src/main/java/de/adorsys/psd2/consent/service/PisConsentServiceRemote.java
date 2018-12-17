@@ -29,6 +29,7 @@ import de.adorsys.psd2.consent.config.CmsRestException;
 import de.adorsys.psd2.consent.config.PisConsentRemoteUrls;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -127,6 +128,21 @@ public class PisConsentServiceRemote implements PisConsentService {
 
     @Override
     public Optional<List<String>> getAuthorisationsByPaymentId(String paymentId, CmsAuthorisationType authorisationType) {
+        String url = getAuthorisationSubResourcesUrl(authorisationType);
+        try {
+            ResponseEntity<List<String>> request = consentRestTemplate.exchange(
+                url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<String>>() {
+                }, paymentId);
+            return Optional.ofNullable(request.getBody());
+        } catch (CmsRestException cmsRestException) {
+            log.warn("No authorisation found by paymentId {}", paymentId);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ScaStatus> getAuthorisationScaStatus(String paymentId, String authorisationId, CmsAuthorisationType authorisationType) {
         String url = getAuthorisationSubResourcesUrl(authorisationType);
         try {
             ResponseEntity<List<String>> request = consentRestTemplate.exchange(
