@@ -43,31 +43,31 @@ import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.FINALISED;
 public class PisScaMethodSelectedStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final PisCommonPaymentDataService pisCommonPaymentDataService;
     private final SpiErrorMapper spiErrorMapper;
-    private final Xs2aPisCommonPaymentMapper xs2aPisConsentMapper;
+    private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
     private final SpiContextDataProvider spiContextDataProvider;
 
-    public PisScaMethodSelectedStage(PisCommonPaymentDataService pisCommonPaymentDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, Xs2aPisCommonPaymentMapper xs2aPisConsentMapper, SpiErrorMapper spiErrorMapper, SpiContextDataProvider spiContextDataProvider) {
+    public PisScaMethodSelectedStage(PisCommonPaymentDataService pisCommonPaymentDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper, SpiErrorMapper spiErrorMapper, SpiContextDataProvider spiContextDataProvider) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
         this.spiErrorMapper = spiErrorMapper;
         this.pisCommonPaymentDataService = pisCommonPaymentDataService;
-        this.xs2aPisConsentMapper = xs2aPisConsentMapper;
+        this.xs2aPisCommonPaymentMapper = xs2aPisCommonPaymentMapper;
         this.spiContextDataProvider = spiContextDataProvider;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse response) {
-        PaymentType paymentType = response.getPaymentType();
-        String paymentProduct = response.getPaymentProduct();
-        SpiPayment payment = mapToSpiPayment(response, paymentType, paymentProduct);
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse) {
+        PaymentType paymentType = pisAuthorisationResponse.getPaymentType();
+        String paymentProduct = pisAuthorisationResponse.getPaymentProduct();
+        SpiPayment payment = mapToSpiPayment(pisAuthorisationResponse, paymentType, paymentProduct);
         PsuIdData psuData = request.getPsuData();
-        PaymentSpi paymentSpi = getPaymentService(response, paymentType);
+        PaymentSpi paymentSpi = getPaymentService(pisAuthorisationResponse, paymentType);
 
         AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(request.getPaymentId());
 
         // we need to get decrypted payment ID
         String internalId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(request.getPaymentId());
-        SpiScaConfirmation spiScaConfirmation = xs2aPisConsentMapper.buildSpiScaConfirmation(request, response.getPaymentId(), internalId);
+        SpiScaConfirmation spiScaConfirmation = xs2aPisCommonPaymentMapper.buildSpiScaConfirmation(request, pisAuthorisationResponse.getPaymentId(), internalId);
 
         SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(psuData);
 

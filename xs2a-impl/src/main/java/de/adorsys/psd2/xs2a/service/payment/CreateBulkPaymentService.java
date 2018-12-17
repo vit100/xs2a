@@ -64,12 +64,12 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
         bulkPayment.setPaymentId(internalPaymentId);
 
         BulkPaymentInitiationResponse response = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);
-        response.setPisConsentId(commonPayment.getPaymentId());
+        response.setPaymentId(commonPayment.getPaymentId());
 
         bulkPayment.setTransactionStatus(response.getTransactionStatus());
         updateBulkPaymentIds(bulkPayment.getPayments(), internalPaymentId);
 
-        pisCommonPaymentService.updateBulkPaymentInPisConsent(bulkPayment, paymentInitiationParameters, commonPayment.getPaymentId());
+        pisCommonPaymentService.updateBulkPaymentInCommonPayment(bulkPayment, paymentInitiationParameters, commonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {

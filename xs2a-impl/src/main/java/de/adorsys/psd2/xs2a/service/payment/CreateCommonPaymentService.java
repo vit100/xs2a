@@ -62,11 +62,11 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
 
         PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisCommonPayment);
 
-        response.setPisConsentId(pisCommonPayment.getPaymentId());
+        response.setPaymentId(pisCommonPayment.getPaymentId());
 
         payment.setTransactionStatus(response.getTransactionStatus());
 
-        pisCommonPaymentService.updatePaymentInPisConsent(payment, pisCommonPayment.getPaymentId());
+        pisCommonPaymentService.updateCommonPayment(payment, pisCommonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {

@@ -48,8 +48,8 @@ public class Xs2aPisCommonPaymentMapper {
         return new Xs2aPisCommonPayment(response.getConsentId(), psuData);
     }
 
-    public UpdatePisCommonPaymentPsuDataRequest mapToCmsUpdateConsentPsuDataReq(Xs2aUpdatePisCommonPaymentPsuDataRequest updatePsuDataRequest,
-                                                                                Xs2aUpdatePisCommonPaymentPsuDataResponse updatePsuDataResponse) {
+    public UpdatePisCommonPaymentPsuDataRequest mapToCmsUpdateCommonPaymentPsuDataReq(Xs2aUpdatePisCommonPaymentPsuDataRequest updatePsuDataRequest,
+                                                                                      Xs2aUpdatePisCommonPaymentPsuDataResponse updatePsuDataResponse) {
         return Optional.ofNullable(updatePsuDataResponse)
                    .map(data -> {
                        UpdatePisCommonPaymentPsuDataRequest request = new UpdatePisCommonPaymentPsuDataRequest();

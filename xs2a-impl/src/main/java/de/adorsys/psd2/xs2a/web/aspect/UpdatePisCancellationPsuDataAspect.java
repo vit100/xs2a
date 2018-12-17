@@ -38,8 +38,8 @@ public class UpdatePisCancellationPsuDataAspect extends AbstractLinkAspect<Payme
         super(aspspProfileService, messageService);
     }
 
-    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updatePisConsentCancellationPsuData(..)) && args( request)", returning = "result", argNames = "result,request")
-    public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisConsentCancellationAuthorizationAspect(ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> result, Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
+    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updatePisCancellationPsuData(..)) && args( request)", returning = "result", argNames = "result,request")
+    public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisCancellationAuthorizationAspect(ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> result, Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
         if (!result.hasError()) {
             Xs2aUpdatePisCommonPaymentPsuDataResponse body = result.getBody();
             Links links = buildLink(request);

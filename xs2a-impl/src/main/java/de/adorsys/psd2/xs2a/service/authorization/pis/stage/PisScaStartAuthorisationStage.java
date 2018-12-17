@@ -65,10 +65,10 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
 
     @Override
     @SuppressWarnings("unchecked")
-    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisConsentAuthorisationResponse) {
-        PaymentType paymentType = pisConsentAuthorisationResponse.getPaymentType();
-        String paymentProduct = pisConsentAuthorisationResponse.getPaymentProduct();
-        SpiPayment payment = mapToSpiPayment(pisConsentAuthorisationResponse, paymentType, paymentProduct);
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse) {
+        PaymentType paymentType = pisAuthorisationResponse.getPaymentType();
+        String paymentProduct = pisAuthorisationResponse.getPaymentProduct();
+        SpiPayment payment = mapToSpiPayment(pisAuthorisationResponse, paymentType, paymentProduct);
 
         AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(request.getPaymentId());
 
@@ -93,7 +93,7 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
         List<SpiAuthenticationObject> spiScaMethods = availableScaMethodsResponse.getPayload();
 
         if (CollectionUtils.isEmpty(spiScaMethods)) {
-            PaymentSpi paymentSpi = getPaymentService(pisConsentAuthorisationResponse, paymentType);
+            PaymentSpi paymentSpi = getPaymentService(pisAuthorisationResponse, paymentType);
             SpiResponse<SpiResponse.VoidResponse> executePaymentResponse = paymentSpi.executePaymentWithoutSca(contextData, payment, availableScaMethodsResponse.getAspspConsentData());
             pisCommonPaymentDataService.updateAspspConsentData(executePaymentResponse.getAspspConsentData());
 

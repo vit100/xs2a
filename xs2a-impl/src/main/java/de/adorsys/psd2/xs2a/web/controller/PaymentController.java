@@ -164,7 +164,7 @@ public class PaymentController implements PaymentApi {
     @Override
     public ResponseEntity updatePaymentCancellationPsuData(String paymentService, String paymentId, String cancellationId, UUID xRequestID, Object body, String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType, String psUCorporateID, String psUCorporateIDType, String psUIPAddress, Object psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
-        ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> response = consentService.updatePisConsentCancellationPsuData(consentModelMapper.mapToPisUpdatePsuData(psuData, paymentId, cancellationId, paymentService, (Map) body));
+        ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> response = consentService.updatePisCancellationPsuData(consentModelMapper.mapToPisUpdatePsuData(psuData, paymentId, cancellationId, paymentService, (Map) body));
         return responseMapper.ok(response, consentModelMapper::mapToUpdatePsuAuthenticationResponse);
     }
 

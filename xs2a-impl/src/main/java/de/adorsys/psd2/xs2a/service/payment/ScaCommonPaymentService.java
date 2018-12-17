@@ -22,5 +22,5 @@ import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
 
 public interface ScaCommonPaymentService {
-    PaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, Xs2aPisCommonPayment pisConsent);
+    PaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, Xs2aPisCommonPayment commonPayment);
 }

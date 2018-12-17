@@ -56,16 +56,16 @@ public class PisCancellationScaMethodSelectedStage extends PisScaStage<Xs2aUpdat
     }
 
     @Override
-    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse response) {
-        PaymentType paymentType = response.getPaymentType();
-        String paymentProduct = response.getPaymentProduct();
-        SpiPayment payment = mapToSpiPayment(response, paymentType, paymentProduct);
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse) {
+        PaymentType paymentType = pisAuthorisationResponse.getPaymentType();
+        String paymentProduct = pisAuthorisationResponse.getPaymentProduct();
+        SpiPayment payment = mapToSpiPayment(pisAuthorisationResponse, paymentType, paymentProduct);
         PsuIdData psuData = request.getPsuData();
 
         AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(request.getPaymentId());
 
         String internalId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(request.getPaymentId());
-        SpiScaConfirmation spiScaConfirmation = xs2aPisCommonPaymentMapper.buildSpiScaConfirmation(request, response.getPaymentId(), internalId);
+        SpiScaConfirmation spiScaConfirmation = xs2aPisCommonPaymentMapper.buildSpiScaConfirmation(request, pisAuthorisationResponse.getPaymentId(), internalId);
 
         SpiResponse<SpiResponse.VoidResponse> spiResponse = paymentCancellationSpi.verifyScaAuthorisationAndCancelPayment(spiContextDataProvider.provideWithPsuIdData(psuData), spiScaConfirmation, payment, aspspConsentData);
         pisCommonPaymentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());

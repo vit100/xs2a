@@ -62,11 +62,11 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
         singlePayment.setPaymentId(internalPaymentId);
 
         SinglePaymentInitiationResponse response = scaPaymentService.createSinglePayment(singlePayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);
-        response.setPisConsentId(commonPayment.getPaymentId());
+        response.setPaymentId(commonPayment.getPaymentId());
 
         singlePayment.setTransactionStatus(response.getTransactionStatus());
 
-        pisCommonPaymentService.updateSinglePaymentInPisConsent(singlePayment, paymentInitiationParameters, commonPayment.getPaymentId());
+        pisCommonPaymentService.updateSinglePaymentInCommonPayment(singlePayment, paymentInitiationParameters, commonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {

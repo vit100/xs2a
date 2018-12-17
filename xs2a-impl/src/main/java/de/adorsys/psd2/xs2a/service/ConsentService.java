@@ -323,7 +323,7 @@ public class ConsentService {
     }
 
     // TODO extract this method to PaymentCancellationAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
-    public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisConsentCancellationPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
+    public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisCancellationPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
         xs2aEventService.recordPisTppRequest(request.getPaymentId(), EventType.UPDATE_PAYMENT_CANCELLATION_PSU_DATA_REQUEST_RECEIVED, request);
 
         Xs2aUpdatePisCommonPaymentPsuDataResponse response = pisAuthorizationService.updateCommonPaymentCancellationPsuData(request);

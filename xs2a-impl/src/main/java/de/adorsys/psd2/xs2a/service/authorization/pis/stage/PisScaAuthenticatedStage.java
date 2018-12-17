@@ -57,10 +57,10 @@ public class PisScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisCommonPay
     }
 
     @Override
-    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisConsentAuthorisationResponse) {
-        PaymentType paymentType = pisConsentAuthorisationResponse.getPaymentType();
-        String paymentProduct = pisConsentAuthorisationResponse.getPaymentProduct();
-        SpiPayment payment = mapToSpiPayment(pisConsentAuthorisationResponse, paymentType, paymentProduct);
+    public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse) {
+        PaymentType paymentType = pisAuthorisationResponse.getPaymentType();
+        String paymentProduct = pisAuthorisationResponse.getPaymentProduct();
+        SpiPayment payment = mapToSpiPayment(pisAuthorisationResponse, paymentType, paymentProduct);
         String authenticationMethodId = request.getAuthenticationMethodId();
         PsuIdData psuData = request.getPsuData();
 

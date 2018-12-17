@@ -656,7 +656,7 @@ public class ConsentServiceTest {
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.updatePisConsentCancellationPsuData(request);
+        consentService.updatePisCancellationPsuData(request);
 
         // Then
         verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture(), any());

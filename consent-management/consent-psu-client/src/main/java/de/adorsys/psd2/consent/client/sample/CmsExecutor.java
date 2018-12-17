@@ -22,9 +22,9 @@ import de.adorsys.psd2.consent.api.CmsAddress;
 import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.pis.CmsRemittance;
-import de.adorsys.psd2.consent.api.pis.PisConsentStatusResponse;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.client.cms.CmsServiceInvoker;
 import de.adorsys.psd2.consent.client.cms.model.ais.*;
 import de.adorsys.psd2.consent.client.cms.model.piis.GetPiisConsentListByAccountReferenceMethod;
@@ -328,8 +328,8 @@ public class CmsExecutor {
      *
      * @return PisConsentRequest
      */
-    private static PisConsentRequest buildPisConsentRequest() {
-        PisConsentRequest request = new PisConsentRequest();
+    private static PisCommonPaymentRequest buildPisConsentRequest() {
+        PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(singletonList(buildPisPayment()));
         request.setPaymentProduct("sepa-credit-transfers");
         request.setPaymentType(PaymentType.SINGLE);

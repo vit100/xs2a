@@ -62,11 +62,11 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
         periodicPayment.setPaymentId(internalPaymentId);
 
         PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);
-        response.setPisConsentId(commonPayment.getPaymentId());
+        response.setPaymentId(commonPayment.getPaymentId());
 
         periodicPayment.setTransactionStatus(response.getTransactionStatus());
 
-        pisCommonPaymentService.updatePeriodicPaymentInPisConsent(periodicPayment, paymentInitiationParameters, commonPayment.getPaymentId());
+        pisCommonPaymentService.updatePeriodicPaymentInCommonPayment(periodicPayment, paymentInitiationParameters, commonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {

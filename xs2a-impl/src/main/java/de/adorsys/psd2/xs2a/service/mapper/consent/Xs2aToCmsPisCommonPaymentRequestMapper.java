@@ -38,9 +38,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class Xs2aToCmsPisConsentRequestMapper {
+public class Xs2aToCmsPisCommonPaymentRequestMapper {
 
-    public PisCommonPaymentRequest mapToCmsPisConsentRequest(CommonPayment paymentInitRequest) {
+    public PisCommonPaymentRequest mapToCmsPisCommonPaymentRequest(CommonPayment paymentInitRequest) {
         PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(Collections.emptyList());
         request.setPaymentInfo(mapToPisPaymentInfo(paymentInitRequest));
@@ -70,7 +70,7 @@ public class Xs2aToCmsPisConsentRequestMapper {
                    .orElse(null);
     }
 
-    public PisCommonPaymentRequest mapToCmsSinglePisConsentRequest(SinglePayment singlePayment, String paymentProduct) {
+    public PisCommonPaymentRequest mapToCmsSinglePisCommonPaymentRequest(SinglePayment singlePayment, String paymentProduct) {
         PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(Collections.singletonList(mapToPisPaymentForSinglePayment(singlePayment)));
         request.setPaymentProduct(paymentProduct);
@@ -79,7 +79,7 @@ public class Xs2aToCmsPisConsentRequestMapper {
         return request;
     }
 
-    public PisCommonPaymentRequest mapToCmsPeriodicPisConsentRequest(PeriodicPayment periodicPayment, String paymentProduct) {
+    public PisCommonPaymentRequest mapToCmsPeriodicPisCommonPaymentRequest(PeriodicPayment periodicPayment, String paymentProduct) {
         PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(Collections.singletonList(mapToPisPaymentForPeriodicPayment(periodicPayment)));
         request.setPaymentProduct(paymentProduct);
@@ -88,7 +88,7 @@ public class Xs2aToCmsPisConsentRequestMapper {
         return request;
     }
 
-    public PisCommonPaymentRequest mapToCmsBulkPisConsentRequest(BulkPayment bulkPayment, String paymentProduct) {
+    public PisCommonPaymentRequest mapToCmsBulkPisCommonPaymentRequest(BulkPayment bulkPayment, String paymentProduct) {
         PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(mapToListPisPayment(bulkPayment.getPayments()));
         request.setPaymentProduct(paymentProduct);

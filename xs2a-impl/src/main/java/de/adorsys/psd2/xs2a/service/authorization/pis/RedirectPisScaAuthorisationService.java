@@ -32,7 +32,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RedirectPisScaAuthorisationService implements PisScaAuthorisationService {
     private final PisAuthorisationService authorisationService;
-    private final Xs2aPisCommonPaymentMapper pisConsentMapper;
+    private final Xs2aPisCommonPaymentMapper pisCommonPaymentMapper;
 
     /**
      * Creates authorization for pis consent
@@ -44,7 +44,7 @@ public class RedirectPisScaAuthorisationService implements PisScaAuthorisationSe
      */
     @Override
     public Optional<Xsa2CreatePisAuthorisationResponse> createCommonPaymentAuthorisation(String paymentId, PaymentType paymentType, PsuIdData psuData) {
-        return pisConsentMapper.mapToXsa2CreatePisAuthorizationResponse(authorisationService.createPisConsentAuthorisation(paymentId, psuData), paymentType);
+        return pisCommonPaymentMapper.mapToXsa2CreatePisAuthorizationResponse(authorisationService.createPisAuthorisation(paymentId, psuData), paymentType);
     }
 
     /**
@@ -55,7 +55,7 @@ public class RedirectPisScaAuthorisationService implements PisScaAuthorisationSe
      */
     @Override
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updateCommonPaymentPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        return authorisationService.updatePisConsentAuthorisation(request);
+        return authorisationService.updatePisAuthorisation(request);
     }
 
     /**
@@ -68,7 +68,7 @@ public class RedirectPisScaAuthorisationService implements PisScaAuthorisationSe
      */
     @Override
     public Optional<Xs2aCreatePisCancellationAuthorisationResponse> createCommonPaymentCancellationAuthorisation(String paymentId, PaymentType paymentType, PsuIdData psuData) {
-        return pisConsentMapper.mapToXs2aCreatePisCancellationAuthorisationResponse(authorisationService.createPisConsentAuthorisationCancellation(paymentId, psuData), paymentType);
+        return pisCommonPaymentMapper.mapToXs2aCreatePisCancellationAuthorisationResponse(authorisationService.createPisAuthorisationCancellation(paymentId, psuData), paymentType);
     }
 
     /**
