@@ -64,14 +64,20 @@ Feature: Account Information Service
             | consent-resource                                 |
             | consent-status-with-not-existing-consent-id.json |
 
-    @ignore
-    Scenario Outline: Successful consent request (redirect)
-        Given PSU wants to get the content of a consent <consent-resource>
+    
+     Scenario Outline: Successful consent request (redirect)
+        Given PSU already has an existing <status> consent <consent-id>
+        And  PSU want to get consent using <consent-resource>
         When PSU requests consent
         Then a successful response code and the appropriate consent gets returned
         Examples:
-            | consent-resource        |
-            | consent-successful.json |
+            | consent-resource                                     | consent-id                                           | status |
+            | consent-resource-with-access-account.json            | consent/create-consent-with-access-account.json      | valid  |
+            | consent-resource-with-access-balances.json           | consent/create-consent-with-access-balances.json     | valid  |
+            | consent-resource-with-access-transactions.json       | consent/create-consent-with-access-transactions.json | valid  |
+            | consent-resource-global-consent.json                 | consent/create-global-consent.json                   | valid  |
+            | consent-resource-accountList-available-accounts.json | consent/consent-accountList-available-accounts.json  | valid  |
+            | bank-offered-resource-consent.json                   | consent/bank-offered-consent.json 
 
 
     Scenario Outline: Successful deletion of consent (redirect)
