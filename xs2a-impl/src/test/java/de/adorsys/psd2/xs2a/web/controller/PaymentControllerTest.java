@@ -75,6 +75,7 @@ public class PaymentControllerTest {
     private static final String BULK_PAYMENT_RESP_DATA = "/json/BulkPaymentResponseTestData.json";
     private static final String PAYMENT_CANCELLATION_ID = "42af2f4a-0d9f-4a7f-8677-8acda5e718f0";
     private static final String AUTHORISATION_ID = "3e96e9e0-9974-42aa-beb8-003e91416652";
+    private static final String CANCELLATION_AUTHORISATION_ID = "d7ba791c-2231-4ed5-8232-cb1ad4cf7332";
 
     private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private JsonConverter jsonConverter = new JsonConverter(objectMapper);
@@ -349,6 +350,54 @@ public class PaymentControllerTest {
                                                                                 null, null,
                                                                                 null, null,
                                                                                 null, null);
+
+        // Then
+        assertThat(actual.getStatusCode()).isEqualTo(FORBIDDEN);
+    }
+
+    @Test
+    public void getPaymentCancellationScaStatus_success() {
+        ResponseObject<de.adorsys.psd2.xs2a.core.sca.ScaStatus> responseObject = ResponseObject.<de.adorsys.psd2.xs2a.core.sca.ScaStatus>builder()
+                                                                                     .body(de.adorsys.psd2.xs2a.core.sca.ScaStatus.RECEIVED)
+                                                                                     .build();
+        when(paymentAuthorisationService.getPaymentCancellationAuthorisationScaStatus(CORRECT_PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
+            .thenReturn(responseObject);
+        doReturn(ResponseEntity.ok(buildScaStatusResponse(ScaStatus.RECEIVED)))
+            .when(responseMapper).ok(eq(responseObject), any());
+
+        // Given
+        ScaStatusResponse expected = buildScaStatusResponse(ScaStatus.RECEIVED);
+
+        // When
+        ResponseEntity actual = paymentController.getPaymentCancellationScaStatus(SINGLE.getValue(), CORRECT_PAYMENT_ID,
+                                                                                  CANCELLATION_AUTHORISATION_ID, REQUEST_ID, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null);
+
+        // Then
+        assertThat(actual.getStatusCode()).isEqualTo(OK);
+        assertThat(actual.getBody()).isEqualTo(expected);
+    }
+
+    @Test
+    public void getPaymentCancellationScaStatus_failure() {
+        when(paymentAuthorisationService.getPaymentCancellationAuthorisationScaStatus(WRONG_PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
+            .thenReturn(buildScaStatusError());
+        when(responseMapper.ok(any(), any())).thenReturn(ResponseEntity.status(FORBIDDEN).build());
+
+        // When
+        ResponseEntity actual = paymentController.getPaymentCancellationScaStatus(SINGLE.getValue(), WRONG_PAYMENT_ID,
+                                                                                  CANCELLATION_AUTHORISATION_ID, REQUEST_ID, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null,
+                                                                                  null, null);
 
         // Then
         assertThat(actual.getStatusCode()).isEqualTo(FORBIDDEN);

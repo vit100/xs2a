@@ -254,7 +254,7 @@ public class PisConsentServiceInternal implements PisConsentService {
 
         Optional<PisConsentAuthorization> authorisation = findAuthorisationInConsentById(authorisationId,
                                                                                          consent.get(),
-                                                                                         CmsAuthorisationType.CREATED);
+                                                                                         authorisationType);
         return authorisation.map(PisConsentAuthorization::getScaStatus);
     }
 

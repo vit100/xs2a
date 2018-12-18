@@ -184,7 +184,7 @@ public class PisConsentServiceRemote implements PisConsentServiceEncrypted {
             case CREATED:
                 return remotePisConsentUrls.getAuthorisationScaStatus();
             case CANCELLED:
-                return null;
+                return remotePisConsentUrls.getCancellationAuthorisationScaStatus();
             default:
                 log.error("Unknown payment authorisation type {}", authorisationType);
                 throw new IllegalArgumentException("Unknown payment authorisation type " + authorisationType);

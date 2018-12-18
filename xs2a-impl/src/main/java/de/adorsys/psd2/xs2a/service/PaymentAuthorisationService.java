@@ -56,4 +56,27 @@ public class PaymentAuthorisationService {
                    .body(scaStatus.get())
                    .build();
     }
+
+    /**
+     * Gets SCA status of payment cancellation authorisation
+     *
+     * @param paymentId      ASPSP identifier of the payment, associated with the authorisation
+     * @param cancellationId cancellation authorisation identifier
+     * @return Response containing SCA status of authorisation or corresponding error
+     */
+    public ResponseObject<ScaStatus> getPaymentCancellationAuthorisationScaStatus(String paymentId, String cancellationId) {
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_CANCELLATION_AUTHORISATION_SCA_STATUS);
+
+        Optional<ScaStatus> scaStatus = pisScaAuthorisationService.getCancellationAuthorisationScaStatus(paymentId, cancellationId);
+
+        if (!scaStatus.isPresent()) {
+            return ResponseObject.<ScaStatus>builder()
+                       .fail(new MessageError(MessageErrorCode.RESOURCE_UNKNOWN_403))
+                       .build();
+        }
+
+        return ResponseObject.<ScaStatus>builder()
+                   .body(scaStatus.get())
+                   .build();
+    }
 }
