@@ -170,4 +170,8 @@ public class Xs2aAisConsentService {
     public Optional<List<String>> getAuthorisationSubResources(String consentId) {
         return aisConsentService.getAuthorisationsByConsentId(consentId);
     }
+
+    public Optional<ScaStatus> getAuthorisationScaStatus(String consentId, String authorisationId) {
+        return aisConsentService.getAuthorisationScaStatus(consentId, authorisationId);
+    }
 }

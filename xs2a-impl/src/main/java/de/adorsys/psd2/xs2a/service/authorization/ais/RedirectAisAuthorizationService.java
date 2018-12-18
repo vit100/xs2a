@@ -80,4 +80,9 @@ public class RedirectAisAuthorizationService implements AisAuthorizationService 
         return aisConsentService.getAuthorisationSubResources(consentId)
                    .map(Xs2aAuthorisationSubResources::new);
     }
+
+    @Override
+    public Optional<ScaStatus> getAuthorisationScaStatus(String consentId, String authorisationId) {
+        return aisConsentService.getAuthorisationScaStatus(consentId, authorisationId);
+    }
 }
