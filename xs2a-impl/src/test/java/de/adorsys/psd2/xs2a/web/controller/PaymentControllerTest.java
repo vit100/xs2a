@@ -29,10 +29,7 @@ import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.exception.MessageError;
-import de.adorsys.psd2.xs2a.service.AccountReferenceValidationService;
-import de.adorsys.psd2.xs2a.service.ConsentService;
-import de.adorsys.psd2.xs2a.service.PaymentAuthorisationService;
-import de.adorsys.psd2.xs2a.service.PaymentService;
+import de.adorsys.psd2.xs2a.service.*;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.web.mapper.AuthorisationMapper;
@@ -102,6 +99,8 @@ public class PaymentControllerTest {
     private ConsentModelMapper consentModelMapper;
     @Mock
     private PaymentAuthorisationService paymentAuthorisationService;
+    @Mock
+    private PaymentCancellationAuthorisationService paymentCancellationAuthorisationService;
     @Mock
     private AuthorisationMapper authorisationMapper;
 
@@ -360,7 +359,7 @@ public class PaymentControllerTest {
         ResponseObject<de.adorsys.psd2.xs2a.core.sca.ScaStatus> responseObject = ResponseObject.<de.adorsys.psd2.xs2a.core.sca.ScaStatus>builder()
                                                                                      .body(de.adorsys.psd2.xs2a.core.sca.ScaStatus.RECEIVED)
                                                                                      .build();
-        when(paymentAuthorisationService.getPaymentCancellationAuthorisationScaStatus(CORRECT_PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
+        when(paymentCancellationAuthorisationService.getPaymentCancellationAuthorisationScaStatus(CORRECT_PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
             .thenReturn(responseObject);
         doReturn(ResponseEntity.ok(buildScaStatusResponse(ScaStatus.RECEIVED)))
             .when(responseMapper).ok(eq(responseObject), any());
@@ -385,7 +384,7 @@ public class PaymentControllerTest {
 
     @Test
     public void getPaymentCancellationScaStatus_failure() {
-        when(paymentAuthorisationService.getPaymentCancellationAuthorisationScaStatus(WRONG_PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
+        when(paymentCancellationAuthorisationService.getPaymentCancellationAuthorisationScaStatus(WRONG_PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
             .thenReturn(buildScaStatusError());
         when(responseMapper.ok(any(), any())).thenReturn(ResponseEntity.status(FORBIDDEN).build());
 

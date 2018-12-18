@@ -30,21 +30,21 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentAuthorisationService {
+public class PaymentCancellationAuthorisationService {
     private final Xs2aEventService xs2aEventService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
 
     /**
-     * Gets SCA status of payment initiation authorisation
+     * Gets SCA status of payment cancellation authorisation
      *
-     * @param paymentId       ASPSP identifier of the payment, associated with the authorisation
-     * @param authorisationId authorisation identifier
+     * @param paymentId      ASPSP identifier of the payment, associated with the authorisation
+     * @param cancellationId cancellation authorisation identifier
      * @return Response containing SCA status of authorisation or corresponding error
      */
-    public ResponseObject<ScaStatus> getPaymentInitiationAuthorisationScaStatus(String paymentId, String authorisationId) {
-        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_AUTHORISATION_SCA_STATUS);
+    public ResponseObject<ScaStatus> getPaymentCancellationAuthorisationScaStatus(String paymentId, String cancellationId) {
+        xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_CANCELLATION_SCA_STATUS_REQUEST_RECEIVED);
 
-        Optional<ScaStatus> scaStatus = pisScaAuthorisationService.getAuthorisationScaStatus(paymentId, authorisationId);
+        Optional<ScaStatus> scaStatus = pisScaAuthorisationService.getCancellationAuthorisationScaStatus(paymentId, cancellationId);
 
         if (!scaStatus.isPresent()) {
             return ResponseObject.<ScaStatus>builder()

@@ -33,17 +33,18 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PaymentAuthorisationServiceTest {
+public class PaymentCancellationAuthorisationServiceTest {
     private static final String PAYMENT_ID = "c713a32c-15ff-4f90-afa0-34a500359844";
     private static final String WRONG_PAYMENT_ID = "wrong payment id";
-    private static final String AUTHORISATION_ID = "ad746cb3-a01b-4196-a6b9-40b0e4cd2350";
-    private static final String WRONG_AUTHORISATION_ID = "wrong authorisation id";
+    private static final String CANCELLATION_AUTHORISATION_ID = "dd5d766f-eeb7-4efe-b730-24d5ed53f537";
+    private static final String WRONG_CANCELLATION_AUTHORISATION_ID = "wrong cancellation authorisation id";
 
     @InjectMocks
-    private PaymentAuthorisationService paymentAuthorisationService;
+    private PaymentCancellationAuthorisationService paymentCancellationAuthorisationService;
     @Mock
     private PisScaAuthorisationService pisScaAuthorisationService;
     @Mock
@@ -51,17 +52,18 @@ public class PaymentAuthorisationServiceTest {
 
     @Before
     public void setUp() {
-        when(pisScaAuthorisationService.getAuthorisationScaStatus(PAYMENT_ID, AUTHORISATION_ID))
+        when(pisScaAuthorisationService.getCancellationAuthorisationScaStatus(PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
             .thenReturn(Optional.of(ScaStatus.RECEIVED));
-        when(pisScaAuthorisationService.getAuthorisationScaStatus(WRONG_PAYMENT_ID, WRONG_AUTHORISATION_ID))
+        when(pisScaAuthorisationService.getCancellationAuthorisationScaStatus(WRONG_PAYMENT_ID, WRONG_CANCELLATION_AUTHORISATION_ID))
             .thenReturn(Optional.empty());
     }
 
     @Test
-    public void getPaymentInitiationAuthorisationScaStatus_success() {
+    public void getPaymentCancellationAuthorisationScaStatus_success() {
         // When
-        ResponseObject<ScaStatus> actual = paymentAuthorisationService.getPaymentInitiationAuthorisationScaStatus(PAYMENT_ID,
-                                                                                                                  AUTHORISATION_ID);
+        ResponseObject<ScaStatus> actual =
+            paymentCancellationAuthorisationService.getPaymentCancellationAuthorisationScaStatus(PAYMENT_ID,
+                                                                                                 CANCELLATION_AUTHORISATION_ID);
 
         // Then
         assertFalse(actual.hasError());
@@ -69,29 +71,30 @@ public class PaymentAuthorisationServiceTest {
     }
 
     @Test
-    public void getPaymentInitiationAuthorisationScaStatus_success_shouldRecordEvent() {
+    public void getPaymentCancellationAuthorisationScaStatus_success_shouldRecordEvent() {
         // Given:
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        paymentAuthorisationService.getPaymentInitiationAuthorisationScaStatus(PAYMENT_ID, AUTHORISATION_ID);
+        paymentCancellationAuthorisationService.getPaymentCancellationAuthorisationScaStatus(PAYMENT_ID,
+                                                                                             CANCELLATION_AUTHORISATION_ID);
 
 
         // Then
-        verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_PAYMENT_AUTHORISATION_SCA_STATUS);
+        verify(xs2aEventService, times(1))
+            .recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue()).isEqualTo(EventType.GET_PAYMENT_CANCELLATION_SCA_STATUS_REQUEST_RECEIVED);
     }
 
     @Test
-    public void getPaymentInitiationAuthorisationScaStatus_failure_wrongIds() {
+    public void getPaymentCancellationAuthorisationScaStatus_failure_wrongIds() {
         // When
-        ResponseObject<ScaStatus> actual = paymentAuthorisationService.getPaymentInitiationAuthorisationScaStatus(WRONG_PAYMENT_ID,
-                                                                                                                  WRONG_AUTHORISATION_ID);
+        ResponseObject<ScaStatus> actual =
+            paymentCancellationAuthorisationService.getPaymentCancellationAuthorisationScaStatus(WRONG_PAYMENT_ID,
+                                                                                                 WRONG_CANCELLATION_AUTHORISATION_ID);
 
         // Then
         assertTrue(actual.hasError());
         assertNull(actual.getBody());
     }
-
-
 }
