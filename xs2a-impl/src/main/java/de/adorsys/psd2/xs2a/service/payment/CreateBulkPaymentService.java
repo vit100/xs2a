@@ -22,16 +22,15 @@ import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.consent.Xsa2CreatePisAuthorisationResponse;
-import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
-import de.adorsys.psd2.xs2a.domain.pis.BulkPaymentInitiationResponse;
-import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
-import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
+import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,32 +43,40 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
-    private final PisCommonPaymentDataService pisCommonPaymentDataService;
+    private final PisAspspDataService pisAspspDataService;
+    private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
 
     /**
      * Initiates bulk payment
      *
      * @param bulkPayment                 Periodic payment information
      * @param paymentInitiationParameters payment initiation parameters
-     * @param commonPayment               common payment information
      * @param tppInfo                     information about particular TPP
      * @return Response containing information about created periodic payment or corresponding error
      */
     @Override
-    public ResponseObject<BulkPaymentInitiationResponse> createPayment(BulkPayment bulkPayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisCommonPayment commonPayment) {
-        String externalPaymentId = commonPayment.getPaymentId();
+    public ResponseObject<BulkPaymentInitiationResponse> createPayment(BulkPayment bulkPayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo) {
+        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(paymentInitiationParameters, tppInfo), paymentInitiationParameters.getPsuData());
+
+        if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
+            return ResponseObject.<BulkPaymentInitiationResponse>builder()
+                       .fail(new MessageError(MessageErrorCode.PAYMENT_FAILED))
+                       .build();
+        }
+
+        String externalPaymentId = pisCommonPayment.getPaymentId();
 
         // we need to get decrypted payment ID
-        String internalPaymentId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
+        String internalPaymentId = pisAspspDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
         bulkPayment.setPaymentId(internalPaymentId);
 
-        BulkPaymentInitiationResponse response = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);
-        response.setPaymentId(commonPayment.getPaymentId());
+        BulkPaymentInitiationResponse response = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisCommonPayment);
+        response.setPaymentId(pisCommonPayment.getPaymentId());
 
         bulkPayment.setTransactionStatus(response.getTransactionStatus());
         updateBulkPaymentIds(bulkPayment.getPayments(), internalPaymentId);
 
-        pisCommonPaymentService.updateBulkPaymentInCommonPayment(bulkPayment, paymentInitiationParameters, commonPayment.getPaymentId());
+        pisCommonPaymentService.updateBulkPaymentInCommonPayment(bulkPayment, paymentInitiationParameters, pisCommonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {

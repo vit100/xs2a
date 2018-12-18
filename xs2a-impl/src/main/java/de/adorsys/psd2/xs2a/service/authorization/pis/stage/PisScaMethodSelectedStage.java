@@ -22,7 +22,7 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
@@ -41,15 +41,15 @@ import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.FINALISED;
 
 @Service("PIS_SCAMETHODSELECTED")
 public class PisScaMethodSelectedStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
-    private final PisCommonPaymentDataService pisCommonPaymentDataService;
+    private final PisAspspDataService pisAspspDataService;
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
     private final SpiContextDataProvider spiContextDataProvider;
 
-    public PisScaMethodSelectedStage(PisCommonPaymentDataService pisCommonPaymentDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper, SpiErrorMapper spiErrorMapper, SpiContextDataProvider spiContextDataProvider) {
+    public PisScaMethodSelectedStage(PisAspspDataService pisAspspDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper, SpiErrorMapper spiErrorMapper, SpiContextDataProvider spiContextDataProvider) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
         this.spiErrorMapper = spiErrorMapper;
-        this.pisCommonPaymentDataService = pisCommonPaymentDataService;
+        this.pisAspspDataService = pisAspspDataService;
         this.xs2aPisCommonPaymentMapper = xs2aPisCommonPaymentMapper;
         this.spiContextDataProvider = spiContextDataProvider;
     }
@@ -63,16 +63,16 @@ public class PisScaMethodSelectedStage extends PisScaStage<Xs2aUpdatePisCommonPa
         PsuIdData psuData = request.getPsuData();
         PaymentSpi paymentSpi = getPaymentService(pisAuthorisationResponse, paymentType);
 
-        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(request.getPaymentId());
+        AspspConsentData aspspConsentData = pisAspspDataService.getAspspConsentData(request.getPaymentId());
 
         // we need to get decrypted payment ID
-        String internalId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(request.getPaymentId());
+        String internalId = pisAspspDataService.getInternalPaymentIdByEncryptedString(request.getPaymentId());
         SpiScaConfirmation spiScaConfirmation = xs2aPisCommonPaymentMapper.buildSpiScaConfirmation(request, pisAuthorisationResponse.getPaymentId(), internalId);
 
         SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(psuData);
 
         SpiResponse<SpiResponse.VoidResponse> spiResponse = paymentSpi.verifyScaAuthorisationAndExecutePayment(contextData, spiScaConfirmation, payment, aspspConsentData);
-        pisCommonPaymentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
+        pisAspspDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
             return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse));

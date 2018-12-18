@@ -353,6 +353,8 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
      * @return PisAuthorization
      */
     private PisAuthorization saveNewAuthorisation(PisCommonPaymentData paymentData, CmsAuthorisationType authorisationType, PsuIdData psuIdData) {
+        PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
+
         PisAuthorization consentAuthorization = new PisAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
         consentAuthorization.setPaymentData(paymentData);
@@ -360,25 +362,25 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
         consentAuthorization.setAuthorizationType(authorisationType);
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
 
-        PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
-
-        consentAuthorization.setPsuData(psuData);
+        if (isPsuDataNew(psuData, paymentData)) {
+            consentAuthorization.setPsuData(psuData);
+        }
         consentAuthorization.setPaymentData(enrichPsuData(psuData, paymentData));
-
         return pisAuthorizationRepository.save(consentAuthorization);
     }
 
     private PisCommonPaymentData enrichPsuData(PsuData psuData,  PisCommonPaymentData paymentData) {
-        if (psuDataMapper.isPsuDataEmpty(psuData)
-                || isPsuDataInList(psuData, paymentData)) {
-            return paymentData;
+        if (isPsuDataNew(psuData, paymentData)) {
+            List<PsuData> psuDataList = paymentData.getPsuData();
+            psuDataList.add(psuData);
+            paymentData.setPsuData(psuDataList);
         }
-
-        List<PsuData> psuDataList = paymentData.getPsuData();
-        psuDataList.add(psuData);
-        paymentData.setPsuData(psuDataList);
-
         return paymentData;
+    }
+
+    private boolean isPsuDataNew(PsuData psuData, PisCommonPaymentData paymentData) {
+        return !psuDataMapper.isPsuDataEmpty(psuData)
+                   &&!isPsuDataInList(psuData, paymentData);
     }
 
     private boolean isPsuDataInList(PsuData psuData, PisCommonPaymentData paymentData) {

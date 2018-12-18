@@ -23,7 +23,7 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.*;
@@ -48,16 +48,16 @@ import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.*;
 public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper;
     private final SpiContextDataProvider spiContextDataProvider;
-    private final PisCommonPaymentDataService pisCommonPaymentDataService;
+    private final PisAspspDataService pisAspspDataService;
     private final PaymentAuthorisationSpi paymentAuthorisationSpi;
     private final SpiErrorMapper spiErrorMapper;
     private final SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper;
 
-    public PisScaStartAuthorisationStage(PaymentAuthorisationSpi paymentAuthorisationSpi, PisCommonPaymentDataService pisCommonPaymentDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper, SpiErrorMapper spiErrorMapper, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiContextDataProvider spiContextDataProvider) {
+    public PisScaStartAuthorisationStage(PaymentAuthorisationSpi paymentAuthorisationSpi, PisAspspDataService pisAspspDataService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper, SpiErrorMapper spiErrorMapper, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiContextDataProvider spiContextDataProvider) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
         this.spiContextDataProvider = spiContextDataProvider;
         this.xs2aToSpiPsuDataMapper = xs2aToSpiPsuDataMapper;
-        this.pisCommonPaymentDataService = pisCommonPaymentDataService;
+        this.pisAspspDataService = pisAspspDataService;
         this.paymentAuthorisationSpi = paymentAuthorisationSpi;
         this.spiErrorMapper = spiErrorMapper;
         this.spiToXs2aAuthenticationObjectMapper = spiToXs2aAuthenticationObjectMapper;
@@ -70,21 +70,21 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
         String paymentProduct = pisAuthorisationResponse.getPaymentProduct();
         SpiPayment payment = mapToSpiPayment(pisAuthorisationResponse, paymentType, paymentProduct);
 
-        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(request.getPaymentId());
+        AspspConsentData aspspConsentData = pisAspspDataService.getAspspConsentData(request.getPaymentId());
 
         SpiPsuData psuData = xs2aToSpiPsuDataMapper.mapToSpiPsuData(request.getPsuData());
         SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(request.getPsuData());
 
         SpiResponse<SpiAuthorisationStatus> authPsuResponse = paymentAuthorisationSpi.authorisePsu(contextData, psuData, request.getPassword(), payment, aspspConsentData);
         aspspConsentData = authPsuResponse.getAspspConsentData();
-        pisCommonPaymentDataService.updateAspspConsentData(aspspConsentData);
+        pisAspspDataService.updateAspspConsentData(aspspConsentData);
 
         if (authPsuResponse.hasError()) {
             return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(authPsuResponse));
         }
 
         SpiResponse<List<SpiAuthenticationObject>> availableScaMethodsResponse = paymentAuthorisationSpi.requestAvailableScaMethods(contextData, payment, aspspConsentData);
-        pisCommonPaymentDataService.updateAspspConsentData(availableScaMethodsResponse.getAspspConsentData());
+        pisAspspDataService.updateAspspConsentData(availableScaMethodsResponse.getAspspConsentData());
 
         if (availableScaMethodsResponse.hasError()) {
             return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(availableScaMethodsResponse));
@@ -95,7 +95,7 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
         if (CollectionUtils.isEmpty(spiScaMethods)) {
             PaymentSpi paymentSpi = getPaymentService(pisAuthorisationResponse, paymentType);
             SpiResponse<SpiResponse.VoidResponse> executePaymentResponse = paymentSpi.executePaymentWithoutSca(contextData, payment, availableScaMethodsResponse.getAspspConsentData());
-            pisCommonPaymentDataService.updateAspspConsentData(executePaymentResponse.getAspspConsentData());
+            pisAspspDataService.updateAspspConsentData(executePaymentResponse.getAspspConsentData());
 
             if (executePaymentResponse.hasError()) {
                 return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(executePaymentResponse));
@@ -108,7 +108,7 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
         } else if (isSingleScaMethod(spiScaMethods)) {
             SpiAuthenticationObject chosenMethod = spiScaMethods.get(0);
             SpiResponse<SpiAuthorizationCodeResult> authCodeResponse = paymentAuthorisationSpi.requestAuthorisationCode(contextData, chosenMethod.getAuthenticationMethodId(), payment, aspspConsentData);
-            pisCommonPaymentDataService.updateAspspConsentData(authCodeResponse.getAspspConsentData());
+            pisAspspDataService.updateAspspConsentData(authCodeResponse.getAspspConsentData());
 
             if (authCodeResponse.hasError()) {
                 return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(authCodeResponse));

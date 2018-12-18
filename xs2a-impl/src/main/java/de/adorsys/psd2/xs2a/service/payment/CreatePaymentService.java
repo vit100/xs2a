@@ -18,9 +18,8 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 
 public interface CreatePaymentService<T, R> {
-    ResponseObject<R> createPayment(T payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisCommonPayment pisCommonPayment);
+    ResponseObject<R> createPayment(T payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo);
 }

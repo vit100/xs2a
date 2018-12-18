@@ -46,12 +46,17 @@ public class Xs2aPisCommonPaymentService {
      */
     // TODO refactoring for orElse(null)
     public CreatePisCommonPaymentResponse createCommonPayment(PaymentInitiationParameters parameters, TppInfo tppInfo) {
+        return createCommonPayment(parameters, tppInfo, null);
+    }
+
+    public CreatePisCommonPaymentResponse createCommonPayment(PaymentInitiationParameters parameters, TppInfo tppInfo, byte[] paymentData) {
         PisPaymentInfo request = new PisPaymentInfo();
-        request.setTppInfo(tppInfo);
         request.setPaymentProduct(parameters.getPaymentProduct());
         request.setPaymentType(parameters.getPaymentType());
-        request.setPsuDataList(Collections.singletonList(parameters.getPsuData()));
         request.setTransactionStatus(TransactionStatus.RCVD);
+        request.setPaymentData(paymentData);
+        request.setTppInfo(tppInfo);
+        request.setPsuDataList(Collections.singletonList(parameters.getPsuData()));
         return pisCommonPaymentService.createCommonPayment(request)
                    .orElse(null);
     }

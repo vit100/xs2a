@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.service.payment;
 
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
@@ -27,9 +28,11 @@ import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -41,32 +44,42 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
-    private final PisCommonPaymentDataService pisCommonPaymentDataService;
+    private final PisAspspDataService pisAspspDataService;
+    private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
 
     /**
      * Initiates payment
      *
      * @param payment                     payment information
      * @param paymentInitiationParameters payment initiation parameters
-     * @param pisCommonPayment            common payment information
      * @param tppInfo                     information about particular TPP
      * @return Response containing information about created common payment or corresponding error
      */
     @Override
-    public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisCommonPayment pisCommonPayment) {
+    public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo) {
+        CreatePisCommonPaymentResponse commonPaymentResponse = pisCommonPaymentService.createCommonPayment(paymentInitiationParameters, tppInfo, payment.getPaymentData());
+
+        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(commonPaymentResponse, paymentInitiationParameters.getPsuData());
+
+        if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
+            return ResponseObject.<PaymentInitiationResponse>builder()
+                       .fail(new MessageError(MessageErrorCode.PAYMENT_FAILED))
+                       .build();
+        }
+
         String externalPaymentId = pisCommonPayment.getPaymentId();
 
         // we need to get decrypted payment ID
-        String internalPaymentId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
+        String internalPaymentId = pisAspspDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
         payment.setPaymentId(internalPaymentId);
 
-        PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisCommonPayment);
+        PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct());
 
         response.setPaymentId(pisCommonPayment.getPaymentId());
 
         payment.setTransactionStatus(response.getTransactionStatus());
 
-        pisCommonPaymentService.updateCommonPayment(payment, pisCommonPayment.getPaymentId());
+      //  pisCommonPaymentService.updateCommonPayment(payment, pisCommonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {

@@ -28,9 +28,11 @@ import de.adorsys.psd2.xs2a.domain.pis.PeriodicPaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -42,31 +44,39 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final AuthorisationMethodService authorisationMethodService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
-    private final PisCommonPaymentDataService pisCommonPaymentDataService;
+    private final PisAspspDataService pisAspspDataService;
+    private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
 
     /**
      * Initiates periodic payment
      *
      * @param periodicPayment             Periodic payment information
      * @param paymentInitiationParameters payment initiation parameters
-     * @param commonPayment               common payment information
      * @param tppInfo                     information about particular TPP
      * @return Response containing information about created periodic payment or corresponding error
      */
     @Override
-    public ResponseObject<PeriodicPaymentInitiationResponse> createPayment(PeriodicPayment periodicPayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, Xs2aPisCommonPayment commonPayment) {
-        String externalPaymentId = commonPayment.getPaymentId();
+    public ResponseObject<PeriodicPaymentInitiationResponse> createPayment(PeriodicPayment periodicPayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo) {
+        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(paymentInitiationParameters, tppInfo), paymentInitiationParameters.getPsuData());
+
+        if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
+            return ResponseObject.<PeriodicPaymentInitiationResponse>builder()
+                       .fail(new MessageError(MessageErrorCode.PAYMENT_FAILED))
+                       .build();
+        }
+
+        String externalPaymentId = pisCommonPayment.getPaymentId();
 
         // we need to get decrypted payment ID
-        String internalPaymentId = pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
+        String internalPaymentId = pisAspspDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
         periodicPayment.setPaymentId(internalPaymentId);
 
-        PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), commonPayment);
-        response.setPaymentId(commonPayment.getPaymentId());
+        PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), pisCommonPayment);
+        response.setPaymentId(pisCommonPayment.getPaymentId());
 
         periodicPayment.setTransactionStatus(response.getTransactionStatus());
 
-        pisCommonPaymentService.updatePeriodicPaymentInCommonPayment(periodicPayment, paymentInitiationParameters, commonPayment.getPaymentId());
+        pisCommonPaymentService.updatePeriodicPaymentInCommonPayment(periodicPayment, paymentInitiationParameters, pisCommonPayment.getPaymentId());
 
         boolean implicitMethod = authorisationMethodService.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {
