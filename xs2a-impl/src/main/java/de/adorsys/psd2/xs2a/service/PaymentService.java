@@ -313,7 +313,7 @@ public class PaymentService {
         if (profileService.isPaymentCancellationAuthorizationMandated()) {
             return cancelPaymentService.initiatePaymentCancellation(psuData, spiPayment, paymentId);
         } else {
-            ResponseObject<CancelPaymentResponse> cancellationResponse = cancelPaymentService.cancelPaymentWithoutAuthorisation(psuData, spiPayment);
+            ResponseObject<CancelPaymentResponse> cancellationResponse = cancelPaymentService.cancelPaymentWithoutAuthorisation(psuData, spiPayment, paymentId);
             pisConsentService.revokeConsentById(paymentId);
             return cancellationResponse;
         }
