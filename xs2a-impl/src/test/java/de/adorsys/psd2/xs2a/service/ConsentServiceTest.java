@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *//*
+ */
 
 
 package de.adorsys.psd2.xs2a.service;
@@ -614,7 +614,7 @@ public class ConsentServiceTest {
 
     @Test
     public void updatePisConsentPsuData_Success_ShouldRecordEvent() {
-        when(pisScaAuthorisationService.updateConsentPsuData(any()))
+        when(pisScaAuthorisationService.updateCommonPaymentPsuData(any()))
             .thenReturn(new Xs2aUpdatePisCommonPaymentPsuDataResponse(ScaStatus.STARTED));
 
         // Given:
@@ -631,15 +631,15 @@ public class ConsentServiceTest {
 
     @Test
     public void createPisConsentCancellationAuthorization_Success_ShouldRecordEvent() {
-        when(pisScaAuthorisationService.createConsentCancellationAuthorisation(anyString(), any(), any()))
+        when(pisScaAuthorisationService.createCommonPaymentCancellationAuthorisation(anyString(), any(), any()))
             .thenReturn(Optional.of(new Xs2aCreatePisCancellationAuthorisationResponse(null, null, null)));
-        when(pisPsuDataService.getPsuDataByPaymentId(anyString())).thenReturn(PSU_ID_DATA);
+        when(pisPsuDataService.getPsuDataByPaymentId(anyString())).thenReturn(Collections.singletonList(PSU_ID_DATA));
 
         // Given:
         ArgumentCaptor<EventType> argumentCaptor = ArgumentCaptor.forClass(EventType.class);
 
         // When
-        consentService.createPisCancellationAuthorization(PAYMENT_ID, PaymentType.SINGLE);
+        consentService.createPisCancellationAuthorization(PAYMENT_ID, PSU_ID_DATA, PaymentType.SINGLE);
 
         // Then
         verify(xs2aEventService, times(1)).recordPisTppRequest(eq(PAYMENT_ID), argumentCaptor.capture());
@@ -723,10 +723,9 @@ public class ConsentServiceTest {
         assertThat(authorisationIds.get(0)).isEqualTo(CONSENT_ID);
     }
 
-    */
-/**
+    /**
      * Basic test AccountDetails used in all cases
-     *//*
+     */
 
     private SpiAccountDetails getSpiDetails(String accId, String iban, Currency currency) {
         return new SpiAccountDetails(accId, iban, null, null, null, null, currency, null, null, null, null, null, null, null, null, Collections.emptyList());
@@ -834,4 +833,3 @@ public class ConsentServiceTest {
         return new TppRedirectUri("redirectUri", "nokRedirectUri");
     }
 }
-*/

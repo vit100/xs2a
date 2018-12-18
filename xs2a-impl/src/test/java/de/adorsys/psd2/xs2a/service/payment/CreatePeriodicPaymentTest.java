@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *//*
+ */
 
 
 package de.adorsys.psd2.xs2a.service.payment;
@@ -31,7 +31,7 @@ import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +51,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CreatePeriodicPaymentTest {
     private final Currency EUR_CURRENCY = Currency.getInstance("EUR");
-    private static final String CONSENT_ID = "d6cb50e5-bb88-4bbf-a5c1-42ee1ed1df2c";
     private static final String PAYMENT_ID = "d6cb50e5-bb88-4bbf-a5c1-42ee1ed1df2c";
     private static final String IBAN = "DE123456789";
     private final TppInfo TPP_INFO = buildTppInfo();
@@ -68,12 +67,12 @@ public class CreatePeriodicPaymentTest {
     @Mock
     private PisScaAuthorisationService pisScaAuthorisationService;
     @Mock
-    private PisConsentDataService pisConsentDataService;
+    private PisCommonPaymentDataService pisCommonPaymentDataService;
 
     @Test
     public void success_initiate_periodic_payment() {
         //When
-        when(pisConsentDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
+        when(pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
         when(scaPaymentService.createPeriodicPayment(buildPeriodicPayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisConsent())).thenReturn(buildPeriodicPaymentInitiationResponse());
 
         ResponseObject<PeriodicPaymentInitiationResponse> actualResponse = createPeriodicPaymentService.createPayment(buildPeriodicPayment(), buildPaymentInitiationParameters(), buildTppInfo(), buildXs2aPisConsent());
@@ -112,7 +111,7 @@ public class CreatePeriodicPaymentTest {
     }
 
     private Xs2aPisCommonPayment buildXs2aPisConsent() {
-        return new Xs2aPisCommonPayment(CONSENT_ID, PSU_ID_DATA);
+        return new Xs2aPisCommonPayment(PAYMENT_ID, PSU_ID_DATA);
     }
 
     private PaymentInitiationParameters buildPaymentInitiationParameters() {
@@ -126,7 +125,6 @@ public class CreatePeriodicPaymentTest {
         PeriodicPaymentInitiationResponse response = new PeriodicPaymentInitiationResponse();
         response.setPaymentId(PAYMENT_ID);
         response.setTransactionStatus(TransactionStatus.RCVD);
-        response.setPisConsentId(CONSENT_ID);
         return response;
     }
 
@@ -139,4 +137,3 @@ public class CreatePeriodicPaymentTest {
         return tppInfo;
     }
 }
-*/

@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *//*
+ */
 
 
 package de.adorsys.psd2.xs2a.service.payment;
@@ -31,7 +31,7 @@ import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisConsentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CreateSinglePaymentServiceTest {
     private final Currency EUR_CURRENCY = Currency.getInstance("EUR");
-    private static final String CONSENT_ID = "d6cb50e5-bb88-4bbf-a5c1-42ee1ed1df2c";
     private static final String PAYMENT_ID = "d6cb50e5-bb88-4bbf-a5c1-42ee1ed1df2c";
     private static final String IBAN = "DE123456789";
     private static final PsuIdData PSU_DATA = new PsuIdData(null, null, null, null);
@@ -67,13 +66,13 @@ public class CreateSinglePaymentServiceTest {
     @Mock
     private AuthorisationMethodService authorisationMethodService;
     @Mock
-    private PisConsentDataService pisConsentDataService;
+    private PisCommonPaymentDataService pisCommonPaymentDataService;
 
 
     @Before
     public void init() {
         when(scaPaymentService.createSinglePayment(buildSinglePayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisConsent())).thenReturn(buildSinglePaymentInitiationResponse());
-        when(pisConsentDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
+        when(pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
     }
 
     @Test
@@ -113,7 +112,7 @@ public class CreateSinglePaymentServiceTest {
     }
 
     private Xs2aPisCommonPayment buildXs2aPisConsent() {
-        return new Xs2aPisCommonPayment(CONSENT_ID, PSU_DATA);
+        return new Xs2aPisCommonPayment(PAYMENT_ID, PSU_DATA);
     }
 
     private PaymentInitiationParameters buildPaymentInitiationParameters() {
@@ -127,7 +126,6 @@ public class CreateSinglePaymentServiceTest {
         SinglePaymentInitiationResponse response = new SinglePaymentInitiationResponse();
         response.setPaymentId(PAYMENT_ID);
         response.setTransactionStatus(TransactionStatus.RCVD);
-        response.setPisConsentId(CONSENT_ID);
         return response;
     }
 
@@ -140,4 +138,3 @@ public class CreateSinglePaymentServiceTest {
         return tppInfo;
     }
 }
-*/
