@@ -30,11 +30,13 @@ import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.consent.AccountReferenceInConsentUpdater;
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
+import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.service.validator.ValueValidatorService;
+import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.account.*;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
@@ -57,6 +59,7 @@ import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 @AllArgsConstructor
 public class AccountService {
     private final AccountSpi accountSpi;
+
     private final Xs2aToSpiAccountReferenceMapper xs2aToSpiAccountReferenceMapper;
     private final SpiToXs2aAccountDetailsMapper accountDetailsMapper;
     private final SpiToXs2aBalanceMapper balanceMapper;
@@ -73,6 +76,7 @@ public class AccountService {
     private final AspspProfileServiceWrapper aspspProfileService;
     private final AisConsentDataService aisConsentDataService;
     private final Xs2aEventService xs2aEventService;
+    private final SpiContextDataProvider spiContextDataProvider;
     private final AccountReferenceInConsentUpdater accountReferenceUpdater;
 
     /**
@@ -94,8 +98,9 @@ public class AccountService {
         }
 
         AccountConsent accountConsent = accountConsentResponse.getBody();
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
 
-        SpiResponse<List<SpiAccountDetails>> spiResponse = accountSpi.requestAccountList(withBalance,
+        SpiResponse<List<SpiAccountDetails>> spiResponse = accountSpi.requestAccountList(contextData, withBalance,
                                                                                          consentMapper.mapToSpiAccountConsent(accountConsent),
                                                                                          aisConsentDataService.getAspspConsentDataByConsentId(consentId));
 
@@ -149,7 +154,9 @@ public class AccountService {
                        .build();
         }
 
-        SpiResponse<SpiAccountDetails> spiResponse = accountSpi.requestAccountDetailForAccount(withBalance, requestedAccountReference.get(),
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+
+        SpiResponse<SpiAccountDetails> spiResponse = accountSpi.requestAccountDetailForAccount(contextData, withBalance, requestedAccountReference.get(),
                                                                                                consentMapper.mapToSpiAccountConsent(accountConsent),
                                                                                                aisConsentDataService.getAspspConsentDataByConsentId(consentId));
 
@@ -207,8 +214,10 @@ public class AccountService {
                        .fail(new MessageError(RESOURCE_UNKNOWN_404))
                        .build();
         }
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
 
-        SpiResponse<List<SpiAccountBalance>> spiResponse = accountSpi.requestBalancesForAccount(requestedAccountReference.get(),
+
+        SpiResponse<List<SpiAccountBalance>> spiResponse = accountSpi.requestBalancesForAccount(contextData, requestedAccountReference.get(),
                                                                                                 consentMapper.mapToSpiAccountConsent(accountConsent),
                                                                                                 aisConsentDataService.getAspspConsentDataByConsentId(consentId));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
@@ -285,7 +294,10 @@ public class AccountService {
         boolean isTransactionsShouldContainBalances =
             !aspspProfileService.isTransactionsWithoutBalancesSupported() || withBalance;
 
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+
         SpiResponse<SpiTransactionReport> spiResponse = accountSpi.requestTransactionsForAccount(
+            contextData,
             acceptHeader,
             isTransactionsShouldContainBalances, dateFrom, dateToChecked,
             requestedAccountReference.get(),
@@ -366,7 +378,9 @@ public class AccountService {
 
         validatorService.validateAccountIdTransactionId(accountId, transactionId);
 
-        SpiResponse<SpiTransaction> spiResponse = accountSpi.requestTransactionForAccountByTransactionId(transactionId, requestedAccountReference.get(), consentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+
+        SpiResponse<SpiTransaction> spiResponse = accountSpi.requestTransactionForAccountByTransactionId(contextData, transactionId, requestedAccountReference.get(), consentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
 
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
