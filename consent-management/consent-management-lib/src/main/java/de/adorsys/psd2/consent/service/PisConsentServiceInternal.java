@@ -252,9 +252,9 @@ public class PisConsentServiceInternal implements PisConsentService {
             return Optional.empty();
         }
 
-        Optional<PisConsentAuthorization> authorisation = findAuthorisationInConsentById(authorisationId,
-                                                                                         consent.get(),
-                                                                                         CmsAuthorisationType.CREATED);
+        Optional<PisConsentAuthorization> authorisation = findAuthorisationInConsent(authorisationId,
+                                                                                     consent.get(),
+                                                                                     authorisationType);
         return authorisation.map(PisConsentAuthorization::getScaStatus);
     }
 
@@ -356,12 +356,12 @@ public class PisConsentServiceInternal implements PisConsentService {
                    .collect(Collectors.toList());
     }
 
-    private Optional<PisConsentAuthorization> findAuthorisationInConsentById(String authorisationId, PisConsent pisConsent, CmsAuthorisationType authorisationType) {
+    private Optional<PisConsentAuthorization> findAuthorisationInConsent(String authorisationId, PisConsent pisConsent, CmsAuthorisationType authorisationType) {
         return pisConsent.getAuthorizations()
                    .stream()
                    .filter(auth -> auth.getAuthorizationType() == authorisationType)
                    .filter(auth -> auth.getExternalId().equals(authorisationId))
-                   .findAny();
+                   .findFirst();
     }
 
     private ScaStatus doUpdateConsentAuthorisation(UpdatePisConsentPsuDataRequest request, PisConsentAuthorization pisConsentAuthorisation) {
