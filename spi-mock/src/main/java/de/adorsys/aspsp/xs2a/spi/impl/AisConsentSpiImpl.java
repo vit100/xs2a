@@ -74,7 +74,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
         log.info("AisConsentSpi initiateAisConsent() mock implementation");
 
         return SpiResponse.<SpiInitiateAisConsentResponse>builder()
-                   .payload(new SpiInitiateAisConsentResponse())
+                   .payload(new SpiInitiateAisConsentResponse()) //TODO provide here correct accountAccess in case of global consent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/548
                    .aspspConsentData(initialAspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))     // added for test purposes TODO remove if some requirements will be received https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/394
                    .message(Collections.singletonList(TEST_MESSAGE))                                      // added for test purposes TODO remove if some requirements will be received https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/394
                    .success();
