@@ -309,17 +309,29 @@ public class ConsentService {
     }
 
     // TODO extract this method to PaymentCancellationAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507
-    public ResponseObject<Xs2aCreatePisCancellationAuthorisationResponse> createPisCancellationAuthorization(String paymentId, PaymentType paymentType) {
+    public ResponseObject<Xs2aCreatePisCancellationAuthorisationResponse> createPisCancellationAuthorization(String paymentId, PsuIdData psuData, PaymentType paymentType) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.START_PAYMENT_CANCELLATION_AUTHORISATION_REQUEST_RECEIVED);
 
-        List<PsuIdData> psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
-        return pisAuthorizationService.createCommonPaymentCancellationAuthorisation(paymentId, paymentType, psuData.get(0)) // todo !!!!!!!!!!
+        if (!isPsuDataCorrect(paymentId, psuData)) {
+            return ResponseObject.<Xs2aCreatePisCancellationAuthorisationResponse>builder()
+                       .fail(new MessageError(MessageErrorCode.PSU_CREDENTIALS_INVALID))
+                       .build();
+        }
+
+        return pisAuthorizationService.createCommonPaymentCancellationAuthorisation(paymentId, paymentType, psuData)
                    .map(resp -> ResponseObject.<Xs2aCreatePisCancellationAuthorisationResponse>builder()
                                     .body(resp)
                                     .build())
                    .orElseGet(ResponseObject.<Xs2aCreatePisCancellationAuthorisationResponse>builder()
                                   .fail(new MessageError(MessageErrorCode.FORMAT_ERROR))
                                   ::build);
+    }
+
+    private boolean isPsuDataCorrect(String paymentId, PsuIdData psuData) {
+        List<PsuIdData> psuIdDataList = pisPsuDataService.getPsuDataByPaymentId(paymentId);
+
+        return psuIdDataList.stream()
+                   .anyMatch(psu -> psu.contentEquals(psuData));
     }
 
     // TODO extract this method to PaymentCancellationAuthorisationService https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/507

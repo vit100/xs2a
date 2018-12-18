@@ -50,7 +50,7 @@ public class Xs2aPisCommonPaymentService {
         request.setTppInfo(tppInfo);
         request.setPaymentProduct(parameters.getPaymentProduct());
         request.setPaymentType(parameters.getPaymentType());
-        request.setPsuData(Collections.singletonList(parameters.getPsuData()));
+        request.setPsuDataList(Collections.singletonList(parameters.getPsuData()));
         request.setTransactionStatus(TransactionStatus.RCVD);
         return pisCommonPaymentService.createCommonPayment(request)
                    .orElse(null);

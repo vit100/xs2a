@@ -30,6 +30,7 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiSinglePayme
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentInfo;
 import de.adorsys.psd2.xs2a.spi.service.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -48,7 +49,7 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
 
     protected PaymentSpi getPaymentService(GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse, PaymentType paymentType) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
-        if (pisAuthorisationResponse.getPaymentInfo() != null) {
+        if (CollectionUtils.isEmpty(pisAuthorisationResponse.getPayments())) {
             return applicationContext.getBean(CommonPaymentSpi.class);
         }
 
@@ -63,7 +64,7 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
 
     protected SpiPayment mapToSpiPayment(GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse,
                                          PaymentType paymentType, String paymentProduct) {
-        if (pisAuthorisationResponse.getPaymentInfo() != null) {
+        if (CollectionUtils.isEmpty(pisAuthorisationResponse.getPayments())) {
             return mapToSpiPayment(pisAuthorisationResponse.getPaymentInfo());
         } else {
             return mapToSpiPayment(pisAuthorisationResponse.getPayments(), paymentType, paymentProduct);

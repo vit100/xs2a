@@ -145,7 +145,6 @@ public class PaymentService {
      */
     public ResponseObject getPaymentById(PaymentType paymentType, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED);
-        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(paymentId);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
 
         if (!pisCommonPaymentOptional.isPresent()) {
@@ -155,14 +154,14 @@ public class PaymentService {
         }
 
         PisCommonPaymentResponse commonPaymentResponse = pisCommonPaymentOptional.get();
+        CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(commonPaymentResponse);
 
-        List<PsuIdData> psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
+        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(paymentId);
         PaymentInformationResponse response;
 
         // TODO should be refactored https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
-        if (commonPaymentResponse.getPaymentData() != null) {
-            CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(commonPaymentResponse);
-            response = readCommonPaymentService.getPayment(commonPayment, psuData.get(0), aspspConsentData); //TODO rework psudata list
+        if (commonPayment.getPaymentData() != null) {
+            response = readCommonPaymentService.getPayment(commonPayment, readPsuIdDataFromList(commonPayment.getPsuDataList()), aspspConsentData);
         } else {
             PisPayment pisPayment = getPisPaymentFromCommonPaymentResponse(commonPaymentResponse);
 
@@ -173,7 +172,7 @@ public class PaymentService {
             }
 
             ReadPaymentService<PaymentInformationResponse> readPaymentService = readPaymentFactory.getService(paymentType.getValue());
-            response = readPaymentService.getPayment(pisPayment, commonPaymentResponse.getPaymentProduct(), psuData.get(0), aspspConsentData); //NOT USED IN 1.2 //TODO rework psudata list
+            response = readPaymentService.getPayment(pisPayment, commonPaymentResponse.getPaymentProduct(), readPsuIdDataFromList(commonPayment.getPsuDataList()), aspspConsentData); //NOT USED IN 1.2
         }
 
         if (response.hasError()) {
@@ -195,18 +194,16 @@ public class PaymentService {
      */
     public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
-
-        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(paymentId);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
-
         if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.<TransactionStatus>builder()
                        .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
                        .build();
         }
 
+        AspspConsentData aspspConsentData = pisCommonPaymentDataService.getAspspConsentData(paymentId);
         List<PsuIdData> psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
-        SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuData.get(0)); //TODO rework psudata list
+        SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(readPsuIdDataFromList(psuData));
         PisCommonPaymentResponse pisCommonPaymentResponse = pisCommonPaymentOptional.get();
         SpiResponse<SpiTransactionStatus> spiResponse;
 
@@ -308,9 +305,9 @@ public class PaymentService {
         List<PsuIdData> psuData = pisPsuDataService.getPsuDataByPaymentId(paymentId);
 
         if (profileService.isPaymentCancellationAuthorizationMandated()) {
-            return cancelPaymentService.initiatePaymentCancellation(psuData.get(0), spiPayment); //TODO rework psudata list
+            return cancelPaymentService.initiatePaymentCancellation(psuData.get(0), spiPayment);
         } else {
-            return cancelPaymentService.cancelPaymentWithoutAuthorisation(psuData.get(0), spiPayment); //TODO rework psudata list
+            return cancelPaymentService.cancelPaymentWithoutAuthorisation(readPsuIdDataFromList(psuData), spiPayment);
         }
     }
 
@@ -329,4 +326,12 @@ public class PaymentService {
                    .map(payments -> payments.get(0))
                    .orElse(null);
     }
+
+    private PsuIdData readPsuIdDataFromList(List<PsuIdData> psuIdDataList) { //TODO rework psudata list
+        if (CollectionUtils.isNotEmpty(psuIdDataList)) {
+            return psuIdDataList.get(0);
+        }
+        return null;
+    }
+
 }

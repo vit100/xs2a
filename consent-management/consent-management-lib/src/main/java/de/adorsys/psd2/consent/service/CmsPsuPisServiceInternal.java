@@ -19,6 +19,7 @@ package de.adorsys.psd2.consent.service;
 import de.adorsys.psd2.consent.api.pis.CmsPayment;
 import de.adorsys.psd2.consent.api.pis.CmsPaymentResponse;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
+import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.TppInfoEntity;
 import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
@@ -142,7 +143,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private boolean updatePsuData(PisCommonPaymentData commonPayment, PsuIdData psuIdData) {
-        PisCommonPaymentData commonPaymentData = pisCommonPaymentMapper.enrichPsuData(psuIdData, commonPayment);
+        PisCommonPaymentData commonPaymentData = enrichPsuData(psuIdData, commonPayment);
 
         return Optional.ofNullable(pisCommonPaymentDataRepository.save(commonPaymentData))
                    .isPresent();
@@ -153,6 +154,26 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                    .filter(p -> isPsuDataEquals(givenPaymentId, psuIdData))
                    .map(id -> StringUtils.equals(realPaymentId, id))
                    .orElse(false);
+    }
+
+    private PisCommonPaymentData enrichPsuData(PsuIdData psuIdData,  PisCommonPaymentData paymentData) {
+        PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
+
+        if (psuDataMapper.isPsuDataEmpty(psuData)
+                || isPsuDataInList(psuData, paymentData)) {
+            return paymentData;
+        }
+
+        List<PsuData> psuDataList = paymentData.getPsuData();
+        psuDataList.add(psuData);
+        paymentData.setPsuData(psuDataList);
+
+        return paymentData;
+    }
+
+    private boolean isPsuDataInList(PsuData psuData, PisCommonPaymentData paymentData) {
+        return paymentData.getPsuData().stream()
+                   .anyMatch(psu -> psu.contentEquals(psuData));
     }
 
     private boolean updateAuthorisationStatusAndSaveAuthorisation(PisAuthorization pisAuthorisation, ScaStatus status) {

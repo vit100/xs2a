@@ -27,23 +27,33 @@ import java.util.stream.Collectors;
 
 @Component
 public class PsuDataMapper {
-    public PsuData mapToPsuData(PsuIdData psuData) {
-        if (psuData == null
-                || StringUtils.isBlank(psuData.getPsuId())) {
+    public List<PsuData> mapToPsuDataList(List<PsuIdData> psuIdDataList) {
+        return psuIdDataList.stream()
+                   .map(this::mapToPsuData)
+                   .collect(Collectors.toList());
+    }
+
+    public List<PsuIdData> mapToPsuIdDataList(List<PsuData> psuIdDataList) {
+        return psuIdDataList.stream()
+                   .map(this::mapToPsuIdData)
+                   .collect(Collectors.toList());
+    }
+
+    public PsuData mapToPsuData(PsuIdData psuIdData) {
+        if (isPsuDataEmpty(psuIdData)) {
             return null;
         }
 
         return new PsuData(
-            psuData.getPsuId(),
-            psuData.getPsuIdType(),
-            psuData.getPsuCorporateId(),
-            psuData.getPsuCorporateIdType()
+            psuIdData.getPsuId(),
+            psuIdData.getPsuIdType(),
+            psuIdData.getPsuCorporateId(),
+            psuIdData.getPsuCorporateIdType()
         );
     }
 
     public PsuIdData mapToPsuIdData(PsuData psuData) {
-        if (psuData == null
-                || StringUtils.isBlank(psuData.getPsuId())) {
+        if (isPsuDataEmpty(psuData)) {
             return null;
         }
 
@@ -58,15 +68,13 @@ public class PsuDataMapper {
                    ).orElse(null);
     }
 
-    public List<PsuData> mapToPsuDataList(List<PsuIdData> psuIdDataList) {
-        return psuIdDataList.stream()
-                   .map(this::mapToPsuData)
-                   .collect(Collectors.toList());
+    public boolean isPsuDataEmpty(PsuData psuData) {
+        return psuData == null
+                   || StringUtils.isBlank(psuData.getPsuId());
     }
 
-    public List<PsuIdData> mapToPsuIdDataList(List<PsuData> psuIdDataList) {
-        return psuIdDataList.stream()
-                   .map(this::mapToPsuIdData)
-                   .collect(Collectors.toList());
+    private boolean isPsuDataEmpty(PsuIdData psuData) {
+        return psuData == null
+                   || StringUtils.isBlank(psuData.getPsuId());
     }
 }

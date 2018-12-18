@@ -352,7 +352,7 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
      * @param paymentData PIS payment data, for which authorisation is performed
      * @return PisAuthorization
      */
-    private PisAuthorization saveNewAuthorisation(PisCommonPaymentData paymentData, CmsAuthorisationType authorisationType, PsuIdData psuData) {
+    private PisAuthorization saveNewAuthorisation(PisCommonPaymentData paymentData, CmsAuthorisationType authorisationType, PsuIdData psuIdData) {
         PisAuthorization consentAuthorization = new PisAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
         consentAuthorization.setPaymentData(paymentData);
@@ -360,19 +360,30 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
         consentAuthorization.setAuthorizationType(authorisationType);
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
 
-        PsuData newPsuData = psuDataMapper.mapToPsuData(psuData);
+        PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
 
-        if (newPsuData == null // todo implementation should be changed  https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
-                && (paymentData.getPsuData().size() == 1)) {
-            newPsuData = paymentData.getPsuData().get(0);
-        }
-
-        PisCommonPaymentData commonPaymentData = pisCommonPaymentMapper.enrichPsuData(newPsuData, paymentData);
-
-        consentAuthorization.setPsuData(newPsuData);
-        consentAuthorization.setPaymentData(commonPaymentData);
+        consentAuthorization.setPsuData(psuData);
+        consentAuthorization.setPaymentData(enrichPsuData(psuData, paymentData));
 
         return pisAuthorizationRepository.save(consentAuthorization);
+    }
+
+    private PisCommonPaymentData enrichPsuData(PsuData psuData,  PisCommonPaymentData paymentData) {
+        if (psuDataMapper.isPsuDataEmpty(psuData)
+                || isPsuDataInList(psuData, paymentData)) {
+            return paymentData;
+        }
+
+        List<PsuData> psuDataList = paymentData.getPsuData();
+        psuDataList.add(psuData);
+        paymentData.setPsuData(psuDataList);
+
+        return paymentData;
+    }
+
+    private boolean isPsuDataInList(PsuData psuData, PisCommonPaymentData paymentData) {
+        return paymentData.getPsuData().stream()
+                   .anyMatch(psu -> psu.contentEquals(psuData));
     }
 
     private List<String> readAuthorisationsFromPaymentCommonData(PisCommonPaymentData paymentData, CmsAuthorisationType authorisationType) {

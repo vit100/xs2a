@@ -47,7 +47,4 @@ public class PisPaymentInfo {
 
     @ApiModelProperty(value = "Corresponding PSU list", required = true)
     private List<PsuIdData> psuDataList;
-
-    @ApiModelProperty(value = "Corresponding PSU", required = true)
-    private List<PsuIdData> psuData;
 }
