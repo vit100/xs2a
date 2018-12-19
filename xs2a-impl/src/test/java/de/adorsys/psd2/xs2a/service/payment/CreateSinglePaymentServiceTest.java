@@ -17,6 +17,7 @@
 
 package de.adorsys.psd2.xs2a.service.payment;
 
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -31,8 +32,9 @@ import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,33 +54,39 @@ public class CreateSinglePaymentServiceTest {
     private final Currency EUR_CURRENCY = Currency.getInstance("EUR");
     private static final String PAYMENT_ID = "d6cb50e5-bb88-4bbf-a5c1-42ee1ed1df2c";
     private static final String IBAN = "DE123456789";
-    private static final PsuIdData PSU_DATA = new PsuIdData(null, null, null, null);
+    private static final PsuIdData PSU_DATA = new PsuIdData("aspsp", null, null, null);
     private final TppInfo TPP_INFO = buildTppInfo();
+    private final Xs2aPisCommonPayment PIS_COMMON_PAYMENT = new Xs2aPisCommonPayment(PAYMENT_ID, PSU_DATA);
+    private final PaymentInitiationParameters PARAM = buildPaymentInitiationParameters();
+    private final CreatePisCommonPaymentResponse PIS_COMMON_PAYMENT_RESPONSE = new CreatePisCommonPaymentResponse(PAYMENT_ID);
 
     @InjectMocks
     private CreateSinglePaymentService createSinglePaymentService;
     @Mock
     private ScaPaymentService scaPaymentService;
     @Mock
-    private Xs2aPisCommonPaymentService pisConsentService;
-    @Mock
     private PisScaAuthorisationService pisScaAuthorisationService;
     @Mock
     private AuthorisationMethodService authorisationMethodService;
     @Mock
-    private PisCommonPaymentDataService pisCommonPaymentDataService;
-
+    private PisAspspDataService pisAspspDataService;
+    @Mock
+    private Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
+    @Mock
+    private Xs2aPisCommonPaymentService pisCommonPaymentService;
 
     @Before
     public void init() {
         when(scaPaymentService.createSinglePayment(buildSinglePayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisConsent())).thenReturn(buildSinglePaymentInitiationResponse());
-        when(pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
+        when(pisAspspDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
+        when(pisCommonPaymentService.createCommonPayment(PARAM, TPP_INFO)).thenReturn(PIS_COMMON_PAYMENT_RESPONSE);
+        when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(PIS_COMMON_PAYMENT_RESPONSE, PARAM.getPsuData())).thenReturn(PIS_COMMON_PAYMENT);
     }
 
     @Test
     public void success_initiate_single_payment() {
         //When
-        ResponseObject<SinglePaymentInitiationResponse> actualResponse = createSinglePaymentService.createPayment(buildSinglePayment(), buildPaymentInitiationParameters(), buildTppInfo(), buildXs2aPisConsent());
+        ResponseObject<SinglePaymentInitiationResponse> actualResponse = createSinglePaymentService.createPayment(buildSinglePayment(), PARAM, TPP_INFO);
 
         //Then
         assertThat(actualResponse.hasError()).isFalse();
@@ -119,6 +127,7 @@ public class CreateSinglePaymentServiceTest {
         PaymentInitiationParameters parameters = new PaymentInitiationParameters();
         parameters.setPaymentProduct("sepa-credit-transfers");
         parameters.setPaymentType(PaymentType.SINGLE);
+        parameters.setPsuData(PSU_DATA);
         return parameters;
     }
 

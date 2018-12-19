@@ -17,6 +17,7 @@
 
 package de.adorsys.psd2.xs2a.service.payment;
 
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -30,8 +31,9 @@ import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,11 +50,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CreateCommonPaymentServiceTest {
     private static final String PAYMENT_ID = "d6cb50e5-bb88-4bbf-a5c1-42ee1ed1df2c";
-    private static final PsuIdData PSU_DATA = new PsuIdData(null, null, null, null);
+    private static final PsuIdData PSU_DATA = new PsuIdData("aspsp", null, null, null);
     private final TppInfo TPP_INFO = buildTppInfo();
     private static final String PRODUCT = "sepa-credit-transfers";
     private final Xs2aPisCommonPayment CONSENT = buildXs2aPisConsent();
     private final CommonPayment COMMON_PAYMENT = buildCommonPayment();
+    private final Xs2aPisCommonPayment PIS_COMMON_PAYMENT = new Xs2aPisCommonPayment(PAYMENT_ID, PSU_DATA);
+    private final PaymentInitiationParameters PARAM = buildPaymentInitiationParameters();
+    private final CreatePisCommonPaymentResponse PIS_COMMON_PAYMENT_RESPONSE = new CreatePisCommonPaymentResponse(PAYMENT_ID);
 
     @InjectMocks
     private CreateCommonPaymentService createCommonPaymentService;
@@ -65,19 +70,23 @@ public class CreateCommonPaymentServiceTest {
     @Mock
     private AuthorisationMethodService authorisationMethodService;
     @Mock
-    private PisCommonPaymentDataService pisCommonPaymentDataService;
+    private PisAspspDataService pisAspspDataService;
+    @Mock
+    private Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
 
 
     @Before
     public void init() {
-        when(scaCommonPaymentService.createPayment(COMMON_PAYMENT, TPP_INFO, PRODUCT, CONSENT)).thenReturn(buildCommonPaymentInitiationResponse());
-        when(pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
+        when(scaCommonPaymentService.createPayment(COMMON_PAYMENT, TPP_INFO, PRODUCT)).thenReturn(buildCommonPaymentInitiationResponse());
+        when(pisAspspDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
+        when(pisCommonPaymentService.createCommonPayment(PARAM, TPP_INFO, COMMON_PAYMENT.getPaymentData())).thenReturn(PIS_COMMON_PAYMENT_RESPONSE);
+        when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(PIS_COMMON_PAYMENT_RESPONSE, PSU_DATA)).thenReturn(PIS_COMMON_PAYMENT);
     }
 
     @Test
     public void success_initiate_create_Payment() {
         //When
-        ResponseObject<PaymentInitiationResponse> actualResponse = createCommonPaymentService.createPayment(COMMON_PAYMENT, buildPaymentInitiationParameters(), TPP_INFO, CONSENT);
+        ResponseObject<PaymentInitiationResponse> actualResponse = createCommonPaymentService.createPayment(COMMON_PAYMENT, buildPaymentInitiationParameters(), TPP_INFO);
 
         //Then
         assertThat(actualResponse.hasError()).isFalse();
@@ -103,6 +112,7 @@ public class CreateCommonPaymentServiceTest {
         PaymentInitiationParameters parameters = new PaymentInitiationParameters();
         parameters.setPaymentProduct(PRODUCT);
         parameters.setPaymentType(PaymentType.SINGLE);
+        parameters.setPsuData(PSU_DATA);
         return parameters;
     }
 

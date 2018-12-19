@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.xs2a.service.payment;
 
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
@@ -57,9 +56,7 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
      */
     @Override
     public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo) {
-        CreatePisCommonPaymentResponse commonPaymentResponse = pisCommonPaymentService.createCommonPayment(paymentInitiationParameters, tppInfo, payment.getPaymentData());
-
-        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(commonPaymentResponse, paymentInitiationParameters.getPsuData());
+        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(paymentInitiationParameters, tppInfo, payment.getPaymentData()), paymentInitiationParameters.getPsuData());
 
         if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
             return ResponseObject.<PaymentInitiationResponse>builder()

@@ -36,7 +36,7 @@ import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
 import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.*;
-import de.adorsys.psd2.xs2a.service.consent.PisCommonPaymentDataService;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
@@ -102,7 +102,7 @@ public class PaymentServiceTest {
     @Mock
     private Xs2aPisCommonPaymentService xs2aPisCommonPaymentService;
     @Mock
-    private PisCommonPaymentDataService pisCommonPaymentDataService;
+    private PisAspspDataService pisAspspDataService;
     @Mock
     private TppService tppService;
     @Mock
@@ -159,13 +159,13 @@ public class PaymentServiceTest {
         when(psuDataMapper.mapToSpiPsuData(PSU_ID_DATA))
             .thenReturn(SPI_PSU_DATA);
         when(xs2aPisConsentMapper.mapToXs2aPisCommonPayment(new CreatePisCommonPaymentResponse("TEST"), PSU_ID_DATA)).thenReturn(getXs2aPisConsent());
-        when(pisCommonPaymentDataService.getInternalPaymentIdByEncryptedString("TEST")).thenReturn("TEST");
+        when(pisAspspDataService.getInternalPaymentIdByEncryptedString("TEST")).thenReturn("TEST");
 
         //Status by ID
-        when(createBulkPaymentService.createPayment(BULK_PAYMENT_OK, buildPaymentInitiationParameters(PaymentType.BULK), getTppInfoServiceModified(), getXs2aPisConsent()))
+        when(createBulkPaymentService.createPayment(BULK_PAYMENT_OK, buildPaymentInitiationParameters(PaymentType.BULK), getTppInfoServiceModified()))
             .thenReturn(getValidResponse());
 
-        when(pisCommonPaymentDataService.getAspspConsentData(anyString())).thenReturn(ASPSP_CONSENT_DATA);
+        when(pisAspspDataService.getAspspConsentData(anyString())).thenReturn(ASPSP_CONSENT_DATA);
         when(tppService.getTppInfo()).thenReturn(getTppInfo());
 
         when(cancelPaymentService.initiatePaymentCancellation(any(), any()))
@@ -340,7 +340,7 @@ public class PaymentServiceTest {
                     .aspspConsentData(ASPSP_CONSENT_DATA)
                     .success()
             );
-        doNothing().when(pisCommonPaymentDataService).updateAspspConsentData(ASPSP_CONSENT_DATA);
+        doNothing().when(pisAspspDataService).updateAspspConsentData(ASPSP_CONSENT_DATA);
         when(updatePaymentStatusAfterSpiService.updatePaymentStatus(anyString(), any(TransactionStatus.class)))
             .thenReturn(true);
 
