@@ -40,41 +40,27 @@ public class PsuDataMapper {
     }
 
     public PsuData mapToPsuData(PsuIdData psuIdData) {
-        if (isPsuDataEmpty(psuIdData)) {
-            return null;
-        }
-
-        return new PsuData(
-            psuIdData.getPsuId(),
-            psuIdData.getPsuIdType(),
-            psuIdData.getPsuCorporateId(),
-            psuIdData.getPsuCorporateIdType()
-        );
+        return Optional.ofNullable(psuIdData)
+                   .filter(psu -> StringUtils.isNotBlank(psu.getPsuId()))
+                   .map(psu -> new PsuData(
+                       psu.getPsuId(),
+                       psu.getPsuIdType(),
+                       psu.getPsuCorporateId(),
+                       psu.getPsuCorporateIdType()
+                   ))
+                   .orElse(null);
     }
 
     public PsuIdData mapToPsuIdData(PsuData psuData) {
-        if (isPsuDataEmpty(psuData)) {
-            return null;
-        }
-
         return Optional.ofNullable(psuData)
+                   .filter(psu -> StringUtils.isNotBlank(psu.getPsuId()))
                    .map(psu ->
                             new PsuIdData(
                                 psu.getPsuId(),
                                 psu.getPsuIdType(),
                                 psu.getPsuCorporateId(),
                                 psu.getPsuCorporateIdType()
-                            )
-                   ).orElse(null);
-    }
-
-    public boolean isPsuDataEmpty(PsuData psuData) {
-        return psuData == null
-                   || StringUtils.isBlank(psuData.getPsuId());
-    }
-
-    private boolean isPsuDataEmpty(PsuIdData psuData) {
-        return psuData == null
-                   || StringUtils.isBlank(psuData.getPsuId());
+                            ))
+                   .orElse(null);
     }
 }

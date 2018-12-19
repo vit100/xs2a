@@ -155,7 +155,8 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private PisCommonPaymentData enrichPsuData(PsuIdData psuIdData,  PisCommonPaymentData paymentData) {
         PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
 
-        if (psuDataMapper.isPsuDataEmpty(psuData)
+        if (psuData == null
+                || StringUtils.isBlank(psuData.getPsuId())
                 || isPsuDataInList(psuData, paymentData)) {
             return paymentData;
         }

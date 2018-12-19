@@ -344,7 +344,10 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     }
 
     private boolean isPsuDataNew(PsuData psuData, List<PsuData> psuDataList) {
-        return !psuDataMapper.isPsuDataEmpty(psuData)
+        boolean isPsuDataEmpty = psuData == null
+                                     || StringUtils.isBlank(psuData.getPsuId());
+
+        return !isPsuDataEmpty
                    && !isPsuDataInList(psuData, psuDataList);
     }
 
