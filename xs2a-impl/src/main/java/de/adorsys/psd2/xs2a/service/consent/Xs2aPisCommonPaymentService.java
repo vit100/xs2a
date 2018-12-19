@@ -20,7 +20,7 @@ import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.pis.*;
@@ -34,7 +34,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class Xs2aPisCommonPaymentService {
-    private final PisCommonPaymentService pisCommonPaymentService;
+    private final PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
     private final Xs2aToCmsPisCommonPaymentRequestMapper xs2aToCmsPisCommonPaymentRequestMapper;
 
     /**
@@ -57,32 +57,32 @@ public class Xs2aPisCommonPaymentService {
         request.setPaymentData(paymentData);
         request.setTppInfo(tppInfo);
         request.setPsuDataList(Collections.singletonList(parameters.getPsuData()));
-        return pisCommonPaymentService.createCommonPayment(request)
+        return pisCommonPaymentServiceEncrypted.createCommonPayment(request)
                    .orElse(null);
     }
 
     public Optional<PisCommonPaymentResponse> getPisCommonPaymentById(String paymentId) {
-        return pisCommonPaymentService.getCommonPaymentById(paymentId);
+        return pisCommonPaymentServiceEncrypted.getCommonPaymentById(paymentId);
     }
 
     public void updateCommonPayment(CommonPayment payment, String paymentId) {
         PisCommonPaymentRequest pisCommonPaymentRequest = xs2aToCmsPisCommonPaymentRequestMapper.mapToCmsPisCommonPaymentRequest(payment);
-        pisCommonPaymentService.updateCommonPayment(pisCommonPaymentRequest, paymentId);
+        pisCommonPaymentServiceEncrypted.updateCommonPayment(pisCommonPaymentRequest, paymentId);
     }
 
     // TODO  will be deleted!
     public void updateSinglePaymentInCommonPayment(SinglePayment singlePayment, PaymentInitiationParameters paymentInitiationParameters, String paymentId) {
         PisCommonPaymentRequest pisCommonPaymentRequest = xs2aToCmsPisCommonPaymentRequestMapper.mapToCmsSinglePisCommonPaymentRequest(singlePayment, paymentInitiationParameters.getPaymentProduct());
-        pisCommonPaymentService.updateCommonPayment(pisCommonPaymentRequest, paymentId);
+        pisCommonPaymentServiceEncrypted.updateCommonPayment(pisCommonPaymentRequest, paymentId);
     }
 
     public void updatePeriodicPaymentInCommonPayment(PeriodicPayment periodicPayment, PaymentInitiationParameters paymentInitiationParameters, String paymentId) {
         PisCommonPaymentRequest pisCommonPaymentRequest = xs2aToCmsPisCommonPaymentRequestMapper.mapToCmsPeriodicPisCommonPaymentRequest(periodicPayment, paymentInitiationParameters.getPaymentProduct());
-        pisCommonPaymentService.updateCommonPayment(pisCommonPaymentRequest, paymentId);
+        pisCommonPaymentServiceEncrypted.updateCommonPayment(pisCommonPaymentRequest, paymentId);
     }
 
     public void updateBulkPaymentInCommonPayment(BulkPayment bulkPayment, PaymentInitiationParameters paymentInitiationParameters, String paymentId) {
         PisCommonPaymentRequest pisCommonPaymentRequest = xs2aToCmsPisCommonPaymentRequestMapper.mapToCmsBulkPisCommonPaymentRequest(bulkPayment, paymentInitiationParameters.getPaymentProduct());
-        pisCommonPaymentService.updateCommonPayment(pisCommonPaymentRequest, paymentId);
+        pisCommonPaymentServiceEncrypted.updateCommonPayment(pisCommonPaymentRequest, paymentId);
     }
 }
