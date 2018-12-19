@@ -119,5 +119,12 @@ interface AisConsentServiceBase {
      */
     Optional<List<String>> getAuthorisationsByConsentId(String consentId);
 
+    /**
+     * Gets SCA status of the authorisation by consent ID and authorisation ID
+     *
+     * @param consentId       String representation of the consent identifier
+     * @param authorisationId String representation of the authorisation identifier
+     * @return SCA status of the authorisation
+     */
     Optional<ScaStatus> getAuthorisationScaStatus(String consentId, String authorisationId);
 }

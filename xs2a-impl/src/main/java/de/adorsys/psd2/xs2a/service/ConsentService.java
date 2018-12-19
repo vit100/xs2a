@@ -380,6 +380,13 @@ public class ConsentService {
                                   ::build);
     }
 
+    /**
+     * Gets SCA status of consent authorisation
+     *
+     * @param consentId       String representation of consent identifier
+     * @param authorisationId String representation of authorisation identifier
+     * @return Response containing SCA status of the authorisation or corresponding error
+     */
     public ResponseObject<ScaStatus> getConsentAuthorisationScaStatus(String consentId, String authorisationId) {
         xs2aEventService.recordAisTppRequest(consentId, EventType.GET_CONSENT_SCA_STATUS_REQUEST_RECEIVED);
 
