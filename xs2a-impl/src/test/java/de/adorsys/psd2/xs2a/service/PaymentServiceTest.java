@@ -168,11 +168,11 @@ public class PaymentServiceTest {
         when(pisAspspDataService.getAspspConsentData(anyString())).thenReturn(ASPSP_CONSENT_DATA);
         when(tppService.getTppInfo()).thenReturn(getTppInfo());
 
-        when(cancelPaymentService.initiatePaymentCancellation(any(), any()))
+        when(cancelPaymentService.initiatePaymentCancellation(any(), any(), any()))
             .thenReturn(ResponseObject.<CancelPaymentResponse>builder()
                             .body(getCancelPaymentResponse(true, ACTC))
                             .build());
-        when(cancelPaymentService.cancelPaymentWithoutAuthorisation(any(), any()))
+        when(cancelPaymentService.cancelPaymentWithoutAuthorisation(any(), any(), any()))
             .thenReturn(ResponseObject.<CancelPaymentResponse>builder()
                             .body(getCancelPaymentResponse(false, CANC))
                             .build());
