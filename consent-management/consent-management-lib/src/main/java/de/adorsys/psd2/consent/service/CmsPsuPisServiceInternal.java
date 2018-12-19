@@ -18,7 +18,7 @@ package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.pis.CmsPayment;
 import de.adorsys.psd2.consent.api.pis.CmsPaymentResponse;
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.TppInfoEntity;
 import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
@@ -53,7 +53,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
     private final PisAuthorizationRepository pisAuthorizationRepository;
     private final CmsPsuPisMapper cmsPsuPisMapper;
-    private final PisCommonPaymentService pisCommonPaymentService;
+    private final PisCommonPaymentServiceEncrypted pisCommonPaymentService;
     private final CommonPaymentDataService commonPaymentDataService;
     private final PsuDataMapper psuDataMapper;
 

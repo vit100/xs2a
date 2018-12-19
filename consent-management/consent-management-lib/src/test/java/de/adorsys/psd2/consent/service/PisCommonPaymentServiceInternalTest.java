@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *//*
+ */
 
 
 
@@ -27,6 +27,7 @@ import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.consent.repository.PisAuthorizationRepository;
+import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.consent.service.security.EncryptedData;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
@@ -55,6 +56,8 @@ public class PisCommonPaymentServiceInternalTest {
     private PisAuthorizationRepository pisAuthorizationRepository;
     @Mock
     SecurityDataService securityDataService;
+    @Mock
+    private PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
 
     private PisCommonPaymentData pisCommonPaymentData;
     private final long PIS_PAYMENT_DATA_ID = 1;
@@ -99,6 +102,7 @@ public class PisCommonPaymentServiceInternalTest {
         //When
         when(securityDataService.decryptId(paymentIdWrong)).thenReturn(Optional.empty());
         when(pisPaymentDataRepository.findByPaymentIdAndPaymentDataTransactionStatus(paymentIdWrong, TransactionStatus.RCVD)).thenReturn(Optional.empty());
+        when(pisCommonPaymentDataRepository.findByPaymentIdAndTransactionStatus(paymentIdWrong, TransactionStatus.RCVD)).thenReturn(Optional.empty());
         //Then
         Optional<List<String>> authorizationByPaymentId = pisCommonPaymentService.getAuthorisationsByPaymentId(paymentIdWrong, CmsAuthorisationType.CANCELLED);
         //Assert
@@ -187,4 +191,4 @@ public class PisCommonPaymentServiceInternalTest {
         return paymentData;
     }
 }
-*/
+

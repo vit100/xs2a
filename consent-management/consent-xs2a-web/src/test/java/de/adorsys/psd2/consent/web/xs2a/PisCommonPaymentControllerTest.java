@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *//*
+ */
 
 
 
@@ -27,7 +27,7 @@ import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDa
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.consent.web.xs2a.controller.PisCommonPaymentController;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
@@ -68,7 +68,7 @@ public class PisCommonPaymentControllerTest {
     private PisCommonPaymentController pisCommonPaymentController;
 
     @Mock
-    private PisCommonPaymentService pisCommonPaymentService;
+    private PisCommonPaymentServiceEncrypted pisCommonPaymentService;
 
     @Before
     public void setUp() {
@@ -298,4 +298,4 @@ public class PisCommonPaymentControllerTest {
         return new UpdatePisCommonPaymentPsuDataResponse(ScaStatus.RECEIVED);
     }
 }
-*/
+
