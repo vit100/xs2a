@@ -80,7 +80,7 @@ public class CreateBulkPaymentServiceTest<resp> {
 
     @Before
     public void init() {
-        when(scaPaymentService.createBulkPayment(buildBulkPayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisConsent())).thenReturn(buildBulkPaymentInitiationResponse());
+        when(scaPaymentService.createBulkPayment(buildBulkPayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisCommonPayment())).thenReturn(buildBulkPaymentInitiationResponse());
         when(pisAspspDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
         when(pisCommonPaymentService.createCommonPayment(PARAM, TPP_INFO)).thenReturn(PIS_COMMON_PAYMENT_RESPONSE);
         when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(PIS_COMMON_PAYMENT_RESPONSE, PSU_DATA)).thenReturn(PIS_COMMON_PAYMENT);
@@ -132,7 +132,7 @@ public class CreateBulkPaymentServiceTest<resp> {
         return reference;
     }
 
-    private Xs2aPisCommonPayment buildXs2aPisConsent() {
+    private Xs2aPisCommonPayment buildXs2aPisCommonPayment() {
         return new Xs2aPisCommonPayment(PAYMENT_ID, PSU_DATA);
     }
 

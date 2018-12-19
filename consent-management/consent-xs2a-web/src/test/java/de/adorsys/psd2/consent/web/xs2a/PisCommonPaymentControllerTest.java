@@ -20,7 +20,7 @@ package de.adorsys.psd2.consent.web.xs2a;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.PisCommonPaymentDataStatusResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
@@ -71,12 +71,12 @@ public class PisCommonPaymentControllerTest {
 
     @Before
     public void setUp() {
-        when(pisCommonPaymentService.createCommonPayment(getPisPaymentInfo())).thenReturn(Optional.of(getCreatePisConsentResponse()));
+        when(pisCommonPaymentService.createCommonPayment(getPisPaymentInfo())).thenReturn(Optional.of(getCreatePisCommonPaymentResponse()));
         when(pisCommonPaymentService.getPisCommonPaymentStatusById(PAYMENT_ID)).thenReturn(Optional.of(TransactionStatus.RCVD));
         when(pisCommonPaymentService.getCommonPaymentById(PAYMENT_ID)).thenReturn(Optional.of(getPisCommonPaymentResponse()));
         when(pisCommonPaymentService.updateCommonPaymentStatusById(PAYMENT_ID, TransactionStatus.RCVD)).thenReturn(Optional.of(Boolean.TRUE));
-        when(pisCommonPaymentService.createAuthorization(PAYMENT_ID, CmsAuthorisationType.CREATED, PSU_DATA)).thenReturn(Optional.of(getCreatePisConsentAuthorisationResponse()));
-        when(pisCommonPaymentService.updateCommonPaymentAuthorisation(AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest())).thenReturn(Optional.of(getUpdatePisConsentPsuDataResponse()));
+        when(pisCommonPaymentService.createAuthorization(PAYMENT_ID, CmsAuthorisationType.CREATED, PSU_DATA)).thenReturn(Optional.of(getCreatePisAuthorisationResponse()));
+        when(pisCommonPaymentService.updateCommonPaymentAuthorisation(AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest())).thenReturn(Optional.of(getUpdatePisCommonPaymentPsuDataResponse()));
     }
 
     @Test
@@ -211,7 +211,7 @@ public class PisCommonPaymentControllerTest {
             new ResponseEntity<>(new UpdatePisCommonPaymentPsuDataResponse(ScaStatus.RECEIVED), HttpStatus.OK);
 
         //When
-        ResponseEntity<UpdatePisCommonPaymentPsuDataResponse> actual = pisCommonPaymentController.updateAuthorization(AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest());
+        ResponseEntity<UpdatePisCommonPaymentPsuDataResponse> actual = pisCommonPaymentController.updateAuthorization(AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest());
 
         //Then
         assertEquals(actual, expected);
@@ -220,11 +220,11 @@ public class PisCommonPaymentControllerTest {
     @Test
     public void updateConsentAuthorization_Failure() {
         //Given
-        when(pisCommonPaymentService.updateCommonPaymentAuthorisation(WRONG_AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest())).thenReturn(Optional.empty());
+        when(pisCommonPaymentService.updateCommonPaymentAuthorisation(WRONG_AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest())).thenReturn(Optional.empty());
         ResponseEntity<UpdatePisCommonPaymentPsuDataResponse> expected = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         //When
-        ResponseEntity<UpdatePisCommonPaymentPsuDataResponse> actual = pisCommonPaymentController.updateAuthorization(WRONG_AUTHORISATION_ID, getUpdatePisConsentPsuDataRequest());
+        ResponseEntity<UpdatePisCommonPaymentPsuDataResponse> actual = pisCommonPaymentController.updateAuthorization(WRONG_AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest());
 
         //Then
         assertEquals(actual, expected);
@@ -232,14 +232,14 @@ public class PisCommonPaymentControllerTest {
 
     @Test
     public void getConsentAuthorization_Success() {
-        GetPisCommonPaymentAuthorisationResponse response = getGetPisConsentAuthorisationResponse();
+        GetPisAuthorisationResponse response = getGetPisAuthorisationResponse();
         when(pisCommonPaymentService.getPisCommonPaymentAuthorisationById(any())).thenReturn(Optional.of(response));
 
         // Given
-        GetPisCommonPaymentAuthorisationResponse expectedResponse = getGetPisConsentAuthorisationResponse();
+        GetPisAuthorisationResponse expectedResponse = getGetPisAuthorisationResponse();
 
         // When
-        ResponseEntity<GetPisCommonPaymentAuthorisationResponse> result =
+        ResponseEntity<GetPisAuthorisationResponse> result =
             pisCommonPaymentController.getAuthorization(AUTHORISATION_ID);
 
         // Then
@@ -252,7 +252,7 @@ public class PisCommonPaymentControllerTest {
         when(pisCommonPaymentService.getPisCommonPaymentAuthorisationById(any())).thenReturn(Optional.empty());
 
         // When
-        ResponseEntity<GetPisCommonPaymentAuthorisationResponse> result =
+        ResponseEntity<GetPisAuthorisationResponse> result =
             pisCommonPaymentController.getAuthorization(AUTHORISATION_ID);
 
         // Then
@@ -260,8 +260,8 @@ public class PisCommonPaymentControllerTest {
         assertThat(result.getBody()).isNull();
     }
 
-    private GetPisCommonPaymentAuthorisationResponse getGetPisConsentAuthorisationResponse() {
-        GetPisCommonPaymentAuthorisationResponse response = new GetPisCommonPaymentAuthorisationResponse();
+    private GetPisAuthorisationResponse getGetPisAuthorisationResponse() {
+        GetPisAuthorisationResponse response = new GetPisAuthorisationResponse();
         response.setPsuId(PSU_ID);
         response.setScaStatus(ScaStatus.STARTED);
         response.setPaymentId(PAYMENT_ID);
@@ -275,7 +275,7 @@ public class PisCommonPaymentControllerTest {
         return new PisPaymentInfo();
     }
 
-    private CreatePisCommonPaymentResponse getCreatePisConsentResponse() {
+    private CreatePisCommonPaymentResponse getCreatePisCommonPaymentResponse() {
         return new CreatePisCommonPaymentResponse(PAYMENT_ID);
     }
 
@@ -283,17 +283,17 @@ public class PisCommonPaymentControllerTest {
         return new PisCommonPaymentResponse();
     }
 
-    private CreatePisAuthorisationResponse getCreatePisConsentAuthorisationResponse() {
+    private CreatePisAuthorisationResponse getCreatePisAuthorisationResponse() {
         return new CreatePisAuthorisationResponse(AUTHORISATION_ID);
     }
 
-    private UpdatePisCommonPaymentPsuDataRequest getUpdatePisConsentPsuDataRequest() {
+    private UpdatePisCommonPaymentPsuDataRequest getUpdatePisCommonPaymentPsuDataRequest() {
         UpdatePisCommonPaymentPsuDataRequest request = new UpdatePisCommonPaymentPsuDataRequest();
         request.setPaymentId(PAYMENT_ID);
         return request;
     }
 
-    private UpdatePisCommonPaymentPsuDataResponse getUpdatePisConsentPsuDataResponse() {
+    private UpdatePisCommonPaymentPsuDataResponse getUpdatePisCommonPaymentPsuDataResponse() {
         return new UpdatePisCommonPaymentPsuDataResponse(ScaStatus.RECEIVED);
     }
 }

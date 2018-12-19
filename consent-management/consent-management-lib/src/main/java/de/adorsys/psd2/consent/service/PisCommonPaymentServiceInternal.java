@@ -19,7 +19,7 @@ package de.adorsys.psd2.consent.service;
 import de.adorsys.psd2.aspsp.profile.service.AspspProfileService;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
@@ -177,11 +177,11 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     @Override
     @Transactional
     public Optional<UpdatePisCommonPaymentPsuDataResponse> updateCommonPaymentAuthorisation(String authorizationId, UpdatePisCommonPaymentPsuDataRequest request) {
-        Optional<PisAuthorization> pisConsentAuthorisationOptional = pisAuthorizationRepository.findByExternalIdAndAuthorizationType(
+        Optional<PisAuthorization> pisAuthorisationOptional = pisAuthorizationRepository.findByExternalIdAndAuthorizationType(
             authorizationId, CmsAuthorisationType.CREATED);
 
-        if (pisConsentAuthorisationOptional.isPresent()) {
-            ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisConsentAuthorisationOptional.get());
+        if (pisAuthorisationOptional.isPresent()) {
+            ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisAuthorisationOptional.get());
             return Optional.of(new UpdatePisCommonPaymentPsuDataResponse(scaStatus));
         }
 
@@ -198,11 +198,11 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     @Override
     @Transactional
     public Optional<UpdatePisCommonPaymentPsuDataResponse> updateCommonPaymentCancellationAuthorisation(String cancellationId, UpdatePisCommonPaymentPsuDataRequest request) {
-        Optional<PisAuthorization> pisConsentAuthorisationOptional = pisAuthorizationRepository.findByExternalIdAndAuthorizationType(
+        Optional<PisAuthorization> pisAuthorisationOptional = pisAuthorizationRepository.findByExternalIdAndAuthorizationType(
             cancellationId, CmsAuthorisationType.CANCELLED);
 
-        if (pisConsentAuthorisationOptional.isPresent()) {
-            ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisConsentAuthorisationOptional.get());
+        if (pisAuthorisationOptional.isPresent()) {
+            ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisAuthorisationOptional.get());
             return Optional.of(new UpdatePisCommonPaymentPsuDataResponse(scaStatus));
         }
 
@@ -231,9 +231,9 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
      * @return response contains authorisation data
      */
     @Override
-    public Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorisationId) {
+    public Optional<GetPisAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorisationId) {
         return pisAuthorizationRepository.findByExternalIdAndAuthorizationType(authorisationId, CmsAuthorisationType.CREATED)
-                   .map(pisCommonPaymentMapper::mapToGetPisConsentAuthorizationResponse);
+                   .map(pisCommonPaymentMapper::mapToGetPisAuthorizationResponse);
     }
 
     /**
@@ -243,9 +243,9 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
      * @return response contains authorisation data
      */
     @Override
-    public Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId) {
+    public Optional<GetPisAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId) {
         return pisAuthorizationRepository.findByExternalIdAndAuthorizationType(cancellationId, CmsAuthorisationType.CANCELLED)
-                   .map(pisCommonPaymentMapper::mapToGetPisConsentAuthorizationResponse);
+                   .map(pisCommonPaymentMapper::mapToGetPisAuthorizationResponse);
     }
 
     /**
@@ -396,19 +396,19 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
                    .collect(Collectors.toList());
     }
 
-    private ScaStatus doUpdateConsentAuthorisation(UpdatePisCommonPaymentPsuDataRequest request, PisAuthorization pisConsentAuthorisation) {
-        if (pisConsentAuthorisation.getScaStatus().isFinalisedStatus()) {
-            return pisConsentAuthorisation.getScaStatus();
+    private ScaStatus doUpdateConsentAuthorisation(UpdatePisCommonPaymentPsuDataRequest request, PisAuthorization pisAuthorisation) {
+        if (pisAuthorisation.getScaStatus().isFinalisedStatus()) {
+            return pisAuthorisation.getScaStatus();
         }
 
         if (SCAMETHODSELECTED == request.getScaStatus()) {
             String chosenMethod = request.getAuthenticationMethodId();
             if (StringUtils.isNotBlank(chosenMethod)) {
-                pisConsentAuthorisation.setChosenScaMethod(chosenMethod);
+                pisAuthorisation.setChosenScaMethod(chosenMethod);
             }
         }
-        pisConsentAuthorisation.setScaStatus(request.getScaStatus());
-        PisAuthorization saved = pisAuthorizationRepository.save(pisConsentAuthorisation);
+        pisAuthorisation.setScaStatus(request.getScaStatus());
+        PisAuthorization saved = pisAuthorizationRepository.save(pisAuthorisation);
         return saved.getScaStatus();
     }
 }

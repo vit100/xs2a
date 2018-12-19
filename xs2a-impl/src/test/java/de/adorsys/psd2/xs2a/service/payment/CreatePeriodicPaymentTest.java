@@ -58,7 +58,7 @@ public class CreatePeriodicPaymentTest {
     private static final String IBAN = "DE123456789";
     private final TppInfo TPP_INFO = buildTppInfo();
     private static final PsuIdData PSU_ID_DATA = new PsuIdData("aspsp", null, null, null);
-    private final Xs2aPisCommonPayment PIS_COMMON_PAYMENT = buildXs2aPisConsent();
+    private final Xs2aPisCommonPayment PIS_COMMON_PAYMENT = buildXs2aPisCommonPayment();
     private final PaymentInitiationParameters PARAM = buildPaymentInitiationParameters();
     private final CreatePisCommonPaymentResponse PIS_COMMON_PAYMENT_RESPONSE = new CreatePisCommonPaymentResponse(PAYMENT_ID);
 
@@ -81,7 +81,7 @@ public class CreatePeriodicPaymentTest {
     public void success_initiate_periodic_payment() {
         //When
         when(pisAspspDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
-        when(scaPaymentService.createPeriodicPayment(buildPeriodicPayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisConsent())).thenReturn(buildPeriodicPaymentInitiationResponse());
+        when(scaPaymentService.createPeriodicPayment(buildPeriodicPayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisCommonPayment())).thenReturn(buildPeriodicPaymentInitiationResponse());
         when(pisCommonPaymentService.createCommonPayment(PARAM, TPP_INFO)).thenReturn(PIS_COMMON_PAYMENT_RESPONSE);
         when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(PIS_COMMON_PAYMENT_RESPONSE, PARAM.getPsuData())).thenReturn(PIS_COMMON_PAYMENT);
 
@@ -120,7 +120,7 @@ public class CreatePeriodicPaymentTest {
         return reference;
     }
 
-    private Xs2aPisCommonPayment buildXs2aPisConsent() {
+    private Xs2aPisCommonPayment buildXs2aPisCommonPayment() {
         return new Xs2aPisCommonPayment(PAYMENT_ID, PSU_ID_DATA);
     }
 

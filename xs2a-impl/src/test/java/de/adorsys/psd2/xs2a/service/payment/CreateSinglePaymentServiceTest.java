@@ -77,7 +77,7 @@ public class CreateSinglePaymentServiceTest {
 
     @Before
     public void init() {
-        when(scaPaymentService.createSinglePayment(buildSinglePayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisConsent())).thenReturn(buildSinglePaymentInitiationResponse());
+        when(scaPaymentService.createSinglePayment(buildSinglePayment(), TPP_INFO, "sepa-credit-transfers", buildXs2aPisCommonPayment())).thenReturn(buildSinglePaymentInitiationResponse());
         when(pisAspspDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
         when(pisCommonPaymentService.createCommonPayment(PARAM, TPP_INFO)).thenReturn(PIS_COMMON_PAYMENT_RESPONSE);
         when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(PIS_COMMON_PAYMENT_RESPONSE, PARAM.getPsuData())).thenReturn(PIS_COMMON_PAYMENT);
@@ -119,7 +119,7 @@ public class CreateSinglePaymentServiceTest {
         return reference;
     }
 
-    private Xs2aPisCommonPayment buildXs2aPisConsent() {
+    private Xs2aPisCommonPayment buildXs2aPisCommonPayment() {
         return new Xs2aPisCommonPayment(PAYMENT_ID, PSU_DATA);
     }
 

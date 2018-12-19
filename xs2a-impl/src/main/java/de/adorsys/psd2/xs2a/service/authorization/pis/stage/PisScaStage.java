@@ -17,7 +17,7 @@
 package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
@@ -47,7 +47,7 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
     @Autowired
     private ApplicationContext applicationContext;
 
-    protected PaymentSpi getPaymentService(GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse, PaymentType paymentType) {
+    protected PaymentSpi getPaymentService(GetPisAuthorisationResponse pisAuthorisationResponse, PaymentType paymentType) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         if (CollectionUtils.isEmpty(pisAuthorisationResponse.getPayments())) {
             return applicationContext.getBean(CommonPaymentSpi.class);
@@ -62,7 +62,7 @@ public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
         }
     }
 
-    protected SpiPayment mapToSpiPayment(GetPisCommonPaymentAuthorisationResponse pisAuthorisationResponse,
+    protected SpiPayment mapToSpiPayment(GetPisAuthorisationResponse pisAuthorisationResponse,
                                          PaymentType paymentType, String paymentProduct) {
         if (CollectionUtils.isEmpty(pisAuthorisationResponse.getPayments())) {
             return mapToSpiPayment(pisAuthorisationResponse.getPaymentInfo());

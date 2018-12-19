@@ -53,7 +53,6 @@ public class CreateCommonPaymentServiceTest {
     private static final PsuIdData PSU_DATA = new PsuIdData("aspsp", null, null, null);
     private final TppInfo TPP_INFO = buildTppInfo();
     private static final String PRODUCT = "sepa-credit-transfers";
-    private final Xs2aPisCommonPayment CONSENT = buildXs2aPisConsent();
     private final CommonPayment COMMON_PAYMENT = buildCommonPayment();
     private final Xs2aPisCommonPayment PIS_COMMON_PAYMENT = new Xs2aPisCommonPayment(PAYMENT_ID, PSU_DATA);
     private final PaymentInitiationParameters PARAM = buildPaymentInitiationParameters();
@@ -102,10 +101,6 @@ public class CreateCommonPaymentServiceTest {
         request.setTppInfo(TPP_INFO);
 
         return request;
-    }
-
-    private Xs2aPisCommonPayment buildXs2aPisConsent() {
-        return new Xs2aPisCommonPayment(PAYMENT_ID, PSU_DATA);
     }
 
     private PaymentInitiationParameters buildPaymentInitiationParameters() {

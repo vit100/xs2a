@@ -28,7 +28,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@ApiModel(description = "Pis payment initialisation consent request", value = "PisConsentRequest")
+@ApiModel(description = "Pis payment initialisation consent request", value = "PisCommonPaymentRequest")
 public class PisCommonPaymentRequest {
     @ApiModelProperty(value = "Payment data", required = true)
     private List<PisPayment> payments;

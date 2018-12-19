@@ -18,7 +18,7 @@ package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
@@ -116,14 +116,14 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentService {
     }
 
     @Override
-    public Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorizationId) {
-        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisAuthorisationById(), HttpMethod.GET, null, GetPisCommonPaymentAuthorisationResponse.class, authorizationId)
+    public Optional<GetPisAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorizationId) {
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisAuthorisationById(), HttpMethod.GET, null, GetPisAuthorisationResponse.class, authorizationId)
                                        .getBody());
     }
 
     @Override
-    public Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId) {
-        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisCancellationAuthorisationById(), HttpMethod.GET, null, GetPisCommonPaymentAuthorisationResponse.class, cancellationId)
+    public Optional<GetPisAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId) {
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisCancellationAuthorisationById(), HttpMethod.GET, null, GetPisAuthorisationResponse.class, cancellationId)
                                        .getBody());
     }
 

@@ -19,7 +19,7 @@ package de.adorsys.psd2.consent.web.xs2a.controller;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.PisCommonPaymentDataStatusResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
@@ -142,7 +142,7 @@ public class PisCommonPaymentController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
-    public ResponseEntity<GetPisCommonPaymentAuthorisationResponse> getAuthorization(
+    public ResponseEntity<GetPisAuthorisationResponse> getAuthorization(
         @ApiParam(name = "authorization-id", value = "The authorization identification assigned to the created authorization.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("authorization-id") String authorizationId) {
         return pisCommonPaymentService.getPisCommonPaymentAuthorisationById(authorizationId)
@@ -169,7 +169,7 @@ public class PisCommonPaymentController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
-    public ResponseEntity<GetPisCommonPaymentAuthorisationResponse> getAuthorizationCancellation(
+    public ResponseEntity<GetPisAuthorisationResponse> getAuthorizationCancellation(
         @ApiParam(name = "cancellation-id", value = "The cancellation authorisation identification assigned to the created cancellation authorisation.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("cancellation-id") String cancellationId) {
         return pisCommonPaymentService.getPisCommonPaymentCancellationAuthorisationById(cancellationId)

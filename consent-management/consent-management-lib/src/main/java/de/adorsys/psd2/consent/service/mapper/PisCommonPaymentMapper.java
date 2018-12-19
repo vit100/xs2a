@@ -19,7 +19,7 @@ package de.adorsys.psd2.consent.service.mapper;
 import de.adorsys.psd2.consent.api.CmsAddress;
 import de.adorsys.psd2.consent.api.pis.CmsRemittance;
 import de.adorsys.psd2.consent.api.pis.PisPayment;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.consent.domain.payment.*;
@@ -94,8 +94,8 @@ public class PisCommonPaymentMapper {
                    }).orElse(null);
     }
 
-    public GetPisCommonPaymentAuthorisationResponse mapToGetPisConsentAuthorizationResponse(PisAuthorization pis) {
-        GetPisCommonPaymentAuthorisationResponse response = new GetPisCommonPaymentAuthorisationResponse();
+    public GetPisAuthorisationResponse mapToGetPisAuthorizationResponse(PisAuthorization pis) {
+        GetPisAuthorisationResponse response = new GetPisAuthorisationResponse();
         response.setPayments(mapToPisPaymentList(pis.getPaymentData().getPayments()));
         response.setPaymentType(pis.getPaymentData().getPaymentType());
         response.setScaStatus(pis.getScaStatus());

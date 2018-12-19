@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package de.adorsys.aspsp.aspspmockserver.domain;
+package de.adorsys.psd2.consent.api.pis.authorisation;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import de.adorsys.psd2.consent.api.pis.PisPayment;
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
+import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.Data;
 
-@Data
-@ApiModel(description = "Ais/Pis consent aspsp data update request", value = "UpdateConsentAspspDataRequest")
-public class UpdateConsentAspspDataRequest {
+import java.util.List;
 
-    @ApiModelProperty(value = "ASPSP consent data", required = true, example = "zdxcvvzzzxcvzzzz")
-    private byte[] aspspConsentData;
+@Data
+public class GetPisAuthorisationResponse {
+    private String psuId;
+    private ScaStatus scaStatus;
+    private String paymentId;
+    private String password;
+    private List<PisPayment> payments;
+    private PaymentType paymentType;
+    private String paymentProduct;
+    private PisPaymentInfo paymentInfo;
 }

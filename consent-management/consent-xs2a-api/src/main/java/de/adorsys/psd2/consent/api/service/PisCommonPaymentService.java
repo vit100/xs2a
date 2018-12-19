@@ -18,7 +18,7 @@ package de.adorsys.psd2.consent.api.service;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
@@ -120,7 +120,7 @@ public interface PisCommonPaymentService {
      * @param authorisationId String representation of the authorisation identifier
      * @return Response containing information about Authorisation
      */
-    Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorisationId);
+    Optional<GetPisAuthorisationResponse> getPisCommonPaymentAuthorisationById(String authorisationId);
 
     /**
      * Get information about Authorisation by cancellation identifier
@@ -128,7 +128,7 @@ public interface PisCommonPaymentService {
      * @param cancellationId String representation of the cancellation identifier
      * @return Response containing information about Authorisation
      */
-    Optional<GetPisCommonPaymentAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId);
+    Optional<GetPisAuthorisationResponse> getPisCommonPaymentCancellationAuthorisationById(String cancellationId);
 
     /**
      * Gets list of payment authorisation IDs by payment ID and authorisation type

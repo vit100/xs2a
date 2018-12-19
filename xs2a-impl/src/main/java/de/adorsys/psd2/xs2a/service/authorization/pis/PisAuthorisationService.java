@@ -18,7 +18,7 @@ package de.adorsys.psd2.xs2a.service.authorization.pis;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisCommonPaymentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.xs2a.config.factory.PisScaStageAuthorisationFactory;
@@ -63,10 +63,10 @@ public class PisAuthorisationService {
      * @return update pis authorisation response, which contains payment id, authorisation id, sca status, psu message and links
      */
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updatePisAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        GetPisCommonPaymentAuthorisationResponse response = pisCommonPaymentService.getPisCommonPaymentAuthorisationById(request.getAuthorizationId())
+        GetPisAuthorisationResponse response = pisCommonPaymentService.getPisCommonPaymentAuthorisationById(request.getAuthorizationId())
                                                                 .orElse(null);
 
-        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(SERVICE_PREFIX + response.getScaStatus().name());
+        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(SERVICE_PREFIX + response.getScaStatus().name());
         Xs2aUpdatePisCommonPaymentPsuDataResponse stageResponse = service.apply(request, response);
 
         if (!stageResponse.hasError()) {
@@ -83,10 +83,10 @@ public class PisAuthorisationService {
      * @return update pis authorisation response, which contains payment id, authorisation id, sca status, psu message and links
      */
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updatePisCancellationAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        GetPisCommonPaymentAuthorisationResponse response = pisCommonPaymentService.getPisCommonPaymentCancellationAuthorisationById(request.getAuthorizationId())
+        GetPisAuthorisationResponse response = pisCommonPaymentService.getPisCommonPaymentCancellationAuthorisationById(request.getAuthorizationId())
                                                                 .orElse(null);
 
-        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisCommonPaymentAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(CANCELLATION_SERVICE_PREFIX + response.getScaStatus().name());
+        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(CANCELLATION_SERVICE_PREFIX + response.getScaStatus().name());
         Xs2aUpdatePisCommonPaymentPsuDataResponse stageResponse = service.apply(request, response);
 
         if (!stageResponse.hasError()) {

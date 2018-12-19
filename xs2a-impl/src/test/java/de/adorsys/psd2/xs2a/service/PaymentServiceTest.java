@@ -112,7 +112,7 @@ public class PaymentServiceTest {
     @Mock
     private CreateBulkPaymentService createBulkPaymentService;
     @Mock
-    private Xs2aPisCommonPaymentMapper xs2aPisConsentMapper;
+    private Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
     @Mock
     private SinglePaymentSpi singlePaymentSpi;
     @Mock
@@ -155,10 +155,10 @@ public class PaymentServiceTest {
         when(paymentMapper.mapToTransactionStatus(SpiTransactionStatus.ACCP)).thenReturn(TransactionStatus.ACCP);
         when(paymentMapper.mapToTransactionStatus(SpiTransactionStatus.RJCT)).thenReturn(TransactionStatus.RJCT);
         when(paymentMapper.mapToTransactionStatus(null)).thenReturn(null);
-        when(xs2aPisConsentMapper.mapToXs2aPisCommonPayment(any(), any())).thenReturn(getXs2aPisConsent());
+        when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(any(), any())).thenReturn(getXs2aPisCommonPayment());
         when(psuDataMapper.mapToSpiPsuData(PSU_ID_DATA))
             .thenReturn(SPI_PSU_DATA);
-        when(xs2aPisConsentMapper.mapToXs2aPisCommonPayment(new CreatePisCommonPaymentResponse("TEST"), PSU_ID_DATA)).thenReturn(getXs2aPisConsent());
+        when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(new CreatePisCommonPaymentResponse("TEST"), PSU_ID_DATA)).thenReturn(getXs2aPisCommonPayment());
         when(pisAspspDataService.getInternalPaymentIdByEncryptedString("TEST")).thenReturn("TEST");
 
         //Status by ID
@@ -434,7 +434,7 @@ public class PaymentServiceTest {
         return bulkPayment;
     }
 
-    private Xs2aPisCommonPayment getXs2aPisConsent() {
+    private Xs2aPisCommonPayment getXs2aPisCommonPayment() {
         return new Xs2aPisCommonPayment("TEST", PSU_ID_DATA);
     }
 
