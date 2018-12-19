@@ -31,6 +31,23 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import java.util.List;
 import java.util.Optional;
 
+
+
+
+/**
+ * PisConsentService without any encryption/decryption. Should not be used in XS2A directly.
+ *
+ * @see de.adorsys.psd2.consent.api.service.PisConsentServiceBase
+ * @see de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted
+ */
+public interface PisConsentService extends PisConsentServiceBase {
+}
+
+
+
+
+
+
 public interface PisCommonPaymentService {
 
     Optional<CreatePisCommonPaymentResponse> createCommonPayment(PisPaymentInfo request);

@@ -16,12 +16,22 @@
 
 package de.adorsys.psd2.consent.api.service;
 
-public interface ConsentService {
+import de.adorsys.psd2.xs2a.core.event.Event;
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Base version of EventService that contains all method declarations.
+ * Should not be implemented directly, consider using one of the interfaces that extends this one.
+ *
+ * @see de.adorsys.psd2.consent.api.service.EventService
+ * @see de.adorsys.psd2.consent.api.service.EventServiceEncrypted
+ */
+interface EventServiceBase {
     /**
-     * Checks whether consent exists
+     * Records new Event in the CMS
      *
-     * @param consentId id of consent
-     * @return boolean
+     * @param event Event to be recorded
+     * @return <code>true</code> if the event was recorded. <code>false</code> otherwise.
      */
-    boolean isConsentExist(String consentId);
+    boolean recordEvent(@NotNull Event event);
 }

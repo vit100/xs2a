@@ -57,7 +57,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CmsPsuPisServiceInternalTest {
-
     private static final String WRONG_PAYMENT_ID = "wrong payment id";
     private static final String AUTHORISATION_ID = "authorisation id";
     private static final String WRONG_AUTHORISATION_ID = "wrong authorisation id";
@@ -143,7 +142,7 @@ public class CmsPsuPisServiceInternalTest {
     @Test
     public void updatePsuInPayment_Success() {
         // When
-        boolean actualResult = cmsPsuPisServiceInternal.updatePsuInPayment(PSU_ID_DATA, PAYMENT_ID);
+        boolean actualResult = cmsPsuPisServiceInternal.updatePsuInPayment(PSU_ID_DATA, AUTHORISATION_ID);
 
         // Then
         assertTrue(actualResult);
@@ -152,7 +151,7 @@ public class CmsPsuPisServiceInternalTest {
     @Test
     public void updatePsuInPayment_Fail_WrongPaymentId() {
         // When
-        boolean actualResult = cmsPsuPisServiceInternal.updatePsuInPayment(PSU_ID_DATA, WRONG_PAYMENT_ID);
+        boolean actualResult = cmsPsuPisServiceInternal.updatePsuInPayment(PSU_ID_DATA, WRONG_AUTHORISATION_ID);
 
         // Then
         assertFalse(actualResult);
@@ -287,14 +286,13 @@ public class CmsPsuPisServiceInternalTest {
     public void getPaymentByAuthorisationId_Fail_ExpiredRedirectUrl() {
         //Given
         PisAuthorization expectedAuthorisation = buildExpiredAuthorisation();
-        when(pisCommonPaymentService.getDecryptedId(EXPIRED_AUTHORISATION_ID)).thenReturn(Optional.of(EXPIRED_AUTHORISATION_ID));
         when(pisAuthorizationRepository.findByExternalId(EXPIRED_AUTHORISATION_ID)).thenReturn(Optional.of(expectedAuthorisation));
 
         // When
         Optional<CmsPaymentResponse> actualResult = cmsPsuPisServiceInternal.checkRedirectAndGetPayment(PSU_ID_DATA, EXPIRED_AUTHORISATION_ID);
 
         // Then
-        assertThat(actualResult).isEqualTo(Optional.empty());
+        assertThat(actualResult).isEqualTo(Optional.of(new CmsPaymentResponse( TPP_NOK_REDIRECT_URI)));
     }
 
     @Test
@@ -332,6 +330,7 @@ public class CmsPsuPisServiceInternalTest {
         pisAuthorisation.setExternalId(AUTHORISATION_ID);
         pisAuthorisation.setPsuData(buildPsuData());
         pisAuthorisation.setRedirectUrlExpirationTimestamp(OffsetDateTime.parse("2022-12-03T10:15:30+01:00"));
+        pisAuthorisation.setPaymentData(buildPisCommonPaymentData());
 
         return pisAuthorisation;
     }

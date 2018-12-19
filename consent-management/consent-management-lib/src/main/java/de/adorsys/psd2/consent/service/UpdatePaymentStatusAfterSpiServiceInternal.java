@@ -43,14 +43,14 @@ public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePayment
 
     @Override
     @Transactional
-    public boolean updatePaymentStatus(@NotNull String encryptedPaymentId, @NotNull TransactionStatus status) {
-        Optional<List<PisPaymentData>> list = getPaymentDataList(encryptedPaymentId);
+    public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status) {
+        Optional<List<PisPaymentData>> list = pisPaymentDataRepository.findByPaymentId(paymentId);
 
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
         if (list.isPresent()) {
             return updateStatusInPaymentDataList(list.get(), status);
         } else {
-            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(encryptedPaymentId);
+            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId);
 
             return paymentDataOptional.isPresent()
                        && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);

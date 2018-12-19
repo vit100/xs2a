@@ -17,6 +17,7 @@
 package de.adorsys.psd2.consent.web.xs2a.controller;
 
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
+import de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ import java.util.List;
 @Api(value = "api/v1/pis", tags = "PIS, PSU Data", description = "Provides access to consent management system for PSU Data")
 public class PisPsuDataController {
     private final PisCommonPaymentService pisCommonPaymentService;
+    !!!!!!  private final PisConsentServiceEncrypted pisConsentService;
 
     @GetMapping(path = "/payment/{payment-id}/psu-data")
     @ApiOperation(value = "Get PSU data identified by given payment id.")

@@ -17,6 +17,16 @@
 package de.adorsys.psd2.consent.web.xs2a.controller;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
+import de.adorsys.psd2.consent.api.pis.PisConsentStatusResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
+import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted;
+import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.consent.api.pis.PisCommonPaymentDataStatusResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
@@ -43,6 +53,8 @@ import java.util.List;
 @Api(value = "api/v1/pis/common-payments", tags = "PIS, Common Payment", description = "Provides access to common payment system for PIS")
 public class PisCommonPaymentController {
     private final PisCommonPaymentService pisCommonPaymentService;
+    private final PisConsentServiceEncrypted pisConsentService;
+
 
     @PostMapping(path = "/")
     @ApiResponses(value = {

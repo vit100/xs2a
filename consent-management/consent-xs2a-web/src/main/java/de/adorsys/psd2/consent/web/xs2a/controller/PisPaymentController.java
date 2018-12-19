@@ -18,6 +18,8 @@ package de.adorsys.psd2.consent.web.xs2a.controller;
 
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiService;
+import de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted;
+import de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "api/v1/pis")
 @Api(value = "api/v1/pis", tags = "PIS, Payments", description = "Provides access to consent management system for PIS")
 public class PisPaymentController {
+    private final PisConsentServiceEncrypted pisConsentService;
+    private final UpdatePaymentStatusAfterSpiServiceEncrypted updatePaymentStatusAfterSpiService;
     private final PisCommonPaymentService pisCommonPaymentService;
     private final UpdatePaymentStatusAfterSpiService updatePaymentStatusAfterSpiService;
 

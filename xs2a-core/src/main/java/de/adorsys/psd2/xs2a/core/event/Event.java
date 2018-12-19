@@ -57,4 +57,76 @@ public class Event {
      * Indicates what happened in this event.
      */
     private EventType eventType;
+
+    /**
+     * The id of particular service instance.
+     */
+    private String instanceId;
+
+    private Event() {
+    }
+
+    public static EventBuilder builder() {
+        return new EventBuilder();
+    }
+
+    public static final class EventBuilder {
+        private OffsetDateTime timestamp;
+        private String consentId;
+        private String paymentId;
+        private Object payload;
+        private EventOrigin eventOrigin;
+        private EventType eventType;
+        private String instanceId;
+
+        private EventBuilder() {
+        }
+
+        public EventBuilder timestamp(OffsetDateTime timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public EventBuilder consentId(String consentId) {
+            this.consentId = consentId;
+            return this;
+        }
+
+        public EventBuilder paymentId(String paymentId) {
+            this.paymentId = paymentId;
+            return this;
+        }
+
+        public EventBuilder payload(Object payload) {
+            this.payload = payload;
+            return this;
+        }
+
+        public EventBuilder eventOrigin(EventOrigin eventOrigin) {
+            this.eventOrigin = eventOrigin;
+            return this;
+        }
+
+        public EventBuilder eventType(EventType eventType) {
+            this.eventType = eventType;
+            return this;
+        }
+
+        public EventBuilder instanceId(String instanceId) {
+            this.instanceId = instanceId;
+            return this;
+        }
+
+        public Event build() {
+            Event event = new Event();
+            event.setTimestamp(timestamp);
+            event.setConsentId(consentId);
+            event.setPaymentId(paymentId);
+            event.setPayload(payload);
+            event.setEventOrigin(eventOrigin);
+            event.setEventType(eventType);
+            event.setInstanceId(instanceId);
+            return event;
+        }
+    }
 }
