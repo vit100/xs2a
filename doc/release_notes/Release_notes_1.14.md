@@ -38,8 +38,17 @@ consent-psu-client module is not actuall and not supported anymore, therefore re
 
 ## Bugfix: added possibility to config SCA Redirect links in ASPSP-profile using redirectId parameter 
 Now ASPSP Developer is able to config aisRedirectUrlToAspsp and pisRedirectUrlToAspsp with custom url pattern and redirectId parameter. For example:
-* http://localhost:4200/pis/{redirect-id}
-* http://localhost:4200/pis?redirectId={redirect-id}
+```yaml
+setting:
+ pisRedirectUrlToAspsp: http://localhost:4200/pis/{redirect-id}
+ aisRedirectUrlToAspsp: http://localhost:4200/ais/{redirect-id}
+```
+Encrypted Consent/Payment Id is still posssible to put into the URL using the `{encrypted-consent-id}` or `{encrypted-payment-id}` parameter respectively. For example:
+```yaml
+setting:
+ pisRedirectUrlToAspsp: http://localhost:4200/pis?paymentId={encrypted-payment-id}&redirectId={redirect-id}
+ aisRedirectUrlToAspsp: http://localhost:4200/ais?consentId={encrypted-consent-id}&redirectId={redirect-id}
+```
 
 ## Bugfix: changes to CmsPsuAisService and CmsPsuPisService
 Now methods updatePsuDataInConsent and updatePsuInPayment take redirectId as an argument instead of consentId and paymentId accordingly.
@@ -67,3 +76,23 @@ Now TPP is unable to use AIS Consent with RECEIVED status. It's usable only if i
 | Gets list of PIIS consents | GET    | psu-api/v1/piis/consents                             | Returns a list of PIIS Consent objects by PSU ID                           |
 | Gets PIIS consent          | GET    | psu-api/v1/piis/consents/{consent-id}                | Returns PIIS Consent object by its ID                                      |
 | Revokes PIIS consent       | PUT    | psu-api/v1/piis/consents/{consent-id}/revoke-consent | Revokes PIIS Consent object by its ID. Consent gets status Revoked by PSU. |
+
+## TPP Stop List
+Possibility to block TPP has been added to CMS.
+If TPP is blocked, the 401 CERTIFICATE_BLOCKED error is returned on any request to Xs2a endpoints.
+
+Now CMS contains several endpoints for TPP Stop List proceeding:
+
+**For ASPSP:**
+* GET `/aspsp-api/v1/tpp/stop-list` - returns TPP stop list record by TPP authorisation number and national authority ID
+* PUT `/aspsp-api/v1/tpp/stop-list/block` - blocks TPP by TPP authorisation number, national authority ID and lock period
+* DELETE `/aspsp-api/v1/tpp/stop-list/unblock` - unblocks TPP by TPP authorisation number and national authority ID
+
+**For Xs2a:**
+* GET `/api/v1/tpp/stop-list` - checks if TPP is blocked
+
+Scheduler service has been created: it will unblock the TPPs with blocking period expired (if TPP was blocked for the provided period of time).
+The scheduler service invocation frequency could be modified by changing `stoplist.cron.expression` value in `application.properties`.
+
+## Integration tests subproject is frozen
+Due to some internal reasons further development of integration tests in xs2a-Repository is frozen. `integration-tests` folder will be removed from repo soon.
