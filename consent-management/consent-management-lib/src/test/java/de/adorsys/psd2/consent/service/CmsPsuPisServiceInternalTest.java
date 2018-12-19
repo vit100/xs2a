@@ -22,7 +22,7 @@ import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.CmsPayment;
 import de.adorsys.psd2.consent.api.pis.CmsPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.CmsSinglePayment;
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.TppInfoEntity;
@@ -86,7 +86,7 @@ public class CmsPsuPisServiceInternalTest {
     @Mock
     CmsPsuPisMapper cmsPsuPisMapper;
     @Mock
-    PisCommonPaymentServiceEncrypted pisCommonPaymentService;
+    PisCommonPaymentService pisCommonPaymentService;
     @Mock
     PsuDataRepository psuDataRepository;
     @Mock
@@ -127,14 +127,10 @@ public class CmsPsuPisServiceInternalTest {
             .thenReturn(Optional.of(Collections.singletonList(psuIdData)));
         when(pisCommonPaymentService.getPsuDataListByPaymentId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
-        when(pisCommonPaymentService.getDecryptedId(PAYMENT_ID))
-            .thenReturn(Optional.of(PAYMENT_ID));
 
         when(commonPaymentDataService.getPisCommonPaymentData(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
 
-        when(pisCommonPaymentService.getDecryptedId(WRONG_PAYMENT_ID))
-            .thenReturn(Optional.empty());
         when(psuDataRepository.save(any(PsuData.class)))
             .thenReturn(psuData);
         when(psuDataMapper.mapToPsuData(psuIdData))
@@ -261,7 +257,6 @@ public class CmsPsuPisServiceInternalTest {
     public void updatePaymentStatus_Fail_FinalisedStatus() {
         //Given
         List<PisPaymentData> finalisedPisPaymentDataList = buildFinalisedPisPaymentDataList();
-        when(pisCommonPaymentService.getDecryptedId(FINALISED_PAYMENT_ID)).thenReturn(Optional.of(FINALISED_PAYMENT_ID));
         when(pisPaymentDataRepository.findByPaymentId(FINALISED_PAYMENT_ID)).thenReturn(Optional.of(finalisedPisPaymentDataList));
 
         // When

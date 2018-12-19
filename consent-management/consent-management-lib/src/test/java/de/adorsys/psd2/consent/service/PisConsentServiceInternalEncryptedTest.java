@@ -15,15 +15,17 @@
  *//*
 
 
+
 package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
@@ -87,11 +89,11 @@ public class PisConsentServiceInternalEncryptedTest {
             .thenReturn(Optional.empty());
 
         when(pisConsentService.createCommonPayment(buildPisPaymentInfoRequest()))
-            .thenReturn(Optional.of(buildCreatePisConsentResponse(DECRYPTED_COMMON_PAYMENT_ID)));
+            .thenReturn(Optional.of(buildCreatePisCommonPaymentResponse(DECRYPTED_COMMON_PAYMENT_ID)));
         when(pisConsentService.getPisCommonPaymentStatusById(DECRYPTED_COMMON_PAYMENT_ID))
             .thenReturn(Optional.of(TRANSACTION_STATUS));
         when(pisConsentService.getCommonPaymentById(DECRYPTED_COMMON_PAYMENT_ID))
-            .thenReturn(Optional.of(buildPisConsentResponse(DECRYPTED_COMMON_PAYMENT_ID)));
+            .thenReturn(Optional.of(buildPisCommonPaymentResponse(DECRYPTED_COMMON_PAYMENT_ID)));
         when(pisConsentService.updateCommonPaymentStatusById(DECRYPTED_COMMON_PAYMENT_ID, TRANSACTION_STATUS))
             .thenReturn(Optional.of(true));
         when(pisConsentService.createAuthorization(DECRYPTED_PAYMENT_ID, AUTHORISATION_TYPE, buildPsuIdData()))
@@ -116,7 +118,7 @@ public class PisConsentServiceInternalEncryptedTest {
     public void createPaymentConsent_success() {
         // Given
         PisConsentRequest request = buildPisPaymentInfoRequest();
-        CreatePisConsentResponse expected = buildCreatePisConsentResponse(ENCRYPTED_CONSENT_ID);
+        CreatePisConsentResponse expected = buildCreatePisCommonPaymentResponse(ENCRYPTED_CONSENT_ID);
 
         // When
         Optional<CreatePisConsentResponse> actual = pisConsentServiceInternalEncrypted.createPaymentConsent(request);
@@ -141,7 +143,7 @@ public class PisConsentServiceInternalEncryptedTest {
     @Test
     public void getConsentById_success() {
         // Given
-        PisConsentResponse expected = buildPisConsentResponse(DECRYPTED_COMMON_PAYMENT_ID);
+        PisConsentResponse expected = buildPisCommonPaymentResponse(DECRYPTED_COMMON_PAYMENT_ID);
 
         // When
         Optional<PisConsentResponse> actual = pisConsentServiceInternalEncrypted.getConsentById(ENCRYPTED_CONSENT_ID);
@@ -365,7 +367,7 @@ public class PisConsentServiceInternalEncryptedTest {
 
     private PisPaymentData buildPaymentData(PisCommonPaymentData pisCommonPaymentData) {
         PisPaymentData paymentData = new PisPaymentData();
-        paymentData.setPaymentId(paymentId);
+        paymentData.setPaymentId(DECRYPTED_PAYMENT_ID);
         paymentData.setPaymentData(pisCommonPaymentData);
         return paymentData;
     }
@@ -375,12 +377,12 @@ public class PisConsentServiceInternalEncryptedTest {
         return new PisPaymentInfo();
     }
 
-    private CreatePisConsentResponse buildCreatePisConsentResponse(String id) {
-        return new CreatePisConsentResponse(id);
+    private CreatePisCommonPaymentResponse buildCreatePisCommonPaymentResponse(String id) {
+        return new CreatePisCommonPaymentResponse(id);
     }
 
-    private PisConsentResponse buildPisConsentResponse(String id) {
-        PisConsentResponse response = new PisConsentResponse();
+    private PisCommonPaymentResponse buildPisCommonPaymentResponse(String id) {
+        PisCommonPaymentResponse response = new PisCommonPaymentResponse();
         response.setExternalId(id);
         return response;
     }
@@ -399,16 +401,17 @@ public class PisConsentServiceInternalEncryptedTest {
         return request;
     }
 
-    private UpdatePisPsuDataResponse buildUpdatePisConsentPsuDataResponse() {
-        return new UpdatePisConsentPsuDataResponse(SCA_STATUS);
+    private UpdatePisCommonPaymentPsuDataResponse buildUpdatePisConsentPsuDataResponse() {
+        return new UpdatePisCommonPaymentPsuDataResponse(SCA_STATUS);
     }
 
-    private GetPisConsentAuthorisationResponse buildGetPisConsentAuthorisationResponse() {
-        return new GetPisConsentAuthorisationResponse();
+    private GetPisAuthorisationResponse buildGetPisConsentAuthorisationResponse() {
+        return new GetPisAuthorisationResponse();
     }
 
     private List<String> buildPaymentAuthorisations() {
         return Collections.singletonList(AUTHORISATION_ID);
     }
 }
+
 */

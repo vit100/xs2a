@@ -315,29 +315,41 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
         consentAuthorization.setAuthorizationType(authorisationType);
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
 
-        if (isPsuDataNew(psuData, paymentData)) {
-            consentAuthorization.setPsuData(psuData);
-        }
+        consentAuthorization.setPsuData(handlePsuForAuthorisation(psuData, paymentData.getPsuData()));
         consentAuthorization.setPaymentData(enrichPsuData(psuData, paymentData));
         return pisAuthorizationRepository.save(consentAuthorization);
     }
 
+    private PsuData handlePsuForAuthorisation(PsuData psuData, List<PsuData> psuDataList) {
+        if (isPsuDataNew(psuData, psuDataList)) {
+            return psuData;
+        } else if (isPsuDataInList(psuData, psuDataList)) {
+            for (PsuData psu : psuDataList) {
+                if (psu.contentEquals(psuData)) {
+                    return psu;
+                }
+            }
+        }
+
+        return null;
+    }
+
     private PisCommonPaymentData enrichPsuData(PsuData psuData, PisCommonPaymentData paymentData) {
-        if (isPsuDataNew(psuData, paymentData)) {
-            List<PsuData> psuDataList = paymentData.getPsuData();
+        List<PsuData> psuDataList = paymentData.getPsuData();
+        if (isPsuDataNew(psuData, psuDataList)) {
             psuDataList.add(psuData);
             paymentData.setPsuData(psuDataList);
         }
         return paymentData;
     }
 
-    private boolean isPsuDataNew(PsuData psuData, PisCommonPaymentData paymentData) {
+    private boolean isPsuDataNew(PsuData psuData, List<PsuData> psuDataList) {
         return !psuDataMapper.isPsuDataEmpty(psuData)
-                   && !isPsuDataInList(psuData, paymentData);
+                   && !isPsuDataInList(psuData, psuDataList);
     }
 
-    private boolean isPsuDataInList(PsuData psuData, PisCommonPaymentData paymentData) {
-        return paymentData.getPsuData().stream()
+    private boolean isPsuDataInList(PsuData psuData, List<PsuData> psuDataList) {
+        return psuDataList.stream()
                    .anyMatch(psu -> psu.contentEquals(psuData));
     }
 
