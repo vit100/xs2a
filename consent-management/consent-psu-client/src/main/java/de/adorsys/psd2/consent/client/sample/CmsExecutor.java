@@ -84,8 +84,8 @@ public class CmsExecutor {
         createPaymentConsent(cmsServiceInvoker);
         getPaymentConsentById(cmsServiceInvoker);
         getPaymentConsentStatusById(cmsServiceInvoker);
-        getPisConsentAspspData(cmsServiceInvoker);
-        updatePisConsentAspspData(cmsServiceInvoker);
+        getPisAspspConsentData(cmsServiceInvoker);
+        updatePisAspspConsentData(cmsServiceInvoker);
         updatePaymentConsentStatus(cmsServiceInvoker);
         getPaymentIdByEncryptedString(cmsServiceInvoker);
 
@@ -239,7 +239,7 @@ public class CmsExecutor {
      * @param cmsServiceInvoker Service, performing rest call
      */
     private static void createPaymentConsent(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
-        Optional<CreatePisCommonPaymentResponse> createPisResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new CreatePaymentConsentMethod(buildPisConsentRequest())));
+        Optional<CreatePisCommonPaymentResponse> createPisResponse = Optional.ofNullable(cmsServiceInvoker.invoke(new CreatePaymentConsentMethod(buildPisCommonPaymentRequest())));
         createPisResponse.ifPresent(resp -> logger.info("Consent ID: " + resp.getConsentId()));
     }
 
@@ -274,7 +274,7 @@ public class CmsExecutor {
      *
      * @param cmsServiceInvoker Service, performing rest call
      */
-    private static void getPisConsentAspspData(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
+    private static void getPisAspspConsentData(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
         HttpUriParams uriParams = HttpUriParams.builder()
                                       .addPathVariable("consent-id", PAYMENT_ID)
                                       .build();
@@ -288,7 +288,7 @@ public class CmsExecutor {
      *
      * @param cmsServiceInvoker Service, performing rest call
      */
-    private static void updatePisConsentAspspData(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
+    private static void updatePisAspspConsentData(CmsServiceInvoker cmsServiceInvoker) throws IOException, URISyntaxException {
         HttpUriParams uriParams = HttpUriParams.builder()
                                       .addPathVariable("consent-id", CONSENT_ID)
                                       .build();
@@ -324,11 +324,11 @@ public class CmsExecutor {
     }
 
     /**
-     * Creates a test PIS consent request
+     * Creates a test PIS common payment request
      *
-     * @return PisConsentRequest
+     * @return PisCommonPaymentRequest
      */
-    private static PisCommonPaymentRequest buildPisConsentRequest() {
+    private static PisCommonPaymentRequest buildPisCommonPaymentRequest() {
         PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(singletonList(buildPisPayment()));
         request.setPaymentProduct("sepa-credit-transfers");
