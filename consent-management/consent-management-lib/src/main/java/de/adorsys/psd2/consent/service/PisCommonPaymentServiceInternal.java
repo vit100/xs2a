@@ -336,7 +336,7 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
 
     private PisCommonPaymentData enrichPsuData(PsuData psuData, PisCommonPaymentData paymentData) {
         List<PsuData> psuDataList = paymentData.getPsuData();
-        if (isPsuDataNew(psuData, psuDataList)) {
+        if (isPsuDataInList(psuData, psuDataList)) {
             psuDataList.add(psuData);
             paymentData.setPsuData(psuDataList);
         }
@@ -346,14 +346,16 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     private boolean isPsuDataNew(PsuData psuData, List<PsuData> psuDataList) {
         boolean isPsuDataEmpty = psuData == null
                                      || StringUtils.isBlank(psuData.getPsuId());
-
         return !isPsuDataEmpty
                    && !isPsuDataInList(psuData, psuDataList);
     }
 
     private boolean isPsuDataInList(PsuData psuData, List<PsuData> psuDataList) {
-        return psuDataList.stream()
-                   .anyMatch(psu -> psu.contentEquals(psuData));
+        boolean isPsuDataCorrect = psuData != null
+                                       && StringUtils.isNotBlank(psuData.getPsuId());
+        return isPsuDataCorrect
+                   && psuDataList.stream()
+                          .anyMatch(psu -> psu.contentEquals(psuData));
     }
 
     private List<String> readAuthorisationsFromPaymentCommonData(PisCommonPaymentData paymentData, CmsAuthorisationType authorisationType) {
