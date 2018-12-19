@@ -18,20 +18,19 @@
 
 package de.adorsys.psd2.consent.service;
 
-
-import de.adorsys.psd2.consent.api.CmsAspspConsentDataBase64;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
+import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
-import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
-import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
-import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
-import de.adorsys.psd2.consent.repository.PisAuthorizationRepository;
-import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
-import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
-import de.adorsys.psd2.consent.service.security.EncryptedData;
+import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
+import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,181 +39,313 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PisCommonPaymentServiceInternalEncryptedTest {
-
-    @InjectMocks
-    private PisCommonPaymentServiceInternal pisCommonPaymentService;
-    @Mock
-    private PisPaymentDataRepository pisPaymentDataRepository;
-    @Mock
-    private PisAuthorizationRepository pisAuthorizationRepository;
-    @Mock
-    SecurityDataService securityDataService;
-    @Mock
-    private PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
-
-    private PisCommonPaymentData pisCommonPaymentData;
-    private static final String ENCRYPTED_CONSENT_ID = "encrypted consent id";
-    private static final String UNDECRYPTABLE_CONSENT_ID = "undecryptable consent id";
-    private static final String DECRYPTED_COMMON_PAYMENT_ID = "255574b2-f115-4f3c-8d77-c1897749c060";
     private static final TransactionStatus TRANSACTION_STATUS = TransactionStatus.RCVD;
     private static final ScaStatus SCA_STATUS = ScaStatus.SCAMETHODSELECTED;
-
     private static final String ENCRYPTED_PAYMENT_ID = "encrypted payment id";
-    private static final String UNDECRYPTABLE_PAYMENT_ID = "undecryptable payment id";
     private static final String DECRYPTED_PAYMENT_ID = "1856e4fa-8af8-427b-85ec-4caf515ce074";
     private static final CmsAuthorisationType AUTHORISATION_TYPE = CmsAuthorisationType.CREATED;
     private static final String AUTHORISATION_ID = "46f2e3a7-1855-4815-8755-5ca76769a1a4";
 
-
-    private final long PIS_PAYMENT_DATA_ID = 1;
-    private final String EXTERNAL_ID = "4b112130-6a96-4941-a220-2da8a4af2c65";
-    private final String EXTERNAL_ID_NOT_EXIST = "4b112130-6a96-4941-a220-2da8a4af2c63";
-    private final String paymentId = "5bbde955ca10e8e4035a10c2";
-    private final String paymentIdWrong = "5bbdcb28ca10e8e14a41b12f";
-    private static final byte[] ENCRYPTED_CONSENT_DATA = "test data".getBytes();
-    private PisPaymentData pisPaymentData;
-    private List<PisAuthorization> pisAuthorizationList = new ArrayList<>();
-    private CmsAspspConsentDataBase64 cmsAspspConsentDataBase64;
-    private static final String FINALISED_AUTHORISATION_ID = "9b112130-6a96-4941-a220-2da8a4af2c65";
-    private static final String FINALISED_CANCELLATION_AUTHORISATION_ID = "2a112130-6a96-4941-a220-2da8a4af2c65";
+    @InjectMocks
+    private PisCommonPaymentServiceInternalEncrypted pisCommonPaymentServiceInternalEncrypted;
+    @Mock
+    private PisCommonPaymentService pisCommonPaymentService;
+    @Mock
+    private SecurityDataService securityDataService;
 
     @Before
     public void setUp() {
-        when(securityDataService.encryptId(DECRYPTED_COMMON_PAYMENT_ID))
-            .thenReturn(Optional.of(ENCRYPTED_CONSENT_ID));
-        when(securityDataService.decryptId(ENCRYPTED_CONSENT_ID))
-            .thenReturn(Optional.of(DECRYPTED_COMMON_PAYMENT_ID));
-        when(securityDataService.decryptId(UNDECRYPTABLE_CONSENT_ID))
-            .thenReturn(Optional.empty());
         when(securityDataService.encryptId(DECRYPTED_PAYMENT_ID))
             .thenReturn(Optional.of(ENCRYPTED_PAYMENT_ID));
         when(securityDataService.decryptId(ENCRYPTED_PAYMENT_ID))
             .thenReturn(Optional.of(DECRYPTED_PAYMENT_ID));
-        when(securityDataService.decryptId(UNDECRYPTABLE_PAYMENT_ID))
-            .thenReturn(Optional.empty());
-
-        cmsAspspConsentDataBase64 = buildUpdateBlobRequest();
-        pisCommonPaymentData = buildPisCommonPaymentData();
-        pisPaymentData = buildPaymentData(pisCommonPaymentData);
-        pisAuthorizationList.add(buildPisCommonPaymentAuthorisation(EXTERNAL_ID));
-        when(securityDataService.decryptId(EXTERNAL_ID)).thenReturn(Optional.of(EXTERNAL_ID));
-        when(securityDataService.decryptId(EXTERNAL_ID_NOT_EXIST)).thenReturn(Optional.of(EXTERNAL_ID_NOT_EXIST));
-        when(securityDataService.encryptConsentData(EXTERNAL_ID, cmsAspspConsentDataBase64.getAspspConsentDataBase64()))
-            .thenReturn(Optional.of(new EncryptedData(ENCRYPTED_CONSENT_DATA)));
+        when(securityDataService.encryptId(DECRYPTED_PAYMENT_ID))
+            .thenReturn(Optional.of(ENCRYPTED_PAYMENT_ID));
+        when(securityDataService.decryptId(ENCRYPTED_PAYMENT_ID))
+            .thenReturn(Optional.of(DECRYPTED_PAYMENT_ID));
+        when(pisCommonPaymentService.createCommonPayment(buildPisPaymentInfoRequest()))
+            .thenReturn(Optional.of(buildCreatePisCommonPaymentResponse(DECRYPTED_PAYMENT_ID)));
+        when(pisCommonPaymentService.getPisCommonPaymentStatusById(DECRYPTED_PAYMENT_ID))
+            .thenReturn(Optional.of(TRANSACTION_STATUS));
+        when(pisCommonPaymentService.getCommonPaymentById(DECRYPTED_PAYMENT_ID))
+            .thenReturn(Optional.of(buildPisCommonPaymentResponse(DECRYPTED_PAYMENT_ID)));
+        when(pisCommonPaymentService.updateCommonPaymentStatusById(DECRYPTED_PAYMENT_ID, TRANSACTION_STATUS))
+            .thenReturn(Optional.of(true));
+        when(pisCommonPaymentService.createAuthorization(DECRYPTED_PAYMENT_ID, AUTHORISATION_TYPE, buildPsuIdData()))
+            .thenReturn(Optional.of(buildCreatePisAuthorisationResponse()));
+        when(pisCommonPaymentService.createAuthorizationCancellation(DECRYPTED_PAYMENT_ID, AUTHORISATION_TYPE, buildPsuIdData()))
+            .thenReturn(Optional.of(buildCreatePisAuthorisationResponse()));
+        when(pisCommonPaymentService.updatePisAuthorisation(AUTHORISATION_ID, buildUpdatePisCommonPaymentPsuDataRequest()))
+            .thenReturn(Optional.of(buildUpdatePisCommonPaymentPsuDataResponse()));
+        when(pisCommonPaymentService.updatePisCancellationAuthorisation(AUTHORISATION_ID, buildUpdatePisCommonPaymentPsuDataRequest()))
+            .thenReturn(Optional.of(buildUpdatePisCommonPaymentPsuDataResponse()));
+        when(pisCommonPaymentService.getPisAuthorisationById(AUTHORISATION_ID))
+            .thenReturn(Optional.of(buildGetPisAuthorisationResponse()));
+        when(pisCommonPaymentService.getPisCancellationAuthorisationById(AUTHORISATION_ID))
+            .thenReturn(Optional.of(buildGetPisAuthorisationResponse()));
+        when(pisCommonPaymentService.getAuthorisationsByPaymentId(DECRYPTED_PAYMENT_ID, CmsAuthorisationType.CREATED))
+            .thenReturn(Optional.of(buildPaymentAuthorisations()));
+        when(pisCommonPaymentService.getPsuDataListByPaymentId(DECRYPTED_PAYMENT_ID))
+            .thenReturn(Optional.of(buildPsuIdDataList()));
     }
 
     @Test
-    public void getAuthorisationByPaymentIdSuccess() {
-        //When
-        when(securityDataService.decryptId(paymentId)).thenReturn(Optional.of(paymentId));
-        when(pisPaymentDataRepository.findByPaymentIdAndPaymentDataTransactionStatus(paymentId, TransactionStatus.RCVD)).thenReturn(Optional.of(Collections.singletonList(pisPaymentData)));
-        //Then
-        Optional<List<String>> authorizationByPaymentId = pisCommonPaymentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CANCELLED);
-        //Assert
-        assertTrue(authorizationByPaymentId.isPresent());
-        assertEquals(authorizationByPaymentId.get().size(), pisAuthorizationList.size());
-        assertEquals(authorizationByPaymentId.get().get(0), pisAuthorizationList.get(0).getExternalId());
+    public void createCommonPayment_success() {
+        // Given
+        PisPaymentInfo request = buildPisPaymentInfoRequest();
+        CreatePisCommonPaymentResponse expected = buildCreatePisCommonPaymentResponse(ENCRYPTED_PAYMENT_ID);
+
+        // When
+        Optional<CreatePisCommonPaymentResponse> actual = pisCommonPaymentServiceInternalEncrypted.createCommonPayment(request);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1)).createCommonPayment(request);
     }
 
     @Test
-    public void getAuthorisationByPaymentIdWrongPaymentId() {
-        //When
-        when(securityDataService.decryptId(paymentIdWrong)).thenReturn(Optional.empty());
-        when(pisPaymentDataRepository.findByPaymentIdAndPaymentDataTransactionStatus(paymentIdWrong, TransactionStatus.RCVD)).thenReturn(Optional.empty());
-        when(pisCommonPaymentDataRepository.findByPaymentIdAndTransactionStatus(paymentIdWrong, TransactionStatus.RCVD)).thenReturn(Optional.empty());
-        //Then
-        Optional<List<String>> authorizationByPaymentId = pisCommonPaymentService.getAuthorisationsByPaymentId(paymentIdWrong, CmsAuthorisationType.CANCELLED);
-        //Assert
-        assertFalse(authorizationByPaymentId.isPresent());
+    public void getPisCommonPaymentStatusById_success() {
+        // When
+        Optional<TransactionStatus> actual = pisCommonPaymentServiceInternalEncrypted.getPisCommonPaymentStatusById(ENCRYPTED_PAYMENT_ID);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(TRANSACTION_STATUS, actual.get());
+        verify(pisCommonPaymentService, times(1)).getPisCommonPaymentStatusById(DECRYPTED_PAYMENT_ID);
     }
 
     @Test
-    public void updateConsentAuthorisation_FinalisedStatus_Fail() {
-        //Given
-        ScaStatus expectedScaStatus = ScaStatus.STARTED;
-        ScaStatus actualScaStatus = ScaStatus.FINALISED;
+    public void getCommonPaymentById_success() {
+        // Given
+        PisCommonPaymentResponse expected = buildPisCommonPaymentResponse(DECRYPTED_PAYMENT_ID);
 
-        UpdatePisCommonPaymentPsuDataRequest updatePisCommonPaymentPsuDataRequest = buildUpdatePisCommonPaymentPsuDataRequest(expectedScaStatus);
-        PisAuthorization finalisedConsentAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
+        // When
+        Optional<PisCommonPaymentResponse> actual = pisCommonPaymentServiceInternalEncrypted.getCommonPaymentById(ENCRYPTED_PAYMENT_ID);
 
-        when(pisAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_AUTHORISATION_ID, CmsAuthorisationType.CREATED))
-            .thenReturn(Optional.of(finalisedConsentAuthorization));
-
-        //When
-        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuDataResponse = pisCommonPaymentService.updatePisAuthorisation(FINALISED_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
-
-        //Then
-        assertTrue(updatePisCommonPaymentPsuDataResponse.isPresent());
-        assertNotEquals(updatePisCommonPaymentPsuDataResponse.get().getScaStatus(), expectedScaStatus);
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1)).getCommonPaymentById(DECRYPTED_PAYMENT_ID);
     }
 
     @Test
-    public void updateConsentCancellationAuthorisation_FinalisedStatus_Fail() {
-        //Given
-        ScaStatus expectedScaStatus = ScaStatus.STARTED;
-        ScaStatus actualScaStatus = ScaStatus.FINALISED;
+    public void updateCommonPaymentStatusById_success() {
+        // When
+        Optional<Boolean> actual = pisCommonPaymentServiceInternalEncrypted.updateCommonPaymentStatusById(ENCRYPTED_PAYMENT_ID, TRANSACTION_STATUS);
 
-        PisAuthorization finalisedCancellationAuthorization = buildFinalisedConsentAuthorisation(actualScaStatus);
-        UpdatePisCommonPaymentPsuDataRequest updatePisCommonPaymentPsuDataRequest = buildUpdatePisCommonPaymentPsuDataRequest(expectedScaStatus);
-
-        when(pisAuthorizationRepository.findByExternalIdAndAuthorizationType(FINALISED_CANCELLATION_AUTHORISATION_ID, CmsAuthorisationType.CANCELLED))
-            .thenReturn(Optional.of(finalisedCancellationAuthorization));
-
-        //When
-        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuDataResponse = pisCommonPaymentService.updatePisCancellationAuthorisation(FINALISED_CANCELLATION_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
-
-        //Then
-        assertTrue(updatePisCommonPaymentPsuDataResponse.isPresent());
-        assertNotEquals(updatePisCommonPaymentPsuDataResponse.get().getScaStatus(), expectedScaStatus);
-
+        // Then
+        assertTrue(actual.isPresent());
+        assertTrue(actual.get());
+        verify(pisCommonPaymentService, times(1)).updateCommonPaymentStatusById(DECRYPTED_PAYMENT_ID, TRANSACTION_STATUS);
     }
 
-    private UpdatePisCommonPaymentPsuDataRequest buildUpdatePisCommonPaymentPsuDataRequest(ScaStatus status) {
+    @Test
+    public void getDecryptedId_success() {
+        // When
+        Optional<String> actual = pisCommonPaymentServiceInternalEncrypted.getDecryptedId(ENCRYPTED_PAYMENT_ID);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(DECRYPTED_PAYMENT_ID, actual.get());
+    }
+
+    @Test
+    public void createAuthorization_success() {
+        // Given
+        PsuIdData psuIdData = buildPsuIdData();
+        CreatePisAuthorisationResponse expected = buildCreatePisAuthorisationResponse();
+
+        // When
+        Optional<CreatePisAuthorisationResponse> actual =
+            pisCommonPaymentServiceInternalEncrypted.createAuthorization(ENCRYPTED_PAYMENT_ID, AUTHORISATION_TYPE, psuIdData);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1))
+            .createAuthorization(DECRYPTED_PAYMENT_ID, AUTHORISATION_TYPE, psuIdData);
+    }
+
+    @Test
+    public void createAuthorizationCancellation_success() {
+        // Given
+        PsuIdData psuIdData = buildPsuIdData();
+        CreatePisAuthorisationResponse expected = buildCreatePisAuthorisationResponse();
+
+        // When
+        Optional<CreatePisAuthorisationResponse> actual =
+            pisCommonPaymentServiceInternalEncrypted.createAuthorizationCancellation(ENCRYPTED_PAYMENT_ID, AUTHORISATION_TYPE, psuIdData);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1))
+            .createAuthorizationCancellation(DECRYPTED_PAYMENT_ID, AUTHORISATION_TYPE, psuIdData);
+    }
+
+    @Test
+    public void updatePisAuthorisation_success() {
+        // Given
+        UpdatePisCommonPaymentPsuDataRequest request = buildUpdatePisCommonPaymentPsuDataRequest();
+        UpdatePisCommonPaymentPsuDataResponse expected = buildUpdatePisCommonPaymentPsuDataResponse();
+
+        // When
+        Optional<UpdatePisCommonPaymentPsuDataResponse> actual = pisCommonPaymentServiceInternalEncrypted.updatePisAuthorisation(AUTHORISATION_ID, request);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1))
+            .updatePisAuthorisation(AUTHORISATION_ID, request);
+    }
+
+    @Test
+    public void updatePisCancellationAuthorisation_success() {
+        // Given
+        UpdatePisCommonPaymentPsuDataRequest request = buildUpdatePisCommonPaymentPsuDataRequest();
+        UpdatePisCommonPaymentPsuDataResponse expected = buildUpdatePisCommonPaymentPsuDataResponse();
+
+        // When
+        Optional<UpdatePisCommonPaymentPsuDataResponse> actual =
+            pisCommonPaymentServiceInternalEncrypted.updatePisCancellationAuthorisation(AUTHORISATION_ID, request);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1))
+            .updatePisCancellationAuthorisation(AUTHORISATION_ID, request);
+    }
+
+    @Test
+    public void updateCommonPayment_success() {
+        // Given
+        PisCommonPaymentRequest request = buildPisCommonPaymentRequest();
+
+        // When
+        pisCommonPaymentServiceInternalEncrypted.updateCommonPayment(request, ENCRYPTED_PAYMENT_ID);
+
+        // Then
+        verify(pisCommonPaymentService, times(1))
+            .updateCommonPayment(request, DECRYPTED_PAYMENT_ID);
+    }
+
+    @Test
+    public void getPisAuthorisationById_success() {
+        // Given
+        GetPisAuthorisationResponse expected = buildGetPisAuthorisationResponse();
+
+        // When
+        Optional<GetPisAuthorisationResponse> actual =
+            pisCommonPaymentServiceInternalEncrypted.getPisAuthorisationById(AUTHORISATION_ID);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1)).getPisAuthorisationById(AUTHORISATION_ID);
+    }
+
+    @Test
+    public void getPisCancellationAuthorisationById_success() {
+        // Given
+        GetPisAuthorisationResponse expected = buildGetPisAuthorisationResponse();
+
+        // When
+        Optional<GetPisAuthorisationResponse> actual =
+            pisCommonPaymentServiceInternalEncrypted.getPisCancellationAuthorisationById(AUTHORISATION_ID);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1))
+            .getPisCancellationAuthorisationById(AUTHORISATION_ID);
+    }
+
+    @Test
+    public void getAuthorisationsByPaymentId_success() {
+        // Given
+        List<String> expected = buildPaymentAuthorisations();
+
+        // When
+        Optional<List<String>> actual = pisCommonPaymentServiceInternalEncrypted.getAuthorisationsByPaymentId(ENCRYPTED_PAYMENT_ID,
+                                                                                                              CmsAuthorisationType.CREATED);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1))
+            .getAuthorisationsByPaymentId(DECRYPTED_PAYMENT_ID, CmsAuthorisationType.CREATED);
+    }
+
+    @Test
+    public void getPsuDataListByPaymentId_success() {
+        // Given
+        List<PsuIdData> expected = buildPsuIdDataList();
+
+        // When
+        Optional<List<PsuIdData>> actual = pisCommonPaymentServiceInternalEncrypted.getPsuDataListByPaymentId(ENCRYPTED_PAYMENT_ID);
+
+        // Then
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
+        verify(pisCommonPaymentService, times(1)).getPsuDataListByPaymentId(DECRYPTED_PAYMENT_ID);
+    }
+
+    private PisPaymentInfo buildPisPaymentInfoRequest() {
+        return new PisPaymentInfo();
+    }
+
+    private PisCommonPaymentRequest buildPisCommonPaymentRequest() {
+        return new PisCommonPaymentRequest();
+    }
+
+    private CreatePisCommonPaymentResponse buildCreatePisCommonPaymentResponse(String id) {
+        return new CreatePisCommonPaymentResponse(id);
+    }
+
+    private PisCommonPaymentResponse buildPisCommonPaymentResponse(String id) {
+        PisCommonPaymentResponse response = new PisCommonPaymentResponse();
+        response.setExternalId(id);
+        return response;
+    }
+
+    private PsuIdData buildPsuIdData() {
+        return new PsuIdData(null, null, null, null);
+    }
+
+    private List<PsuIdData> buildPsuIdDataList() {
+        return Collections.singletonList(buildPsuIdData());
+    }
+
+    private CreatePisAuthorisationResponse buildCreatePisAuthorisationResponse() {
+        return new CreatePisAuthorisationResponse(AUTHORISATION_ID);
+    }
+
+    private UpdatePisCommonPaymentPsuDataRequest buildUpdatePisCommonPaymentPsuDataRequest() {
         UpdatePisCommonPaymentPsuDataRequest request = new UpdatePisCommonPaymentPsuDataRequest();
-        request.setAuthorizationId(FINALISED_AUTHORISATION_ID);
-        request.setScaStatus(status);
+        request.setAuthorizationId(AUTHORISATION_ID);
         return request;
     }
 
-    private PisAuthorization buildFinalisedConsentAuthorisation(ScaStatus status) {
-        PisAuthorization pisAuthorization = new PisAuthorization();
-        pisAuthorization.setExternalId(FINALISED_AUTHORISATION_ID);
-        pisAuthorization.setScaStatus(status);
-        return pisAuthorization;
+    private UpdatePisCommonPaymentPsuDataResponse buildUpdatePisCommonPaymentPsuDataResponse() {
+        return new UpdatePisCommonPaymentPsuDataResponse(SCA_STATUS);
     }
 
-    private PisCommonPaymentData buildPisCommonPaymentData() {
-        PisCommonPaymentData pisCommonPaymentData = new PisCommonPaymentData();
-        pisCommonPaymentData.setId(PIS_PAYMENT_DATA_ID);
-        pisCommonPaymentData.setTransactionStatus(TransactionStatus.RCVD);
-        pisCommonPaymentData.setAuthorizations(pisAuthorizationList);
-        return pisCommonPaymentData;
+    private GetPisAuthorisationResponse buildGetPisAuthorisationResponse() {
+        return new GetPisAuthorisationResponse();
     }
 
-    private CmsAspspConsentDataBase64 buildUpdateBlobRequest() {
-        return new CmsAspspConsentDataBase64("encryptedId",
-            Base64.getEncoder().encodeToString("decrypted consent data".getBytes()));
-    }
-
-    private PisAuthorization buildPisCommonPaymentAuthorisation(String externalId) {
-        PisAuthorization pisAuthorization = new PisAuthorization();
-        pisAuthorization.setExternalId(externalId);
-        pisAuthorization.setAuthorizationType(CmsAuthorisationType.CANCELLED);
-        return pisAuthorization;
-    }
-
-    private PisPaymentData buildPaymentData(PisCommonPaymentData pisCommonPaymentData) {
-        PisPaymentData paymentData = new PisPaymentData();
-        paymentData.setPaymentId(paymentId);
-        paymentData.setPaymentData(pisCommonPaymentData);
-        return paymentData;
+    private List<String> buildPaymentAuthorisations() {
+        return Collections.singletonList(AUTHORISATION_ID);
     }
 }
-
