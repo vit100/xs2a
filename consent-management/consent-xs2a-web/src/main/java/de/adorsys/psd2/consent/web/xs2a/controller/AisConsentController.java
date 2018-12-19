@@ -155,7 +155,7 @@ public class AisConsentController {
     }
 
     @GetMapping(path = "/{consent-id}/authorisations/{authorisation-id}/status")
-    @ApiOperation(value = "Gets SCA status of consent authorization.")
+    @ApiOperation(value = "Gets SCA status of consent authorisation.")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found")})
