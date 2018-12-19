@@ -92,6 +92,4 @@ public class PaymentAuthorisationServiceTest {
         assertTrue(actual.hasError());
         assertNull(actual.getBody());
     }
-
-
 }
