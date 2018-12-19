@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 
 package de.adorsys.psd2.consent.service;
@@ -117,7 +118,7 @@ public class PisCommonPaymentServiceInternalTest {
             .thenReturn(Optional.of(finalisedConsentAuthorization));
 
         //When
-        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuDataResponse = pisCommonPaymentService.updateCommonPaymentAuthorisation(FINALISED_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
+        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuDataResponse = pisCommonPaymentService.updatePisAuthorisation(FINALISED_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
 
         //Then
         assertTrue(updatePisCommonPaymentPsuDataResponse.isPresent());
@@ -137,7 +138,7 @@ public class PisCommonPaymentServiceInternalTest {
             .thenReturn(Optional.of(finalisedCancellationAuthorization));
 
         //When
-        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuDataResponse = pisCommonPaymentService.updateCommonPaymentCancellationAuthorisation(FINALISED_CANCELLATION_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
+        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuDataResponse = pisCommonPaymentService.updatePisCancellationAuthorisation(FINALISED_CANCELLATION_AUTHORISATION_ID, updatePisCommonPaymentPsuDataRequest);
 
         //Then
         assertTrue(updatePisCommonPaymentPsuDataResponse.isPresent());
@@ -186,3 +187,4 @@ public class PisCommonPaymentServiceInternalTest {
         return paymentData;
     }
 }
+*/

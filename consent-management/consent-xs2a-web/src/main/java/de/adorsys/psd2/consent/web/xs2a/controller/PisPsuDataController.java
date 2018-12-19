@@ -16,8 +16,7 @@
 
 package de.adorsys.psd2.consent.web.xs2a.controller;
 
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
-import de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +34,7 @@ import java.util.List;
 @RequestMapping(path = "api/v1/pis")
 @Api(value = "api/v1/pis", tags = "PIS, PSU Data", description = "Provides access to consent management system for PSU Data")
 public class PisPsuDataController {
-    private final PisCommonPaymentService pisCommonPaymentService;
-    !!!!!!  private final PisConsentServiceEncrypted pisConsentService;
+    private final PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
 
     @GetMapping(path = "/payment/{payment-id}/psu-data")
     @ApiOperation(value = "Get PSU data identified by given payment id.")
@@ -46,7 +44,7 @@ public class PisPsuDataController {
     public ResponseEntity<List<PsuIdData>> getPsuDataByPaymentId(
         @ApiParam(name = "payment-id", value = "The payment identification.", example = "32454656712432")
         @PathVariable("payment-id") String paymentId) {
-        return pisCommonPaymentService.getPsuDataListByPaymentId(paymentId)
+        return pisCommonPaymentServiceEncrypted.getPsuDataListByPaymentId(paymentId)
                    .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

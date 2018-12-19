@@ -45,7 +45,7 @@ public class Xs2aPisCommonPaymentMapper {
     }
 
     public Xs2aPisCommonPayment mapToXs2aPisCommonPayment(CreatePisCommonPaymentResponse response, PsuIdData psuData) {
-        return new Xs2aPisCommonPayment(response.getConsentId(), psuData);
+        return new Xs2aPisCommonPayment(response.getPaymentId(), psuData);
     }
 
     public UpdatePisCommonPaymentPsuDataRequest mapToCmsUpdateCommonPaymentPsuDataReq(Xs2aUpdatePisCommonPaymentPsuDataRequest updatePsuDataRequest,

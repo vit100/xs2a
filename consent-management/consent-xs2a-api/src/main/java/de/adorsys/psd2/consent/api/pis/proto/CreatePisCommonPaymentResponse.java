@@ -20,5 +20,5 @@ import lombok.Value;
 
 @Value
 public class CreatePisCommonPaymentResponse {
-    private String consentId;
+    private String paymentId;
 }

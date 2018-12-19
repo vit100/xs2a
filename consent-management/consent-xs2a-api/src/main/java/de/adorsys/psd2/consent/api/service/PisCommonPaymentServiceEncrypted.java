@@ -19,12 +19,12 @@ package de.adorsys.psd2.consent.api.service;
 import java.util.Optional;
 
 /**
- * PisConsentService with enabled encryption and decryption
+ * PisCommonPaymentService with enabled encryption and decryption
  *
- * @see de.adorsys.psd2.consent.api.service.PisConsentServiceBase
- * @see de.adorsys.psd2.consent.api.service.PisConsentService
+ * @see PisCommonPaymentServiceBase
+ * @see PisCommonPaymentService
  */
-public interface PisConsentServiceEncrypted extends PisConsentServiceBase {
+public interface PisCommonPaymentServiceEncrypted extends PisCommonPaymentServiceBase {
     /**
      * Gets original decrypted Id from encrypted string
      *

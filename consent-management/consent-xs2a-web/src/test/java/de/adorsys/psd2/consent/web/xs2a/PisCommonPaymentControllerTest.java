@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 
 package de.adorsys.psd2.consent.web.xs2a;
@@ -76,7 +77,7 @@ public class PisCommonPaymentControllerTest {
         when(pisCommonPaymentService.getCommonPaymentById(PAYMENT_ID)).thenReturn(Optional.of(getPisCommonPaymentResponse()));
         when(pisCommonPaymentService.updateCommonPaymentStatusById(PAYMENT_ID, TransactionStatus.RCVD)).thenReturn(Optional.of(Boolean.TRUE));
         when(pisCommonPaymentService.createAuthorization(PAYMENT_ID, CmsAuthorisationType.CREATED, PSU_DATA)).thenReturn(Optional.of(getCreatePisAuthorisationResponse()));
-        when(pisCommonPaymentService.updateCommonPaymentAuthorisation(AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest())).thenReturn(Optional.of(getUpdatePisCommonPaymentPsuDataResponse()));
+        when(pisCommonPaymentService.updatePisAuthorisation(AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest())).thenReturn(Optional.of(getUpdatePisCommonPaymentPsuDataResponse()));
     }
 
     @Test
@@ -220,7 +221,7 @@ public class PisCommonPaymentControllerTest {
     @Test
     public void updateConsentAuthorization_Failure() {
         //Given
-        when(pisCommonPaymentService.updateCommonPaymentAuthorisation(WRONG_AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest())).thenReturn(Optional.empty());
+        when(pisCommonPaymentService.updatePisAuthorisation(WRONG_AUTHORISATION_ID, getUpdatePisCommonPaymentPsuDataRequest())).thenReturn(Optional.empty());
         ResponseEntity<UpdatePisCommonPaymentPsuDataResponse> expected = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         //When
@@ -233,7 +234,7 @@ public class PisCommonPaymentControllerTest {
     @Test
     public void getConsentAuthorization_Success() {
         GetPisAuthorisationResponse response = getGetPisAuthorisationResponse();
-        when(pisCommonPaymentService.getPisCommonPaymentAuthorisationById(any())).thenReturn(Optional.of(response));
+        when(pisCommonPaymentService.getPisAuthorisationById(any())).thenReturn(Optional.of(response));
 
         // Given
         GetPisAuthorisationResponse expectedResponse = getGetPisAuthorisationResponse();
@@ -249,7 +250,7 @@ public class PisCommonPaymentControllerTest {
 
     @Test
     public void getConsentAuthorization_Failure() {
-        when(pisCommonPaymentService.getPisCommonPaymentAuthorisationById(any())).thenReturn(Optional.empty());
+        when(pisCommonPaymentService.getPisAuthorisationById(any())).thenReturn(Optional.empty());
 
         // When
         ResponseEntity<GetPisAuthorisationResponse> result =
@@ -297,3 +298,4 @@ public class PisCommonPaymentControllerTest {
         return new UpdatePisCommonPaymentPsuDataResponse(ScaStatus.RECEIVED);
     }
 }
+*/

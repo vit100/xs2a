@@ -17,16 +17,6 @@
 package de.adorsys.psd2.consent.web.xs2a.controller;
 
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
-import de.adorsys.psd2.consent.api.pis.PisConsentStatusResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisConsentAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisConsentPsuDataResponse;
-import de.adorsys.psd2.consent.api.pis.proto.CreatePisConsentResponse;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentRequest;
-import de.adorsys.psd2.consent.api.pis.proto.PisConsentResponse;
-import de.adorsys.psd2.consent.api.service.PisConsentServiceEncrypted;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.consent.api.pis.PisCommonPaymentDataStatusResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
@@ -36,7 +26,7 @@ import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
+import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import io.swagger.annotations.*;
@@ -52,16 +42,14 @@ import java.util.List;
 @RequestMapping(path = "api/v1/pis/common-payments")
 @Api(value = "api/v1/pis/common-payments", tags = "PIS, Common Payment", description = "Provides access to common payment system for PIS")
 public class PisCommonPaymentController {
-    private final PisCommonPaymentService pisCommonPaymentService;
-    private final PisConsentServiceEncrypted pisConsentService;
-
+    private final PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
 
     @PostMapping(path = "/")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CreatePisCommonPaymentResponse.class),
         @ApiResponse(code = 400, message = "Bad request")})
     public ResponseEntity<CreatePisCommonPaymentResponse> createCommonPayment(@RequestBody PisPaymentInfo request) {
-        return pisCommonPaymentService.createCommonPayment(request)
+        return pisCommonPaymentServiceEncrypted.createCommonPayment(request)
                    .map(c -> new ResponseEntity<>(c, HttpStatus.CREATED))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
@@ -74,7 +62,7 @@ public class PisCommonPaymentController {
     public ResponseEntity<PisCommonPaymentDataStatusResponse> getPisCommonPaymentStatusById(
         @ApiParam(name = "payment-id", value = "The payment identification assigned to the created payment.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("payment-id") String paymentId) {
-        return pisCommonPaymentService.getPisCommonPaymentStatusById(paymentId)
+        return pisCommonPaymentServiceEncrypted.getPisCommonPaymentStatusById(paymentId)
                    .map(status -> new ResponseEntity<>(new PisCommonPaymentDataStatusResponse(status), HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
@@ -87,7 +75,7 @@ public class PisCommonPaymentController {
     public ResponseEntity<PisCommonPaymentResponse> getCommonPaymentById(
         @ApiParam(name = "payment-id", value = "The payment identification assigned to the created payment.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("payment-id") String paymentId) {
-        return pisCommonPaymentService.getCommonPaymentById(paymentId)
+        return pisCommonPaymentServiceEncrypted.getCommonPaymentById(paymentId)
                    .map(pc -> new ResponseEntity<>(pc, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
@@ -102,7 +90,7 @@ public class PisCommonPaymentController {
         @PathVariable("payment-id") String paymentId,
         @ApiParam(value = "The following code values are permitted 'received', 'valid', 'rejected', 'expired', 'revoked by psu', 'terminated by tpp'. These values might be extended by ASPSP by more values.", allowableValues = "RECEIVED,  REJECTED, VALID, REVOKED_BY_PSU,  EXPIRED,  TERMINATED_BY_TPP")
         @PathVariable("status") String status) {
-        return pisCommonPaymentService.updateCommonPaymentStatusById(paymentId, TransactionStatus.getByValue(status))
+        return pisCommonPaymentServiceEncrypted.updateCommonPaymentStatusById(paymentId, TransactionStatus.getByValue(status))
                    .map(updated -> new ResponseEntity<Void>(HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
@@ -116,7 +104,7 @@ public class PisCommonPaymentController {
         @ApiParam(name = "payment-id", value = "The payment identification assigned to the created authorization.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("payment-id") String paymentId,
         @RequestBody PsuIdData psuData) {
-        return pisCommonPaymentService.createAuthorization(paymentId, CmsAuthorisationType.CREATED, psuData)
+        return pisCommonPaymentServiceEncrypted.createAuthorization(paymentId, CmsAuthorisationType.CREATED, psuData)
                    .map(authorization -> new ResponseEntity<>(authorization, HttpStatus.CREATED))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -130,7 +118,7 @@ public class PisCommonPaymentController {
         @ApiParam(name = "payment-id", value = "The payment identification of the related payment.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("payment-id") String paymentId,
         @RequestBody PsuIdData psuData) {
-        return pisCommonPaymentService.createAuthorization(paymentId, CmsAuthorisationType.CANCELLED, psuData)
+        return pisCommonPaymentServiceEncrypted.createAuthorization(paymentId, CmsAuthorisationType.CANCELLED, psuData)
                    .map(authorization -> new ResponseEntity<>(authorization, HttpStatus.CREATED))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -144,7 +132,7 @@ public class PisCommonPaymentController {
         @ApiParam(name = "authorization-id", value = "The authorization identification assigned to the created authorization.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("authorization-id") String authorizationId,
         @RequestBody UpdatePisCommonPaymentPsuDataRequest request) {
-        return pisCommonPaymentService.updateCommonPaymentAuthorisation(authorizationId, request)
+        return pisCommonPaymentServiceEncrypted.updatePisAuthorisation(authorizationId, request)
                    .map(updated -> new ResponseEntity<>(updated, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -157,7 +145,7 @@ public class PisCommonPaymentController {
     public ResponseEntity<GetPisAuthorisationResponse> getAuthorization(
         @ApiParam(name = "authorization-id", value = "The authorization identification assigned to the created authorization.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("authorization-id") String authorizationId) {
-        return pisCommonPaymentService.getPisCommonPaymentAuthorisationById(authorizationId)
+        return pisCommonPaymentServiceEncrypted.getPisAuthorisationById(authorizationId)
                    .map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -171,7 +159,7 @@ public class PisCommonPaymentController {
         @ApiParam(name = "cancellation-id", value = "The cancellation authorisation identification assigned to the created cancellation authorisation.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("cancellation-id") String cancellationId,
         @RequestBody UpdatePisCommonPaymentPsuDataRequest request) {
-        return pisCommonPaymentService.updateCommonPaymentCancellationAuthorisation(cancellationId, request)
+        return pisCommonPaymentServiceEncrypted.updatePisCancellationAuthorisation(cancellationId, request)
                    .map(updated -> new ResponseEntity<>(updated, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -184,7 +172,7 @@ public class PisCommonPaymentController {
     public ResponseEntity<GetPisAuthorisationResponse> getAuthorizationCancellation(
         @ApiParam(name = "cancellation-id", value = "The cancellation authorisation identification assigned to the created cancellation authorisation.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("cancellation-id") String cancellationId) {
-        return pisCommonPaymentService.getPisCommonPaymentCancellationAuthorisationById(cancellationId)
+        return pisCommonPaymentServiceEncrypted.getPisCancellationAuthorisationById(cancellationId)
                    .map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -197,7 +185,7 @@ public class PisCommonPaymentController {
     public ResponseEntity<List<String>> getAuthorisationCancellation(
         @ApiParam(name = "payment-id", value = "The payment identification of the related payment.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("payment-id") String paymentId) {
-        return pisCommonPaymentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CANCELLED)
+        return pisCommonPaymentServiceEncrypted.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CANCELLED)
                    .map(authorisation -> new ResponseEntity<>(authorisation, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -210,7 +198,7 @@ public class PisCommonPaymentController {
     public ResponseEntity<List<String>> getAuthorisation(
         @ApiParam(name = "payment-id", value = "The payment identification of the related payment.", example = "vOHy6fj2f5IgxHk-kTlhw6sZdTXbRE3bWsu2obq54beYOChP5NvRmfh06nrwumc2R01HygQenchEcdGOlU-U0A==_=_iR74m2PdNyE")
         @PathVariable("payment-id") String paymentId) {
-        return pisCommonPaymentService.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CREATED)
+        return pisCommonPaymentServiceEncrypted.getAuthorisationsByPaymentId(paymentId, CmsAuthorisationType.CREATED)
                    .map(authorisation -> new ResponseEntity<>(authorisation, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -221,7 +209,7 @@ public class PisCommonPaymentController {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 400, message = "Bad request")})
     public ResponseEntity<Void> updatePaymentCommonPaymentData(@RequestBody PisCommonPaymentRequest request, @PathVariable("payment-id") String paymentId) {
-        pisCommonPaymentService.updateCommonPayment(request, paymentId);
+        pisCommonPaymentServiceEncrypted.updateCommonPayment(request, paymentId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

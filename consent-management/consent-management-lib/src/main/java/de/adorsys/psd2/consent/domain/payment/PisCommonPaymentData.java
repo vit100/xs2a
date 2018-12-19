@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.domain.payment;
 
+import de.adorsys.psd2.consent.domain.InstanceDependableEntity;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.TppInfoEntity;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
@@ -31,7 +32,7 @@ import java.util.List;
 @Data
 @Entity(name = "pis_common_payment")
 @ApiModel(description = "pis common payment entity", value = "PisCommonPaymentData")
-public class PisCommonPaymentData {
+public class PisCommonPaymentData extends InstanceDependableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pis_common_payment_generator")
     @SequenceGenerator(name = "pis_common_payment_generator", sequenceName = "pis_common_payment_id_seq")

@@ -29,7 +29,6 @@ import de.adorsys.psd2.consent.repository.PisAuthorizationRepository;
 import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
 import de.adorsys.psd2.consent.service.mapper.CmsPsuPisMapper;
-import de.adorsys.psd2.consent.service.mapper.PisCommonPaymentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -57,12 +56,11 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final PisCommonPaymentService pisCommonPaymentService;
     private final CommonPaymentDataService commonPaymentDataService;
     private final PsuDataMapper psuDataMapper;
-    private final PisCommonPaymentMapper pisCommonPaymentMapper;
 
     @Override
     @Transactional
     public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String redirectId) {
-        return pisConsentAuthorizationRepository.findByExternalId(redirectId)
+        return pisAuthorizationRepository.findByExternalId(redirectId)
                    .map(PisAuthorization::getPaymentData)
                    .map(dta -> updatePsuData(dta, psuIdData))
                    .orElse(false);
@@ -101,7 +99,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
             }
 
             changeAuthorisationStatusToFailed(authorisation);
-            String tppNokRedirectUri = authorisation.getConsent().getTppInfo().getNokRedirectUri();
+            String tppNokRedirectUri = authorisation.getPaymentData().getTppInfo().getNokRedirectUri();
 
             return Optional.of(new CmsPaymentResponse(tppNokRedirectUri));
         }
@@ -201,13 +199,6 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         return true;
     }
 
-    // do we need it ?
-    private Optional<List<PisPaymentData>> getPaymentDataList(String encryptedPaymentId) {
-        return pisCommonPaymentService.getDecryptedId(encryptedPaymentId)
-                   .flatMap(pisPaymentDataRepository::findByPaymentId);
-    }
-
-
     private boolean isAuthorisationValidForPsuAndStatus(PsuIdData givenPsuIdData, PisAuthorization authorization) {
         PsuIdData actualPsuIdData = psuDataMapper.mapToPsuIdData(authorization.getPsuData());
         return actualPsuIdData.contentEquals(givenPsuIdData) && !authorization.getScaStatus().isFinalisedStatus();
@@ -231,18 +222,5 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private void changeAuthorisationStatusToFailed(PisAuthorization authorisation) {
         authorisation.setScaStatus(ScaStatus.FAILED);
         pisAuthorizationRepository.save(authorisation);
-    }
-
-    private Optional<PisCommonPaymentData> getPisCommonPaymentByPaymentId(String paymentId) {
-        // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
-        Optional<PisCommonPaymentData> commonPaymentOpt = pisPaymentDataRepository.findByPaymentId(paymentId)
-                                              .filter(CollectionUtils::isNotEmpty)
-                                              .map(list -> list.get(0).getPaymentData());
-
-        if (!commonPaymentOpt.isPresent()) {
-            commonPaymentOpt = pisCommonPaymentDataRepository.findByPaymentId(paymentId);
-        }
-
-        return commonPaymentOpt;
     }
 }
