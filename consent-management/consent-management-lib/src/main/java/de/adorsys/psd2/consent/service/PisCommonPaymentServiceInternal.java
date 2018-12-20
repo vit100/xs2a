@@ -336,7 +336,7 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
 
     private PisCommonPaymentData enrichPsuData(PsuData psuData, PisCommonPaymentData paymentData) {
         List<PsuData> psuDataList = paymentData.getPsuData();
-        if (isPsuDataInList(psuData, psuDataList)) {
+        if (isPsuDataNew(psuData, psuDataList)) {
             psuDataList.add(psuData);
             paymentData.setPsuData(psuDataList);
         }
