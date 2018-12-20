@@ -47,7 +47,7 @@ public class EmbeddedPisScaAuthorisationServiceTest {
     @Before
     public void setUp() {
         when(pisAuthorisationService.getAuthorisationScaStatus(PAYMENT_ID, AUTHORISATION_ID))
-            .thenReturn(Optional.of(SCA_STATUS));
+            .thenReturn(Optional.of(ScaStatus.RECEIVED));
         when(pisAuthorisationService.getAuthorisationScaStatus(WRONG_PAYMENT_ID, WRONG_AUTHORISATION_ID))
             .thenReturn(Optional.empty());
         when(pisAuthorisationService.getCancellationAuthorisationScaStatus(PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
