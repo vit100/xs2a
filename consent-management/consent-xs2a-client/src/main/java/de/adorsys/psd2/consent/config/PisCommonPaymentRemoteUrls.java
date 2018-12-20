@@ -147,4 +147,25 @@ public class PisCommonPaymentRemoteUrls {
     public String getAuthorisationSubResources() {
         return commonPaymentServiceBaseUrl + "/pis/common-payments/{payment-id}/authorisations";
     }
+
+    /**
+     * @return ScaStatus authorisation status
+     * Method: GET
+     * PathVariables: String paymentId
+     * PathVariables: String authorisationId
+     */
+    public String getAuthorisationScaStatus() {
+        return commonPaymentServiceBaseUrl + "/pis/common-payments/{payment-id}/authorisations/{authorisation-id}/status";
+    }
+
+    /**
+     * @return ScaStatus cancellation authorisation status
+     * Method: GET
+     * PathVariables: String paymentId
+     * PathVariables: String cancellationId
+     */
+    public String getCancellationAuthorisationScaStatus() {
+        return commonPaymentServiceBaseUrl + "/pis/common-payments/{payment-id}/cancellation-authorisations/{cancellation-id}/status";
+    }
+
 }

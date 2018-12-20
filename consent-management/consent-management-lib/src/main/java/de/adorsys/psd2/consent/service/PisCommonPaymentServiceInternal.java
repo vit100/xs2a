@@ -42,6 +42,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -243,6 +244,15 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     public Optional<List<String>> getAuthorisationsByPaymentId(String paymentId, CmsAuthorisationType authorisationType) {
         return readReceivedCommonPaymentDataByPaymentId(paymentId)
                    .map(pmt -> readAuthorisationsFromPaymentCommonData(pmt, authorisationType));
+    }
+
+    @Override
+    public Optional<ScaStatus> getAuthorisationScaStatus(@NotNull String paymentId, @NotNull String authorisationId, CmsAuthorisationType authorisationType) {
+        Optional<PisAuthorization> authorizationOptional = pisAuthorizationRepository.findByExternalIdAndAuthorizationType(authorisationId, authorisationType);
+
+        return authorizationOptional
+                   .filter(auth -> paymentId.equals(auth.getPaymentData().getPaymentId()))
+                   .map(PisAuthorization::getScaStatus);
     }
 
     /**

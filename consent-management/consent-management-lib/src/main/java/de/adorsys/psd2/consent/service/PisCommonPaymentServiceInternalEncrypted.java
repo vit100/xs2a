@@ -30,6 +30,7 @@ import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,8 +90,8 @@ public class PisCommonPaymentServiceInternalEncrypted implements PisCommonPaymen
     @Override
     @Transactional
     public Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String encryptedPaymentId,
-                                                                                           CmsAuthorisationType authorisationType,
-                                                                                           PsuIdData psuData) {
+                                                                                    CmsAuthorisationType authorisationType,
+                                                                                    PsuIdData psuData) {
         return securityDataService.decryptId(encryptedPaymentId)
                    .flatMap(id -> pisCommonPaymentService.createAuthorizationCancellation(id, authorisationType, psuData));
     }
@@ -131,6 +132,12 @@ public class PisCommonPaymentServiceInternalEncrypted implements PisCommonPaymen
                                                                CmsAuthorisationType authorisationType) {
         return securityDataService.decryptId(encryptedPaymentId)
                    .flatMap(id -> pisCommonPaymentService.getAuthorisationsByPaymentId(id, authorisationType));
+    }
+
+    @Override
+    public Optional<ScaStatus> getAuthorisationScaStatus(String encryptedPaymentId, String authorisationId, CmsAuthorisationType authorisationType) {
+        return securityDataService.decryptId(encryptedPaymentId)
+                   .flatMap(id -> pisCommonPaymentService.getAuthorisationScaStatus(id, authorisationId, authorisationType));
     }
 
     @Override
