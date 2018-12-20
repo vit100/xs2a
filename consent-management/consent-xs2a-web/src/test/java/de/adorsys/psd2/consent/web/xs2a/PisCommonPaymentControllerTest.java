@@ -81,7 +81,7 @@ public class PisCommonPaymentControllerTest {
     }
 
     @Test
-    public void createPaymentConsent_Success() {
+    public void createCommonPayment_Success() {
         //Given
         ResponseEntity<CreatePisCommonPaymentResponse> expected = new ResponseEntity<>(new CreatePisCommonPaymentResponse(PAYMENT_ID), HttpStatus.CREATED);
 
@@ -93,7 +93,7 @@ public class PisCommonPaymentControllerTest {
     }
 
     @Test
-    public void createPaymentConsent_Failure() {
+    public void createCommonPayment_Failure() {
         //Given
         when(pisCommonPaymentService.createCommonPayment(getPisPaymentInfo())).thenReturn(Optional.empty());
         ResponseEntity<CreatePisCommonPaymentResponse> expected = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
