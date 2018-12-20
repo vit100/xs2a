@@ -26,8 +26,8 @@ import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.consent.psu.api.CmsPsuPisService;
 import de.adorsys.psd2.consent.repository.PisAuthorizationRepository;
-import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
+import de.adorsys.psd2.consent.repository.PsuDataRepository;
 import de.adorsys.psd2.consent.service.mapper.CmsPsuPisMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
@@ -50,19 +50,19 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     private final PisPaymentDataRepository pisPaymentDataRepository;
-    private final PisCommonPaymentDataRepository pisCommonPaymentDataRepository;
     private final PisAuthorizationRepository pisAuthorizationRepository;
     private final CmsPsuPisMapper cmsPsuPisMapper;
     private final PisCommonPaymentService pisCommonPaymentService;
     private final CommonPaymentDataService commonPaymentDataService;
     private final PsuDataMapper psuDataMapper;
+    private final PsuDataRepository psuDataRepository;
 
     @Override
     @Transactional
     public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String redirectId) {
         return pisAuthorizationRepository.findByExternalId(redirectId)
-                   .map(PisAuthorization::getPaymentData)
-                   .map(dta -> updatePsuData(dta, psuIdData))
+                   .map(PisAuthorization::getPsuData)
+                   .map(psuData -> updatePsuData(psuData, psuIdData))
                    .orElse(false);
     }
 
@@ -138,11 +138,16 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         }
     }
 
-    private boolean updatePsuData(PisCommonPaymentData commonPayment, PsuIdData psuIdData) {
-        PisCommonPaymentData commonPaymentData = enrichPsuData(psuIdData, commonPayment);
+    private boolean updatePsuData(PsuData psuData, PsuIdData psuIdData) {
+        PsuData newPsuData = psuDataMapper.mapToPsuData(psuIdData);
+        if (newPsuData == null || StringUtils.isBlank(newPsuData.getPsuId())) {
+            return false;
+        }
 
-        return Optional.ofNullable(pisCommonPaymentDataRepository.save(commonPaymentData))
-                   .isPresent();
+        newPsuData.setId(psuData.getId());
+        psuDataRepository.save(newPsuData);
+
+        return true;
     }
 
     private boolean validateGivenData(String realPaymentId, String givenPaymentId, PsuIdData psuIdData) {
@@ -150,27 +155,6 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
                    .filter(p -> isPsuDataEquals(givenPaymentId, psuIdData))
                    .map(id -> StringUtils.equals(realPaymentId, id))
                    .orElse(false);
-    }
-
-    private PisCommonPaymentData enrichPsuData(PsuIdData psuIdData,  PisCommonPaymentData paymentData) {
-        PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
-
-        if (psuData == null
-                || StringUtils.isBlank(psuData.getPsuId())
-                || isPsuDataInList(psuData, paymentData)) {
-            return paymentData;
-        }
-
-        List<PsuData> psuDataList = paymentData.getPsuData();
-        psuDataList.add(psuData);
-        paymentData.setPsuData(psuDataList);
-
-        return paymentData;
-    }
-
-    private boolean isPsuDataInList(PsuData psuData, PisCommonPaymentData paymentData) {
-        return paymentData.getPsuData().stream()
-                   .anyMatch(psu -> psu.contentEquals(psuData));
     }
 
     private boolean updateAuthorisationStatusAndSaveAuthorisation(PisAuthorization pisAuthorisation, ScaStatus status) {
