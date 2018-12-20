@@ -56,7 +56,7 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
 
     @Override
     @Transactional
-    public boolean updatePsuDataInConsent(@NotNull PsuIdData psuIdData, @NotNull String redirectId) {
+    public boolean updatePsuDataInConsent(@NotNull PsuIdData psuIdData, @NotNull String redirectId, String instanceId) {
         return aisConsentAuthorizationRepository.findByExternalId(redirectId)
                    .map(AisConsentAuthorization::getConsent)
                    .map(con -> updatePsuData(con, psuIdData))
@@ -65,7 +65,7 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
 
     @Override
     @Transactional
-    public @NotNull Optional<AisAccountConsent> getConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId) {
+    public @NotNull Optional<AisAccountConsent> getConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId, String instanceId) {
         return aisConsentRepository.findByExternalId(consentId)
                    .map(this::checkAndUpdateOnExpiration)
                    .map(consentMapper::mapToAisAccountConsent);
@@ -73,7 +73,7 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
 
     @Override
     @Transactional
-    public boolean updateAuthorisationStatus(@NotNull PsuIdData psuIdData, @NotNull String consentId, @NotNull String authorisationId, @NotNull ScaStatus status) {
+    public boolean updateAuthorisationStatus(@NotNull PsuIdData psuIdData, @NotNull String consentId, @NotNull String authorisationId, @NotNull ScaStatus status, String instanceId) {
         Optional<AisConsent> actualAisConsent = getActualAisConsent(consentId);
 
         if (!actualAisConsent.isPresent()) {
@@ -87,18 +87,18 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
 
     @Override
     @Transactional
-    public boolean confirmConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId) {
+    public boolean confirmConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId, String instanceId) {
         return changeConsentStatus(consentId, VALID);
     }
 
     @Override
     @Transactional
-    public boolean rejectConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId) {
+    public boolean rejectConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId, String instanceId) {
         return changeConsentStatus(consentId, REJECTED);
     }
 
     @Override
-    public @NotNull List<AisAccountConsent> getConsentsForPsu(@NotNull PsuIdData psuIdData) {
+    public @NotNull List<AisAccountConsent> getConsentsForPsu(@NotNull PsuIdData psuIdData, String instanceId) {
         return aisConsentRepository.findByPsuDataPsuId(psuIdData.getPsuId()).stream()
                    .map(consentMapper::mapToAisAccountConsent)
                    .collect(Collectors.toList());
@@ -106,13 +106,13 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
 
     @Override
     @Transactional
-    public boolean revokeConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId) {
+    public boolean revokeConsent(@NotNull PsuIdData psuIdData, @NotNull String consentId, String instanceId) {
         return changeConsentStatus(consentId, REVOKED_BY_PSU);
     }
 
     @Override
     @Transactional
-    public @NotNull Optional<CmsAisConsentResponse> checkRedirectAndGetConsent(@NotNull PsuIdData psuIdData, @NotNull String redirectId) {
+    public @NotNull Optional<CmsAisConsentResponse> checkRedirectAndGetConsent(@NotNull PsuIdData psuIdData, @NotNull String redirectId, String instanceId) {
         Optional<AisConsentAuthorization> authorisationOptional = aisConsentAuthorizationRepository.findByExternalId(redirectId);
 
         if (!authorisationOptional.isPresent()) {
