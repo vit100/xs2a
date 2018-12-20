@@ -30,6 +30,7 @@ import de.adorsys.psd2.consent.config.CmsRestException;
 import de.adorsys.psd2.consent.config.PisCommonPaymentRemoteUrls;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -142,6 +143,19 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
         return Optional.empty();
     }
 
+    @Override
+    public Optional<ScaStatus> getAuthorisationScaStatus(String paymentId, String authorisationId, CmsAuthorisationType authorisationType) {
+        String url = getAuthorisationScaStatusUrl(authorisationType);
+        try {
+            ResponseEntity<ScaStatus> request = consentRestTemplate.getForEntity(url, ScaStatus.class,
+                                                                                 paymentId, authorisationId);
+            return Optional.ofNullable(request.getBody());
+        } catch (CmsRestException cmsRestException) {
+            log.warn("Couldn't get authorisation SCA Status by paymentId {} and authorisationId {}", paymentId, authorisationId);
+        }
+        return Optional.empty();
+    }
+
     private String getAuthorisationSubResourcesUrl(CmsAuthorisationType authorisationType) {
         switch (authorisationType) {
             case CREATED:
@@ -159,5 +173,17 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
         return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getPsuDataByPaymentId(), PsuIdData[].class, paymentId)
                                    .getBody())
                    .map(Arrays::asList);
+    }
+
+    private String getAuthorisationScaStatusUrl(CmsAuthorisationType authorisationType) {
+        switch (authorisationType) {
+            case CREATED:
+                return remotePisCommonPaymentUrls.getAuthorisationScaStatus();
+            case CANCELLED:
+                return remotePisCommonPaymentUrls.getCancellationAuthorisationScaStatus();
+            default:
+                log.error("Unknown payment authorisation type {}", authorisationType);
+                throw new IllegalArgumentException("Unknown payment authorisation type " + authorisationType);
+        }
     }
 }
