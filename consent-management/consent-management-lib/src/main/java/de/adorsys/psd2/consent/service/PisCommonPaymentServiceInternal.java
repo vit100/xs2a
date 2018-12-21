@@ -49,6 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -288,14 +289,14 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
 
     private Optional<PisCommonPaymentData> readPisCommonPaymentDataByPaymentId(String paymentId) {
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
-        Optional<PisCommonPaymentData> commonPaymentDa = pisPaymentDataRepository.findByPaymentId(paymentId)
+        Optional<PisCommonPaymentData> commonPaymentData = pisPaymentDataRepository.findByPaymentId(paymentId)
                                                              .filter(CollectionUtils::isNotEmpty)
                                                              .map(list -> list.get(0).getPaymentData());
-        if (!commonPaymentDa.isPresent()) {
-            commonPaymentDa = pisCommonPaymentDataRepository.findByPaymentId(paymentId);
+        if (!commonPaymentData.isPresent()) {
+            commonPaymentData = pisCommonPaymentDataRepository.findByPaymentId(paymentId);
         }
 
-        return commonPaymentDa;
+        return commonPaymentData;
     }
 
     private void savePaymentData(PisCommonPaymentData pisCommonPayment, PisCommonPaymentRequest request) {
@@ -354,18 +355,18 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     }
 
     private boolean isPsuDataNew(PsuData psuData, List<PsuData> psuDataList) {
-        boolean isPsuDataEmpty = psuData == null
-                                     || StringUtils.isBlank(psuData.getPsuId());
-        return !isPsuDataEmpty
-                   && !isPsuDataInList(psuData, psuDataList);
+        return !isPsuDataInList(psuData, psuDataList);
     }
 
     private boolean isPsuDataInList(PsuData psuData, List<PsuData> psuDataList) {
-        boolean isPsuDataCorrect = psuData != null
-                                       && StringUtils.isNotBlank(psuData.getPsuId());
-        return isPsuDataCorrect
+        return isPsuDataCorrect(psuData)
                    && psuDataList.stream()
-                          .anyMatch(psu -> psu.contentEquals(psuData));
+                          .anyMatch(psuData::contentEquals);
+    }
+
+    private boolean isPsuDataCorrect(PsuData psuData) {
+        return Objects.nonNull(psuData)
+                   && StringUtils.isNotBlank(psuData.getPsuId());
     }
 
     private List<String> readAuthorisationsFromPaymentCommonData(PisCommonPaymentData paymentData, CmsAuthorisationType authorisationType) {

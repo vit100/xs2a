@@ -152,7 +152,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
 
     private boolean validateGivenData(String realPaymentId, String givenPaymentId, PsuIdData psuIdData) {
         return Optional.of(givenPaymentId)
-                   .filter(p -> isPsuDataEquals(givenPaymentId, psuIdData))
+                   .filter(p -> isPsuDataEquals(p, psuIdData))
                    .map(id -> StringUtils.equals(realPaymentId, id))
                    .orElse(false);
     }
