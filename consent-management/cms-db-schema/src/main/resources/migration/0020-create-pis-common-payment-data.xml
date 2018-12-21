@@ -68,7 +68,7 @@
     </changeSet>
 
     <changeSet author="iiu@adorsys.com.ua" id="2018-11-28-3">
-        <comment>Add many to one relationship with pis_common_payment.</comment>
+        <comment>Add many to one relationship with pis_common_payment</comment>
 
         <addColumn tableName="pis_consent_authorization">
             <column name="payment_id" type="BIGINT"/>

@@ -99,6 +99,7 @@ Due to some internal reasons further development of integration tests in xs2a-Re
 
 ## PisConsent is deleted from cms
 PIS Consent isn't mentioned in specification, so it has been removed. 
+Warning: All data form 'pis_consent' table will be deleted!
 
 ## New CommonPayment entity
 Instead of PisConsent we need to use a new entity 'CommonPayment'. It will replace all types of payments, which we use now (BULK, SINGLE, PERIODIC)
