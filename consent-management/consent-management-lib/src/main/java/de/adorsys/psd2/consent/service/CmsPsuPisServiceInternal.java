@@ -59,7 +59,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
 
     @Override
     @Transactional
-    public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String redirectId) {
+    public boolean updatePsuInPayment(@NotNull PsuIdData psuIdData, @NotNull String redirectId, @NotNull String instanceId) {
         return pisAuthorizationRepository.findByExternalId(redirectId)
                    .map(PisAuthorization::getPsuData)
                    .map(psuData -> updatePsuData(psuData, psuIdData))
@@ -67,7 +67,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     @Override
-    public @NotNull Optional<CmsPayment> getPayment(@NotNull PsuIdData psuIdData, @NotNull String paymentId) {
+    public @NotNull Optional<CmsPayment> getPayment(@NotNull PsuIdData psuIdData, @NotNull String paymentId, @NotNull String instanceId) {
         if (isPsuDataEquals(paymentId, psuIdData)) {
             Optional<List<PisPaymentData>> list = pisPaymentDataRepository.findByPaymentId(paymentId);
 
@@ -87,7 +87,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
 
     @Override
     @Transactional
-    public @NotNull Optional<CmsPaymentResponse> checkRedirectAndGetPayment(@NotNull PsuIdData psuIdData, @NotNull String redirectId) {
+    public @NotNull Optional<CmsPaymentResponse> checkRedirectAndGetPayment(@NotNull PsuIdData psuIdData, @NotNull String redirectId, @NotNull String instanceId) {
         Optional<PisAuthorization> optionalAuthorization = pisAuthorizationRepository.findByExternalId(redirectId)
                                                                .filter(a -> isAuthorisationValidForPsuAndStatus(psuIdData, a));
 
@@ -110,7 +110,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     @Override
     @Transactional
     public boolean updateAuthorisationStatus(@NotNull PsuIdData psuIdData, @NotNull String paymentId,
-                                             @NotNull String authorisationId, @NotNull ScaStatus status) {
+                                             @NotNull String authorisationId, @NotNull ScaStatus status, @NotNull String instanceId) {
 
         Optional<PisAuthorization> pisAuthorisation = pisAuthorizationRepository.findByExternalId(authorisationId);
 
@@ -124,7 +124,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
 
     @Override
     @Transactional
-    public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status) {
+    public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status, @NotNull String instanceId) {
         Optional<List<PisPaymentData>> list = pisPaymentDataRepository.findByPaymentId(paymentId);
 
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534

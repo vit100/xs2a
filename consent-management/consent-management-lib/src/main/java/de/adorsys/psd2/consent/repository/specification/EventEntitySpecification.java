@@ -30,18 +30,18 @@ public class EventEntitySpecification {
     private static final String PAYMENT_ID_ATTRIBUTE = "paymentId";
     private static final String TIMESTAMP_ID_ATTRIBUTE = "timestamp";
 
-    public static Specification<EventEntity> getEventsForPeriodAndInstanceId(OffsetDateTime start, OffsetDateTime end, String instanceId) {
+    public static Specification<EventEntity> byPeriodAndInstanceId(OffsetDateTime start, OffsetDateTime end, String instanceId) {
         return Specifications.where(eventPeriodSpecification(start, end))
                    .and(provideSpecificationForEntityAttribute(INSTANCE_ID_ATTRIBUTE, instanceId));
     }
 
-    public static Specification<EventEntity> getEventsForPeriodAndConsentIdAndInstanceId(OffsetDateTime start, OffsetDateTime end, String consentId, String instanceId) {
+    public static Specification<EventEntity> byPeriodAndConsentIdAndInstanceId(OffsetDateTime start, OffsetDateTime end, String consentId, String instanceId) {
         return Specifications.where(eventPeriodSpecification(start, end))
                    .and(provideSpecificationForEntityAttribute(INSTANCE_ID_ATTRIBUTE, instanceId))
                    .and(provideSpecificationForEntityAttribute(CONSENT_ID_ATTRIBUTE, consentId));
     }
 
-    public static Specification<EventEntity> getEventsForPeriodAndPaymentIdAndInstanceId(OffsetDateTime start, OffsetDateTime end, String paymentId, String instanceId) {
+    public static Specification<EventEntity> byPeriodAndPaymentIdAndInstanceId(OffsetDateTime start, OffsetDateTime end, String paymentId, String instanceId) {
         return Specifications.where(eventPeriodSpecification(start, end))
                    .and(provideSpecificationForEntityAttribute(INSTANCE_ID_ATTRIBUTE, instanceId))
                    .and(provideSpecificationForEntityAttribute(PAYMENT_ID_ATTRIBUTE, paymentId));
