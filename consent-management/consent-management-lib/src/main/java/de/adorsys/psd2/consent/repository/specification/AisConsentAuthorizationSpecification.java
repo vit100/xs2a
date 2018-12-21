@@ -19,16 +19,18 @@ package de.adorsys.psd2.consent.repository.specification;
 import de.adorsys.psd2.consent.domain.account.AisConsentAuthorization;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.stereotype.Service;
 
 import static de.adorsys.psd2.consent.repository.specification.EntityAttributeSpecificationProvider.provideSpecificationForEntityAttribute;
 
+@Service
 public class AisConsentAuthorizationSpecification {
     private static final String INSTANCE_ID_ATTRIBUTE = "instanceId";
     private static final String CONSENT_EXTERNAL_ID_ATTRIBUTE = "externalId";
 
     private AisConsentAuthorizationSpecification(){}
 
-    public static Specification<AisConsentAuthorization> byExternalIdAndInstanceId(String externalId, String instanceId) {
+    public Specification<AisConsentAuthorization> byExternalIdAndInstanceId(String externalId, String instanceId) {
         return Specifications.<AisConsentAuthorization>where(provideSpecificationForEntityAttribute(INSTANCE_ID_ATTRIBUTE, instanceId))
                    .and(provideSpecificationForEntityAttribute(CONSENT_EXTERNAL_ID_ATTRIBUTE, externalId));
     }

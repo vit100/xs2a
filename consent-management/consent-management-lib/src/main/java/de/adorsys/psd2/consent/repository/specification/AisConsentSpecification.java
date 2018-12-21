@@ -20,26 +20,25 @@ import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.account.AisConsent;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Join;
 
 import static de.adorsys.psd2.consent.repository.specification.EntityAttributeSpecificationProvider.provideSpecificationForEntityAttribute;
 
+@Service
 public class AisConsentSpecification {
     private static final String INSTANCE_ID_ATTRIBUTE = "instanceId";
     private static final String CONSENT_EXTERNAL_ID_ATTRIBUTE = "externalId";
     private static final String PSU_ID_ATTRIBUTE = "psuId";
     private static final String PSU_DATA_ATTRIBUTE = "psuData";
 
-    private AisConsentSpecification() {
-    }
-
-    public static Specification<AisConsent> byConsentIdAndInstanceId(String consentId, String instanceId) {
+    public Specification<AisConsent> byConsentIdAndInstanceId(String consentId, String instanceId) {
         return Specifications.<AisConsent>where(provideSpecificationForEntityAttribute(INSTANCE_ID_ATTRIBUTE, instanceId))
                    .and(provideSpecificationForEntityAttribute(CONSENT_EXTERNAL_ID_ATTRIBUTE, consentId));
     }
 
-    public static Specification<AisConsent> byPsuIdIdAndInstanceId(String psuId, String instanceId) {
+    public Specification<AisConsent> byPsuIdIdAndInstanceId(String psuId, String instanceId) {
         Specification<AisConsent> aisConsentSpecification = (root, query, cb) -> {
             Join<AisConsent, PsuData> aisConsentPsuDataJoin = root.join(PSU_DATA_ATTRIBUTE);
             return cb.equal(aisConsentPsuDataJoin.get(PSU_ID_ATTRIBUTE), psuId);
