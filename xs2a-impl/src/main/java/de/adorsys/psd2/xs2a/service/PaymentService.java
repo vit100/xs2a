@@ -140,7 +140,7 @@ public class PaymentService {
 
         if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.builder()
-                       .fail(new MessageError(FORMAT_ERROR, "Payment not found"))
+                       .fail(new MessageError(RESOURCE_UNKNOWN_403))
                        .build();
         }
 
