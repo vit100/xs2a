@@ -185,8 +185,13 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     private boolean isAuthorisationValidForPsuAndStatus(PsuIdData givenPsuIdData, PisAuthorization authorization) {
+        if (authorization.getScaStatus().isFinalisedStatus()) {
+            return false;
+        }
         PsuIdData actualPsuIdData = psuDataMapper.mapToPsuIdData(authorization.getPsuData());
-        return actualPsuIdData.contentEquals(givenPsuIdData) && !authorization.getScaStatus().isFinalisedStatus();
+        return Optional.ofNullable(actualPsuIdData)
+                   .map(givenPsuIdData::contentEquals)
+                   .orElse(false);
     }
 
     private CmsPaymentResponse buildCmsPaymentResponse(PisAuthorization authorisation) {
