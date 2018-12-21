@@ -57,7 +57,8 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
 
     @Override
     public Optional<CreatePisCommonPaymentResponse> createCommonPayment(PisPaymentInfo request) {
-        return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisCommonPaymentUrls.createPisCommonPayment(), request, CreatePisCommonPaymentResponse.class).getBody());
+        return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisCommonPaymentUrls.createPisCommonPayment(), request, CreatePisCommonPaymentResponse.class))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
@@ -67,8 +68,12 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
 
     @Override
     public Optional<PisCommonPaymentResponse> getCommonPaymentById(String paymentId) {
-        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getPisCommonPaymentById(), PisCommonPaymentResponse.class, paymentId)
-                                       .getBody());
+        try {
+            return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getPisCommonPaymentById(), PisCommonPaymentResponse.class, paymentId))
+                       .map(ResponseEntity::getBody);
+        } catch (CmsRestException cmsRestException) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -81,34 +86,36 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
 
     @Override
     public Optional<String> getDecryptedId(String encryptedId) {
-        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getPaymentIdByEncryptedString(), String.class, encryptedId)
-                                       .getBody());
+        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getPaymentIdByEncryptedString(), String.class, encryptedId))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
     public Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisCommonPaymentUrls.createPisAuthorisation(),
-                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId)
-                                       .getBody());
+                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
     public Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisCommonPaymentUrls.createPisAuthorisationCancellation(),
-                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId)
-                                       .getBody());
+                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
     public Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisAuthorisation(String authorisationId, UpdatePisCommonPaymentPsuDataRequest request) {
         return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.updatePisAuthorisation(), HttpMethod.PUT, new HttpEntity<>(request),
-                                                                UpdatePisCommonPaymentPsuDataResponse.class, request.getAuthorizationId()).getBody());
+                                                                UpdatePisCommonPaymentPsuDataResponse.class, request.getAuthorizationId()))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
     public Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCancellationAuthorisation(String authorisationId, UpdatePisCommonPaymentPsuDataRequest request) {
         return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.updatePisCancellationAuthorisation(), HttpMethod.PUT, new HttpEntity<>(request),
-                                                                UpdatePisCommonPaymentPsuDataResponse.class, request.getAuthorizationId()).getBody());
+                                                                UpdatePisCommonPaymentPsuDataResponse.class, request.getAuthorizationId()))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
@@ -118,25 +125,24 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
 
     @Override
     public Optional<GetPisAuthorisationResponse> getPisAuthorisationById(String authorizationId) {
-        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisAuthorisationById(), HttpMethod.GET, null, GetPisAuthorisationResponse.class, authorizationId)
-                                       .getBody());
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisAuthorisationById(), HttpMethod.GET, null, GetPisAuthorisationResponse.class, authorizationId))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
     public Optional<GetPisAuthorisationResponse> getPisCancellationAuthorisationById(String cancellationId) {
-        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisCancellationAuthorisationById(), HttpMethod.GET, null, GetPisAuthorisationResponse.class, cancellationId)
-                                       .getBody());
+        return Optional.ofNullable(consentRestTemplate.exchange(remotePisCommonPaymentUrls.getPisCancellationAuthorisationById(), HttpMethod.GET, null, GetPisAuthorisationResponse.class, cancellationId))
+                   .map(ResponseEntity::getBody);
     }
 
     @Override
     public Optional<List<String>> getAuthorisationsByPaymentId(String paymentId, CmsAuthorisationType authorisationType) {
         String url = getAuthorisationSubResourcesUrl(authorisationType);
         try {
-            ResponseEntity<List<String>> request = consentRestTemplate.exchange(
-                url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<String>>() {
-                }, paymentId);
-            return Optional.ofNullable(request.getBody());
+            return Optional.ofNullable(consentRestTemplate.exchange(url, HttpMethod.GET, null,
+                                                                    new ParameterizedTypeReference<List<String>>() {
+                                                                    }, paymentId))
+                       .map(ResponseEntity::getBody);
         } catch (CmsRestException cmsRestException) {
             log.warn("No authorisation found by paymentId {}", paymentId);
         }
@@ -147,9 +153,9 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
     public Optional<ScaStatus> getAuthorisationScaStatus(String paymentId, String authorisationId, CmsAuthorisationType authorisationType) {
         String url = getAuthorisationScaStatusUrl(authorisationType);
         try {
-            ResponseEntity<ScaStatus> request = consentRestTemplate.getForEntity(url, ScaStatus.class,
-                                                                                 paymentId, authorisationId);
-            return Optional.ofNullable(request.getBody());
+            return Optional.ofNullable(consentRestTemplate.getForEntity(url, ScaStatus.class,
+                                                                        paymentId, authorisationId))
+                       .map(ResponseEntity::getBody);
         } catch (CmsRestException cmsRestException) {
             log.warn("Couldn't get authorisation SCA Status by paymentId {} and authorisationId {}", paymentId, authorisationId);
         }
@@ -170,8 +176,8 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
 
     @Override
     public Optional<List<PsuIdData>> getPsuDataListByPaymentId(String paymentId) {
-        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getPsuDataByPaymentId(), PsuIdData[].class, paymentId)
-                                   .getBody())
+        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getPsuDataByPaymentId(), PsuIdData[].class, paymentId))
+                   .map(ResponseEntity::getBody)
                    .map(Arrays::asList);
     }
 
