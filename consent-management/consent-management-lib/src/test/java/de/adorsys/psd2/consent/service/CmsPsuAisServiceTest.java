@@ -29,6 +29,7 @@ import de.adorsys.psd2.consent.repository.specification.AisConsentAuthorizationS
 import de.adorsys.psd2.consent.repository.specification.AisConsentSpecification;
 import de.adorsys.psd2.consent.service.mapper.AisConsentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
+import de.adorsys.psd2.consent.service.psu.CmsPsuAisServiceInternal;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
@@ -114,10 +115,10 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void updatePsuDataInConsentSuccess() {
+        // When
         //noinspection unchecked
         when(aisConsentAuthorizationRepository.findOne(any(Specification.class))).thenReturn(aisConsentAuthorization);
 
-        // When
         // Then
         boolean updatePsuDataInConsent = cmsPsuAisService.updatePsuDataInConsent(psuIdData, AUTHORISATION_ID, DEFAULT_SERVICE_INSTANCE_ID);
 
@@ -129,12 +130,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void updatePsuDataInConsentFail() {
+        // When
         //noinspection unchecked
         when(aisConsentAuthorizationRepository.findOne(any(Specification.class))).thenReturn(null);
 
-        // When
         // Then
         boolean updatePsuDataInConsent = cmsPsuAisService.updatePsuDataInConsent(psuIdData, AUTHORISATION_ID_NOT_EXIST, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertFalse(updatePsuDataInConsent);
         verify(aisConsentAuthorizationSpecification, times(1))
@@ -143,12 +145,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void getConsentSuccess() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
 
-        // When
         // Then
         Optional<AisAccountConsent> consent = cmsPsuAisService.getConsent(psuIdData, EXTERNAL_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertTrue(consent.isPresent());
         assertEquals(consent.get(), aisAccountConsent);
@@ -158,12 +161,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void getConsentFail() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(null);
 
-        // When
         // Then
         Optional<AisAccountConsent> consent = cmsPsuAisService.getConsent(psuIdData, EXTERNAL_CONSENT_ID_NOT_EXIST, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertTrue(!consent.isPresent());
         verify(aisConsentSpecification, times(1))
@@ -172,14 +176,15 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void updateAuthorisationStatusSuccess() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
         //noinspection unchecked
         when(aisConsentAuthorizationRepository.findOne(any(Specification.class))).thenReturn(aisConsentAuthorization);
 
-        // When
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.updateAuthorisationStatus(psuIdData, EXTERNAL_CONSENT_ID, AUTHORISATION_ID, ScaStatus.STARTED, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertTrue(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -190,14 +195,15 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void updateAuthorisationStatusFail() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
         //noinspection unchecked
         when(aisConsentAuthorizationRepository.findOne(any(Specification.class))).thenReturn(null);
 
-        // When
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.updateAuthorisationStatus(psuIdData, EXTERNAL_CONSENT_ID, AUTHORISATION_ID_NOT_EXIST, ScaStatus.STARTED, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertFalse(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -208,12 +214,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void getConsentsForPsuSuccess() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findAll(any(Specification.class))).thenReturn(aisConsents);
 
-        // When
         // Then
         List<AisAccountConsent> consentsForPsu = cmsPsuAisService.getConsentsForPsu(psuIdData, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertEquals(consentsForPsu.size(), aisConsents.size());
         verify(aisConsentSpecification, times(1))
@@ -222,12 +229,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void getConsentsForPsuFail() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findAll(any(Specification.class))).thenReturn(Collections.emptyList());
 
-        // When
         // Then
         List<AisAccountConsent> consentsForPsu = cmsPsuAisService.getConsentsForPsu(psuIdDataWrong, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertTrue(consentsForPsu.isEmpty());
         verify(aisConsentSpecification, times(1))
@@ -236,14 +244,16 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void confirmConsentSuccess() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
 
-        // When
         AisConsent aisConsentValid = buildConsentByStatus(ConsentStatus.VALID);
         when(aisConsentRepository.save(aisConsentValid)).thenReturn(aisConsentValid);
+
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.confirmConsent(psuIdData, EXTERNAL_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertTrue(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -252,12 +262,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void confirmConsentFail() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
 
-        // When
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.confirmConsent(psuIdData, EXTERNAL_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertFalse(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -266,14 +277,16 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void rejectConsentSuccess() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
 
-        // When
         AisConsent aisConsentRejected = buildConsentByStatus(ConsentStatus.REJECTED);
         when(aisConsentRepository.save(aisConsentRejected)).thenReturn(aisConsentRejected);
+
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.rejectConsent(psuIdData, EXTERNAL_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertTrue(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -282,12 +295,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void rejectConsentFail() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
 
-        // When
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.rejectConsent(psuIdData, EXTERNAL_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertFalse(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -296,14 +310,16 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void revokeConsentSuccess() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
 
-        // When
         AisConsent aisConsentRevoked = buildConsentByStatus(ConsentStatus.REVOKED_BY_PSU);
         when(aisConsentRepository.save(aisConsentRevoked)).thenReturn(aisConsentRevoked);
+
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.revokeConsent(psuIdData, EXTERNAL_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertTrue(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -312,12 +328,13 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void revokeConsentFail() {
+        // When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(aisConsent);
 
-        // When
         // Then
         boolean updateAuthorisationStatus = cmsPsuAisService.revokeConsent(psuIdData, EXTERNAL_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
+
         // Assert
         assertFalse(updateAuthorisationStatus);
         verify(aisConsentSpecification, times(1))
@@ -328,10 +345,11 @@ public class CmsPsuAisServiceTest {
     public void confirmConsent_FinalisedStatus_Fail() {
         //Given
         AisConsent finalisedConsent = buildFinalisedConsent();
+
+        //When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(finalisedConsent);
 
-        //When
         boolean result = cmsPsuAisService.confirmConsent(psuIdData, FINALISED_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
 
         //Then
@@ -344,10 +362,11 @@ public class CmsPsuAisServiceTest {
     public void rejectConsent_FinalisedStatus_Fail() {
         //Given
         AisConsent finalisedConsent = buildFinalisedConsent();
+
+        //When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(finalisedConsent);
 
-        //When
         boolean result = cmsPsuAisService.rejectConsent(psuIdData, FINALISED_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
 
         //Then
@@ -360,10 +379,11 @@ public class CmsPsuAisServiceTest {
     public void revokeConsent_FinalisedStatus_Fail() {
         //Given
         AisConsent finalisedConsent = buildFinalisedConsent();
+
+        //When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(finalisedConsent);
 
-        //When
         boolean result = cmsPsuAisService.revokeConsent(psuIdData, FINALISED_CONSENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
 
         //Then
@@ -377,12 +397,13 @@ public class CmsPsuAisServiceTest {
         //Given
         AisConsent consent = buildConsent();
         AisConsentAuthorization finalisedAuthorisation = buildFinalisedAuthorisation();
+
+        //When
         //noinspection unchecked
         when(aisConsentRepository.findOne(any(Specification.class))).thenReturn(consent);
         //noinspection unchecked
         when(aisConsentAuthorizationRepository.findOne(any(Specification.class))).thenReturn(finalisedAuthorisation);
 
-        //When
         boolean result = cmsPsuAisService.updateAuthorisationStatus(psuIdData, EXTERNAL_CONSENT_ID, FINALISED_AUTHORISATION_ID, ScaStatus.SCAMETHODSELECTED, DEFAULT_SERVICE_INSTANCE_ID);
 
         //Then
@@ -395,6 +416,7 @@ public class CmsPsuAisServiceTest {
 
     @Test
     public void getConsentByRedirectId_Fail_AuthorisationNotFound() {
+        //When
         //noinspection unchecked
         when(aisConsentAuthorizationRepository.findOne(any(Specification.class))).thenReturn(null);
 
