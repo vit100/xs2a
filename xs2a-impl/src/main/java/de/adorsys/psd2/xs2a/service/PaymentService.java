@@ -311,8 +311,7 @@ public class PaymentService {
     private List<PisPayment> getPisPaymentFromCommonPaymentResponse(PisCommonPaymentResponse pisCommonPaymentResponse) {
         return Optional.of(pisCommonPaymentResponse)
                    .map(PisCommonPaymentResponse::getPayments)
-                   .filter(CollectionUtils::isNotEmpty)
-                   .orElse(null);
+                   .orElse(Collections.emptyList());
     }
 
     private PsuIdData readPsuIdDataFromList(List<PsuIdData> psuIdDataList) { //TODO rework psudata list
