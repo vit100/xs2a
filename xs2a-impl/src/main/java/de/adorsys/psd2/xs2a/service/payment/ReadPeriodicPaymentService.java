@@ -50,8 +50,8 @@ public class ReadPeriodicPaymentService extends ReadPaymentService<PaymentInform
     private final SpiPaymentFactory spiPaymentFactory;
 
     @Override
-    public PaymentInformationResponse<PeriodicPayment> getPayment(List<PisPayment> pisPaymentList, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
-        Optional<SpiPeriodicPayment> spiPaymentOptional = spiPaymentFactory.createSpiPeriodicPayment(pisPaymentList.get(0), paymentProduct);
+    public PaymentInformationResponse<PeriodicPayment> getPayment(List<PisPayment> pisPayments, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
+        Optional<SpiPeriodicPayment> spiPaymentOptional = spiPaymentFactory.createSpiPeriodicPayment(pisPayments.get(0), paymentProduct);
 
         if (!spiPaymentOptional.isPresent()) {
             return new PaymentInformationResponse<>(

@@ -49,8 +49,8 @@ public class ReadBulkPaymentService extends ReadPaymentService<PaymentInformatio
     private final SpiPaymentFactory spiPaymentFactory;
 
     @Override
-    public PaymentInformationResponse<BulkPayment> getPayment(List<PisPayment> pisPaymentList, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
-        Optional<SpiBulkPayment> spiPaymentOptional = spiPaymentFactory.createSpiBulkPayment(pisPaymentList, paymentProduct);
+    public PaymentInformationResponse<BulkPayment> getPayment(List<PisPayment> pisPayments, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
+        Optional<SpiBulkPayment> spiPaymentOptional = spiPaymentFactory.createSpiBulkPayment(pisPayments, paymentProduct);
 
         if (!spiPaymentOptional.isPresent()) {
             return new PaymentInformationResponse<>(

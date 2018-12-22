@@ -26,5 +26,5 @@ import java.util.List;
 
 public interface ReadPaymentStatusService {
 
-    SpiResponse<SpiTransactionStatus> readPaymentStatus(List<PisPayment> pisPaymentList, String paymentProduct, SpiContextData spiContextData, AspspConsentData aspspConsentData);
+    SpiResponse<SpiTransactionStatus> readPaymentStatus(List<PisPayment> pisPayments, String paymentProduct, SpiContextData spiContextData, AspspConsentData aspspConsentData);
 }

@@ -37,8 +37,8 @@ public class ReadSinglePaymentStatusService implements ReadPaymentStatusService 
     private final SinglePaymentSpi singlePaymentSpi;
 
     @Override
-    public SpiResponse<SpiTransactionStatus> readPaymentStatus(List<PisPayment> pisPaymentList, String paymentProduct, SpiContextData spiContextData, AspspConsentData aspspConsentData) {
-        Optional<SpiSinglePayment> spiSinglePaymentOptional = spiPaymentFactory.createSpiSinglePayment(pisPaymentList.get(0), paymentProduct);
+    public SpiResponse<SpiTransactionStatus> readPaymentStatus(List<PisPayment> pisPayments, String paymentProduct, SpiContextData spiContextData, AspspConsentData aspspConsentData) {
+        Optional<SpiSinglePayment> spiSinglePaymentOptional = spiPaymentFactory.createSpiSinglePayment(pisPayments.get(0), paymentProduct);
 
         return spiSinglePaymentOptional
                    .map(spiSinglePayment -> singlePaymentSpi.getPaymentStatusById(spiContextData, spiSinglePayment, aspspConsentData))

@@ -50,8 +50,8 @@ public class ReadSinglePaymentService extends ReadPaymentService<PaymentInformat
     private final SpiPaymentFactory spiPaymentFactory;
 
     @Override
-    public PaymentInformationResponse<SinglePayment> getPayment(List<PisPayment> pisPaymentList, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
-        Optional<SpiSinglePayment> spiPaymentOptional = spiPaymentFactory.createSpiSinglePayment(pisPaymentList.get(0), paymentProduct);
+    public PaymentInformationResponse<SinglePayment> getPayment(List<PisPayment> pisPayments, String paymentProduct, PsuIdData psuData, AspspConsentData aspspConsentData) {
+        Optional<SpiSinglePayment> spiPaymentOptional = spiPaymentFactory.createSpiSinglePayment(pisPayments.get(0), paymentProduct);
 
         if (!spiPaymentOptional.isPresent()) {
             return new PaymentInformationResponse<>(

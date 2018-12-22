@@ -37,8 +37,8 @@ public class ReadBulkPaymentStatusService implements ReadPaymentStatusService {
     private final BulkPaymentSpi bulkPaymentSpi;
 
     @Override
-    public SpiResponse<SpiTransactionStatus> readPaymentStatus(List<PisPayment> pisPaymentList, String paymentProduct, SpiContextData spiContextData, AspspConsentData aspspConsentData) {
-        Optional<SpiBulkPayment> spiBulkPaymentOptional = spiPaymentFactory.createSpiBulkPayment(pisPaymentList, paymentProduct);
+    public SpiResponse<SpiTransactionStatus> readPaymentStatus(List<PisPayment> pisPayments, String paymentProduct, SpiContextData spiContextData, AspspConsentData aspspConsentData) {
+        Optional<SpiBulkPayment> spiBulkPaymentOptional = spiPaymentFactory.createSpiBulkPayment(pisPayments, paymentProduct);
 
         return spiBulkPaymentOptional
                    .map(spiBulkPayment -> bulkPaymentSpi.getPaymentStatusById(spiContextData, spiBulkPayment, aspspConsentData))
