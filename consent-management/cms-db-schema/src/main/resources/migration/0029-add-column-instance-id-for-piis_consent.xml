@@ -19,8 +19,8 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet author="pru@adorsys.de" id="2018-12-21-1">
-        <addColumn tableName="ais_consent_authorization">
+    <changeSet author="pru@adorsys.de" id="2018-12-22-1">
+        <addColumn tableName="piis_consent">
             <column name="instance_id" type="VARCHAR(100)" defaultValue="UNDEFINED">
                 <constraints nullable="false"/>
             </column>
