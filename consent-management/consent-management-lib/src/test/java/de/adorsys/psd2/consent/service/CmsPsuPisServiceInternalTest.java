@@ -125,7 +125,7 @@ public class CmsPsuPisServiceInternalTest {
         when(pisCommonPaymentService.getPsuDataListByPaymentId(WRONG_PAYMENT_ID))
             .thenReturn(Optional.empty());
 
-        when(commonPaymentDataService.getPisCommonPaymentData(WRONG_PAYMENT_ID))
+        when(commonPaymentDataService.getPisCommonPaymentData(WRONG_PAYMENT_ID, DEFAULT_SERVICE_INSTANCE_ID))
             .thenReturn(Optional.empty());
 
         when(psuDataRepository.save(any(PsuData.class)))

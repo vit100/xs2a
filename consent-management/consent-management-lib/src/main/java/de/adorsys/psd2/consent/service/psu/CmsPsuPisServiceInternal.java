@@ -79,7 +79,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
             if (!list.isEmpty()) {
                 return Optional.of(cmsPsuPisMapper.mapToCmsPayment(list));
             } else {
-                return commonPaymentDataService.getPisCommonPaymentData(paymentId)
+                return commonPaymentDataService.getPisCommonPaymentData(paymentId, instanceId)
                            .map(cmsPsuPisMapper::mapToCmsPayment);
             }
         }
@@ -132,7 +132,7 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
         if (!list.isEmpty()) {
             return updateStatusInPaymentDataList(list, status);
         } else {
-            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId);
+            Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId, instanceId);
 
             return paymentDataOptional.isPresent()
                        && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
