@@ -38,7 +38,6 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -74,15 +73,12 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     @Override
     public @NotNull Optional<CmsPayment> getPayment(@NotNull PsuIdData psuIdData, @NotNull String paymentId, @NotNull String instanceId) {
         if (isPsuDataEquals(paymentId, psuIdData)) {
-            Optional<List<PisPaymentData>> list = Optional.ofNullable(pisPaymentDataRepository.findAll(pisPaymentDataSpecification.byPaymentIdAndInstanceId(paymentId, instanceId)));
+            List<PisPaymentData> list = pisPaymentDataRepository.findAll(pisPaymentDataSpecification.byPaymentIdAndInstanceId(paymentId, instanceId));
 
             // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
-            if (list.isPresent()) {
-                return list
-                           .filter(CollectionUtils::isNotEmpty)
-                           .map(cmsPsuPisMapper::mapToCmsPayment);
+            if (!list.isEmpty()) {
+                return Optional.of(cmsPsuPisMapper.mapToCmsPayment(list));
             } else {
-                // TODO check if it works
                 return commonPaymentDataService.getPisCommonPaymentData(paymentId)
                            .map(cmsPsuPisMapper::mapToCmsPayment);
             }
@@ -130,13 +126,12 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     @Override
     @Transactional
     public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status, @NotNull String instanceId) {
-        Optional<List<PisPaymentData>> list = Optional.ofNullable(pisPaymentDataRepository.findAll(pisPaymentDataSpecification.byPaymentIdAndInstanceId(paymentId, instanceId)));
+        List<PisPaymentData> list = pisPaymentDataRepository.findAll(pisPaymentDataSpecification.byPaymentIdAndInstanceId(paymentId, instanceId));
 
         // todo implementation should be changed https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
-        if (list.isPresent()) {
-            return updateStatusInPaymentDataList(list.get(), status);
+        if (!list.isEmpty()) {
+            return updateStatusInPaymentDataList(list, status);
         } else {
-            // TODO check if it works
             Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId);
 
             return paymentDataOptional.isPresent()
