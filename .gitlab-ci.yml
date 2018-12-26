@@ -251,7 +251,7 @@ build_package_java8:
     expire_in: "1 day"
 
 build_package_java11:
-  image: "maven:3.6-jdk-11"
+  image: "maven:3.7-jdk-11"
   variables:
     JAVA_TOOL_OPTIONS: "-XX:MaxRAM=3G"
   <<: *build_java
@@ -301,7 +301,7 @@ check_javadoc:
 
 check_javadoc_java11:
   stage: "build:qa"
-  image: "maven:3.6-jdk-11"
+  image: "maven:3.7-jdk-11"
   variables:
     JAVA_TOOL_OPTIONS: "-XX:MaxRAM=3G"
   script:
@@ -320,7 +320,7 @@ unit_tests_java8:
 
 unit_tests_java11:
   <<: *java_tests
-  image: "maven:3.6-jdk-11"
+  image: "maven:3.7-jdk-11"
   variables:
     JAVA_TOOL_OPTIONS: "-XX:MaxRAM=3G"
 
