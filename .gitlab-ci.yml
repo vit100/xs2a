@@ -252,8 +252,6 @@ build_package_java8:
 
 build_package_java11:
   image: "maven:3.6-jdk-11"
-  script:
-    - mvn clean install
   variables:
     JAVA_TOOL_OPTIONS: "-XX:MaxRAM=3G"
   <<: *build_java
@@ -309,7 +307,6 @@ check_javadoc_java11:
   script:
     - cat /sys/fs/cgroup/memory/memory.limit_in_bytes
     - java -XX:+PrintFlagsFinal -version | grep -Ei "maxheapsize|maxram"
-    - mvn clean install
     - mvn -Dmaven.test.skip=true package javadoc:javadoc
 
 unit_tests_java8:
@@ -324,8 +321,6 @@ unit_tests_java8:
 unit_tests_java11:
   <<: *java_tests
   image: "maven:3.6-jdk-11"
-  script:
-    - mvn clean install
   variables:
     JAVA_TOOL_OPTIONS: "-XX:MaxRAM=3G"
 
