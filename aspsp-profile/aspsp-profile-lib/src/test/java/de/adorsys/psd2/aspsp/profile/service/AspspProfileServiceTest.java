@@ -63,6 +63,7 @@ public class AspspProfileServiceTest {
     private static final boolean PIIS_CONSENT_SUPPORTED = false;
     private static final boolean DELTA_REPORT_SUPPORTED = false;
     private static final long REDIRECT_URL_EXPIRATION_TIME_MS = 600000;
+    private static final long CONSENT_EXPIRATION_SCHEDULER_INVOKING_PERIOD_MS = 86400000;
 
     @InjectMocks
     private AspspProfileServiceImpl aspspProfileService;
@@ -138,6 +139,15 @@ public class AspspProfileServiceTest {
         Assertions.assertThat(actualResponse.getFrequencyPerDay()).isEqualTo(FREQUENCY_PER_DAY);
     }
 
+    @Test
+    public void getConsentExpirationSchedulerInvokingPeriodMs_success() {
+        //When:
+        AspspSettings actualResponse = aspspProfileService.getAspspSettings();
+
+        //Then:
+        Assertions.assertThat(actualResponse.getConsentExpirationSchedulerInvokingPeriodMs()).isEqualTo(CONSENT_EXPIRATION_SCHEDULER_INVOKING_PERIOD_MS);
+    }
+
     private BankProfileSetting buildBankProfileSetting() {
         BankProfileSetting setting = new BankProfileSetting();
         setting.setFrequencyPerDay(FREQUENCY_PER_DAY);
@@ -161,6 +171,7 @@ public class AspspProfileServiceTest {
         setting.setDeltaReportSupported(DELTA_REPORT_SUPPORTED);
         setting.setRedirectUrlExpirationTimeMs(REDIRECT_URL_EXPIRATION_TIME_MS);
         setting.setScaApproach(REDIRECT_APPROACH);
+        setting.setConsentExpirationSchedulerInvokingPeriodMs(CONSENT_EXPIRATION_SCHEDULER_INVOKING_PERIOD_MS);
         return setting;
     }
 

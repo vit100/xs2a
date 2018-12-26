@@ -31,3 +31,4 @@ setting:
  piisConsentSupported: false
  deltaReportSupported: false
  redirectUrlExpirationTimeMs: 600000
+ consentExpirationSchedulerInvokingPeriodMs: 86400000

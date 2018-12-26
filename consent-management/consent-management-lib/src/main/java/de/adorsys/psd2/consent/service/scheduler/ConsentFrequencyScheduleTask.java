@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.service;
+package de.adorsys.psd2.consent.service.scheduler;
 
 import de.adorsys.psd2.consent.domain.account.AisConsent;
 import de.adorsys.psd2.consent.repository.AisConsentRepository;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -38,13 +37,13 @@ import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.VALID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ConsentScheduleTask {
+public class ConsentFrequencyScheduleTask {
     private final AisConsentRepository aisConsentRepository;
 
-    @Scheduled(cron = "${consent.cron.expression}")
+    @Scheduled(cron = "${consent-frequency.cron.expression}")
     @Transactional
     public void checkConsentStatus() {
-        log.info("Consent schedule task is run!");
+        log.info("Consent frequency schedule task is run!");
 
         List<AisConsent> availableConsents = Optional.ofNullable(aisConsentRepository.findByConsentStatusIn(EnumSet.of(RECEIVED, VALID)))
                                                  .orElse(Collections.emptyList());
@@ -59,13 +58,6 @@ public class ConsentScheduleTask {
 
     private AisConsent updateConsentParameters(AisConsent consent) {
         consent.setUsageCounter(consent.getAllowedFrequencyPerDay());
-        consent.setConsentStatus(updateConsentStatus(consent));
         return consent;
-    }
-
-    private ConsentStatus updateConsentStatus(AisConsent consent) {
-        return consent.isExpiredByDate()
-                   ? ConsentStatus.EXPIRED
-                   : consent.getConsentStatus();
     }
 }

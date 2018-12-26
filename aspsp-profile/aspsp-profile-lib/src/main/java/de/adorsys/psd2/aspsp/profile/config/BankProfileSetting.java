@@ -136,4 +136,9 @@ public class BankProfileSetting {
      * The limit of an expiration time of redirect url set in milliseconds
      */
     private long redirectUrlExpirationTimeMs;
+
+    /**
+     * The period of invoking of consent expiration scheduler set in milliseconds
+     */
+    private long consentExpirationSchedulerInvokingPeriodMs;
 }

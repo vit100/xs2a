@@ -16,16 +16,28 @@
 
 package de.adorsys.psd2.consent.config;
 
+import de.adorsys.psd2.aspsp.profile.service.AspspProfileService;
+import de.adorsys.psd2.consent.repository.AisConsentRepository;
+import de.adorsys.psd2.consent.service.scheduler.ConsentExpirationScheduleTask;
+import de.adorsys.psd2.consent.service.scheduler.trigger.ConsentExpirationScheduleTaskTrigger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 @Configuration
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableScheduling
+@RequiredArgsConstructor
 public class SchedulerConfig implements SchedulingConfigurer {
+    private final AisConsentRepository aisConsentRepository;
+    private final AspspProfileService aspspProfileService;
+
     @Value("${scheduler.pool.size:20}")
     private int poolSize;
 
@@ -37,5 +49,20 @@ public class SchedulerConfig implements SchedulingConfigurer {
         threadPool.initialize();
 
         scheduledTaskRegistrar.setTaskScheduler(threadPool);
+
+        scheduledTaskRegistrar.addTriggerTask(
+            consentExpirationScheduleTask(),
+            consentExpirationScheduleTaskTrigger()
+        );
+    }
+
+    @Bean
+    public ConsentExpirationScheduleTask consentExpirationScheduleTask() {
+        return new ConsentExpirationScheduleTask(aisConsentRepository);
+    }
+
+    @Bean
+    public ConsentExpirationScheduleTaskTrigger consentExpirationScheduleTaskTrigger() {
+        return new ConsentExpirationScheduleTaskTrigger(aspspProfileService);
     }
 }
