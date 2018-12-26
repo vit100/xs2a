@@ -184,6 +184,10 @@ public class CmsPsuPisServiceInternalTest {
 
     @Test
     public void getPayment_Fail_WrongPaymentId() {
+        // Given
+        //noinspection unchecked
+        when(pisPaymentDataRepository.findAll(any(Specification.class))).thenReturn(Collections.emptyList());
+
         // When
         Optional<CmsPayment> actualResult = cmsPsuPisServiceInternal.getPayment(PSU_ID_DATA, WRONG_PAYMENT_ID, DEFAULT_SERVICE_INSTANCE_ID);
 
@@ -287,7 +291,7 @@ public class CmsPsuPisServiceInternalTest {
     public void updatePaymentStatus_Fail_WrongPaymentId() {
         // Given
         //noinspection unchecked
-        when(pisPaymentDataRepository.findAll(any(Specification.class))).thenReturn(null);
+        when(pisPaymentDataRepository.findAll(any(Specification.class))).thenReturn(Collections.emptyList());
 
         // When
         boolean actualResult = cmsPsuPisServiceInternal.updatePaymentStatus(WRONG_PAYMENT_ID, TransactionStatus.CANC, DEFAULT_SERVICE_INSTANCE_ID);
