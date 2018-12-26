@@ -311,11 +311,17 @@ public class PaymentService {
     }
 
     private PisPayment getPisPaymentFromCommonPaymentResponse(PisCommonPaymentResponse pisCommonPaymentResponse) {
-        return Optional.of(pisCommonPaymentResponse)
-                   .map(PisCommonPaymentResponse::getPayments)
-                   .filter(CollectionUtils::isNotEmpty)
-                   .map(payments -> payments.get(0))
-                   .orElse(null);
+        Optional<PisPayment> paymentOptional = Optional.of(pisCommonPaymentResponse)
+                                      .map(PisCommonPaymentResponse::getPayments)
+                                      .filter(CollectionUtils::isNotEmpty)
+                                      .map(payments -> payments.get(0));
+        if( paymentOptional.isPresent()) {
+            PisPayment payment = paymentOptional.get();
+            payment.setPaymentId(pisCommonPaymentResponse.getExternalId());
+            return payment;
+        }
+
+        return null;
     }
 
     private PsuIdData readPsuIdDataFromList(List<PsuIdData> psuIdDataList) { //TODO rework psudata list
