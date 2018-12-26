@@ -138,6 +138,11 @@ public class BankProfileSetting {
     private long redirectUrlExpirationTimeMs;
 
     /**
+     * URL to ASPSP service in order to to work with PIS payment cancellation
+     */
+    private String pisPaymentCancellationRedirectUrlToAspsp;
+
+    /**
      * The period of invoking of consent expiration scheduler set in milliseconds
      */
     private long consentExpirationSchedulerInvokingPeriodMs;

@@ -38,7 +38,7 @@ public class UpdatePisCancellationPsuDataAspect extends AbstractLinkAspect<Payme
         super(aspspProfileService, messageService);
     }
 
-    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.ConsentService.updatePisCancellationPsuData(..)) && args( request)", returning = "result", argNames = "result,request")
+    @AfterReturning(pointcut = "execution(* de.adorsys.psd2.xs2a.service.PaymentCancellationAuthorisationService.updatePisCancellationPsuData(..)) && args( request)", returning = "result", argNames = "result,request")
     public ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> updatePisCancellationAuthorizationAspect(ResponseObject<Xs2aUpdatePisCommonPaymentPsuDataResponse> result, Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
         if (!result.hasError()) {
             Xs2aUpdatePisCommonPaymentPsuDataResponse body = result.getBody();
@@ -46,14 +46,14 @@ public class UpdatePisCancellationPsuDataAspect extends AbstractLinkAspect<Payme
 
             if (isScaStatusMethodAuthenticated(body.getScaStatus())) {
 
-                links.setSelectAuthenticationMethod(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorizationId()));
-                links.setUpdatePsuAuthentication(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorizationId()));
+                links.setSelectAuthenticationMethod(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorisationId()));
+                links.setUpdatePsuAuthentication(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorisationId()));
             } else if (isScaStatusMethodSelected(body.getChosenScaMethod(), body.getScaStatus())) {
 
-                links.setAuthoriseTransaction(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorizationId()));
+                links.setAuthoriseTransaction(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorisationId()));
             } else if (isScaStatusFinalised(body.getScaStatus())) {
 
-                links.setScaStatus(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorizationId()));
+                links.setScaStatus(buildAuthorisationLink(request.getPaymentService(), request.getPaymentId(), request.getAuthorisationId()));
             }
 
             body.setLinks(links);

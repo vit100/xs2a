@@ -19,19 +19,19 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.consent.api.pis.proto.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.core.tpp.TppRole;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
-import de.adorsys.psd2.xs2a.domain.account.Xs2aAccountReference;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PeriodicPaymentInitiationResponse;
-import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodService;
+import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodDecider;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
@@ -67,7 +67,7 @@ public class CreatePeriodicPaymentTest {
     @Mock
     private ScaPaymentService scaPaymentService;
     @Mock
-    private AuthorisationMethodService authorisationMethodService;
+    private AuthorisationMethodDecider authorisationMethodDecider;
     @Mock
     private PisScaAuthorisationService pisScaAuthorisationService;
     @Mock
@@ -113,8 +113,8 @@ public class CreatePeriodicPaymentTest {
         return amount;
     }
 
-    private Xs2aAccountReference buildReference() {
-        Xs2aAccountReference reference = new Xs2aAccountReference();
+    private AccountReference buildReference() {
+        AccountReference reference = new AccountReference();
         reference.setIban(IBAN);
         reference.setCurrency(EUR_CURRENCY);
         return reference;
