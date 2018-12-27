@@ -38,6 +38,9 @@
             </column>
         </addColumn>
 
+        <dropForeignKeyConstraint constraintName="fk_ais_access_ais_consent"
+                                  baseTableName="ais_account_access"/>
+
         <dropPrimaryKey constraintName="ais_account_access_pkey"
                         tableName="ais_account_access"/>
 
@@ -46,6 +49,11 @@
 
         <addPrimaryKey columnNames="consent_id, account_identifier, type_access" constraintName="ais_account_access_pkey"
                        tableName="ais_account_access"/>
+
+        <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="ais_account_access"
+                                 constraintName="fk_ais_access_ais_consent" deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id" referencedTableName="ais_consent"/>
     </changeSet>
 
 </databaseChangeLog>
