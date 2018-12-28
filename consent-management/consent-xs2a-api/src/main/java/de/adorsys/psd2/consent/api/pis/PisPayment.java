@@ -94,7 +94,7 @@ public class PisPayment {
     @ApiModelProperty(name = "End date", example = "2020-03-03")
     private LocalDate endDate;
 
-    @ApiModelProperty(name = "Execution rule", example = "latest")
+    @ApiModelProperty(name = "Execution rule", example = "following")
     private PisExecutionRule executionRule;
 
     @ApiModelProperty(name = "Frequency", example = "ANNUAL")

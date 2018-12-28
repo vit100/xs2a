@@ -239,17 +239,16 @@ public class PaymentModelMapperPsd2 {
     }
 
     private DayOfExecution mapToDayOfExecution(PisDayOfExecution dayOfExecution) {
-        String dayFromModel = Optional.ofNullable(dayOfExecution)
-                                  .map(PisDayOfExecution::toString)
-                                  .orElse(null);
-        return DayOfExecution.fromValue(dayFromModel);
+        return Optional.ofNullable(dayOfExecution)
+                   .map(PisDayOfExecution::toString)
+                   .map(DayOfExecution::fromValue)
+                   .orElse(null);
     }
 
     private ExecutionRule mapToExecutionRule(PisExecutionRule rule) {
-        String ruleFromModel = Optional.ofNullable(rule)
-                                   .map(PisExecutionRule::toString)
-                                   .orElse(null);
-
-        return ExecutionRule.fromValue(ruleFromModel);
+        return Optional.ofNullable(rule)
+                   .map(PisExecutionRule::toString)
+                   .map(ExecutionRule::fromValue)
+                   .orElse(null);
     }
 }

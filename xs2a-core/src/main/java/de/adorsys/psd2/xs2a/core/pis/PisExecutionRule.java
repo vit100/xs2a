@@ -56,7 +56,6 @@ public enum PisExecutionRule {
     }
 
     @Override
-    @JsonValue
     public String toString() {
         return String.valueOf(value);
     }

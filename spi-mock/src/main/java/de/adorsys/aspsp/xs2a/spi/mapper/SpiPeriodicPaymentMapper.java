@@ -94,32 +94,30 @@ public class SpiPeriodicPaymentMapper {
     }
 
     private PisDayOfExecution mapToPisDayOfExecution(AspspDayOfExecution dayOfExecution) {
-        String dayFromModel = Optional.ofNullable(dayOfExecution)
-                                  .map(AspspDayOfExecution::toString)
-                                  .orElse(null);
-        return PisDayOfExecution.getByValue(dayFromModel).orElse(null);
+        return Optional.ofNullable(dayOfExecution)
+                   .map(AspspDayOfExecution::toString)
+                   .flatMap(PisDayOfExecution::getByValue)
+                   .orElse(null);
     }
 
     private PisExecutionRule mapToPisExecutionRule(AspspExecutionRule rule) {
-        String ruleFromModel = Optional.ofNullable(rule)
-                                   .map(AspspExecutionRule::toString)
-                                   .orElse(null);
-
-        return PisExecutionRule.getByValue(ruleFromModel).orElse(null);
+        return Optional.ofNullable(rule)
+                   .map(AspspExecutionRule::toString)
+                   .flatMap(PisExecutionRule::getByValue)
+                   .orElse(null);
     }
 
     private AspspDayOfExecution mapToAspspDayOfExecution(PisDayOfExecution dayOfExecution) {
-        String dayFromModel = Optional.ofNullable(dayOfExecution)
-                                  .map(PisDayOfExecution::toString)
-                                  .orElse(null);
-        return AspspDayOfExecution.getByValue(dayFromModel).orElse(null);
+        return Optional.ofNullable(dayOfExecution)
+                   .map(PisDayOfExecution::toString)
+                   .flatMap(AspspDayOfExecution::getByValue)
+                   .orElse(null);
     }
 
     private AspspExecutionRule mapToAspspExecutionRule(PisExecutionRule rule) {
-        String ruleFromModel = Optional.ofNullable(rule)
-                                   .map(PisExecutionRule::toString)
-                                   .orElse(null);
-
-        return AspspExecutionRule.getByValue(ruleFromModel).orElse(null);
+        return Optional.ofNullable(rule)
+                   .map(PisExecutionRule::toString)
+                   .flatMap(AspspExecutionRule::getByValue)
+                   .orElse(null);
     }
 }

@@ -19,6 +19,7 @@ package de.adorsys.psd2.xs2a.web.mapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.core.pis.PisDayOfExecution;
+import de.adorsys.psd2.xs2a.core.pis.PisExecutionRule;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.domain.code.Xs2aFrequencyCode;
 import de.adorsys.psd2.xs2a.domain.code.Xs2aPurposeCode;
@@ -29,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
-import de.adorsys.psd2.xs2a.core.pis.PisExecutionRule;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -125,18 +126,18 @@ public class PaymentModelMapperXs2a {
     }
 
     private PisDayOfExecution mapToPisDayOfExecution(DayOfExecution dayOfExecution) {
-        String dayFromModel = Optional.ofNullable(dayOfExecution)
-                                  .map(DayOfExecution::toString)
-            .orElse(null);
-        return PisDayOfExecution.getByValue(dayFromModel).orElse(null);
+        return Optional.ofNullable(dayOfExecution)
+                   .map(DayOfExecution::toString)
+                   .flatMap(PisDayOfExecution::getByValue)
+                   .orElse(null);
+
     }
 
     private PisExecutionRule mapToPisExecutionRule(ExecutionRule rule) {
-        String ruleFromModel = Optional.ofNullable(rule)
-                                   .map(ExecutionRule::toString)
-                                   .orElse(null);
-
-        return PisExecutionRule.getByValue(ruleFromModel).orElse(null);
+        return Optional.ofNullable(rule)
+                   .map(ExecutionRule::toString)
+                   .flatMap(PisExecutionRule::getByValue)
+                   .orElse(null);
     }
 
     private Xs2aFrequencyCode mapToXs2aFrequencyCode(FrequencyCode frequency) {

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Day of execution as string in the form DD.  Thes string consists always of two characters.  31 is ultimo of the
+ * Day of execution as string in the form DD.  This string consists always of two characters.  31 is ultimo of the
  * month.
  */
 public enum AspspDayOfExecution {
@@ -57,7 +57,6 @@ public enum AspspDayOfExecution {
     }
 
     @Override
-    @JsonValue
     public String toString() {
         return String.valueOf(value);
     }

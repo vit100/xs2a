@@ -113,7 +113,7 @@ public class PisPaymentData extends InstanceDependableEntity {
     private LocalDate startDate;
 
     @Column(name = "execution_rule")
-    @ApiModelProperty(name = "Execution rule", example = "latest")
+    @ApiModelProperty(name = "Execution rule", example = "following")
     private PisExecutionRule executionRule;
 
     @Column(name = "end_date")
