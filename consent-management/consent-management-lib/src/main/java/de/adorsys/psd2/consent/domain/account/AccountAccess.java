@@ -39,11 +39,11 @@ public class AccountAccess {
     private String resourceId;
 
     @Column(name = "aspsp_account_id", length = 34)
-    @ApiModelProperty(value = "Aspsp-Account-ID: This data element can be used in the body of the CreateConsentReq Request Message for retrieving account access consent from this payment account", example = "DE2310010010123456789")
+    @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "DE2310010010123456789")
     private String aspspAccountId;
 
     @Column(name = "account_identifier", length = 34, nullable = false)
-    @ApiModelProperty(value = "Account-Identifier", example = "DE2310010010123456789")
+    @ApiModelProperty(value = "Account-Identifier: This data element can be used in the body of the CreateConsentReq Request Message for retrieving account access consent from this payment account", example = "DE2310010010123456789", required = true)
     private String accountIdentifier;
 
     @Column(name = "currency", length = 3)

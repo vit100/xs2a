@@ -30,10 +30,10 @@ public class AccountInfo {
     @ApiModelProperty(value = "RESOURCE-ID: This identification is denoting the addressed account.")
     private String resourceId;
 
-    @ApiModelProperty(value = "IBAN: This data element can be used in the body of the CreateConsentReq Request Message for retrieving account access consent from this payment accoun", example = "DE2310010010156789")
+    @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "DE2310010010156789")
     private String aspspAccountId;
 
-    @ApiModelProperty(value = "Account-Identifier", example = "DE2310010010123456789")
+    @ApiModelProperty(value = "Account-Identifier: This data element can be used in the body of the CreateConsentReq Request Message for retrieving account access consent from this payment account", example = "DE2310010010123456789")
     private String accountIdentifier;
 
     @ApiModelProperty(value = "ISO 4217 currency code", example = "EUR")
