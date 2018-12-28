@@ -34,7 +34,6 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -115,7 +114,6 @@ public class Xs2aToCmsPisCommonPaymentRequestMapper {
     private List<PisPayment> mapToListPisPayment(List<SinglePayment> payments) {
         return payments.stream()
                    .map(this::mapToPisPaymentForSinglePayment)
-                   .peek(pmt -> pmt.setPaymentId(UUID.randomUUID().toString()))
                    .collect(Collectors.toList());
     }
 

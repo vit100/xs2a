@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RedirectPisScaAuthorisationServiceTest<ff> {
+public class RedirectPisScaAuthorisationServiceTest {
     private static final String PAYMENT_ID = "c713a32c-15ff-4f90-afa0-34a500359844";
     private static final String WRONG_PAYMENT_ID = "wrong payment id";
     private static final String AUTHORISATION_ID = "ad746cb3-a01b-4196-a6b9-40b0e4cd2350";
@@ -69,7 +69,7 @@ public class RedirectPisScaAuthorisationServiceTest<ff> {
             .thenReturn(Optional.of(SCA_STATUS));
         when(pisAuthorisationService.getCancellationAuthorisationScaStatus(WRONG_PAYMENT_ID, WRONG_CANCELLATION_AUTHORISATION_ID))
             .thenReturn(Optional.empty());
-        when(xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(PARAM, TPP_INFO, TransactionStatus.RCVD,PAYMENT_ID ))
+        when(xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(PARAM, TPP_INFO, TransactionStatus.RCVD, PAYMENT_ID))
             .thenReturn(PAYMENT_INFO);
     }
 

@@ -27,6 +27,7 @@ import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
+import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodDecider;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
@@ -37,7 +38,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -76,7 +79,9 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
 
         bulkPayment.setTransactionStatus(response.getTransactionStatus());
         bulkPayment.setPaymentId(response.getPaymentId());
-        pisCommonPaymentService.updateBulkPaymentInCommonPayment(bulkPayment, paymentInitiationParameters, pisCommonPayment.getPaymentId());
+
+        BulkPayment bulkPaymentUpdated = setRandomIdsToPaymentListInBulkPayment(bulkPayment);
+        pisCommonPaymentService.updateBulkPaymentInCommonPayment(bulkPaymentUpdated, paymentInitiationParameters, pisCommonPayment.getPaymentId());
 
         String externalPaymentId = pisCommonPayment.getPaymentId();
         response.setPaymentId(externalPaymentId);
@@ -97,5 +102,16 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
         return ResponseObject.<BulkPaymentInitiationResponse>builder()
                    .body(response)
                    .build();
+    }
+
+    private BulkPayment setRandomIdsToPaymentListInBulkPayment(BulkPayment bulkPayment) {
+        List<SinglePayment> payments = bulkPayment.getPayments();
+
+        for (SinglePayment payment : payments) {
+            payment.setPaymentId(UUID.randomUUID().toString());
+        }
+
+        bulkPayment.setPayments(payments);
+        return bulkPayment;
     }
 }
