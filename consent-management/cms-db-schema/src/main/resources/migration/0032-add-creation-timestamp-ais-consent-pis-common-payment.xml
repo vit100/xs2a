@@ -22,6 +22,7 @@
     <property name="now" value="sysdate" dbms="oracle"/>
     <property name="now" value="now()" dbms="mariadb"/>
     <property name="now" value="now()" dbms="postgresql"/>
+    <property name="now" value="2018-12-28 00:00:00"/>
 
     <changeSet author="ssh@adorsys.com.ua" id="2018-12-28-1">
         <addColumn tableName="ais_consent">
