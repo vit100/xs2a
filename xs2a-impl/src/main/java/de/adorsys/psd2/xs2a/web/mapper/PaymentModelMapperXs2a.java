@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.web.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.psd2.model.*;
+import de.adorsys.psd2.xs2a.core.pis.PisDayOfExecution;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.domain.code.Xs2aFrequencyCode;
 import de.adorsys.psd2.xs2a.domain.code.Xs2aPurposeCode;
@@ -28,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
-
+import de.adorsys.psd2.xs2a.core.pis.PisExecutionRule;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -116,17 +117,26 @@ public class PaymentModelMapperXs2a {
         payment.setRequestedExecutionTime(OffsetDateTime.now().plusHours(1));
 
         payment.setStartDate(paymentRequest.getStartDate());
-        payment.setExecutionRule(Optional.ofNullable(paymentRequest.getExecutionRule()).map(ExecutionRule::toString).orElse(null));
+        payment.setExecutionRule(mapToPisExecutionRule(paymentRequest.getExecutionRule()));
         payment.setEndDate(paymentRequest.getEndDate());
         payment.setFrequency(mapToXs2aFrequencyCode(paymentRequest.getFrequency()));
-        payment.setDayOfExecution(mapToDayOfExecution(paymentRequest.getDayOfExecution()));
+        payment.setDayOfExecution(mapToPisDayOfExecution(paymentRequest.getDayOfExecution()));
         return payment;
     }
 
-    private int mapToDayOfExecution(DayOfExecution dayOfExecution) {
-        return Optional.ofNullable(dayOfExecution)
-            .map(d -> Integer.parseInt(d.toString()))
-            .orElse(0);
+    private PisDayOfExecution mapToPisDayOfExecution(DayOfExecution dayOfExecution) {
+        String dayFromModel = Optional.ofNullable(dayOfExecution)
+                                  .map(DayOfExecution::toString)
+            .orElse(null);
+        return PisDayOfExecution.getByValue(dayFromModel).orElse(null);
+    }
+
+    private PisExecutionRule mapToPisExecutionRule(ExecutionRule rule) {
+        String ruleFromModel = Optional.ofNullable(rule)
+                                   .map(ExecutionRule::toString)
+                                   .orElse(null);
+
+        return PisExecutionRule.getByValue(ruleFromModel).orElse(null);
     }
 
     private Xs2aFrequencyCode mapToXs2aFrequencyCode(FrequencyCode frequency) {

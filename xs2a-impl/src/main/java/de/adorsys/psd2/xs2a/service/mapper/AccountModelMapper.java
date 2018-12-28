@@ -173,8 +173,8 @@ public class AccountModelMapper {
 
         T accountReference = null;
         String currency = Optional.ofNullable(reference.getCurrency())
-            .map(Currency::getCurrencyCode)
-            .orElse(null);
+                              .map(Currency::getCurrencyCode)
+                              .orElse(null);
 
         if (StringUtils.isNotBlank(reference.getIban())) {
             accountReference = (T) new AccountReferenceIban().iban(reference.getIban()).currency(currency);
