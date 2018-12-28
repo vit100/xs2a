@@ -14,6 +14,9 @@ Available endpoints are listed below.
 Now for AIS if scaRedirect URI is expired we deliver TPP-Nok-Redirect-URI in the response from CMS to Online-banking. This response is returned with code 408.
 If TPP-Nok-Redirect-URI was not sent from TPP and in CMS is stored null, then CMS returns empty response with code 408. If payment is not found or psu data is incorrect, CMS returns 404. 
 
+## One active authorisation per payment for one PSU
+When PSU creates new authorisation for a payment, all previous authorisations, created by this PSU for the same payment, will be failed and expired.
+
 ## Add instanceId to services in cms-aspsp-api and cms-psu-api
 From now methods in cms-aspsp-api and cms-psu-api also require instanceId to be provided as a mandatory argument.
 This id represents particular service instance and is used for filtering data from the database.
