@@ -130,7 +130,6 @@ public class PaymentModelMapperXs2a {
                    .map(DayOfExecution::toString)
                    .flatMap(PisDayOfExecution::getByValue)
                    .orElse(null);
-
     }
 
     private PisExecutionRule mapToPisExecutionRule(ExecutionRule rule) {
