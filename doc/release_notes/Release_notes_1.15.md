@@ -13,3 +13,18 @@ Available endpoints are listed below.
 ## TPP-Nok-Redirect-URI returned when scaRedirect URI is expired (for AIS)
 Now for AIS if scaRedirect URI is expired we deliver TPP-Nok-Redirect-URI in the response from CMS to Online-banking. This response is returned with code 408.
 If TPP-Nok-Redirect-URI was not sent from TPP and in CMS is stored null, then CMS returns empty response with code 408. If payment is not found or psu data is incorrect, CMS returns 404. 
+
+## Add instanceId to services in cms-aspsp-api and cms-psu-api
+From now methods in cms-aspsp-api and cms-psu-api also require instanceId to be provided as a mandatory argument.
+This id represents particular service instance and is used for filtering data from the database.
+
+All corresponding CMS endpoints were also updated and from now on support instanceId as an optional header. 
+If the header isn't provided, default value `UNDEFINED` will be used instead.
+
+The following services were affected by this change:
+  - In consent-aspsp-api:
+    - de.adorsys.psd2.consent.aspsp.api.piis.CmsAspspPiisService
+  - In consent-psu-api:
+    - de.adorsys.psd2.consent.psu.api.CmsPsuAisService
+    - de.adorsys.psd2.consent.psu.api.CmsPsuPiisService
+    - de.adorsys.psd2.consent.psu.api.CmsPsuPisService
