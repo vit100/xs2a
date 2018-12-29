@@ -22,6 +22,9 @@ From now on SPI response status UNAUTHORIZED_FAILURE corresponds to PSU_CREDENTI
 
 Now SPI-Mock correctly handles invalid PSU credentials.
 
+## Bugfix: method encryptConsentData in SecurityDataService takes byte array as an argument
+Now to encrypt aspspConsentData in SecurityDataService we should provide byte array as an argument instead of Base64 encoded string
+
 ## Add instanceId to services in cms-aspsp-api and cms-psu-api
 From now methods in cms-aspsp-api and cms-psu-api also require instanceId to be provided as a mandatory argument.
 This id represents particular service instance and is used for filtering data from the database.
