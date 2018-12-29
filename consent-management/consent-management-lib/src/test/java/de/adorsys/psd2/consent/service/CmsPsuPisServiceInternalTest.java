@@ -51,6 +51,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
@@ -422,6 +423,7 @@ public class CmsPsuPisServiceInternalTest {
         pisCommonPaymentData.setPayments(buildPisPaymentDataListForCommonData());
         pisCommonPaymentData.setTppInfo(buildTppInfo());
         pisCommonPaymentData.setPaymentId(PAYMENT_ID);
+        pisCommonPaymentData.setCreationTimestamp(OffsetDateTime.of(2018, 10, 10, 10, 10, 10, 10, ZoneOffset.UTC));
         return pisCommonPaymentData;
     }
 
