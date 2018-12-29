@@ -17,6 +17,11 @@ If TPP-Nok-Redirect-URI was not sent from TPP and in CMS is stored null, then CM
 ## One active authorisation per payment for one PSU
 When PSU creates new authorisation for a payment, all previous authorisations, created by this PSU for the same payment, will be failed and expired.
 
+## Bugfix: validate PSU credentials during update PSU data requests
+From now on SPI response status UNAUTHORIZED_FAILURE corresponds to PSU_CREDENTIALS_INVALID error(response code HTTP 401).
+
+Now SPI-Mock correctly handles invalid PSU credentials.
+
 ## Add instanceId to services in cms-aspsp-api and cms-psu-api
 From now methods in cms-aspsp-api and cms-psu-api also require instanceId to be provided as a mandatory argument.
 This id represents particular service instance and is used for filtering data from the database.
