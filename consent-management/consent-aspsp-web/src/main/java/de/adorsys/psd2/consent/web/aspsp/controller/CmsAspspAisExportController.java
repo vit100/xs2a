@@ -63,8 +63,8 @@ public class CmsAspspAisExportController {
         @ApiParam(value = "ID of the particular service instance")
         @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
         PsuIdData psuIdData = new PsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
-        Collection<AisAccountConsent> events = cmsAspspAisExportService.exportConsentsByTpp(tppId, start, end, psuIdData, instanceId);
-        return new ResponseEntity<>(events, HttpStatus.OK);
+        Collection<AisAccountConsent> consents = cmsAspspAisExportService.exportConsentsByTpp(tppId, start, end, psuIdData, instanceId);
+        return new ResponseEntity<>(consents, HttpStatus.OK);
     }
 
     @GetMapping(path = "/psu")
@@ -89,7 +89,7 @@ public class CmsAspspAisExportController {
         @ApiParam(value = "ID of the particular service instance")
         @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
         PsuIdData psuIdData = new PsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
-        Collection<AisAccountConsent> events = cmsAspspAisExportService.exportConsentsByPsu(psuIdData, start, end, instanceId);
-        return new ResponseEntity<>(events, HttpStatus.OK);
+        Collection<AisAccountConsent> consents = cmsAspspAisExportService.exportConsentsByPsu(psuIdData, start, end, instanceId);
+        return new ResponseEntity<>(consents, HttpStatus.OK);
     }
 }
