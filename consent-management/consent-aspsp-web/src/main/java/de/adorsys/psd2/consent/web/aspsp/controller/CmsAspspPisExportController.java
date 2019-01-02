@@ -34,6 +34,8 @@ import java.util.Collection;
 @RequestMapping(path = "aspsp-api/v1/pis/payments")
 @Api(value = "aspsp-api/v1/pis/payments", tags = "ASPSP Export, PIS", description = "Provides access to the consent management system for exporting PIS payments by ASPSP")
 public class CmsAspspPisExportController {
+    private static final String DEFAULT_SERVICE_INSTANCE_ID = "UNDEFINED";
+
     private final CmsAspspPisExportService cmsAspspPisExportService;
 
     @GetMapping(path = "/tpp/{tpp-id}")
@@ -59,7 +61,7 @@ public class CmsAspspPisExportController {
         @ApiParam(value = "Might be mandated in the ASPSP's documentation. Only used in a corporate context. ")
         @RequestHeader(value = "psu-corporate-id-type", required = false) String psuCorporateIdType,
         @ApiParam(value = "ID of the particular service instance")
-        @RequestHeader(value = "instance-id", required = false) String instanceId) {
+        @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
         PsuIdData psuIdData = new PsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
         Collection<CmsPayment> payments = cmsAspspPisExportService.exportPaymentsByTpp(tppId, start, end, psuIdData, instanceId);
         return new ResponseEntity<>(payments, HttpStatus.OK);
@@ -85,7 +87,7 @@ public class CmsAspspPisExportController {
         @ApiParam(value = "Might be mandated in the ASPSP's documentation. Only used in a corporate context. ")
         @RequestHeader(value = "psu-corporate-id-type", required = false) String psuCorporateIdType,
         @ApiParam(value = "ID of the particular service instance")
-        @RequestHeader(value = "instance-id", required = false) String instanceId) {
+        @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
         PsuIdData psuIdData = new PsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
         Collection<CmsPayment> payments = cmsAspspPisExportService.exportPaymentsByPsu(psuIdData, start, end, instanceId);
         return new ResponseEntity<>(payments, HttpStatus.OK);

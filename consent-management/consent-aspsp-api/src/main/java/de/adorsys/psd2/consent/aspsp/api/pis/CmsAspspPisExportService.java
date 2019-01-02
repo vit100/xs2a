@@ -36,7 +36,7 @@ public interface CmsAspspPisExportService {
      * @param createDateFrom         Optional starting creation date criteria
      * @param createDateTo           Optional ending creation date criteria
      * @param psuIdData              Optional Psu information criteria
-     * @param instanceId             Optional id of particular service instance
+     * @param instanceId             Mandatory id of particular service instance
      * @return Collection of payments for TPP by given criteria.
      * By inconsistent criteria an empty list will be returned
      * @throws TooManyResultsException If CMS is not able to provide result due to overflow,
@@ -44,7 +44,7 @@ public interface CmsAspspPisExportService {
      */
     Collection<CmsPayment> exportPaymentsByTpp(String tppAuthorisationNumber,
                                                @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo,
-                                               @Nullable PsuIdData psuIdData, @Nullable String instanceId);
+                                               @Nullable PsuIdData psuIdData, @NotNull String instanceId);
 
     /**
      * Returns list of payments by given criteria.
@@ -52,7 +52,7 @@ public interface CmsAspspPisExportService {
      * @param psuIdData      Mandatory Psu information criteria
      * @param createDateFrom Optional starting creation date criteria
      * @param createDateTo   Optional ending creation date criteria
-     * @param instanceId     Optional id of particular service instance
+     * @param instanceId     Mandatory id of particular service instance
      * @return Collection of payments for PSU by given criteria.
      * By inconsistent criteria an empty list will be returned
      * @throws TooManyResultsException If CMS is not able to provide result due to overflow,
@@ -60,5 +60,5 @@ public interface CmsAspspPisExportService {
      */
     Collection<CmsPayment> exportPaymentsByPsu(PsuIdData psuIdData,
                                                @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo,
-                                               @Nullable String instanceId);
+                                               @NotNull String instanceId);
 }
