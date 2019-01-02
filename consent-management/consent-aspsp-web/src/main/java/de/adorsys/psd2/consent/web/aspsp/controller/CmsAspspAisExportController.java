@@ -37,7 +37,7 @@ public class CmsAspspAisExportController {
     private final CmsAspspAisExportService cmsAspspAisExportService;
 
     @GetMapping(path = "/tpp/{tpp-id}")
-    @ApiOperation(value = "Returns a list of AIS consent objects by given mandatory TPP ID and some optional parameters")
+    @ApiOperation(value = "Returns a list of AIS consent objects by given mandatory TPP ID, optional creation date, PSU ID Data and instance ID")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK")})
     public ResponseEntity<Collection<AisAccountConsent>> getConsentsByTpp(
@@ -66,7 +66,7 @@ public class CmsAspspAisExportController {
     }
 
     @GetMapping(path = "/psu")
-    @ApiOperation(value = "Returns a list of AIS consent objects by given mandatory PSU ID Data and some optional parameters")
+    @ApiOperation(value = "Returns a list of AIS consent objects by given mandatory PSU ID Data, optional creation date and instance ID")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK")})
     public ResponseEntity<Collection<AisAccountConsent>> getConsentsByPsu(
