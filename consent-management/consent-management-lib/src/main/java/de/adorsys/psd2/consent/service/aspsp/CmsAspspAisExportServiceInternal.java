@@ -24,6 +24,7 @@ import de.adorsys.psd2.consent.service.mapper.AisConsentMapper;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,8 @@ public class CmsAspspAisExportServiceInternal implements CmsAspspAisExportServic
     private final AisConsentMapper aisConsentMapper;
 
     @Override
-    public Collection<AisAccountConsent> exportConsentsByTpp(String tppAuthorisationNumber, @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo, @Nullable PsuIdData psuIdData, @Nullable String instanceId) {
-        if (StringUtils.isBlank(tppAuthorisationNumber)) {
+    public Collection<AisAccountConsent> exportConsentsByTpp(String tppAuthorisationNumber, @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo, @Nullable PsuIdData psuIdData, @NotNull String instanceId) {
+        if (StringUtils.isBlank(tppAuthorisationNumber) || StringUtils.isBlank(instanceId)) {
             return Collections.emptyList();
         }
 
@@ -52,8 +53,8 @@ public class CmsAspspAisExportServiceInternal implements CmsAspspAisExportServic
     }
 
     @Override
-    public Collection<AisAccountConsent> exportConsentsByPsu(PsuIdData psuIdData, @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo, @Nullable String instanceId) {
-        if (psuIdData == null || psuIdData.isEmpty()) {
+    public Collection<AisAccountConsent> exportConsentsByPsu(PsuIdData psuIdData, @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo, @NotNull String instanceId) {
+        if (psuIdData == null || psuIdData.isEmpty() || StringUtils.isBlank(instanceId)) {
             return Collections.emptyList();
         }
 

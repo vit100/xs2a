@@ -34,6 +34,8 @@ import java.util.Collection;
 @RequestMapping(path = "aspsp-api/v1/ais/consents")
 @Api(value = "aspsp-api/v1/ais/consents", tags = "ASPSP Export, AIS", description = "Provides access to the consent management system for exporting AIS consents by ASPSP")
 public class CmsAspspAisExportController {
+    private static final String DEFAULT_SERVICE_INSTANCE_ID = "UNDEFINED";
+
     private final CmsAspspAisExportService cmsAspspAisExportService;
 
     @GetMapping(path = "/tpp/{tpp-id}")
@@ -59,7 +61,7 @@ public class CmsAspspAisExportController {
         @ApiParam(value = "Might be mandated in the ASPSP's documentation. Only used in a corporate context. ")
         @RequestHeader(value = "psu-corporate-id-type", required = false) String psuCorporateIdType,
         @ApiParam(value = "ID of the particular service instance")
-        @RequestHeader(value = "instance-id", required = false) String instanceId) {
+        @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
         PsuIdData psuIdData = new PsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
         Collection<AisAccountConsent> events = cmsAspspAisExportService.exportConsentsByTpp(tppId, start, end, psuIdData, instanceId);
         return new ResponseEntity<>(events, HttpStatus.OK);
@@ -85,7 +87,7 @@ public class CmsAspspAisExportController {
         @ApiParam(value = "Might be mandated in the ASPSP's documentation. Only used in a corporate context. ")
         @RequestHeader(value = "psu-corporate-id-type", required = false) String psuCorporateIdType,
         @ApiParam(value = "ID of the particular service instance")
-        @RequestHeader(value = "instance-id", required = false) String instanceId) {
+        @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
         PsuIdData psuIdData = new PsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
         Collection<AisAccountConsent> events = cmsAspspAisExportService.exportConsentsByPsu(psuIdData, start, end, instanceId);
         return new ResponseEntity<>(events, HttpStatus.OK);
