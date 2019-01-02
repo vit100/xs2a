@@ -118,25 +118,23 @@ public class PaymentModelMapperXs2a {
         payment.setRequestedExecutionTime(OffsetDateTime.now().plusHours(1));
 
         payment.setStartDate(paymentRequest.getStartDate());
-        payment.setExecutionRule(mapToPisExecutionRule(paymentRequest.getExecutionRule()));
+        payment.setExecutionRule(mapToPisExecutionRule(paymentRequest.getExecutionRule()).orElse(null));
         payment.setEndDate(paymentRequest.getEndDate());
         payment.setFrequency(mapToXs2aFrequencyCode(paymentRequest.getFrequency()));
-        payment.setDayOfExecution(mapToPisDayOfExecution(paymentRequest.getDayOfExecution()));
+        payment.setDayOfExecution(mapToPisDayOfExecution(paymentRequest.getDayOfExecution()).orElse(null));
         return payment;
     }
 
-    private PisDayOfExecution mapToPisDayOfExecution(DayOfExecution dayOfExecution) {
+    private Optional<PisDayOfExecution> mapToPisDayOfExecution(DayOfExecution dayOfExecution) {
         return Optional.ofNullable(dayOfExecution)
                    .map(DayOfExecution::toString)
-                   .flatMap(PisDayOfExecution::getByValue)
-                   .orElse(null);
+                   .flatMap(PisDayOfExecution::getByValue);
     }
 
-    private PisExecutionRule mapToPisExecutionRule(ExecutionRule rule) {
+    private Optional<PisExecutionRule> mapToPisExecutionRule(ExecutionRule rule) {
         return Optional.ofNullable(rule)
                    .map(ExecutionRule::toString)
-                   .flatMap(PisExecutionRule::getByValue)
-                   .orElse(null);
+                   .flatMap(PisExecutionRule::getByValue);
     }
 
     private Xs2aFrequencyCode mapToXs2aFrequencyCode(FrequencyCode frequency) {

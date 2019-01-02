@@ -76,7 +76,7 @@ public class SpiPeriodicPaymentMapper {
         periodic.setEndDate(payment.getEndDate());
         periodic.setExecutionRule(mapToPisExecutionRule(payment.getExecutionRule()));
         periodic.setFrequency(SpiFrequencyCode.valueOf(payment.getFrequency()));
-        periodic.setDayOfExecution(mapToPisDayOfExecution(payment.getDayOfExecution()));
+        periodic.setDayOfExecution(mapToPisDayOfExecution(payment.getDayOfExecution()).orElse(null));
         periodic.setRequestedExecutionTime(Optional.ofNullable(payment.getRequestedExecutionTime()).map(t -> t.atOffset(ZoneOffset.UTC)).orElse(null));
         periodic.setRequestedExecutionDate(payment.getRequestedExecutionDate());
         return periodic;
@@ -93,11 +93,10 @@ public class SpiPeriodicPaymentMapper {
         return spi;
     }
 
-    private PisDayOfExecution mapToPisDayOfExecution(AspspDayOfExecution dayOfExecution) {
+    private Optional<PisDayOfExecution> mapToPisDayOfExecution(AspspDayOfExecution dayOfExecution) {
         return Optional.ofNullable(dayOfExecution)
                    .map(AspspDayOfExecution::toString)
-                   .flatMap(PisDayOfExecution::getByValue)
-                   .orElse(null);
+                   .flatMap(PisDayOfExecution::getByValue);
     }
 
     private PisExecutionRule mapToPisExecutionRule(AspspExecutionRule rule) {

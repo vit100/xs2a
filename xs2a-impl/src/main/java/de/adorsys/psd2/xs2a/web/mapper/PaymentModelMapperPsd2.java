@@ -94,9 +94,9 @@ public class PaymentModelMapperPsd2 {
             paymentResponse.setRemittanceInformationUnstructured(xs2aPayment.getRemittanceInformationUnstructured());
             paymentResponse.setStartDate(xs2aPayment.getStartDate());
             paymentResponse.setEndDate(xs2aPayment.getEndDate());
-            paymentResponse.setExecutionRule(mapToExecutionRule(xs2aPayment.getExecutionRule()));
+            paymentResponse.setExecutionRule(mapToExecutionRule(xs2aPayment.getExecutionRule()).orElse(null));
             paymentResponse.setFrequency(FrequencyCode.valueOf(xs2aPayment.getFrequency().name()));
-            paymentResponse.setDayOfExecution(mapToDayOfExecution(xs2aPayment.getDayOfExecution()));
+            paymentResponse.setDayOfExecution(mapToDayOfExecution(xs2aPayment.getDayOfExecution()).orElse(null));
             paymentResponse.setTransactionStatus(mapToTransactionStatus12(xs2aPayment.getTransactionStatus()));
             return paymentResponse;
         } else {
@@ -238,17 +238,15 @@ public class PaymentModelMapperPsd2 {
         }
     }
 
-    private DayOfExecution mapToDayOfExecution(PisDayOfExecution dayOfExecution) {
+    private Optional<DayOfExecution> mapToDayOfExecution(PisDayOfExecution dayOfExecution) {
         return Optional.ofNullable(dayOfExecution)
                    .map(PisDayOfExecution::toString)
-                   .map(DayOfExecution::fromValue)
-                   .orElse(null);
+                   .map(DayOfExecution::fromValue);
     }
 
-    private ExecutionRule mapToExecutionRule(PisExecutionRule rule) {
+    private Optional<ExecutionRule> mapToExecutionRule(PisExecutionRule rule) {
         return Optional.ofNullable(rule)
                    .map(PisExecutionRule::toString)
-                   .map(ExecutionRule::fromValue)
-                   .orElse(null);
+                   .map(ExecutionRule::fromValue);
     }
 }
