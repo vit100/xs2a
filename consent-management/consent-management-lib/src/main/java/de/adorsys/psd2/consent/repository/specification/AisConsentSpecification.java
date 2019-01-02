@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+import static de.adorsys.psd2.consent.repository.specification.EntityAttribute.CONSENT_EXTERNAL_ID_ATTRIBUTE;
 import static de.adorsys.psd2.consent.repository.specification.EntityAttributeSpecificationProvider.provideSpecificationForEntityAttribute;
 
 @Service
@@ -40,7 +41,7 @@ public class AisConsentSpecification extends GenericSpecification {
      */
     public Specification<AisConsent> byConsentIdAndInstanceId(String consentId, String instanceId) {
         return Specifications.<AisConsent>where(byInstanceId(instanceId))
-                   .and(provideSpecificationForEntityAttribute(EntityAttribute.CONSENT_EXTERNAL_ID_ATTRIBUTE, consentId));
+                   .and(provideSpecificationForEntityAttribute(CONSENT_EXTERNAL_ID_ATTRIBUTE, consentId));
     }
 
     /**
