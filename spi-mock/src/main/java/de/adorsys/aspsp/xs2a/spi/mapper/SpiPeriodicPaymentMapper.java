@@ -52,9 +52,9 @@ public class SpiPeriodicPaymentMapper {
         periodic.setPaymentStatus(spiPaymentMapper.mapToAspspTransactionStatus(transactionStatus));
         periodic.setStartDate(payment.getStartDate());
         periodic.setEndDate(payment.getEndDate());
-        periodic.setExecutionRule(mapToAspspExecutionRule(payment.getExecutionRule()));
+        periodic.setExecutionRule(mapToAspspExecutionRule(payment.getExecutionRule()).orElse(null));
         periodic.setFrequency(payment.getFrequency().name());
-        periodic.setDayOfExecution(mapToAspspDayOfExecution(payment.getDayOfExecution()));
+        periodic.setDayOfExecution(mapToAspspDayOfExecution(payment.getDayOfExecution()).orElse(null));
         periodic.setRequestedExecutionTime(Optional.ofNullable(payment.getRequestedExecutionTime()).map(OffsetDateTime::toLocalDateTime).orElse(null));
         periodic.setRequestedExecutionDate(payment.getRequestedExecutionDate());
         return periodic;
@@ -74,7 +74,7 @@ public class SpiPeriodicPaymentMapper {
         periodic.setPaymentStatus(spiPaymentMapper.mapToSpiTransactionStatus(payment.getPaymentStatus()));
         periodic.setStartDate(payment.getStartDate());
         periodic.setEndDate(payment.getEndDate());
-        periodic.setExecutionRule(mapToPisExecutionRule(payment.getExecutionRule()));
+        periodic.setExecutionRule(mapToPisExecutionRule(payment.getExecutionRule()).orElse(null));
         periodic.setFrequency(SpiFrequencyCode.valueOf(payment.getFrequency()));
         periodic.setDayOfExecution(mapToPisDayOfExecution(payment.getDayOfExecution()).orElse(null));
         periodic.setRequestedExecutionTime(Optional.ofNullable(payment.getRequestedExecutionTime()).map(t -> t.atOffset(ZoneOffset.UTC)).orElse(null));
@@ -99,24 +99,21 @@ public class SpiPeriodicPaymentMapper {
                    .flatMap(PisDayOfExecution::getByValue);
     }
 
-    private PisExecutionRule mapToPisExecutionRule(AspspExecutionRule rule) {
+    private Optional<PisExecutionRule> mapToPisExecutionRule(AspspExecutionRule rule) {
         return Optional.ofNullable(rule)
                    .map(AspspExecutionRule::toString)
-                   .flatMap(PisExecutionRule::getByValue)
-                   .orElse(null);
+                   .flatMap(PisExecutionRule::getByValue);
     }
 
-    private AspspDayOfExecution mapToAspspDayOfExecution(PisDayOfExecution dayOfExecution) {
+    private Optional<AspspDayOfExecution> mapToAspspDayOfExecution(PisDayOfExecution dayOfExecution) {
         return Optional.ofNullable(dayOfExecution)
                    .map(PisDayOfExecution::toString)
-                   .flatMap(AspspDayOfExecution::getByValue)
-                   .orElse(null);
+                   .flatMap(AspspDayOfExecution::getByValue);
     }
 
-    private AspspExecutionRule mapToAspspExecutionRule(PisExecutionRule rule) {
+    private Optional<AspspExecutionRule> mapToAspspExecutionRule(PisExecutionRule rule) {
         return Optional.ofNullable(rule)
                    .map(PisExecutionRule::toString)
-                   .flatMap(AspspExecutionRule::getByValue)
-                   .orElse(null);
+                   .flatMap(AspspExecutionRule::getByValue);
     }
 }
