@@ -79,6 +79,11 @@ public class PisCommonPaymentServiceInternalEncrypted implements PisCommonPaymen
     }
 
     @Override
+    public Optional<String> getEncryptedId(String plain) {
+        return securityDataService.encryptId(plain);
+    }
+
+    @Override
     @Transactional
     public Optional<CreatePisAuthorisationResponse> createAuthorization(String encryptedPaymentId,
                                                                         CmsAuthorisationType authorisationType,

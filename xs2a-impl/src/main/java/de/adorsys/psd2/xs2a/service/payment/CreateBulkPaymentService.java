@@ -66,6 +66,7 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
         PsuIdData psuData = paymentInitiationParameters.getPsuData();
 
         BulkPaymentInitiationResponse response = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
+        String externalPaymentId = response.getExternalPaymentId();
 
         PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId());
 
@@ -81,9 +82,8 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
         bulkPayment.setPaymentId(response.getPaymentId());
 
         BulkPayment bulkPaymentUpdated = setRandomIdsToPaymentListInBulkPayment(bulkPayment);
-        pisCommonPaymentService.updateBulkPaymentInCommonPayment(bulkPaymentUpdated, paymentInitiationParameters, pisCommonPayment.getPaymentId());
+        pisCommonPaymentService.updateBulkPaymentInCommonPayment(bulkPaymentUpdated, paymentInitiationParameters, externalPaymentId);
 
-        String externalPaymentId = pisCommonPayment.getPaymentId();
         response.setPaymentId(externalPaymentId);
 
         boolean implicitMethod = authorisationMethodDecider.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());

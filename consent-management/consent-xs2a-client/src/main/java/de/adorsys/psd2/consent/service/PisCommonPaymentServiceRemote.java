@@ -91,6 +91,12 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
     }
 
     @Override
+    public Optional<String> getEncryptedId(String plain) {
+        return Optional.ofNullable(consentRestTemplate.getForEntity(remotePisCommonPaymentUrls.getEncryptedStringByPaymentId(), String.class, plain))
+            .map(ResponseEntity::getBody);
+    }
+
+    @Override
     public Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisCommonPaymentUrls.createPisAuthorisation(),
                                                                      psuData, CreatePisAuthorisationResponse.class, paymentId))

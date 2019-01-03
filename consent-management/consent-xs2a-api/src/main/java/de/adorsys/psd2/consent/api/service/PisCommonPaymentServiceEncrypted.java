@@ -32,4 +32,12 @@ public interface PisCommonPaymentServiceEncrypted extends PisCommonPaymentServic
      * @return Response containing original decrypted Id
      */
     Optional<String> getDecryptedId(String encryptedId);
+
+    /**
+     * encrypt id
+     *
+     * @param plain id to be encrypted
+     * @return Response containing encrypted Id
+     */
+    Optional<String> getEncryptedId(String plain);
 }

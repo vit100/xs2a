@@ -30,10 +30,11 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class SpiToXs2aPaymentMapper {
 
-    public <T extends SpiPaymentInitiationResponse, R extends PaymentInitiationResponse> R mapToPaymentInitiateResponse(T spi, Supplier<R> xs2a) {
+    public <T extends SpiPaymentInitiationResponse, R extends PaymentInitiationResponse> R mapToPaymentInitiateResponse(T spi, Supplier<R> xs2a, String externalId) {
         R response = xs2a.get();
         response.setPaymentId(spi.getPaymentId());
         response.setTransactionStatus(TransactionStatus.getByValue(spi.getTransactionStatus().getName()));
+        response.setExternalPaymentId(externalId);
         return response;
     }
 

@@ -39,6 +39,7 @@ public abstract class PaymentInitiationResponse {
     private Xs2aAmount transactionFees;
     private boolean transactionFeeIndicator;
     private String paymentId;
+    private String externalPaymentId;
     private Xs2aAuthenticationObject[] scaMethods;
     private ChallengeData challengeData;
     private String psuMessage;

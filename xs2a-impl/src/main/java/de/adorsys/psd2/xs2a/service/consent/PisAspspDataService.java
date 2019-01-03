@@ -40,4 +40,8 @@ public class PisAspspDataService {
     public String getInternalPaymentIdByEncryptedString(String encryptedId) {
         return pisCommonPaymentServiceEncrypted.getDecryptedId(encryptedId).orElse(null);
     }
+
+    public String encryptPaymentId(String paymentId) {
+        return pisCommonPaymentServiceEncrypted.getEncryptedId(paymentId).orElse(null);
+    }
 }

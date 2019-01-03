@@ -58,6 +58,7 @@ import static org.mockito.Mockito.when;
 public class CreateBulkPaymentServiceTest<resp> {
     private final Currency EUR_CURRENCY = Currency.getInstance("EUR");
     private static final String PAYMENT_ID = "d6cb50e5-bb88-4bbf-a5c1-42ee1ed1df2c";
+    private static final String ENCRYPTED_PAYMENT_ID = "1YOYnFQxnO1ZldslUkhL61zeyr115LomcmVo03sY0FJ9RV91TvhlulQeW1Kob8Y6kBFqgz7D0DBphK9WTs50lw==_=_bS6p6XvTWI";
     private static final String IBAN = "DE123456789";
     private static final PsuIdData PSU_DATA = new PsuIdData(null, null, null, null);
     private final TppInfo TPP_INFO = buildTppInfo();
@@ -101,7 +102,7 @@ public class CreateBulkPaymentServiceTest<resp> {
 
         //Then
         assertThat(actualResponse.hasError()).isFalse();
-        assertThat(actualResponse.getBody().getPaymentId()).isEqualTo(PAYMENT_ID);
+        assertThat(actualResponse.getBody().getPaymentId()).isEqualTo(ENCRYPTED_PAYMENT_ID);
         assertThat(actualResponse.getBody().getTransactionStatus()).isEqualTo(TransactionStatus.RCVD);
     }
 
@@ -156,6 +157,7 @@ public class CreateBulkPaymentServiceTest<resp> {
         BulkPaymentInitiationResponse response = new BulkPaymentInitiationResponse();
         response.setPaymentId(PAYMENT_ID);
         response.setTransactionStatus(TransactionStatus.RCVD);
+        response.setExternalPaymentId(ENCRYPTED_PAYMENT_ID);
         return response;
     }
 

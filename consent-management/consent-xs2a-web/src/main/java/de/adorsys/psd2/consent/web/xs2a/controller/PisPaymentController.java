@@ -60,4 +60,17 @@ public class PisPaymentController {
                    ? ResponseEntity.ok().build()
                    : ResponseEntity.badRequest().build();
     }
+
+    @GetMapping(path = "/payment/{payment-id}/encrypt")
+    @ApiOperation(value = "Get encrypted string by payment id")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Not Found")})
+    public ResponseEntity<String> getEncryptedStringByPaymentId(
+        @ApiParam(name = "payment-id", value = "The payment identification.", example = "32454656712432")
+        @PathVariable("payment-id") String plainId) {
+        return pisCommonPaymentService.getEncryptedId(plainId)
+            .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

@@ -168,4 +168,10 @@ public class PisCommonPaymentRemoteUrls {
         return commonPaymentServiceBaseUrl + "/pis/common-payments/{payment-id}/cancellation-authorisations/{cancellation-id}/status";
     }
 
+    /**
+     * @return URL to encrypt String
+     */
+    public String getEncryptedStringByPaymentId() {
+        return commonPaymentServiceBaseUrl + "/pis/payment/{payment-id}/encrypt";
+    }
 }
