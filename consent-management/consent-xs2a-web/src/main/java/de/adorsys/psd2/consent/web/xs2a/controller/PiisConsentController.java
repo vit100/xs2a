@@ -18,8 +18,8 @@ package de.adorsys.psd2.consent.web.xs2a.controller;
 
 import de.adorsys.psd2.consent.api.service.PiisConsentService;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
+import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountType;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -45,10 +45,10 @@ public class PiisConsentController {
         @ApiParam(name = "currency", value = "3 capital letters of currency name.", example = "EUR")
         @PathVariable("currency") String currency,
         @ApiParam(name = "account-reference-type", value = "Account reference type, can be either IBAN, BBAN, PAN, MSISDN or MASKED_PAN.", example = "IBAN")
-        @PathVariable("account-reference-type") AccountReferenceType accountReferenceType,
+        @PathVariable("account-reference-type") AccountType accountReferenceType,
         @ApiParam(name = "account-identifier", value = "The value of account identifier.", example = "DE2310010010123456789")
         @PathVariable("account-identifier") String accountIdentifier) {
-        List<PiisConsent> responseList = piisConsentService.getPiisConsentListByAccountIdentifier(Currency.getInstance(currency), new AccountReferenceSelector(accountReferenceType, accountIdentifier));
+        List<PiisConsent> responseList = piisConsentService.getPiisConsentListByAccountIdentifier(Currency.getInstance(currency), new AccountSelector(accountReferenceType, accountIdentifier));
         return CollectionUtils.isEmpty(responseList)
                    ? ResponseEntity.notFound().build()
                    : ResponseEntity.ok(responseList);

@@ -20,8 +20,8 @@ import de.adorsys.psd2.consent.api.service.PiisConsentService;
 import de.adorsys.psd2.consent.web.xs2a.controller.PiisConsentController;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
+import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,9 +51,9 @@ public class PiisConsentControllerTest {
 
     @Before
     public void setUp() {
-        when(piisConsentService.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountReferenceSelector(AccountReferenceType.IBAN, IBAN)))
+        when(piisConsentService.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountSelector(AccountType.IBAN, IBAN)))
             .thenReturn(Collections.singletonList(buildPiisConsent()));
-        when(piisConsentService.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountReferenceSelector(AccountReferenceType.IBAN, WRONG_IBAN)))
+        when(piisConsentService.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountSelector(AccountType.IBAN, WRONG_IBAN)))
             .thenReturn(Collections.emptyList());
     }
 
@@ -63,7 +63,7 @@ public class PiisConsentControllerTest {
         PiisConsent expected = buildPiisConsent();
 
         // When
-        ResponseEntity<List<PiisConsent>> response = piisConsentController.getPiisConsentListByAccountReference("EUR", AccountReferenceType.IBAN, IBAN);
+        ResponseEntity<List<PiisConsent>> response = piisConsentController.getPiisConsentListByAccountReference("EUR", AccountType.IBAN, IBAN);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -73,7 +73,7 @@ public class PiisConsentControllerTest {
     @Test
     public void getPiisConsentById_Failure_WrongConsentId() {
         // When
-        ResponseEntity<List<PiisConsent>> response = piisConsentController.getPiisConsentListByAccountReference("EUR", AccountReferenceType.IBAN, WRONG_IBAN);
+        ResponseEntity<List<PiisConsent>> response = piisConsentController.getPiisConsentListByAccountReference("EUR", AccountType.IBAN, WRONG_IBAN);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

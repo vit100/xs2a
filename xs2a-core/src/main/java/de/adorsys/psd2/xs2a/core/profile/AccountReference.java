@@ -26,13 +26,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Currency;
 
-import static de.adorsys.psd2.xs2a.core.profile.AccountReferenceType.*;
+import static de.adorsys.psd2.xs2a.core.profile.AccountType.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "Account Reference", value = "AccountReference")
 public class AccountReference {
+    @JsonIgnore
+    private String aspspAccountId;
 
     @ApiModelProperty(value = "RESOURCE-ID: This identification is denoting the addressed account.")
     private String resourceId;
@@ -55,7 +57,7 @@ public class AccountReference {
     @ApiModelProperty(value = "Codes following ISO 4217", example = "EUR")
     private Currency currency;
 
-    public AccountReference(AccountReferenceType accountReferenceType, String accountReferenceValue, Currency currency, String resourceId) {
+    public AccountReference(AccountType accountReferenceType, String accountReferenceValue, Currency currency, String resourceId) {
         if (accountReferenceType == IBAN) {
             this.iban = accountReferenceValue;
         } else if (accountReferenceType == BBAN) {
@@ -72,22 +74,22 @@ public class AccountReference {
     }
 
     @JsonIgnore
-    public AccountReferenceSelector getUsedAccountReferenceSelector() {
+    public AccountSelector getUsedAccountReferenceSelector() {
         if (StringUtils.isNotBlank(iban)) {
-            return new AccountReferenceSelector(IBAN, this.iban);
+            return new AccountSelector(IBAN, this.iban);
         }
         if (StringUtils.isNotBlank(bban)) {
-            return new AccountReferenceSelector(BBAN, this.bban);
+            return new AccountSelector(BBAN, this.bban);
         }
         if (StringUtils.isNotBlank(pan)) {
-            return new AccountReferenceSelector(PAN, this.pan);
+            return new AccountSelector(PAN, this.pan);
         }
         if (StringUtils.isNotBlank(msisdn)) {
-            return new AccountReferenceSelector(MSISDN, this.msisdn);
+            return new AccountSelector(MSISDN, this.msisdn);
         }
         if (StringUtils.isNotBlank(maskedPan)) {
-            return new AccountReferenceSelector(MASKED_PAN, this.maskedPan);
+            return new AccountSelector(MASKED_PAN, this.maskedPan);
         }
-        return null;
+        throw new IllegalArgumentException("At least one account reference property must be set!");
     }
 }

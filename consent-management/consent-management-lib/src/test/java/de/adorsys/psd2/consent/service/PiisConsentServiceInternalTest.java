@@ -22,8 +22,8 @@ import de.adorsys.psd2.consent.repository.PiisConsentRepository;
 import de.adorsys.psd2.consent.service.mapper.PiisConsentMapper;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
+import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,7 +74,7 @@ public class PiisConsentServiceInternalTest {
         PiisConsent expected = buildPiisConsent();
 
         // When
-        List<PiisConsent> piisConsents = piisConsentServiceInternal.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountReferenceSelector(AccountReferenceType.IBAN, IBAN));
+        List<PiisConsent> piisConsents = piisConsentServiceInternal.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountSelector(AccountType.IBAN, IBAN));
 
         // Then
         assertThat(piisConsents.isEmpty()).isFalse();
@@ -84,7 +84,7 @@ public class PiisConsentServiceInternalTest {
     @Test
     public void getPiisConsentListByAccountIdentifier_Failure_WrongIban() {
         // When
-        List<PiisConsent> piisConsents = piisConsentServiceInternal.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountReferenceSelector(AccountReferenceType.IBAN, WRONG_IBAN));
+        List<PiisConsent> piisConsents = piisConsentServiceInternal.getPiisConsentListByAccountIdentifier(CURRENCY, new AccountSelector(AccountType.IBAN, WRONG_IBAN));
 
         // Then
         assertThat(piisConsents.isEmpty()).isTrue();

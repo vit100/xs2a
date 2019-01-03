@@ -115,7 +115,7 @@ public class AccountService {
         }
 
         List<Xs2aAccountDetails> accountDetails = accountDetailsMapper.mapToXs2aAccountDetailsList(spiResponse.getPayload());
-        accountReferenceUpdater.updateAccountReferences(consentId, accountDetails);
+        accountReferenceUpdater.updateAccountReferences(consentId, accountDetails, withBalance);
 
         ResponseObject<Map<String, List<Xs2aAccountDetails>>> response = ResponseObject.<Map<String,
                                                                                                 List<Xs2aAccountDetails>>>builder()
@@ -433,7 +433,7 @@ public class AccountService {
 
     private Optional<SpiAccountReference> findAccountReference(List<AccountReference> references, String resourceId) {
         return references.stream()
-                   .filter(xs2aAccountReference -> StringUtils.equals(xs2aAccountReference.getResourceId(), resourceId))
+                   .filter(accountReference -> StringUtils.equals(accountReference.getResourceId(), resourceId))
                    .findFirst()
                    .map(xs2aToSpiAccountReferenceMapper::mapToSpiAccountReference);
     }

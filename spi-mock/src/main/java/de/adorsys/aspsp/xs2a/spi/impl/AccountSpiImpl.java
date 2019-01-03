@@ -43,6 +43,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType.BANK_OFFERED;
+import static de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType.GLOBAL;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
@@ -61,8 +63,8 @@ public class AccountSpiImpl implements AccountSpi {
         try {
             List<SpiAccountDetails> accountDetailsList;
 
-            if (isBankOfferedConsent(accountConsent.getAccess())) {
-                accountDetailsList = getAccountDetailsByConsentId(accountConsent);
+            if (EnumSet.of(GLOBAL, BANK_OFFERED).contains(accountConsent.getAisConsentRequestType())) {
+                accountDetailsList = getAccountDetailsByPsuId(accountConsent);
             } else {
                 accountDetailsList = getAccountDetailsFromReferences(withBalance, accountConsent);
             }
@@ -231,13 +233,7 @@ public class AccountSpiImpl implements AccountSpi {
         }
     }
 
-    private boolean isBankOfferedConsent(SpiAccountAccess accountAccess) {
-        return CollectionUtils.isEmpty(accountAccess.getBalances())
-            && CollectionUtils.isEmpty(accountAccess.getTransactions())
-            && CollectionUtils.isEmpty(accountAccess.getAccounts());
-    }
-
-    private List<SpiAccountDetails> getAccountDetailsByConsentId(SpiAccountConsent accountConsent) {
+    private List<SpiAccountDetails> getAccountDetailsByPsuId(SpiAccountConsent accountConsent) {
         return Optional.ofNullable(aspspRestTemplate.exchange(
             remoteSpiUrls.getAccountDetailsByPsuId(),
             HttpMethod.GET,

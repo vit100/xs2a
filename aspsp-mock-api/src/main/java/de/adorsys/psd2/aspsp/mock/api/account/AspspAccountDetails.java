@@ -30,6 +30,8 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 public class AspspAccountDetails {
+    private String aspspAccountId;
+
     @Id
     @Setter
     @NonFinal

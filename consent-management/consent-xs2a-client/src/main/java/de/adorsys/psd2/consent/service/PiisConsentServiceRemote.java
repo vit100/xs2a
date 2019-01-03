@@ -20,7 +20,7 @@ import de.adorsys.psd2.consent.api.service.PiisConsentService;
 import de.adorsys.psd2.consent.config.CmsRestException;
 import de.adorsys.psd2.consent.config.PiisConsentRemoteUrls;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,7 +42,7 @@ public class PiisConsentServiceRemote implements PiisConsentService {
     private final PiisConsentRemoteUrls remotePiisConsentUrls;
 
     @Override
-    public List<PiisConsent> getPiisConsentListByAccountIdentifier(Currency currency, AccountReferenceSelector accountReferenceSelector) {
+    public List<PiisConsent> getPiisConsentListByAccountIdentifier(Currency currency, AccountSelector accountReferenceSelector) {
         List<PiisConsent> response = Collections.emptyList();
 
         try {
@@ -53,8 +53,8 @@ public class PiisConsentServiceRemote implements PiisConsentService {
                 new ParameterizedTypeReference<List<PiisConsent>>() {
                 },
                 currency.toString(),
-                accountReferenceSelector.getAccountReferenceType().name(),
-                accountReferenceSelector.getAccountReferenceValue()
+                accountReferenceSelector.getAccountType().name(),
+                accountReferenceSelector.getAccountValue()
             ).getBody();
         } catch (CmsRestException e) {
             log.error("Failed to retrieve piis consent validation data!");

@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.core.profile;
+package de.adorsys.psd2.xs2a.core.consent;
 
-public enum AccountReferenceType {
-    IBAN,
-    BBAN,
-    PAN,
-    MASKED_PAN,
-    MSISDN;
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Type of the ais consent request", value = "AisConsentRequestType")
+public enum AisConsentRequestType {
+    GLOBAL,
+    ALL_AVAILABLE_ACCOUNTS,
+    BANK_OFFERED,
+    DEDICATED_ACCOUNTS
 }

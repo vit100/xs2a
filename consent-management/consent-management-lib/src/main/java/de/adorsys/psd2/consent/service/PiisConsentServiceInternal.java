@@ -21,8 +21,8 @@ import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import de.adorsys.psd2.consent.repository.PiisConsentRepository;
 import de.adorsys.psd2.consent.service.mapper.PiisConsentMapper;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
-import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
+import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 
-import static de.adorsys.psd2.xs2a.core.profile.AccountReferenceType.*;
+import static de.adorsys.psd2.xs2a.core.profile.AccountType.*;
 
 @Slf4j
 @Service
@@ -43,15 +43,15 @@ public class PiisConsentServiceInternal implements PiisConsentService {
     private final PiisConsentMapper piisConsentMapper;
 
     @Override
-    public List<PiisConsent> getPiisConsentListByAccountIdentifier(Currency currency, AccountReferenceSelector accountReferenceSelector) {
+    public List<PiisConsent> getPiisConsentListByAccountIdentifier(Currency currency, AccountSelector accountReferenceSelector) {
         List<PiisConsentEntity> consents = extractPiisConsentList(currency, accountReferenceSelector);
         return piisConsentMapper.mapToPiisConsentList(consents);
     }
 
     // TODO refactor according to https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/580
-    private List<PiisConsentEntity> extractPiisConsentList(Currency currency, AccountReferenceSelector accountReferenceSelector) {
-        AccountReferenceType accountReferenceType = accountReferenceSelector.getAccountReferenceType();
-        String accountReferenceValue = accountReferenceSelector.getAccountReferenceValue();
+    private List<PiisConsentEntity> extractPiisConsentList(Currency currency, AccountSelector accountReferenceSelector) {
+        AccountType accountReferenceType = accountReferenceSelector.getAccountType();
+        String accountReferenceValue = accountReferenceSelector.getAccountValue();
         if (accountReferenceType == IBAN) {
             return piisConsentRepository.findAllByAccountsIbanAndAccountsCurrency(accountReferenceValue, currency);
         } else if (accountReferenceType == BBAN) {

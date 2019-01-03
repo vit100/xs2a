@@ -20,7 +20,7 @@ package de.adorsys.psd2.xs2a.core.profile;
 import lombok.Value;
 
 @Value
-public class AccountReferenceSelector {
-    private AccountReferenceType accountReferenceType;
-    private String accountReferenceValue;
+public class AccountSelector {
+    private AccountType accountType;
+    private String accountValue;
 }
