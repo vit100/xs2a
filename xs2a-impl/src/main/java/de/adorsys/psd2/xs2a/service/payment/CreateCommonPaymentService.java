@@ -16,6 +16,8 @@
 
 package de.adorsys.psd2.xs2a.service.payment;
 
+import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
@@ -30,6 +32,7 @@ import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aToCmsPisCommonPaymentRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -45,6 +48,7 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
     private final PisScaAuthorisationService pisScaAuthorisationService;
     private final PisAspspDataService pisAspspDataService;
     private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
+    private final Xs2aToCmsPisCommonPaymentRequestMapper xs2aToCmsPisCommonPaymentRequestMapper;
 
     /**
      * Initiates payment
@@ -56,7 +60,11 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
      */
     @Override
     public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo) {
-        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(paymentInitiationParameters, tppInfo, payment.getPaymentData()), paymentInitiationParameters.getPsuData());
+        PsuIdData psuData = paymentInitiationParameters.getPsuData();
+        PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
+
+        PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId(), payment.getPaymentData());
+        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(pisPaymentInfo), psuData);
 
         if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
             return ResponseObject.<PaymentInitiationResponse>builder()
@@ -64,19 +72,12 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
                        .build();
         }
 
-        String externalPaymentId = pisCommonPayment.getPaymentId();
-
-        // we need to get decrypted payment ID
-        String internalPaymentId = pisAspspDataService.getInternalPaymentIdByEncryptedString(externalPaymentId);
-        payment.setPaymentId(internalPaymentId);
-
-        PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct());
-
-        response.setPaymentId(pisCommonPayment.getPaymentId());
-
         payment.setTransactionStatus(response.getTransactionStatus());
+        payment.setPaymentId(response.getPaymentId());
+        pisCommonPaymentService.updateCommonPayment(payment, pisCommonPayment.getPaymentId());
 
-      //  pisCommonPaymentService.updateCommonPayment(payment, pisCommonPayment.getPaymentId());
+        String externalPaymentId = pisCommonPayment.getPaymentId();
+        response.setPaymentId(externalPaymentId);
 
         boolean implicitMethod = authorisationMethodDecider.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());
         if (implicitMethod) {
@@ -91,9 +92,6 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
             response.setAuthorizationId(authorisationResponse.getAuthorisationId());
             response.setScaStatus(authorisationResponse.getScaStatus());
         }
-
-        // we need to return encrypted payment ID
-        response.setPaymentId(externalPaymentId);
 
         return ResponseObject.<PaymentInitiationResponse>builder()
                    .body(response)

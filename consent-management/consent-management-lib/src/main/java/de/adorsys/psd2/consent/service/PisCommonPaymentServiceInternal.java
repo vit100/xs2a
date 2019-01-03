@@ -304,7 +304,9 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
         // todo implementation should be changed  https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/534
 
         if (isCommonPayment) {
-            pisCommonPaymentDataRepository.save(pisCommonPaymentMapper.mapToPisCommonPaymentData(request.getPaymentInfo()));
+            PisCommonPaymentData commonPaymentData = pisCommonPaymentMapper.mapToPisCommonPaymentData(request.getPaymentInfo());
+            commonPaymentData.setId(pisCommonPayment.getId());
+            pisCommonPaymentDataRepository.save(commonPaymentData);
         } else {
             pisPaymentDataRepository.save(pisCommonPaymentMapper.mapToPisPaymentDataList(request.getPayments(), pisCommonPayment));
         }
