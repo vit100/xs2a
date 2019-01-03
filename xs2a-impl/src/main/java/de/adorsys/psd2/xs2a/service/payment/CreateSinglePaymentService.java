@@ -63,7 +63,6 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
         PsuIdData psuData = paymentInitiationParameters.getPsuData();
 
         SinglePaymentInitiationResponse response = scaPaymentService.createSinglePayment(singlePayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
-        String externalPaymentId = response.getExternalPaymentId();
 
         PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId());
         Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(pisPaymentInfo), psuData);
@@ -74,6 +73,7 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
                        .build();
         }
 
+        String externalPaymentId = response.getExternalPaymentId();
         singlePayment.setTransactionStatus(response.getTransactionStatus());
         singlePayment.setPaymentId(response.getPaymentId());
         pisCommonPaymentService.updateSinglePaymentInCommonPayment(singlePayment, paymentInitiationParameters, externalPaymentId);

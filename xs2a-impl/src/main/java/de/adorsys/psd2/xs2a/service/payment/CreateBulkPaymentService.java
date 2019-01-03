@@ -66,7 +66,7 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
         PsuIdData psuData = paymentInitiationParameters.getPsuData();
 
         BulkPaymentInitiationResponse response = scaPaymentService.createBulkPayment(bulkPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
-        String externalPaymentId = response.getExternalPaymentId();
+
 
         PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId());
 
@@ -78,6 +78,7 @@ public class CreateBulkPaymentService implements CreatePaymentService<BulkPaymen
                        .build();
         }
 
+        String externalPaymentId = response.getExternalPaymentId();
         bulkPayment.setTransactionStatus(response.getTransactionStatus());
         bulkPayment.setPaymentId(response.getPaymentId());
 

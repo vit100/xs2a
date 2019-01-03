@@ -63,7 +63,6 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
         PsuIdData psuData = paymentInitiationParameters.getPsuData();
 
         PeriodicPaymentInitiationResponse response = scaPaymentService.createPeriodicPayment(periodicPayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
-        String externalPaymentId = response.getExternalPaymentId();
 
         PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId());
 
@@ -75,6 +74,7 @@ public class CreatePeriodicPaymentService implements CreatePaymentService<Period
                        .build();
         }
 
+        String externalPaymentId = response.getExternalPaymentId();
         periodicPayment.setTransactionStatus(response.getTransactionStatus());
         periodicPayment.setPaymentId(response.getPaymentId());
         pisCommonPaymentService.updatePeriodicPaymentInCommonPayment(periodicPayment, paymentInitiationParameters, externalPaymentId);
