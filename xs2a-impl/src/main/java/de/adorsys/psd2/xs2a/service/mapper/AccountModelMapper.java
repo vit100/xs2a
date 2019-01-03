@@ -23,6 +23,7 @@ import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.domain.Transactions;
 import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
 import de.adorsys.psd2.xs2a.domain.Xs2aBalance;
+import de.adorsys.psd2.xs2a.domain.Xs2aExchangeRate;
 import de.adorsys.psd2.xs2a.domain.account.*;
 import de.adorsys.psd2.xs2a.domain.address.Xs2aAddress;
 import de.adorsys.psd2.xs2a.domain.address.Xs2aCountryCode;
@@ -56,8 +57,6 @@ public class AccountModelMapper {
         AccountDetails target = new AccountDetails();
         BeanUtils.copyProperties(accountDetails, target);
 
-        // TODO fill missing values: product status usage details
-        // https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/248
         target.resourceId(accountDetails.getResourceId())
             .currency(accountDetails.getCurrency().getCurrencyCode())
             .cashAccountType(Optional.ofNullable(accountDetails.getCashAccountType())
@@ -151,8 +150,14 @@ public class AccountModelMapper {
         target.setCreditorAccount(createAccountObject(transactions.getCreditorAccount()));
         target.setDebtorAccount(createAccountObject(transactions.getDebtorAccount()));
 
-        // TODO fill missing values: entryReference checkId exchangeRate proprietaryBankTransactionCode links
-        // https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/248
+        Optional.ofNullable(transactions.getExchangeRate())
+            .ifPresent(xs2aExchangeRates -> {
+                ExchangeRateList exchangeRates = xs2aExchangeRates.stream()
+                                                     .map(this::mapToExchangeRate)
+                                                     .collect(Collectors.toCollection(ExchangeRateList::new));
+                target.setExchangeRate(exchangeRates);
+            });
+
         Optional.ofNullable(transactions.getAmount())
             .ifPresent(amount -> target.setTransactionAmount(AmountModelMapper.mapToAmount(amount)));
 
@@ -172,20 +177,17 @@ public class AccountModelMapper {
         }
 
         T accountReference = null;
-        String currency = Optional.ofNullable(reference.getCurrency())
-            .map(Currency::getCurrencyCode)
-            .orElse(null);
 
         if (StringUtils.isNotBlank(reference.getIban())) {
-            accountReference = (T) new AccountReferenceIban().iban(reference.getIban()).currency(currency);
+            accountReference = (T) new AccountReferenceIban().iban(reference.getIban()).currency(getCurrencyFromAccountReference(reference).orElse(null));
         } else if (StringUtils.isNotBlank(reference.getBban())) {
-            accountReference = (T) new AccountReferenceBban().bban(reference.getBban()).currency(currency);
+            accountReference = (T) new AccountReferenceBban().bban(reference.getBban()).currency(getCurrencyFromAccountReference(reference).orElse(null));
         } else if (StringUtils.isNotBlank(reference.getPan())) {
-            accountReference = (T) new AccountReferencePan().pan(reference.getPan()).currency(currency);
+            accountReference = (T) new AccountReferencePan().pan(reference.getPan()).currency(getCurrencyFromAccountReference(reference).orElse(null));
         } else if (StringUtils.isNotBlank(reference.getMaskedPan())) {
-            accountReference = (T) new AccountReferenceMaskedPan().maskedPan(reference.getMaskedPan()).currency(currency);
+            accountReference = (T) new AccountReferenceMaskedPan().maskedPan(reference.getMaskedPan()).currency(getCurrencyFromAccountReference(reference).orElse(null));
         } else if (StringUtils.isNotBlank(reference.getMsisdn())) {
-            accountReference = (T) new AccountReferenceMsisdn().msisdn(reference.getMsisdn()).currency(currency);
+            accountReference = (T) new AccountReferenceMsisdn().msisdn(reference.getMsisdn()).currency(getCurrencyFromAccountReference(reference).orElse(null));
         }
         return accountReference;
     }
@@ -257,23 +259,23 @@ public class AccountModelMapper {
                        if (account.getIban() != null) {
                            return new AccountReferenceIban()
                                       .iban(account.getIban())
-                                      .currency(getCurrencyFromAccountReference(account));
+                                      .currency(getCurrencyFromAccountReference(account).orElse(null));
                        } else if (account.getBban() != null) {
                            return new AccountReferenceBban()
                                       .bban(account.getBban())
-                                      .currency(getCurrencyFromAccountReference(account));
+                                      .currency(getCurrencyFromAccountReference(account).orElse(null));
                        } else if (account.getPan() != null) {
                            return new AccountReferencePan()
                                       .pan(account.getPan())
-                                      .currency(getCurrencyFromAccountReference(account));
+                                      .currency(getCurrencyFromAccountReference(account).orElse(null));
                        } else if (account.getMsisdn() != null) {
                            return new AccountReferenceMsisdn()
                                       .msisdn(account.getMsisdn())
-                                      .currency(getCurrencyFromAccountReference(account));
+                                      .currency(getCurrencyFromAccountReference(account).orElse(null));
                        } else if (account.getMaskedPan() != null) {
                            return new AccountReferenceMaskedPan()
                                       .maskedPan(account.getMaskedPan())
-                                      .currency(getCurrencyFromAccountReference(account));
+                                      .currency(getCurrencyFromAccountReference(account).orElse(null));
                        }
 
                        return null;
@@ -281,9 +283,19 @@ public class AccountModelMapper {
                    .orElse(null);
     }
 
-    private String getCurrencyFromAccountReference(AccountReference accountReference) {
+    private Optional<String> getCurrencyFromAccountReference(AccountReference accountReference) {
         return Optional.ofNullable(accountReference.getCurrency())
-                   .map(Currency::getCurrencyCode)
-                   .orElse(null);
+                   .map(Currency::getCurrencyCode);
+    }
+
+    private ExchangeRate mapToExchangeRate(Xs2aExchangeRate xs2aExchangeRate) {
+        ExchangeRate exchangeRate = new ExchangeRate();
+        exchangeRate.setCurrencyFrom(xs2aExchangeRate.getCurrencyFrom().getCurrencyCode());
+        exchangeRate.setCurrencyTo(xs2aExchangeRate.getCurrencyTo().getCurrencyCode());
+        exchangeRate.setRateFrom(xs2aExchangeRate.getRateFrom());
+        exchangeRate.setRateTo(xs2aExchangeRate.getRateTo());
+        exchangeRate.setRateDate(xs2aExchangeRate.getRateDate());
+        exchangeRate.setRateContract(xs2aExchangeRate.getRateContract());
+        return exchangeRate;
     }
 }
