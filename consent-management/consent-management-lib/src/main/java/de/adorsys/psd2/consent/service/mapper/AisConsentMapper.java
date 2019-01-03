@@ -42,7 +42,7 @@ public class AisConsentMapper {
     public AisAccountConsent mapToAisAccountConsent(AisConsent consent) {
         return new AisAccountConsent(
             consent.getExternalId(),
-            mapToAisAccountAccess(consent.getAspspAccountAccesses()),
+            mapToAspspAisAccountAccess(consent.getAspspAccountAccesses()),
             consent.isRecurringIndicator(),
             consent.getExpireDate(),
             consent.getTppFrequencyPerDay(),
@@ -58,7 +58,7 @@ public class AisConsentMapper {
     public AisAccountConsent mapToInitialAisAccountConsent(AisConsent consent) {
         return new AisAccountConsent(
             consent.getExternalId(),
-            mapToInitialAisAccountAccess(consent.getAccesses()),
+            mapToTppAccountReference(consent.getAccesses()),
             consent.isRecurringIndicator(),
             consent.getExpireDate(),
             consent.getTppFrequencyPerDay(),
@@ -89,26 +89,26 @@ public class AisConsentMapper {
                    .orElse(null);
     }
 
-    private AisAccountAccess mapToInitialAisAccountAccess(List<TppAccountAccess> accountAccesses) {
-        return new AisAccountAccess(mapToInitialAccountReference(accountAccesses, TypeAccess.ACCOUNT),
-            mapToInitialAccountReference(accountAccesses, TypeAccess.BALANCE),
-            mapToInitialAccountReference(accountAccesses, TypeAccess.TRANSACTION));
+    private AisAccountAccess mapToTppAccountReference(List<TppAccountAccess> accountAccesses) {
+        return new AisAccountAccess(mapToInitialAccountReferences(accountAccesses, TypeAccess.ACCOUNT),
+            mapToInitialAccountReferences(accountAccesses, TypeAccess.BALANCE),
+            mapToInitialAccountReferences(accountAccesses, TypeAccess.TRANSACTION));
     }
 
-    private List<AccountReference> mapToInitialAccountReference(List<TppAccountAccess> aisAccounts, TypeAccess typeAccess) {
+    private List<AccountReference> mapToInitialAccountReferences(List<TppAccountAccess> aisAccounts, TypeAccess typeAccess) {
         return aisAccounts.stream()
                    .filter(ass -> ass.getTypeAccess() == typeAccess)
                    .map(access -> new AccountReference(access.getAccountType(), access.getAccountIdentifier(), access.getCurrency(), null))
                    .collect(Collectors.toList());
     }
 
-    private AisAccountAccess mapToAisAccountAccess(List<AspspAccountAccess> accountAccesses) {
-        return new AisAccountAccess(mapToAccountReference(accountAccesses, TypeAccess.ACCOUNT),
-            mapToAccountReference(accountAccesses, TypeAccess.BALANCE),
-            mapToAccountReference(accountAccesses, TypeAccess.TRANSACTION));
+    private AisAccountAccess mapToAspspAisAccountAccess(List<AspspAccountAccess> accountAccesses) {
+        return new AisAccountAccess(mapToAccountReferences(accountAccesses, TypeAccess.ACCOUNT),
+            mapToAccountReferences(accountAccesses, TypeAccess.BALANCE),
+            mapToAccountReferences(accountAccesses, TypeAccess.TRANSACTION));
     }
 
-    private List<AccountReference> mapToAccountReference(List<AspspAccountAccess> aisAccounts, TypeAccess typeAccess) {
+    private List<AccountReference> mapToAccountReferences(List<AspspAccountAccess> aisAccounts, TypeAccess typeAccess) {
         return aisAccounts.stream()
                    .filter(ass -> ass.getTypeAccess() == typeAccess)
                    .map(access -> new AccountReference(access.getAccountType(), access.getAccountIdentifier(), access.getCurrency(), access.getResourceId()))
