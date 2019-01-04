@@ -19,7 +19,7 @@ package de.adorsys.psd2.consent.domain.account;
 import de.adorsys.psd2.consent.api.AccountInfo;
 import de.adorsys.psd2.consent.api.TypeAccess;
 import de.adorsys.psd2.consent.api.ais.AisAccountAccessInfo;
-import de.adorsys.psd2.xs2a.core.profile.AccountType;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
 import lombok.Value;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -46,10 +46,10 @@ public class TppAccountAccessHolder extends AccountAccessHolder<TppAccountAccess
         }
     }
 
-    private void addAccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountType accountType, Currency currency) {
-        accountAccesses.add(new TppAccountAccess(accountIdentifier, typeAccess, accountType, currency));
+    private void addAccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountReferenceType accountReferenceType, Currency currency) {
+        accountAccesses.add(new TppAccountAccess(accountIdentifier, typeAccess, accountReferenceType, currency));
         if (EnumSet.of(BALANCE, TRANSACTION).contains(typeAccess)) {
-            accountAccesses.add(new TppAccountAccess(accountIdentifier, ACCOUNT, accountType, currency));
+            accountAccesses.add(new TppAccountAccess(accountIdentifier, ACCOUNT, accountReferenceType, currency));
         }
     }
 }

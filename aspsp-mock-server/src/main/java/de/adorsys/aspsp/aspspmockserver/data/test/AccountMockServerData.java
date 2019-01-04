@@ -59,10 +59,14 @@ public class AccountMockServerData {
     private final Currency USD = Currency.getInstance("USD");
     private final AspspBalanceType BALANCE_TYPE = AspspBalanceType.INTERIM_AVAILABLE;
 
-    public AccountMockServerData(PsuRepository psuRepository, TransactionRepository transactionRepository, TanRepository tanRepository) {
+    // Allowed Payments for Cucumber Test User
+    private final List<String> ALLOWED_PAYMENTS_CUCUMBER_TESTUSER = Arrays.asList("sepa-credit-transfers");
+
+    public AccountMockServerData(PsuRepository psuRepository, TransactionRepository transactionRepository, TanRepository tanRepository, PaymentRepository paymentRepository) {
         this.psuRepository = psuRepository;
         this.transactionRepository = transactionRepository;
         this.tanRepository = tanRepository;
+        this.paymentRepository = paymentRepository;
         this.accountDetails = fillAccounts();
         this.psus = fillPsu();
         fillTransactions();
@@ -73,11 +77,11 @@ public class AccountMockServerData {
     private void fillPayments() {
         // Payment data for Cucumber Test
         paymentRepository.save(getPayment("a9115f14-4f72-4e4e-8798-202808e85238", psus.get(3), EUR, BigDecimal.valueOf(150), psus.get(7),
-                                          "Online-Shoppping Amazon", LocalDate.parse("2018-07-15"), LocalDateTime.parse("2018-07-15T18:30:35.035"), AspspTransactionStatus.RCVD, PisPaymentType.SINGLE, AspspDayOfExecution._15));
+            "Online-Shoppping Amazon", LocalDate.parse("2018-07-15"), LocalDateTime.parse("2018-07-15T18:30:35.035"), AspspTransactionStatus.RCVD, PisPaymentType.SINGLE, AspspDayOfExecution._15));
         paymentRepository.save(getPayment("68147b90-e4ef-41c6-9c8b-c848c1e93700", psus.get(3), EUR, BigDecimal.valueOf(1030), psus.get(8),
-                                          "Holidays", LocalDate.parse("2018-07-31"), LocalDateTime.parse("2018-07-31T18:30:35.035"), AspspTransactionStatus.PDNG, PisPaymentType.SINGLE, AspspDayOfExecution._31));
+            "Holidays", LocalDate.parse("2018-07-31"), LocalDateTime.parse("2018-07-31T18:30:35.035"), AspspTransactionStatus.PDNG, PisPaymentType.SINGLE, AspspDayOfExecution._31));
         paymentRepository.save(getPayment("97694f0d-32e2-43a4-9e8d-261f2fc28236", psus.get(3), EUR, BigDecimal.valueOf(70), psus.get(9),
-                                          "Concert Tickets", LocalDate.parse("2018-07-08"), LocalDateTime.parse("2018-07-08T18:30:35.035"), AspspTransactionStatus.RJCT, PisPaymentType.SINGLE, AspspDayOfExecution._08));
+            "Concert Tickets", LocalDate.parse("2018-07-08"), LocalDateTime.parse("2018-07-08T18:30:35.035"), AspspTransactionStatus.RJCT, PisPaymentType.SINGLE, AspspDayOfExecution._08));
 
     }
 
@@ -111,6 +115,12 @@ public class AccountMockServerData {
         transactionRepository.save(getTransaction("0007", psus.get(2), psus.get(1), BigDecimal.valueOf(120), EUR, LocalDate.parse("2018-01-02"), LocalDate.parse("2018-01-02"), ""));
         transactionRepository.save(getTransaction("0008", psus.get(1), psus.get(2), BigDecimal.valueOf(30), USD, null, LocalDate.parse("2018-02-02"), ""));
         transactionRepository.save(getTransaction("0009", psus.get(1), psus.get(2), BigDecimal.valueOf(80), EUR, LocalDate.parse("2018-02-02"), LocalDate.parse("2018-02-02"), ""));
+
+        // Transaction data for Cucumber test
+        transactionRepository.save(getTransaction("ba8f7012-bdaf-4ada-bbf7-4c004d046ffe", psus.get(4), psus.get(3), BigDecimal.valueOf(50), EUR, LocalDate.parse("2018-07-05"), LocalDate.parse("2018-07-05"), "Spende Greenpeace"));
+        transactionRepository.save(getTransaction("7d12ff85-8ace-4124-877a-6bc3f125e98b", psus.get(5), psus.get(3), BigDecimal.valueOf(45.99), EUR, LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-01"), "Internet Rechnung Januar 2018 - MC-13058247-00000002"));
+        transactionRepository.save(getTransaction("bb0962ca-f6db-4ba7-b187-2b2e1af25845", psus.get(6), psus.get(3), BigDecimal.valueOf(200), EUR, LocalDate.parse("2018-05-15"), LocalDate.parse("2018-05-15"), "Alles Gute zum Geburtstag"));
+        transactionRepository.save(getTransaction("abc962ca-f6db-4ba7-b187-2b2e1af2test", psus.get(4), psus.get(3), BigDecimal.valueOf(70), EUR, LocalDate.parse("2018-11-24"), LocalDate.parse("2018-12-25"), "Spende fuer Nuernberg Bieber"));
     }
 
     private AspspTransaction getTransaction(String transactionId, Psu psu, Psu debtor, BigDecimal amount, Currency currency, LocalDate bookingDate, LocalDate valueDate, String purposeCode) {
@@ -133,24 +143,45 @@ public class AccountMockServerData {
 
     private List<Psu> fillPsu() {
         return Arrays.asList(
-            psuRepository.save(new Psu("PSU_001", "johndoutestemail@gmail.com", "aspsp", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2), accountDetails.get(7)), ALLOWED_PAYMENTS,Collections.emptyList())),
+            psuRepository.save(new Psu("PSU_001", "johndoutestemail@gmail.com", "aspsp", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS,Collections.emptyList())),
             psuRepository.save(new Psu("PSU_002", "johndoutestemail@gmail.com", "aspsp1", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
             psuRepository.save(new Psu("PSU_003", "johndoutestemail@gmail.com", "aspsp2", "zzz", Arrays.asList(accountDetails.get(3), accountDetails.get(4)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("SMS_OTP", "sms"), new AspspAuthenticationObject("PUSH_OTP", "push")))),
-            psuRepository.save(new Psu("PSU_004", "johndoutestemail@gmail.com", "aspsp3", "zzz", Arrays.asList(accountDetails.get(5), accountDetails.get(6)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("PUSH_OTP", "push"), new AspspAuthenticationObject("CHIP_OTP", "chip")))));
+            psuRepository.save(new Psu("PSU_004", "johndoutestemail@gmail.com", "aspsp3", "zzz", Arrays.asList(accountDetails.get(5), accountDetails.get(6)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("PUSH_OTP", "push"), new AspspAuthenticationObject("CHIP_OTP", "chip")))),
+
+            // Test User for Cucumber tests //TODO Update Sca Methods for all Cucumber PSUs
+            psuRepository.save(new Psu("d9e71419-24e4-4c5a-8d93-fcc23153aaff", "mueller.alex@web.de", "aspsp4", "zzz", Arrays.asList(accountDetails.get(7), accountDetails.get(14)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("d9e71419-24e4-4c5a-8d93-fcc23153aaff", "mueller.alex@web.de", "aspsp5", "zzz", Arrays.asList(accountDetails.get(7), accountDetails.get(14)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("PSU_CucumberGreenpeace", "greenpeace@web.de", "aspsp6", "zzz", Arrays.asList(accountDetails.get(8)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("PSU_CucumberTelekom", "telekom@telekom.de", "aspsp7", "zzz", Arrays.asList(accountDetails.get(9)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("PSU_CucumberJochen", "jochen.mueller@web.de", "aspsp8", "zzz", Arrays.asList(accountDetails.get(10)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("PSU_CucumberAmazon", "amazon@mail.com", "aspsp9", "zzz", Arrays.asList(accountDetails.get(11)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("PSU_CucumberHolidayCheck", "holidaycheck@mail.com", "aspsp10", "zzz", Arrays.asList(accountDetails.get(12)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("PSU_CucumberEventim", "eventim@web.de", "aspsp11", "zzz", Arrays.asList(accountDetails.get(13)), ALLOWED_PAYMENTS_CUCUMBER_TESTUSER, Collections.singletonList(new AspspAuthenticationObject("SMS_OTP", "sms"))))
+        );
 
     }
 
     private List<AspspAccountDetails> fillAccounts() {
 
-        return Arrays.asList(
-            getNewAccount("11111-11111", "11111-999999999", getNewBalanceList(EUR, BigDecimal.valueOf(1000)), "DE89370400440532013000", "AEYPM5403H", "DEUTDE8EXXX", "Müller", "SCT"),
+        return Arrays.asList(getNewAccount("11111-11111", "11111-999999999", getNewBalanceList(EUR, BigDecimal.valueOf(1000)), "DE89370400440532013000", "AEYPM5403H", "DEUTDE8EXXX", "Müller", "SCT"),
             getNewAccount("11111-11111", "77777-999999999", getNewBalanceList(USD, BigDecimal.valueOf(350)),  "DE89370400440532013000", "FFGHPM5403H", "DEUTDE8EXXX", "Müller", "SCT"),
             getNewAccount("22222-22222", "22222-999999999", getNewBalanceList(USD, BigDecimal.valueOf(2500)), "DE89370400440532013001", "QWEPM6427U", "DEUTDE8EXXX", "Müller", "SCT"),
             getNewAccount("33333-33333", "33333-999999999", getNewBalanceList(EUR, BigDecimal.valueOf(3000)), "LU280019400644750000", "EWQPS8534R", "DEUTDE8EXXX", "Schmidt", "SCT"),
             getNewAccount("44444-44444", "44444-999999999", getNewBalanceList(USD, BigDecimal.valueOf(3500)), "DE89370400440532013003", "ASDPS9547Z", "DEUTDE8EXXX", "Schmidt", "SCT"),
             getNewAccount("55555-55555", "55555-999999999", getNewBalanceList(EUR, BigDecimal.valueOf(4000)), "DE89370400440532013004", "DSACC1876N", "DEUTDE8EXXX", "Company AG", "SCT"),
             getNewAccount("66666-66666", "66666-999999999", getNewBalanceList(USD, BigDecimal.valueOf(1400)), "DE89370400440532013005", "CXZCC6427T", "DEUTDE8EXXX", "Company AG", "SCT"),
-            getNewAccount("11111-11111", "66666-999999999", getNewBalanceList(USD, BigDecimal.valueOf(1400)), "DE52500105173911841934", "CXZCC6427T", "DEUTDE8EXXX", "Company AG", "SCT"));
+            getNewAccount("11111-11111", "66666-999999999", getNewBalanceList(USD, BigDecimal.valueOf(1400)), "DE52500105173911841934", "CXZCC6427T", "DEUTDE8EXXX", "Company AG", "SCT"),
+
+            // account Test User for Cucumber
+            getNewAccountCucumberTest("11111-11112", "42fb4cc3-91cb-45ba-9159-b87acf6d8add", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(50000)), "DE52500105173911841934", null, null, "Alexander Mueller", "GIRO"),
+            getNewAccountCucumberTest("11111-11113", "88888-999999999", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(1000000)), "DE24500105172916349286", null, null, "Greenpeace", "GIRO"),
+            getNewAccountCucumberTest("11111-11114", "99999-999999999", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(500000)), "DE68500105174416628385", null, null, "Telekom", "GIRO"),
+            getNewAccountCucumberTest("11111-11115", "12345-999999999", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(20000)), "DE06500105171657611553", null, null, "Jochen Mueller", "GIRO"),
+            getNewAccountCucumberTest("11111-11116", "23236-999999999", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(6500000)), "DE49500105175378548627", null, null, "Amazon", "GIRO"),
+            getNewAccountCucumberTest("11111-11117", "37289-999999999", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(9500000)), "DE21500105176194357737", null, null, "Holidaycheck.com", "GIRO"),
+            getNewAccountCucumberTest("11111-11118", "10023-999999999", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(2500000)), "DE54500105173424724776", null, null, "Eventim", "GIRO"),
+            getNewAccountCucumberTest("11111-11119", "868beafc-ef87-4fdb-ac0a-dd6c52b77ee6", getNewBalanceListCucumberTests(EUR, BigDecimal.valueOf(50000)), "DE15086016167627403587", null, null, "Alexander Mueller", "GIRO")
+        );
     }
 
     private AspspAccountDetails getNewAccount(String aspspAccountId, String resourceId, List<AspspAccountBalance> balance, String iban, String pan, String bic, String name, String accountType) {
@@ -187,6 +218,33 @@ public class AccountMockServerData {
         balance.setLastChangeDateTime(dateTime);
         balance.setLastCommittedTransaction("abcd");
         return balance;
+    }
+
+    // Custom Methods to create Test account for Cucumber tests
+    private AspspAccountDetails getNewAccountCucumberTest(String aspspAccountId, String resourceId, List<AspspAccountBalance> balance, String iban, String pan, String bic, String name, String accountType) {
+        return new AspspAccountDetails(
+            aspspAccountId,
+            resourceId,
+            iban,
+            iban.substring(3),
+            pan,
+            null,
+            null,
+            balance.get(0).getSpiBalanceAmount().getCurrency(),
+            name,
+            accountType,
+            null,
+            null,
+            bic,
+            null,
+            null,
+            null,
+            balance
+        );
+    }
+
+    private List<AspspAccountBalance> getNewBalanceListCucumberTests(Currency currency, BigDecimal amount1) {
+        return Collections.singletonList(getBalance(currency, amount1, LocalDate.now(), LocalDateTime.now()));
     }
 
     private AspspAccountReference mapToReferenceFromDetails(AspspAccountDetails details) {

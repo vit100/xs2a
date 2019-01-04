@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.domain.account;
 
 import de.adorsys.psd2.consent.api.TypeAccess;
-import de.adorsys.psd2.xs2a.core.profile.AccountType;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,12 +48,12 @@ public abstract class AccountAccess {
     @Column(name = "account_reference_type", nullable = false, length = 15)
     @Enumerated(value = EnumType.STRING)
     @ApiModelProperty(value = "Type of the account: IBAN, BBAN, IBAN, BBAN, PAN, MASKED_PAN, MSISDN", required = true, example = "IBAN")
-    private AccountType accountType;
+    private AccountReferenceType accountReferenceType;
 
-    public AccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountType accountType, Currency currency) {
+    public AccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountReferenceType accountReferenceType, Currency currency) {
         this.accountIdentifier = accountIdentifier;
         this.typeAccess = typeAccess;
-        this.accountType = accountType;
+        this.accountReferenceType = accountReferenceType;
         this.currency = currency;
     }
 }

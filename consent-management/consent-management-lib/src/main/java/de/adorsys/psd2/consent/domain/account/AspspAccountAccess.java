@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.domain.account;
 
 import de.adorsys.psd2.consent.api.TypeAccess;
-import de.adorsys.psd2.xs2a.core.profile.AccountType;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -43,17 +43,9 @@ public class AspspAccountAccess extends AccountAccess {
     @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "DE2310010010123456789")
     private String aspspAccountId;
 
-    public AspspAccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountType accountType, Currency currency) {
-        super(accountIdentifier, typeAccess, accountType, currency);
-    }
-
-    public AspspAccountAccess resourceId(String resourceId) {
+    public AspspAccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountReferenceType accountReferenceType, Currency currency, String resourceId, String aspspAccountId) {
+        super(accountIdentifier, typeAccess, accountReferenceType, currency);
         this.resourceId = resourceId;
-        return this;
-    }
-
-    public AspspAccountAccess aspspAccountId(String aspspAccountId) {
         this.aspspAccountId = aspspAccountId;
-        return this;
     }
 }

@@ -62,6 +62,10 @@ public class CreateConsentReq implements AccountReferenceCollector {
     }
 
     @JsonIgnore
+    public boolean isGlobalOrAllAccountsAccessConsent() {
+        return isConsentGlobal() || isConsentForAllAvailableAccounts();
+    }
+
     @SafeVarargs
     private final Set<AccountReference> getReferenceSet(List<AccountReference>... referencesList) {
         return Arrays.stream(referencesList)
@@ -70,15 +74,9 @@ public class CreateConsentReq implements AccountReferenceCollector {
                    .collect(Collectors.toSet());
     }
 
-    @JsonIgnore
     private List<AccountReference> getReferenceList(List<AccountReference> reference) {
         return Optional.ofNullable(reference)
                    .orElseGet(Collections::emptyList);
-    }
-
-    @JsonIgnore
-    public boolean isGlobalOrAllAccountsAccessConsent() {
-        return isConsentGlobal() || isConsentForAllAvailableAccounts();
     }
 
     private boolean isConsentGlobal() {

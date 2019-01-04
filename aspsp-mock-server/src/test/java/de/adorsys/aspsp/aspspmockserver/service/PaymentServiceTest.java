@@ -181,7 +181,7 @@ public class PaymentServiceTest {
         //Given
         AspspBulkPayment spiBulkPayment = new AspspBulkPayment();
         List<AspspSinglePayment> payments = Arrays.asList(getAspspSinglePayment(AMOUNT_TO_TRANSFER),
-                                                          getAspspSinglePayment(EXCEEDING_AMOUNT_TO_TRANSFER));
+            getAspspSinglePayment(EXCEEDING_AMOUNT_TO_TRANSFER));
         spiBulkPayment.setPayments(payments);
 
         //When
@@ -317,7 +317,7 @@ public class PaymentServiceTest {
 
     private List<AspspAccountDetails> getAccountDetails() {
         return Collections.singletonList(
-            new AspspAccountDetails(ASPSP_ACCOUNT_ID,"12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, getBalances())
+            new AspspAccountDetails(ASPSP_ACCOUNT_ID, "12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, getBalances())
         );
     }
 

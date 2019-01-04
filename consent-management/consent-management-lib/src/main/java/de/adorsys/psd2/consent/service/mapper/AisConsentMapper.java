@@ -98,7 +98,7 @@ public class AisConsentMapper {
     private List<AccountReference> mapToInitialAccountReferences(List<TppAccountAccess> aisAccounts, TypeAccess typeAccess) {
         return aisAccounts.stream()
                    .filter(ass -> ass.getTypeAccess() == typeAccess)
-                   .map(access -> new AccountReference(access.getAccountType(), access.getAccountIdentifier(), access.getCurrency(), null))
+                   .map(access -> new AccountReference(access.getAccountReferenceType(), access.getAccountIdentifier(), access.getCurrency()))
                    .collect(Collectors.toList());
     }
 
@@ -111,7 +111,7 @@ public class AisConsentMapper {
     private List<AccountReference> mapToAccountReferences(List<AspspAccountAccess> aisAccounts, TypeAccess typeAccess) {
         return aisAccounts.stream()
                    .filter(ass -> ass.getTypeAccess() == typeAccess)
-                   .map(access -> new AccountReference(access.getAccountType(), access.getAccountIdentifier(), access.getCurrency(), access.getResourceId()))
+                   .map(access -> new AccountReference(access.getAccountReferenceType(), access.getAccountIdentifier(), access.getCurrency(), access.getResourceId(), access.getAspspAccountId()))
                    .collect(Collectors.toList());
     }
 }

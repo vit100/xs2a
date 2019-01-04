@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.api.service;
 
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 
 import java.util.Currency;
 import java.util.List;
@@ -31,5 +31,5 @@ public interface PiisConsentService {
      * @param accountIdentifierName The name of account reference identifier
      * @return PIIS consents
      */
-    List<PiisConsent> getPiisConsentListByAccountIdentifier(Currency currency, AccountSelector accountIdentifierName);
+    List<PiisConsent> getPiisConsentListByAccountIdentifier(Currency currency, AccountReferenceSelector accountIdentifierName);
 }

@@ -209,7 +209,7 @@ public class ConsentService {
                    : ResponseObject.<AccountConsent>builder().body(consent).build();
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings("WeakerAccess") // fixes the issue https://github.com/adorsys/xs2a/issues/16
     public ResponseObject<AccountConsent> getValidatedConsent(String consentId, boolean withBalance) {
         AccountConsent accountConsent = getValidatedAccountConsent(consentId);
 

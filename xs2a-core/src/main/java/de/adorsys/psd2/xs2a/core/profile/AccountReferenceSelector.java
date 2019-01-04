@@ -16,10 +16,11 @@
 
 package de.adorsys.psd2.xs2a.core.profile;
 
-public enum AccountType {
-    IBAN,
-    BBAN,
-    PAN,
-    MASKED_PAN,
-    MSISDN;
+
+import lombok.Value;
+
+@Value
+public class AccountReferenceSelector {
+    private AccountReferenceType accountReferenceType;
+    private String accountValue;
 }

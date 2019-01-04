@@ -19,7 +19,7 @@ package de.adorsys.psd2.consent.domain.account;
 import de.adorsys.psd2.consent.api.AccountInfo;
 import de.adorsys.psd2.consent.api.TypeAccess;
 import de.adorsys.psd2.consent.api.ais.AisAccountAccessInfo;
-import de.adorsys.psd2.xs2a.core.profile.AccountType;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
 import lombok.Value;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -47,15 +47,10 @@ public class AspspAccountAccessHolder extends AccountAccessHolder<AspspAccountAc
         }
     }
 
-    private void addAccountAccess(String aspspAccountId, String accountIdentifier, String resourceId, Currency currency, AccountType accountType, TypeAccess typeAccess) {
-        accountAccesses.add(new AspspAccountAccess(accountIdentifier, typeAccess, accountType, currency)
-                                .resourceId(resourceId)
-                                .aspspAccountId(aspspAccountId));
-
+    private void addAccountAccess(String aspspAccountId, String accountIdentifier, String resourceId, Currency currency, AccountReferenceType accountReferenceType, TypeAccess typeAccess) {
+        accountAccesses.add(new AspspAccountAccess(accountIdentifier, typeAccess, accountReferenceType, currency, resourceId, aspspAccountId));
         if (EnumSet.of(BALANCE, TRANSACTION).contains(typeAccess)) {
-            accountAccesses.add(new AspspAccountAccess(accountIdentifier, ACCOUNT, accountType, currency)
-                                    .resourceId(resourceId)
-                                    .aspspAccountId(aspspAccountId));
+            accountAccesses.add(new AspspAccountAccess(accountIdentifier, ACCOUNT, accountReferenceType, currency, resourceId, aspspAccountId));
         }
     }
 }

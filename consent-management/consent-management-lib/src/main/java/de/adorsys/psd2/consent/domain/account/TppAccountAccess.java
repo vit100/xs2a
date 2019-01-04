@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.domain.account;
 
 import de.adorsys.psd2.consent.api.TypeAccess;
-import de.adorsys.psd2.xs2a.core.profile.AccountType;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,7 @@ import java.util.Currency;
 //TODO refactor class and change DB scheme https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/491
 public class TppAccountAccess extends AccountAccess {
 
-    public TppAccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountType accountReferenceType, Currency currency) {
+    public TppAccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountReferenceType accountReferenceType, Currency currency) {
         super(accountIdentifier, typeAccess, accountReferenceType, currency);
     }
 }

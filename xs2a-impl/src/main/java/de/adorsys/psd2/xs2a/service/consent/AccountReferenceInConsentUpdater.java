@@ -64,8 +64,7 @@ public class AccountReferenceInConsentUpdater {
         List<AccountReference> balances = new ArrayList<>();
 
         for (Xs2aAccountDetails accountDetail : accountDetails) {
-            AccountReference reference = new AccountReference(accountDetail.getAccountSelector().getAccountType(), accountDetail.getAccountReferenceValue(), accountDetail.getCurrency(), accountDetail.getResourceId());
-            reference.setAspspAccountId(accountDetail.getAspspAccountId());
+            AccountReference reference = new AccountReference(accountDetail.getAccountSelector().getAccountReferenceType(), accountDetail.getAccountReferenceValue(), accountDetail.getCurrency(), accountDetail.getResourceId(), accountDetail.getAspspAccountId());
 
             accounts.add(reference);
             transactions.add(reference);

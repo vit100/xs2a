@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Currency;
 
-import static de.adorsys.psd2.xs2a.core.profile.AccountType.*;
+import static de.adorsys.psd2.xs2a.core.profile.AccountReferenceType.*;
 
 @Data
 @AllArgsConstructor
@@ -57,7 +57,17 @@ public class AccountReference {
     @ApiModelProperty(value = "Codes following ISO 4217", example = "EUR")
     private Currency currency;
 
-    public AccountReference(AccountType accountReferenceType, String accountReferenceValue, Currency currency, String resourceId) {
+    /**
+     * This constructor should be used for storing initial accounts data (as it was requested by TPP)
+     */
+    public AccountReference(AccountReferenceType accountReferenceType, String accountReferenceValue, Currency currency) {
+        this(accountReferenceType, accountReferenceValue, currency, null, null);
+    }
+
+    /**
+     * This constructor should be used for storing accounts data received from aspsp
+     */
+    public AccountReference(AccountReferenceType accountReferenceType, String accountReferenceValue, Currency currency, String resourceId, String aspspAccountId) {
         if (accountReferenceType == IBAN) {
             this.iban = accountReferenceValue;
         } else if (accountReferenceType == BBAN) {
@@ -71,24 +81,25 @@ public class AccountReference {
         }
         this.currency = currency;
         this.resourceId = resourceId;
+        this.aspspAccountId = aspspAccountId;
     }
 
     @JsonIgnore
-    public AccountSelector getUsedAccountReferenceSelector() {
+    public AccountReferenceSelector getUsedAccountReferenceSelector() {
         if (StringUtils.isNotBlank(iban)) {
-            return new AccountSelector(IBAN, this.iban);
+            return new AccountReferenceSelector(IBAN, this.iban);
         }
         if (StringUtils.isNotBlank(bban)) {
-            return new AccountSelector(BBAN, this.bban);
+            return new AccountReferenceSelector(BBAN, this.bban);
         }
         if (StringUtils.isNotBlank(pan)) {
-            return new AccountSelector(PAN, this.pan);
+            return new AccountReferenceSelector(PAN, this.pan);
         }
         if (StringUtils.isNotBlank(msisdn)) {
-            return new AccountSelector(MSISDN, this.msisdn);
+            return new AccountReferenceSelector(MSISDN, this.msisdn);
         }
         if (StringUtils.isNotBlank(maskedPan)) {
-            return new AccountSelector(MASKED_PAN, this.maskedPan);
+            return new AccountReferenceSelector(MASKED_PAN, this.maskedPan);
         }
         throw new IllegalArgumentException("At least one account reference property must be set!");
     }

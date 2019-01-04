@@ -19,7 +19,7 @@ package de.adorsys.psd2.xs2a.domain.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.domain.CashAccountType;
 import de.adorsys.psd2.xs2a.domain.Links;
 import de.adorsys.psd2.xs2a.domain.Xs2aBalance;
@@ -33,7 +33,7 @@ import javax.validation.constraints.Size;
 import java.util.Currency;
 import java.util.List;
 
-import static de.adorsys.psd2.xs2a.core.profile.AccountType.*;
+import static de.adorsys.psd2.xs2a.core.profile.AccountReferenceType.*;
 
 @Data
 @ApiModel(description = "SpiAccountDetails information", value = "SpiAccountDetails")
@@ -109,21 +109,21 @@ public class Xs2aAccountDetails {
     }
 
     @JsonIgnore
-    public AccountSelector getAccountSelector() {
+    public AccountReferenceSelector getAccountSelector() {
         if (StringUtils.isNotBlank(iban)) {
-            return new AccountSelector(IBAN, this.iban);
+            return new AccountReferenceSelector(IBAN, this.iban);
         }
         if (StringUtils.isNotBlank(bban)) {
-            return new AccountSelector(BBAN, this.bban);
+            return new AccountReferenceSelector(BBAN, this.bban);
         }
         if (StringUtils.isNotBlank(pan)) {
-            return new AccountSelector(PAN, this.pan);
+            return new AccountReferenceSelector(PAN, this.pan);
         }
         if (StringUtils.isNotBlank(msisdn)) {
-            return new AccountSelector(MSISDN, this.msisdn);
+            return new AccountReferenceSelector(MSISDN, this.msisdn);
         }
         if (StringUtils.isNotBlank(maskedPan)) {
-            return new AccountSelector(MASKED_PAN, this.maskedPan);
+            return new AccountReferenceSelector(MASKED_PAN, this.maskedPan);
         }
         throw new IllegalArgumentException("At least one account reference property must be set!");
     }

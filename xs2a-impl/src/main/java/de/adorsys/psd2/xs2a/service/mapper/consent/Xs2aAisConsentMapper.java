@@ -21,7 +21,7 @@ import de.adorsys.psd2.consent.api.ActionStatus;
 import de.adorsys.psd2.consent.api.TypeAccess;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
-import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
@@ -163,14 +163,14 @@ public class Xs2aAisConsentMapper {
     }
 
     private AccountInfo mapToAccountInfo(AccountReference ref) {
-        AccountSelector selector = ref.getUsedAccountReferenceSelector();
+        AccountReferenceSelector selector = ref.getUsedAccountReferenceSelector();
         return AccountInfo.builder()
                    .resourceId(ref.getResourceId())
                    .accountIdentifier(selector.getAccountValue())
                    .currency(Optional.ofNullable(ref.getCurrency())
                                  .map(Currency::getCurrencyCode)
                                  .orElse(null))
-                   .accountReferenceType(selector.getAccountType())
+                   .accountReferenceType(selector.getAccountReferenceType())
                    .aspspAccountId(ref.getAspspAccountId())
                    .build();
     }

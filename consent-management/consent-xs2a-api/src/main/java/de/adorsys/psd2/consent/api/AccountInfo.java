@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.api;
 
-import de.adorsys.psd2.xs2a.core.profile.AccountType;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class AccountInfo {
     private String currency;
 
     @ApiModelProperty(value = "Type of the account reference: IBAN, BBAN, IBAN, BBAN, PAN, MASKED_PAN, MSISDN", required = true, example = "IBAN")
-    private AccountType accountType;
+    private AccountReferenceType accountType;
 
     private AccountInfo(){}
 
@@ -53,7 +53,7 @@ public class AccountInfo {
         private String aspspAccountId;
         private String accountIdentifier;
         private String currency;
-        private AccountType accountReferenceType;
+        private AccountReferenceType accountReferenceType;
 
         private AccountInfoBuilder() {
         }
@@ -78,7 +78,7 @@ public class AccountInfo {
             return this;
         }
 
-        public AccountInfoBuilder accountReferenceType(AccountType accountReferenceType) {
+        public AccountInfoBuilder accountReferenceType(AccountReferenceType accountReferenceType) {
             this.accountReferenceType = accountReferenceType;
             return this;
         }

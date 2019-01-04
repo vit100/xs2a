@@ -21,7 +21,7 @@ import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
-import de.adorsys.psd2.xs2a.core.profile.AccountSelector;
+import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
@@ -107,7 +107,7 @@ public class FundsConfirmationService {
     }
 
     private PiisConsentValidationResult validateAccountReference(AccountReference accountReference) {
-        AccountSelector selector = accountReference.getUsedAccountReferenceSelector();
+        AccountReferenceSelector selector = accountReference.getUsedAccountReferenceSelector();
 
         if (selector == null) {
             log.warn("No account identifier in the request {}", accountReference);
