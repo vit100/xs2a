@@ -105,7 +105,7 @@ public class PisCommonPaymentServiceInternalEncryptedTest {
     public void createCommonPayment_success() {
         // Given
         PisPaymentInfo request = buildPisPaymentInfoRequest();
-        CreatePisCommonPaymentResponse expected = buildCreatePisCommonPaymentResponse(ENCRYPTED_PAYMENT_ID);
+        CreatePisCommonPaymentResponse expected = buildCreatePisCommonPaymentResponse(DECRYPTED_PAYMENT_ID);
 
         // When
         Optional<CreatePisCommonPaymentResponse> actual = pisCommonPaymentServiceInternalEncrypted.createCommonPayment(request);

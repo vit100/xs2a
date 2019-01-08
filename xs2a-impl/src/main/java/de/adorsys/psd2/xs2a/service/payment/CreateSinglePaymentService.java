@@ -23,7 +23,6 @@ import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aCreatePisAuthorisationResponse;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePaymentInitiationResponse;
@@ -31,7 +30,6 @@ import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodDecider;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
-import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aToCmsPisCommonPaymentRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +44,6 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final PisScaAuthorisationService pisScaAuthorisationService;
     private final AuthorisationMethodDecider authorisationMethodDecider;
-    private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
     private final Xs2aToCmsPisCommonPaymentRequestMapper xs2aToCmsPisCommonPaymentRequestMapper;
 
     /**
@@ -63,17 +60,17 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
         PsuIdData psuData = paymentInitiationParameters.getPsuData();
 
         SinglePaymentInitiationResponse response = scaPaymentService.createSinglePayment(singlePayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
+        String externalPaymentId = response.getExternalPaymentId();
 
-        PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId());
-        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(pisPaymentInfo), psuData);
-
-        if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
+        if (StringUtils.isBlank(externalPaymentId)) {
             return ResponseObject.<SinglePaymentInitiationResponse>builder()
                        .fail(new MessageError(MessageErrorCode.PAYMENT_FAILED))
                        .build();
         }
 
-        String externalPaymentId = response.getExternalPaymentId();
+        PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId());
+        pisCommonPaymentService.createCommonPayment(pisPaymentInfo);
+
         singlePayment.setTransactionStatus(response.getTransactionStatus());
         singlePayment.setPaymentId(response.getPaymentId());
         pisCommonPaymentService.updateSinglePaymentInCommonPayment(singlePayment, paymentInitiationParameters, externalPaymentId);

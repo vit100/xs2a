@@ -50,7 +50,6 @@ public class PisCommonPaymentServiceInternalEncrypted implements PisCommonPaymen
     public Optional<CreatePisCommonPaymentResponse> createCommonPayment(PisPaymentInfo request) {
         return pisCommonPaymentService.createCommonPayment(request)
                    .map(CreatePisCommonPaymentResponse::getPaymentId)
-                   .flatMap(securityDataService::encryptId)
                    .map(CreatePisCommonPaymentResponse::new);
     }
 
