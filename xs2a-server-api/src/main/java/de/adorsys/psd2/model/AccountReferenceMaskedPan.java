@@ -13,11 +13,13 @@ import java.util.Objects;
  */
 @ApiModel(description = "Reference to an account by the Primary Account Number (PAN) of a card in a masked form. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class AccountReferenceMaskedPan {
     @JsonProperty("maskedPan")
     private String maskedPan = null;
+
     @JsonProperty("currency")
     private String currency = null;
 
@@ -33,6 +35,7 @@ public class AccountReferenceMaskedPan {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getMaskedPan() {
         return maskedPan;
     }
@@ -52,6 +55,7 @@ public class AccountReferenceMaskedPan {
      * @return currency
      **/
     @ApiModelProperty(value = "")
+
     public String getCurrency() {
         return currency;
     }
@@ -69,8 +73,8 @@ public class AccountReferenceMaskedPan {
             return false;
         }
         AccountReferenceMaskedPan accountReferenceMaskedPan = (AccountReferenceMaskedPan) o;
-        return Objects.equals(this.maskedPan, accountReferenceMaskedPan.maskedPan) && Objects.equals(this.currency,
-            accountReferenceMaskedPan.currency);
+        return Objects.equals(this.maskedPan, accountReferenceMaskedPan.maskedPan) &&
+            Objects.equals(this.currency, accountReferenceMaskedPan.currency);
     }
 
     @Override
@@ -82,6 +86,7 @@ public class AccountReferenceMaskedPan {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class AccountReferenceMaskedPan {\n");
+
         sb.append("    maskedPan: ").append(toIndentedString(maskedPan)).append("\n");
         sb.append("    currency: ").append(toIndentedString(currency)).append("\n");
         sb.append("}");

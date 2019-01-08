@@ -8,8 +8,23 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * \"EveryTwoWeeks\" - \"Monthly\" - \"EveryTwoMonths\" - \"Quarterly\" - \"SemiAnnual\" - \"Annual\"
  */
 public enum FrequencyCode {
-    DAILY("Daily"), WEEKLY("Weekly"), EVERYTWOWEEKS("EveryTwoWeeks"), MONTHLY("Monthly"), EVERYTWOMONTHS(
-        "EveryTwoMonths"), QUARTERLY("Quarterly"), SEMIANNUAL("SemiAnnual"), ANNUAL("Annual");
+
+    DAILY("Daily"),
+
+    WEEKLY("Weekly"),
+
+    EVERYTWOWEEKS("EveryTwoWeeks"),
+
+    MONTHLY("Monthly"),
+
+    EVERYTWOMONTHS("EveryTwoMonths"),
+
+    QUARTERLY("Quarterly"),
+
+    SEMIANNUAL("SemiAnnual"),
+
+    ANNUAL("Annual");
+
     private String value;
 
     FrequencyCode(String value) {

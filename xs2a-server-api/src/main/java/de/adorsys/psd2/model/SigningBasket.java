@@ -14,11 +14,13 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON Body of a establish signing basket request ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class SigningBasket {
     @JsonProperty("paymentIds")
     private PaymentIdList paymentIds = null;
+
     @JsonProperty("consentIds")
     private ConsentIdList consentIds = null;
 
@@ -34,7 +36,9 @@ public class SigningBasket {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public PaymentIdList getPaymentIds() {
         return paymentIds;
     }
@@ -55,7 +59,9 @@ public class SigningBasket {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public ConsentIdList getConsentIds() {
         return consentIds;
     }
@@ -73,8 +79,8 @@ public class SigningBasket {
             return false;
         }
         SigningBasket signingBasket = (SigningBasket) o;
-        return Objects.equals(this.paymentIds, signingBasket.paymentIds) && Objects.equals(this.consentIds,
-            signingBasket.consentIds);
+        return Objects.equals(this.paymentIds, signingBasket.paymentIds) &&
+            Objects.equals(this.consentIds, signingBasket.consentIds);
     }
 
     @Override
@@ -86,6 +92,7 @@ public class SigningBasket {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SigningBasket {\n");
+
         sb.append("    paymentIds: ").append(toIndentedString(paymentIds)).append("\n");
         sb.append("    consentIds: ").append(toIndentedString(consentIds)).append("\n");
         sb.append("}");

@@ -16,21 +16,28 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful conset request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class ConsentsResponse201 {
     @JsonProperty("consentStatus")
     private ConsentStatus consentStatus = null;
+
     @JsonProperty("consentId")
     private String consentId = null;
+
     @JsonProperty("scaMethods")
     private ScaMethods scaMethods = null;
+
     @JsonProperty("chosenScaMethod")
     private ChosenScaMethod chosenScaMethod = null;
+
     @JsonProperty("challengeData")
     private ChallengeData challengeData = null;
+
     @JsonProperty("_links")
     private Map _links = null;
+
     @JsonProperty("message")
     private String message = null;
 
@@ -46,7 +53,9 @@ public class ConsentsResponse201 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public ConsentStatus getConsentStatus() {
         return consentStatus;
     }
@@ -67,6 +76,7 @@ public class ConsentsResponse201 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getConsentId() {
         return consentId;
     }
@@ -86,7 +96,9 @@ public class ConsentsResponse201 {
      * @return scaMethods
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ScaMethods getScaMethods() {
         return scaMethods;
     }
@@ -106,7 +118,9 @@ public class ConsentsResponse201 {
      * @return chosenScaMethod
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChosenScaMethod getChosenScaMethod() {
         return chosenScaMethod;
     }
@@ -126,7 +140,9 @@ public class ConsentsResponse201 {
      * @return challengeData
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChallengeData getChallengeData() {
         return challengeData;
     }
@@ -147,7 +163,9 @@ public class ConsentsResponse201 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public Map getLinks() {
         return _links;
     }
@@ -167,6 +185,7 @@ public class ConsentsResponse201 {
      * @return message
      **/
     @ApiModelProperty(value = "Text to be displayed to the PSU, e.g. in a Decoupled SCA Approach.")
+
     @Size(max = 512)
     public String getMessage() {
         return message;
@@ -185,8 +204,13 @@ public class ConsentsResponse201 {
             return false;
         }
         ConsentsResponse201 consentsResponse201 = (ConsentsResponse201) o;
-        return Objects.equals(this.consentStatus, consentsResponse201.consentStatus) && Objects.equals(this.consentId
-            , consentsResponse201.consentId) && Objects.equals(this.scaMethods, consentsResponse201.scaMethods) && Objects.equals(this.chosenScaMethod, consentsResponse201.chosenScaMethod) && Objects.equals(this.challengeData, consentsResponse201.challengeData) && Objects.equals(this._links, consentsResponse201._links) && Objects.equals(this.message, consentsResponse201.message);
+        return Objects.equals(this.consentStatus, consentsResponse201.consentStatus) &&
+            Objects.equals(this.consentId, consentsResponse201.consentId) &&
+            Objects.equals(this.scaMethods, consentsResponse201.scaMethods) &&
+            Objects.equals(this.chosenScaMethod, consentsResponse201.chosenScaMethod) &&
+            Objects.equals(this.challengeData, consentsResponse201.challengeData) &&
+            Objects.equals(this._links, consentsResponse201._links) &&
+            Objects.equals(this.message, consentsResponse201.message);
     }
 
     @Override
@@ -198,6 +222,7 @@ public class ConsentsResponse201 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ConsentsResponse201 {\n");
+
         sb.append("    consentStatus: ").append(toIndentedString(consentStatus)).append("\n");
         sb.append("    consentId: ").append(toIndentedString(consentId)).append("\n");
         sb.append("    scaMethods: ").append(toIndentedString(scaMethods)).append("\n");

@@ -13,8 +13,9 @@ import java.util.Objects;
  */
 @ApiModel(description = "Content of the body of a Transaction Authorisation Request ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TransactionAuthorisation {
     @JsonProperty("scaAuthenticationData")
     private String scaAuthenticationData = null;
@@ -31,6 +32,7 @@ public class TransactionAuthorisation {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getScaAuthenticationData() {
         return scaAuthenticationData;
     }
@@ -60,6 +62,7 @@ public class TransactionAuthorisation {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TransactionAuthorisation {\n");
+
         sb.append("    scaAuthenticationData: ").append(toIndentedString(scaAuthenticationData)).append("\n");
         sb.append("}");
         return sb.toString();

@@ -7,16 +7,18 @@ import java.util.Objects;
 
 /**
  * Bank transaction code as used by the ASPSP and using the sub elements of this structured code defined by ISO 20022
- * .  This code type is concatenating the three ISO20022 Codes   * Domain Code,   * Family Code, and   * SubFamiliy
- * Code by hyphens, resulting in “DomainCode”-“FamilyCode”-“SubFamilyCode”.
+ * .   This code type is concatenating the three ISO20022 Codes    * Domain Code,    * Family Code, and    *
+ * SubFamiliy Code  by hyphens, resulting in “DomainCode”-“FamilyCode”-“SubFamilyCode”.
  */
 @ApiModel(description = "Bank transaction code as used by the ASPSP and using the sub elements of this structured " +
-    "code defined by ISO 20022.  This code type is concatenating the three ISO20022 Codes   * Domain Code,   * Family" +
-    " Code, and   * SubFamiliy Code by hyphens, resulting in “DomainCode”-“FamilyCode”-“SubFamilyCode”. ")
+    "code defined by ISO 20022.   This code type is concatenating the three ISO20022 Codes    * Domain Code,    * " +
+    "Family Code, and    * SubFamiliy Code  by hyphens, resulting in “DomainCode”-“FamilyCode”-“SubFamilyCode”. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class BankTransactionCode {
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -37,6 +39,7 @@ public class BankTransactionCode {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class BankTransactionCode {\n");
+
         sb.append("}");
         return sb.toString();
     }

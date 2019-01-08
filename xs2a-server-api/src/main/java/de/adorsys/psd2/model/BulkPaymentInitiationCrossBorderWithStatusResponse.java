@@ -19,18 +19,23 @@ import java.util.Objects;
 @ApiModel(description = "JSON response body consistion of the corresponding bulk cross-border payment initation JSON " +
     "body together with an optional transaction status field. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class BulkPaymentInitiationCrossBorderWithStatusResponse {
     @JsonProperty("batchBookingPreferred")
     private Boolean batchBookingPreferred = null;
+
     @JsonProperty("requestedExecutionDate")
     private LocalDate requestedExecutionDate = null;
+
     @JsonProperty("debtorAccount")
     private Object debtorAccount = null;
+
     @JsonProperty("payments")
     @Valid
     private List<PaymentInitiationCrossBorderJson> payments = new ArrayList<>();
+
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
 
@@ -45,6 +50,7 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
      * @return batchBookingPreferred
      **/
     @ApiModelProperty(value = "")
+
     public Boolean getBatchBookingPreferred() {
         return batchBookingPreferred;
     }
@@ -64,7 +70,9 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
      * @return requestedExecutionDate
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public LocalDate getRequestedExecutionDate() {
         return requestedExecutionDate;
     }
@@ -85,6 +93,7 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -110,7 +119,9 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
      **/
     @ApiModelProperty(required = true, value = "A list of JSON bodies for cross-border payments.")
     @NotNull
+
     @Valid
+
     public List<PaymentInitiationCrossBorderJson> getPayments() {
         return payments;
     }
@@ -130,7 +141,9 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
      * @return transactionStatus
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public TransactionStatus getTransactionStatus() {
         return transactionStatus;
     }
@@ -150,7 +163,13 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
         BulkPaymentInitiationCrossBorderWithStatusResponse bulkPaymentInitiationCrossBorderWithStatusResponse =
             (BulkPaymentInitiationCrossBorderWithStatusResponse) o;
         return Objects.equals(this.batchBookingPreferred,
-            bulkPaymentInitiationCrossBorderWithStatusResponse.batchBookingPreferred) && Objects.equals(this.requestedExecutionDate, bulkPaymentInitiationCrossBorderWithStatusResponse.requestedExecutionDate) && Objects.equals(this.debtorAccount, bulkPaymentInitiationCrossBorderWithStatusResponse.debtorAccount) && Objects.equals(this.payments, bulkPaymentInitiationCrossBorderWithStatusResponse.payments) && Objects.equals(this.transactionStatus, bulkPaymentInitiationCrossBorderWithStatusResponse.transactionStatus);
+            bulkPaymentInitiationCrossBorderWithStatusResponse.batchBookingPreferred) &&
+            Objects.equals(this.requestedExecutionDate,
+                bulkPaymentInitiationCrossBorderWithStatusResponse.requestedExecutionDate) &&
+            Objects.equals(this.debtorAccount, bulkPaymentInitiationCrossBorderWithStatusResponse.debtorAccount) &&
+            Objects.equals(this.payments, bulkPaymentInitiationCrossBorderWithStatusResponse.payments) &&
+            Objects.equals(this.transactionStatus,
+                bulkPaymentInitiationCrossBorderWithStatusResponse.transactionStatus);
     }
 
     @Override
@@ -162,6 +181,7 @@ public class BulkPaymentInitiationCrossBorderWithStatusResponse {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class BulkPaymentInitiationCrossBorderWithStatusResponse {\n");
+
         sb.append("    batchBookingPreferred: ").append(toIndentedString(batchBookingPreferred)).append("\n");
         sb.append("    requestedExecutionDate: ").append(toIndentedString(requestedExecutionDate)).append("\n");
         sb.append("    debtorAccount: ").append(toIndentedString(debtorAccount)).append("\n");

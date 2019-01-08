@@ -9,49 +9,55 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- * A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the response depend on the
+ * A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in  the response depend on the
  * dynamical decisions of the ASPSP when processing the request.  **Remark:** All links can be relative or full
- * links, to be decided by the ASPSP.  **Remark:** This method can be applied before or after PSU identification.
+ * links, to be decided by the ASPSP.   **Remark:** This method can be applied before or after PSU identification.
  * This leads to many possible hyperlink responses. Type of links admitted in this response, (further links might be
- * added for ASPSP defined extensions):  - \&quot;scaRedirect\&quot;:   In case of an SCA Redirect Approach, the
- * ASPSP is transmitting the link to which to   redirect the PSU browser. - \&quot;scaOAuth\&quot;:   In case of a
- * SCA OAuth2 Approach, the ASPSP is transmitting the URI where the   configuration of the Authorisation Server can
- * be retrieved.   The configuration follows the OAuth 2.0 Authorisation Server Metadata specification. - \&quot;
- * updatePsuIdentification\&quot;:   The link to the authorisation or cancellation authorisation sub-resource,
+ * added for ASPSP defined  extensions):  - \&quot;scaRedirect\&quot;:    In case of an SCA Redirect Approach, the
+ * ASPSP is transmitting the link to which to    redirect the PSU browser. - \&quot;scaOAuth\&quot;:    In case of a
+ * SCA OAuth2 Approach, the ASPSP is transmitting the URI where the    configuration of the Authorisation Server can
+ * be retrieved.    The configuration follows the OAuth 2.0 Authorisation Server Metadata specification. - \&quot;
+ * updatePsuIdentification\&quot;:    The link to the authorisation or cancellation authorisation sub-resource,
  * where PSU identification data needs to be uploaded. - \&quot;updatePsuAuthentication\&quot;:   The link to the
- * authorisation or cancellation authorisation sub-resource,   where PSU authentication data needs to be uploaded.
+ * authorisation or cancellation authorisation sub-resource,    where PSU authentication data needs to be uploaded.
  * \&quot;authoriseTransaction\&quot;:   The link to the authorisation or cancellation authorisation sub-resource,
- * where the authorisation data has to be uploaded, e.g. the TOP received by SMS. \&quot;scaStatus\&quot;:   The link
- * to retrieve the scaStatus of the corresponding authorisation sub-resource.
+ * where the authorisation data has to be uploaded, e.g. the TOP received by SMS.  \&quot;scaStatus\&quot;:    The
+ * link to retrieve the scaStatus of the corresponding authorisation sub-resource.
  */
-@ApiModel(description = "A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the response" +
-    " depend on the dynamical decisions of the ASPSP when processing the request.  **Remark:** All links can be " +
-    "relative or full links, to be decided by the ASPSP.  **Remark:** This method can be applied before or after PSU " +
-    "identification. This leads to many possible hyperlink responses. Type of links admitted in this response, " +
-    "(further links might be added for ASPSP defined extensions):  - \"scaRedirect\":   In case of an SCA Redirect " +
-    "Approach, the ASPSP is transmitting the link to which to   redirect the PSU browser. - \"scaOAuth\":   In case " +
-    "of a SCA OAuth2 Approach, the ASPSP is transmitting the URI where the   configuration of the Authorisation " +
-    "Server can be retrieved.   The configuration follows the OAuth 2.0 Authorisation Server Metadata specification. " +
-    "- \"updatePsuIdentification\":   The link to the authorisation or cancellation authorisation sub-resource,   " +
+@ApiModel(description = "A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in  the " +
+    "response depend on the dynamical decisions of the ASPSP when processing the request.  **Remark:** All links can " +
+    "be relative or full links, to be decided by the ASPSP.   **Remark:** This method can be applied before or after " +
+    "PSU identification.  This leads to many possible hyperlink responses. Type of links admitted in this response, " +
+    "(further links might be added for ASPSP defined  extensions):  - \"scaRedirect\":    In case of an SCA Redirect " +
+    "Approach, the ASPSP is transmitting the link to which to    redirect the PSU browser. - \"scaOAuth\":    In case" +
+    " of a SCA OAuth2 Approach, the ASPSP is transmitting the URI where the    configuration of the Authorisation " +
+    "Server can be retrieved.    The configuration follows the OAuth 2.0 Authorisation Server Metadata specification." +
+    " - \"updatePsuIdentification\":    The link to the authorisation or cancellation authorisation sub-resource,    " +
     "where PSU identification data needs to be uploaded. - \"updatePsuAuthentication\":   The link to the " +
-    "authorisation or cancellation authorisation sub-resource,   where PSU authentication data needs to be uploaded. " +
-    "\"authoriseTransaction\":   The link to the authorisation or cancellation authorisation sub-resource,   where " +
-    "the authorisation data has to be uploaded, e.g. the TOP received by SMS. \"scaStatus\":   The link to retrieve " +
-    "the scaStatus of the corresponding authorisation sub-resource. ")
+    "authorisation or cancellation authorisation sub-resource,    where PSU authentication data needs to be uploaded." +
+    " \"authoriseTransaction\":   The link to the authorisation or cancellation authorisation sub-resource,    where " +
+    "the authorisation data has to be uploaded, e.g. the TOP received by SMS.  \"scaStatus\":    The link to retrieve" +
+    " the scaStatus of the corresponding authorisation sub-resource. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> {
     @JsonProperty("scaRedirect")
     private String scaRedirect = null;
+
     @JsonProperty("scaOAuth")
     private String scaOAuth = null;
+
     @JsonProperty("updatePsuIdentification")
     private String updatePsuIdentification = null;
+
     @JsonProperty("updatePsuAuthentication")
     private String updatePsuAuthentication = null;
+
     @JsonProperty("authoriseTransaction")
     private String authoriseTransaction = null;
+
     @JsonProperty("scaStatus")
     private String scaStatus = null;
 
@@ -66,6 +72,7 @@ public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> 
      * @return scaRedirect
      **/
     @ApiModelProperty(value = "")
+
     public String getScaRedirect() {
         return scaRedirect;
     }
@@ -85,6 +92,7 @@ public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> 
      * @return scaOAuth
      **/
     @ApiModelProperty(value = "")
+
     public String getScaOAuth() {
         return scaOAuth;
     }
@@ -104,6 +112,7 @@ public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> 
      * @return updatePsuIdentification
      **/
     @ApiModelProperty(value = "")
+
     public String getUpdatePsuIdentification() {
         return updatePsuIdentification;
     }
@@ -123,6 +132,7 @@ public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> 
      * @return updatePsuAuthentication
      **/
     @ApiModelProperty(value = "")
+
     public String getUpdatePsuAuthentication() {
         return updatePsuAuthentication;
     }
@@ -142,6 +152,7 @@ public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> 
      * @return authoriseTransaction
      **/
     @ApiModelProperty(value = "")
+
     public String getAuthoriseTransaction() {
         return authoriseTransaction;
     }
@@ -161,6 +172,7 @@ public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> 
      * @return scaStatus
      **/
     @ApiModelProperty(value = "")
+
     public String getScaStatus() {
         return scaStatus;
     }
@@ -178,7 +190,13 @@ public class LinksSelectPsuAuthenticationMethod extends HashMap<String, String> 
             return false;
         }
         LinksSelectPsuAuthenticationMethod _linksSelectPsuAuthenticationMethod = (LinksSelectPsuAuthenticationMethod) o;
-        return Objects.equals(this.scaRedirect, _linksSelectPsuAuthenticationMethod.scaRedirect) && Objects.equals(this.scaOAuth, _linksSelectPsuAuthenticationMethod.scaOAuth) && Objects.equals(this.updatePsuIdentification, _linksSelectPsuAuthenticationMethod.updatePsuIdentification) && Objects.equals(this.updatePsuAuthentication, _linksSelectPsuAuthenticationMethod.updatePsuAuthentication) && Objects.equals(this.authoriseTransaction, _linksSelectPsuAuthenticationMethod.authoriseTransaction) && Objects.equals(this.scaStatus, _linksSelectPsuAuthenticationMethod.scaStatus) && super.equals(o);
+        return Objects.equals(this.scaRedirect, _linksSelectPsuAuthenticationMethod.scaRedirect) &&
+            Objects.equals(this.scaOAuth, _linksSelectPsuAuthenticationMethod.scaOAuth) &&
+            Objects.equals(this.updatePsuIdentification, _linksSelectPsuAuthenticationMethod.updatePsuIdentification) &&
+            Objects.equals(this.updatePsuAuthentication, _linksSelectPsuAuthenticationMethod.updatePsuAuthentication) &&
+            Objects.equals(this.authoriseTransaction, _linksSelectPsuAuthenticationMethod.authoriseTransaction) &&
+            Objects.equals(this.scaStatus, _linksSelectPsuAuthenticationMethod.scaStatus) &&
+            super.equals(o);
     }
 
     @Override

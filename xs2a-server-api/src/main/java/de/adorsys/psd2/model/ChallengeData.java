@@ -17,15 +17,19 @@ import java.util.Objects;
     "needed for SCA. In rare cases this attribute is also used in the context of the " +
     "'startAuthorisationWithPsuAuthentication' link. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class ChallengeData {
     @JsonProperty("image")
     private byte[] image = null;
+
     @JsonProperty("data")
     private String data = null;
+
     @JsonProperty("imageLink")
     private String imageLink = null;
+
     @JsonProperty("otpMaxLength")
     private Integer otpMaxLength = null;
     @JsonProperty("otpFormat")
@@ -39,13 +43,14 @@ public class ChallengeData {
     }
 
     /**
-     * PNG data (max. 512 kilobyte) to be displayed to the PSU, Base64 encoding, cp. [RFC4648]. This attribute is
-     * used only, when PHOTO_OTP or CHIP_OTP is the selected SCA method.
+     * PNG data (max. 512 kilobyte) to be displayed to the PSU, Base64 encoding, cp. [RFC4648]. This attribute is used
+     * only, when PHOTO_OTP or CHIP_OTP is the selected SCA method.
      *
      * @return image
      **/
     @ApiModelProperty(value = "PNG data (max. 512 kilobyte) to be displayed to the PSU, Base64 encoding, cp. " +
         "[RFC4648]. This attribute is used only, when PHOTO_OTP or CHIP_OTP is the selected SCA method. ")
+
     public byte[] getImage() {
         return image;
     }
@@ -65,6 +70,7 @@ public class ChallengeData {
      * @return data
      **/
     @ApiModelProperty(value = "String challenge data")
+
     public String getData() {
         return data;
     }
@@ -84,6 +90,7 @@ public class ChallengeData {
      * @return imageLink
      **/
     @ApiModelProperty(value = "A link where the ASPSP will provides the challenge image for the TPP.")
+
     public String getImageLink() {
         return imageLink;
     }
@@ -103,6 +110,7 @@ public class ChallengeData {
      * @return otpMaxLength
      **/
     @ApiModelProperty(value = "The maximal length for the OTP to be typed in by the PSU.")
+
     public Integer getOtpMaxLength() {
         return otpMaxLength;
     }
@@ -123,6 +131,7 @@ public class ChallengeData {
      **/
     @ApiModelProperty(value = "The format type of the OTP to be typed in. The admitted values are \"characters\" or " +
         "\"integer\".")
+
     public OtpFormatEnum getOtpFormat() {
         return otpFormat;
     }
@@ -144,6 +153,7 @@ public class ChallengeData {
      **/
     @ApiModelProperty(value = "Additional explanation for the PSU to explain e.g. fallback mechanism for the chosen " +
         "SCA method. The TPP is obliged to show this to the PSU. ")
+
     public String getAdditionalInformation() {
         return additionalInformation;
     }
@@ -161,7 +171,12 @@ public class ChallengeData {
             return false;
         }
         ChallengeData challengeData = (ChallengeData) o;
-        return Objects.equals(this.image, challengeData.image) && Objects.equals(this.data, challengeData.data) && Objects.equals(this.imageLink, challengeData.imageLink) && Objects.equals(this.otpMaxLength, challengeData.otpMaxLength) && Objects.equals(this.otpFormat, challengeData.otpFormat) && Objects.equals(this.additionalInformation, challengeData.additionalInformation);
+        return Objects.equals(this.image, challengeData.image) &&
+            Objects.equals(this.data, challengeData.data) &&
+            Objects.equals(this.imageLink, challengeData.imageLink) &&
+            Objects.equals(this.otpMaxLength, challengeData.otpMaxLength) &&
+            Objects.equals(this.otpFormat, challengeData.otpFormat) &&
+            Objects.equals(this.additionalInformation, challengeData.additionalInformation);
     }
 
     @Override
@@ -173,6 +188,7 @@ public class ChallengeData {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ChallengeData {\n");
+
         sb.append("    image: ").append(toIndentedString(image)).append("\n");
         sb.append("    data: ").append(toIndentedString(data)).append("\n");
         sb.append("    imageLink: ").append(toIndentedString(imageLink)).append("\n");
@@ -198,7 +214,10 @@ public class ChallengeData {
      * The format type of the OTP to be typed in. The admitted values are \"characters\" or \"integer\".
      */
     public enum OtpFormatEnum {
-        CHARACTERS("characters"), INTEGER("integer");
+        CHARACTERS("characters"),
+
+        INTEGER("integer");
+
         private String value;
 
         OtpFormatEnum(String value) {

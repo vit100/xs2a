@@ -14,11 +14,13 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the response for a successful read balance request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class ReadBalanceResponse200 {
     @JsonProperty("account")
     private Object account = null;
+
     @JsonProperty("balances")
     private BalanceList balances = null;
 
@@ -33,6 +35,7 @@ public class ReadBalanceResponse200 {
      * @return account
      **/
     @ApiModelProperty(value = "")
+
     public Object getAccount() {
         return account;
     }
@@ -53,7 +56,9 @@ public class ReadBalanceResponse200 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public BalanceList getBalances() {
         return balances;
     }
@@ -71,8 +76,8 @@ public class ReadBalanceResponse200 {
             return false;
         }
         ReadBalanceResponse200 readBalanceResponse200 = (ReadBalanceResponse200) o;
-        return Objects.equals(this.account, readBalanceResponse200.account) && Objects.equals(this.balances,
-            readBalanceResponse200.balances);
+        return Objects.equals(this.account, readBalanceResponse200.account) &&
+            Objects.equals(this.balances, readBalanceResponse200.balances);
     }
 
     @Override
@@ -84,6 +89,7 @@ public class ReadBalanceResponse200 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ReadBalanceResponse200 {\n");
+
         sb.append("    account: ").append(toIndentedString(account)).append("\n");
         sb.append("    balances: ").append(toIndentedString(balances)).append("\n");
         sb.append("}");

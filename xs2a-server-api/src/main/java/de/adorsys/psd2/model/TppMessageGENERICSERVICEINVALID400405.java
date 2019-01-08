@@ -12,14 +12,15 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * Message to the TPP: The addressed service is not valid for the addressed resources or the submitted data.    - 400
- * (if payload)   - 405 (if HTTP method)
+ * Message to the TPP:  The addressed service is not valid for the addressed resources or the submitted data.    -
+ * 400 (if payload)   - 405 (if HTTP method)
  */
-@ApiModel(description = "Message to the TPP: The addressed service is not valid for the addressed resources or the " +
+@ApiModel(description = "Message to the TPP:  The addressed service is not valid for the addressed resources or the " +
     "submitted data.    - 400 (if payload)   - 405 (if HTTP method) ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageGENERICSERVICEINVALID400405 {
     @JsonProperty("category")
     private TppMessageCategory category = null;
@@ -42,7 +43,9 @@ public class TppMessageGENERICSERVICEINVALID400405 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -63,6 +66,7 @@ public class TppMessageGENERICSERVICEINVALID400405 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public CodeEnum getCode() {
         return code;
     }
@@ -82,6 +86,7 @@ public class TppMessageGENERICSERVICEINVALID400405 {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -101,6 +106,7 @@ public class TppMessageGENERICSERVICEINVALID400405 {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -119,7 +125,10 @@ public class TppMessageGENERICSERVICEINVALID400405 {
         }
         TppMessageGENERICSERVICEINVALID400405 tppMessageGENERICSERVICEINVALID400405 =
             (TppMessageGENERICSERVICEINVALID400405) o;
-        return Objects.equals(this.category, tppMessageGENERICSERVICEINVALID400405.category) && Objects.equals(this.code, tppMessageGENERICSERVICEINVALID400405.code) && Objects.equals(this.path, tppMessageGENERICSERVICEINVALID400405.path) && Objects.equals(this.text, tppMessageGENERICSERVICEINVALID400405.text);
+        return Objects.equals(this.category, tppMessageGENERICSERVICEINVALID400405.category) &&
+            Objects.equals(this.code, tppMessageGENERICSERVICEINVALID400405.code) &&
+            Objects.equals(this.path, tppMessageGENERICSERVICEINVALID400405.path) &&
+            Objects.equals(this.text, tppMessageGENERICSERVICEINVALID400405.text);
     }
 
     @Override
@@ -131,6 +140,7 @@ public class TppMessageGENERICSERVICEINVALID400405 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageGENERICSERVICEINVALID400405 {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -155,6 +165,7 @@ public class TppMessageGENERICSERVICEINVALID400405 {
      */
     public enum CodeEnum {
         INVALID("SERVICE_INVALID");
+
         private String value;
 
         CodeEnum(String value) {

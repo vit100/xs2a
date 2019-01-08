@@ -12,9 +12,11 @@ import java.util.Objects;
 @ApiModel(description = "If \"true\" indicates that a payment initiation service will be addressed in the same " +
     "\"session\". ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class CombinedServiceIndicator {
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -35,6 +37,7 @@ public class CombinedServiceIndicator {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class CombinedServiceIndicator {\n");
+
         sb.append("}");
         return sb.toString();
     }

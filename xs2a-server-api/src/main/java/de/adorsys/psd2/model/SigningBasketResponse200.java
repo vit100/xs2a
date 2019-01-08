@@ -20,13 +20,16 @@ import java.util.Objects;
     " shall be authorised through this signing basket.   * 'transactionStatus': Only the codes RCVD, ACTC, RJCT are " +
     "used. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class SigningBasketResponse200 {
     @JsonProperty("payments")
     private PaymentIdList payments = null;
+
     @JsonProperty("consents")
     private ConsentIdList consents = null;
+
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
 
@@ -41,7 +44,9 @@ public class SigningBasketResponse200 {
      * @return payments
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public PaymentIdList getPayments() {
         return payments;
     }
@@ -61,7 +66,9 @@ public class SigningBasketResponse200 {
      * @return consents
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ConsentIdList getConsents() {
         return consents;
     }
@@ -82,7 +89,9 @@ public class SigningBasketResponse200 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TransactionStatus getTransactionStatus() {
         return transactionStatus;
     }
@@ -100,9 +109,9 @@ public class SigningBasketResponse200 {
             return false;
         }
         SigningBasketResponse200 signingBasketResponse200 = (SigningBasketResponse200) o;
-        return Objects.equals(this.payments, signingBasketResponse200.payments) && Objects.equals(this.consents,
-            signingBasketResponse200.consents) && Objects.equals(this.transactionStatus,
-            signingBasketResponse200.transactionStatus);
+        return Objects.equals(this.payments, signingBasketResponse200.payments) &&
+            Objects.equals(this.consents, signingBasketResponse200.consents) &&
+            Objects.equals(this.transactionStatus, signingBasketResponse200.transactionStatus);
     }
 
     @Override
@@ -114,6 +123,7 @@ public class SigningBasketResponse200 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SigningBasketResponse200 {\n");
+
         sb.append("    payments: ").append(toIndentedString(payments)).append("\n");
         sb.append("    consents: ").append(toIndentedString(consents)).append("\n");
         sb.append("    transactionStatus: ").append(toIndentedString(transactionStatus)).append("\n");

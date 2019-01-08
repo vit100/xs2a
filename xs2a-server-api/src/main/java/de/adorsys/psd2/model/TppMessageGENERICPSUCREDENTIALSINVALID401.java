@@ -18,8 +18,9 @@ import java.util.Objects;
 @ApiModel(description = "The PSU-ID cannot be matched by the addressed ASPSP or is blocked, or a password resp. OTP " +
     "was not correct. Additional information might be added. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
     @JsonProperty("category")
     private TppMessageCategory category = null;
@@ -42,7 +43,9 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -63,6 +66,7 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public CodeEnum getCode() {
         return code;
     }
@@ -82,6 +86,7 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -101,6 +106,7 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -119,7 +125,10 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
         }
         TppMessageGENERICPSUCREDENTIALSINVALID401 tppMessageGENERICPSUCREDENTIALSINVALID401 =
             (TppMessageGENERICPSUCREDENTIALSINVALID401) o;
-        return Objects.equals(this.category, tppMessageGENERICPSUCREDENTIALSINVALID401.category) && Objects.equals(this.code, tppMessageGENERICPSUCREDENTIALSINVALID401.code) && Objects.equals(this.path, tppMessageGENERICPSUCREDENTIALSINVALID401.path) && Objects.equals(this.text, tppMessageGENERICPSUCREDENTIALSINVALID401.text);
+        return Objects.equals(this.category, tppMessageGENERICPSUCREDENTIALSINVALID401.category) &&
+            Objects.equals(this.code, tppMessageGENERICPSUCREDENTIALSINVALID401.code) &&
+            Objects.equals(this.path, tppMessageGENERICPSUCREDENTIALSINVALID401.path) &&
+            Objects.equals(this.text, tppMessageGENERICPSUCREDENTIALSINVALID401.text);
     }
 
     @Override
@@ -131,6 +140,7 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageGENERICPSUCREDENTIALSINVALID401 {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -155,6 +165,7 @@ public class TppMessageGENERICPSUCREDENTIALSINVALID401 {
      */
     public enum CodeEnum {
         INVALID("PSU_CREDENTIALS_INVALID");
+
         private String value;
 
         CodeEnum(String value) {

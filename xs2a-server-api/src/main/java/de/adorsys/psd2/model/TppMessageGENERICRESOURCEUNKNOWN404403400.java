@@ -18,8 +18,9 @@ import java.util.Objects;
 @ApiModel(description = "The addressed resource is unknown relative to the TPP.   - 404 (if account-id in path)   - " +
     "403 (if other resource in path)   - 400 (if payload) ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
     @JsonProperty("category")
     private TppMessageCategory category = null;
@@ -42,7 +43,9 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -63,6 +66,7 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public CodeEnum getCode() {
         return code;
     }
@@ -82,6 +86,7 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -101,6 +106,7 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -119,7 +125,10 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
         }
         TppMessageGENERICRESOURCEUNKNOWN404403400 tppMessageGENERICRESOURCEUNKNOWN404403400 =
             (TppMessageGENERICRESOURCEUNKNOWN404403400) o;
-        return Objects.equals(this.category, tppMessageGENERICRESOURCEUNKNOWN404403400.category) && Objects.equals(this.code, tppMessageGENERICRESOURCEUNKNOWN404403400.code) && Objects.equals(this.path, tppMessageGENERICRESOURCEUNKNOWN404403400.path) && Objects.equals(this.text, tppMessageGENERICRESOURCEUNKNOWN404403400.text);
+        return Objects.equals(this.category, tppMessageGENERICRESOURCEUNKNOWN404403400.category) &&
+            Objects.equals(this.code, tppMessageGENERICRESOURCEUNKNOWN404403400.code) &&
+            Objects.equals(this.path, tppMessageGENERICRESOURCEUNKNOWN404403400.path) &&
+            Objects.equals(this.text, tppMessageGENERICRESOURCEUNKNOWN404403400.text);
     }
 
     @Override
@@ -131,6 +140,7 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageGENERICRESOURCEUNKNOWN404403400 {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -155,6 +165,7 @@ public class TppMessageGENERICRESOURCEUNKNOWN404403400 {
      */
     public enum CodeEnum {
         UNKNOWN("RESOURCE_UNKNOWN");
+
         private String value;
 
         CodeEnum(String value) {

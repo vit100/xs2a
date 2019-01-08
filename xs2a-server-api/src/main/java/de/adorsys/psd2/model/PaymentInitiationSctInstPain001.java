@@ -10,9 +10,11 @@ import java.util.Objects;
  */
 @ApiModel(description = "A pain.001 structure corresponding to the SCT INST schema. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class PaymentInitiationSctInstPain001 {
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -33,6 +35,7 @@ public class PaymentInitiationSctInstPain001 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class PaymentInitiationSctInstPain001 {\n");
+
         sb.append("}");
         return sb.toString();
     }

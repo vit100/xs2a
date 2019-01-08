@@ -6,17 +6,19 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Objects;
 
 /**
- * If this element equals &#39;true&#39;, the PSU prefers only one booking entry. If this element equals &#39;
- * false&#39;, the PSU prefers individual booking of all contained individual transactions.  The ASPSP will follow
+ * If this element equals &#39;true&#39;, the PSU prefers only one booking entry.  If this element equals &#39;
+ * false&#39;, the PSU prefers individual booking of all contained individual transactions.   The ASPSP will follow
  * this preference according to contracts agreed on with the PSU.
  */
-@ApiModel(description = "If this element equals 'true', the PSU prefers only one booking entry. If this element " +
-    "equals 'false', the PSU prefers individual booking of all contained individual transactions.  The ASPSP will " +
+@ApiModel(description = "If this element equals 'true', the PSU prefers only one booking entry.  If this element " +
+    "equals 'false', the PSU prefers individual booking of all contained individual transactions.   The ASPSP will " +
     "follow this preference according to contracts agreed on with the PSU. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class BatchBookingPreferred {
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -37,6 +39,7 @@ public class BatchBookingPreferred {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class BatchBookingPreferred {\n");
+
         sb.append("}");
         return sb.toString();
     }

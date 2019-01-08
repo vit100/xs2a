@@ -15,19 +15,25 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful update PSU Authentication request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class UpdatePsuAuthenticationResponse {
     @JsonProperty("chosenScaMethod")
     private ChosenScaMethod chosenScaMethod = null;
+
     @JsonProperty("challengeData")
     private ChallengeData challengeData = null;
+
     @JsonProperty("scaMethods")
     private ScaMethods scaMethods = null;
+
     @JsonProperty("_links")
     private Map _links = null;
+
     @JsonProperty("scaStatus")
     private ScaStatus scaStatus = null;
+
     @JsonProperty("psuMessage")
     private String psuMessage = null;
 
@@ -42,7 +48,9 @@ public class UpdatePsuAuthenticationResponse {
      * @return chosenScaMethod
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChosenScaMethod getChosenScaMethod() {
         return chosenScaMethod;
     }
@@ -62,7 +70,9 @@ public class UpdatePsuAuthenticationResponse {
      * @return challengeData
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChallengeData getChallengeData() {
         return challengeData;
     }
@@ -82,7 +92,9 @@ public class UpdatePsuAuthenticationResponse {
      * @return scaMethods
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ScaMethods getScaMethods() {
         return scaMethods;
     }
@@ -102,7 +114,9 @@ public class UpdatePsuAuthenticationResponse {
      * @return _links
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public Map getLinks() {
         return _links;
     }
@@ -123,7 +137,9 @@ public class UpdatePsuAuthenticationResponse {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public ScaStatus getScaStatus() {
         return scaStatus;
     }
@@ -143,6 +159,7 @@ public class UpdatePsuAuthenticationResponse {
      * @return psuMessage
      **/
     @ApiModelProperty(value = "")
+
     public String getPsuMessage() {
         return psuMessage;
     }
@@ -160,7 +177,12 @@ public class UpdatePsuAuthenticationResponse {
             return false;
         }
         UpdatePsuAuthenticationResponse updatePsuAuthenticationResponse = (UpdatePsuAuthenticationResponse) o;
-        return Objects.equals(this.chosenScaMethod, updatePsuAuthenticationResponse.chosenScaMethod) && Objects.equals(this.challengeData, updatePsuAuthenticationResponse.challengeData) && Objects.equals(this.scaMethods, updatePsuAuthenticationResponse.scaMethods) && Objects.equals(this._links, updatePsuAuthenticationResponse._links) && Objects.equals(this.scaStatus, updatePsuAuthenticationResponse.scaStatus) && Objects.equals(this.psuMessage, updatePsuAuthenticationResponse.psuMessage);
+        return Objects.equals(this.chosenScaMethod, updatePsuAuthenticationResponse.chosenScaMethod) &&
+            Objects.equals(this.challengeData, updatePsuAuthenticationResponse.challengeData) &&
+            Objects.equals(this.scaMethods, updatePsuAuthenticationResponse.scaMethods) &&
+            Objects.equals(this._links, updatePsuAuthenticationResponse._links) &&
+            Objects.equals(this.scaStatus, updatePsuAuthenticationResponse.scaStatus) &&
+            Objects.equals(this.psuMessage, updatePsuAuthenticationResponse.psuMessage);
     }
 
     @Override
@@ -172,6 +194,7 @@ public class UpdatePsuAuthenticationResponse {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class UpdatePsuAuthenticationResponse {\n");
+
         sb.append("    chosenScaMethod: ").append(toIndentedString(chosenScaMethod)).append("\n");
         sb.append("    challengeData: ").append(toIndentedString(challengeData)).append("\n");
         sb.append("    scaMethods: ").append(toIndentedString(scaMethods)).append("\n");

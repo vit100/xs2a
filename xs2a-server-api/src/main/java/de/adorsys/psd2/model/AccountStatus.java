@@ -9,7 +9,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * account is available in the sense of this specification.
  */
 public enum AccountStatus {
-    ENABLED("enabled"), DELETED("deleted"), BLOCKED("blocked");
+
+    ENABLED("enabled"),
+
+    DELETED("deleted"),
+
+    BLOCKED("blocked");
+
     private String value;
 
     AccountStatus(String value) {

@@ -16,8 +16,9 @@ import java.util.Objects;
  */
 @ApiModel(description = "Requested time period out of bound.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageGENERICPERIODINVALID400 {
     @JsonProperty("category")
     private TppMessageCategory category = null;
@@ -40,7 +41,9 @@ public class TppMessageGENERICPERIODINVALID400 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -61,6 +64,7 @@ public class TppMessageGENERICPERIODINVALID400 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public CodeEnum getCode() {
         return code;
     }
@@ -80,6 +84,7 @@ public class TppMessageGENERICPERIODINVALID400 {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -99,6 +104,7 @@ public class TppMessageGENERICPERIODINVALID400 {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -116,10 +122,10 @@ public class TppMessageGENERICPERIODINVALID400 {
             return false;
         }
         TppMessageGENERICPERIODINVALID400 tppMessageGENERICPERIODINVALID400 = (TppMessageGENERICPERIODINVALID400) o;
-        return Objects.equals(this.category, tppMessageGENERICPERIODINVALID400.category) && Objects.equals(this.code,
-            tppMessageGENERICPERIODINVALID400.code) && Objects.equals(this.path,
-            tppMessageGENERICPERIODINVALID400.path) && Objects.equals(this.text,
-            tppMessageGENERICPERIODINVALID400.text);
+        return Objects.equals(this.category, tppMessageGENERICPERIODINVALID400.category) &&
+            Objects.equals(this.code, tppMessageGENERICPERIODINVALID400.code) &&
+            Objects.equals(this.path, tppMessageGENERICPERIODINVALID400.path) &&
+            Objects.equals(this.text, tppMessageGENERICPERIODINVALID400.text);
     }
 
     @Override
@@ -131,6 +137,7 @@ public class TppMessageGENERICPERIODINVALID400 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageGENERICPERIODINVALID400 {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -155,6 +162,7 @@ public class TppMessageGENERICPERIODINVALID400 {
      */
     public enum CodeEnum {
         INVALID("PERIOD_INVALID");
+
         private String value;
 
         CodeEnum(String value) {

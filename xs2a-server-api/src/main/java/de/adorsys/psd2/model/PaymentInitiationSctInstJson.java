@@ -15,23 +15,31 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body for a SCT INST payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class PaymentInitiationSctInstJson {
     @JsonProperty("endToEndIdentification")
     private String endToEndIdentification = null;
+
     @JsonProperty("debtorAccount")
     private Object debtorAccount = null;
+
     @JsonProperty("instructedAmount")
     private Amount instructedAmount = null;
+
     @JsonProperty("creditorAccount")
     private Object creditorAccount = null;
+
     @JsonProperty("creditorAgent")
     private String creditorAgent = null;
+
     @JsonProperty("creditorName")
     private String creditorName = null;
+
     @JsonProperty("creditorAddress")
     private Address creditorAddress = null;
+
     @JsonProperty("remittanceInformationUnstructured")
     private String remittanceInformationUnstructured = null;
 
@@ -46,6 +54,7 @@ public class PaymentInitiationSctInstJson {
      * @return endToEndIdentification
      **/
     @ApiModelProperty(value = "")
+
     @Size(max = 35)
     public String getEndToEndIdentification() {
         return endToEndIdentification;
@@ -67,6 +76,7 @@ public class PaymentInitiationSctInstJson {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -87,7 +97,9 @@ public class PaymentInitiationSctInstJson {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public Amount getInstructedAmount() {
         return instructedAmount;
     }
@@ -108,6 +120,7 @@ public class PaymentInitiationSctInstJson {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -127,6 +140,7 @@ public class PaymentInitiationSctInstJson {
      * @return creditorAgent
      **/
     @ApiModelProperty(value = "")
+
     public String getCreditorAgent() {
         return creditorAgent;
     }
@@ -147,6 +161,7 @@ public class PaymentInitiationSctInstJson {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getCreditorName() {
         return creditorName;
     }
@@ -166,7 +181,9 @@ public class PaymentInitiationSctInstJson {
      * @return creditorAddress
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public Address getCreditorAddress() {
         return creditorAddress;
     }
@@ -186,6 +203,7 @@ public class PaymentInitiationSctInstJson {
      * @return remittanceInformationUnstructured
      **/
     @ApiModelProperty(value = "")
+
     @Size(max = 140)
     public String getRemittanceInformationUnstructured() {
         return remittanceInformationUnstructured;
@@ -204,7 +222,15 @@ public class PaymentInitiationSctInstJson {
             return false;
         }
         PaymentInitiationSctInstJson paymentInitiationSctInstJson = (PaymentInitiationSctInstJson) o;
-        return Objects.equals(this.endToEndIdentification, paymentInitiationSctInstJson.endToEndIdentification) && Objects.equals(this.debtorAccount, paymentInitiationSctInstJson.debtorAccount) && Objects.equals(this.instructedAmount, paymentInitiationSctInstJson.instructedAmount) && Objects.equals(this.creditorAccount, paymentInitiationSctInstJson.creditorAccount) && Objects.equals(this.creditorAgent, paymentInitiationSctInstJson.creditorAgent) && Objects.equals(this.creditorName, paymentInitiationSctInstJson.creditorName) && Objects.equals(this.creditorAddress, paymentInitiationSctInstJson.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, paymentInitiationSctInstJson.remittanceInformationUnstructured);
+        return Objects.equals(this.endToEndIdentification, paymentInitiationSctInstJson.endToEndIdentification) &&
+            Objects.equals(this.debtorAccount, paymentInitiationSctInstJson.debtorAccount) &&
+            Objects.equals(this.instructedAmount, paymentInitiationSctInstJson.instructedAmount) &&
+            Objects.equals(this.creditorAccount, paymentInitiationSctInstJson.creditorAccount) &&
+            Objects.equals(this.creditorAgent, paymentInitiationSctInstJson.creditorAgent) &&
+            Objects.equals(this.creditorName, paymentInitiationSctInstJson.creditorName) &&
+            Objects.equals(this.creditorAddress, paymentInitiationSctInstJson.creditorAddress) &&
+            Objects.equals(this.remittanceInformationUnstructured,
+                paymentInitiationSctInstJson.remittanceInformationUnstructured);
     }
 
     @Override
@@ -217,6 +243,7 @@ public class PaymentInitiationSctInstJson {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class PaymentInitiationSctInstJson {\n");
+
         sb.append("    endToEndIdentification: ").append(toIndentedString(endToEndIdentification)).append("\n");
         sb.append("    debtorAccount: ").append(toIndentedString(debtorAccount)).append("\n");
         sb.append("    instructedAmount: ").append(toIndentedString(instructedAmount)).append("\n");

@@ -15,13 +15,16 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful update PSU Identification request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class UpdatePsuIdenticationResponse {
     @JsonProperty("_links")
     private Map _links = null;
+
     @JsonProperty("scaStatus")
     private ScaStatus scaStatus = null;
+
     @JsonProperty("psuMessage")
     private String psuMessage = null;
 
@@ -37,7 +40,9 @@ public class UpdatePsuIdenticationResponse {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public Map getLinks() {
         return _links;
     }
@@ -58,7 +63,9 @@ public class UpdatePsuIdenticationResponse {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public ScaStatus getScaStatus() {
         return scaStatus;
     }
@@ -78,6 +85,7 @@ public class UpdatePsuIdenticationResponse {
      * @return psuMessage
      **/
     @ApiModelProperty(value = "")
+
     public String getPsuMessage() {
         return psuMessage;
     }
@@ -95,9 +103,9 @@ public class UpdatePsuIdenticationResponse {
             return false;
         }
         UpdatePsuIdenticationResponse updatePsuIdenticationResponse = (UpdatePsuIdenticationResponse) o;
-        return Objects.equals(this._links, updatePsuIdenticationResponse._links) && Objects.equals(this.scaStatus,
-            updatePsuIdenticationResponse.scaStatus) && Objects.equals(this.psuMessage,
-            updatePsuIdenticationResponse.psuMessage);
+        return Objects.equals(this._links, updatePsuIdenticationResponse._links) &&
+            Objects.equals(this.scaStatus, updatePsuIdenticationResponse.scaStatus) &&
+            Objects.equals(this.psuMessage, updatePsuIdenticationResponse.psuMessage);
     }
 
     @Override
@@ -109,6 +117,7 @@ public class UpdatePsuIdenticationResponse {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class UpdatePsuIdenticationResponse {\n");
+
         sb.append("    _links: ").append(toIndentedString(_links)).append("\n");
         sb.append("    scaStatus: ").append(toIndentedString(scaStatus)).append("\n");
         sb.append("    psuMessage: ").append(toIndentedString(psuMessage)).append("\n");

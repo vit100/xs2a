@@ -8,9 +8,11 @@ import java.util.Objects;
  * ChosenScaMethod
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class ChosenScaMethod extends AuthenticationObject {
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {

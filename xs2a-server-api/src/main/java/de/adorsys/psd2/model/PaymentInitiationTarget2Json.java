@@ -15,23 +15,31 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body for a TARGET-2 payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class PaymentInitiationTarget2Json {
     @JsonProperty("endToEndIdentification")
     private String endToEndIdentification = null;
+
     @JsonProperty("debtorAccount")
     private Object debtorAccount = null;
+
     @JsonProperty("instructedAmount")
     private Amount instructedAmount = null;
+
     @JsonProperty("creditorAccount")
     private Object creditorAccount = null;
+
     @JsonProperty("creditorAgent")
     private String creditorAgent = null;
+
     @JsonProperty("creditorName")
     private String creditorName = null;
+
     @JsonProperty("creditorAddress")
     private Address creditorAddress = null;
+
     @JsonProperty("remittanceInformationUnstructured")
     private String remittanceInformationUnstructured = null;
 
@@ -46,6 +54,7 @@ public class PaymentInitiationTarget2Json {
      * @return endToEndIdentification
      **/
     @ApiModelProperty(value = "")
+
     @Size(max = 35)
     public String getEndToEndIdentification() {
         return endToEndIdentification;
@@ -67,6 +76,7 @@ public class PaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Object getDebtorAccount() {
         return debtorAccount;
     }
@@ -87,7 +97,9 @@ public class PaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public Amount getInstructedAmount() {
         return instructedAmount;
     }
@@ -108,6 +120,7 @@ public class PaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -127,6 +140,7 @@ public class PaymentInitiationTarget2Json {
      * @return creditorAgent
      **/
     @ApiModelProperty(value = "")
+
     public String getCreditorAgent() {
         return creditorAgent;
     }
@@ -147,6 +161,7 @@ public class PaymentInitiationTarget2Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getCreditorName() {
         return creditorName;
     }
@@ -166,7 +181,9 @@ public class PaymentInitiationTarget2Json {
      * @return creditorAddress
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public Address getCreditorAddress() {
         return creditorAddress;
     }
@@ -186,6 +203,7 @@ public class PaymentInitiationTarget2Json {
      * @return remittanceInformationUnstructured
      **/
     @ApiModelProperty(value = "")
+
     @Size(max = 140)
     public String getRemittanceInformationUnstructured() {
         return remittanceInformationUnstructured;
@@ -204,7 +222,15 @@ public class PaymentInitiationTarget2Json {
             return false;
         }
         PaymentInitiationTarget2Json paymentInitiationTarget2Json = (PaymentInitiationTarget2Json) o;
-        return Objects.equals(this.endToEndIdentification, paymentInitiationTarget2Json.endToEndIdentification) && Objects.equals(this.debtorAccount, paymentInitiationTarget2Json.debtorAccount) && Objects.equals(this.instructedAmount, paymentInitiationTarget2Json.instructedAmount) && Objects.equals(this.creditorAccount, paymentInitiationTarget2Json.creditorAccount) && Objects.equals(this.creditorAgent, paymentInitiationTarget2Json.creditorAgent) && Objects.equals(this.creditorName, paymentInitiationTarget2Json.creditorName) && Objects.equals(this.creditorAddress, paymentInitiationTarget2Json.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, paymentInitiationTarget2Json.remittanceInformationUnstructured);
+        return Objects.equals(this.endToEndIdentification, paymentInitiationTarget2Json.endToEndIdentification) &&
+            Objects.equals(this.debtorAccount, paymentInitiationTarget2Json.debtorAccount) &&
+            Objects.equals(this.instructedAmount, paymentInitiationTarget2Json.instructedAmount) &&
+            Objects.equals(this.creditorAccount, paymentInitiationTarget2Json.creditorAccount) &&
+            Objects.equals(this.creditorAgent, paymentInitiationTarget2Json.creditorAgent) &&
+            Objects.equals(this.creditorName, paymentInitiationTarget2Json.creditorName) &&
+            Objects.equals(this.creditorAddress, paymentInitiationTarget2Json.creditorAddress) &&
+            Objects.equals(this.remittanceInformationUnstructured,
+                paymentInitiationTarget2Json.remittanceInformationUnstructured);
     }
 
     @Override
@@ -217,6 +243,7 @@ public class PaymentInitiationTarget2Json {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class PaymentInitiationTarget2Json {\n");
+
         sb.append("    endToEndIdentification: ").append(toIndentedString(endToEndIdentification)).append("\n");
         sb.append("    debtorAccount: ").append(toIndentedString(debtorAccount)).append("\n");
         sb.append("    instructedAmount: ").append(toIndentedString(instructedAmount)).append("\n");

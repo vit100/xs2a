@@ -6,15 +6,17 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Objects;
 
 /**
- * Proprietary bank transaction code as used within a community or within an ASPSP e.g. for MT94x based transaction
+ * Proprietary bank transaction code as used within a community or within an ASPSP e.g.  for MT94x based transaction
  * reports.
  */
-@ApiModel(description = "Proprietary bank transaction code as used within a community or within an ASPSP e.g. for " +
+@ApiModel(description = "Proprietary bank transaction code as used within a community or within an ASPSP e.g.  for " +
     "MT94x based transaction reports. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class ProprietaryBankTransactionCode {
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -35,6 +37,7 @@ public class ProprietaryBankTransactionCode {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ProprietaryBankTransactionCode {\n");
+
         sb.append("}");
         return sb.toString();
     }

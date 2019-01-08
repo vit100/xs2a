@@ -17,8 +17,9 @@ import java.util.Objects;
 @ApiModel(description = "Signature/corporate seal certificate was not available in the request but is mandated for " +
     "the corresponding. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageGENERICCERTIFICATEMISSING401 {
     @JsonProperty("category")
     private TppMessageCategory category = null;
@@ -41,7 +42,9 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -62,6 +65,7 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public CodeEnum getCode() {
         return code;
     }
@@ -81,6 +85,7 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -100,6 +105,7 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -118,7 +124,10 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
         }
         TppMessageGENERICCERTIFICATEMISSING401 tppMessageGENERICCERTIFICATEMISSING401 =
             (TppMessageGENERICCERTIFICATEMISSING401) o;
-        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEMISSING401.category) && Objects.equals(this.code, tppMessageGENERICCERTIFICATEMISSING401.code) && Objects.equals(this.path, tppMessageGENERICCERTIFICATEMISSING401.path) && Objects.equals(this.text, tppMessageGENERICCERTIFICATEMISSING401.text);
+        return Objects.equals(this.category, tppMessageGENERICCERTIFICATEMISSING401.category) &&
+            Objects.equals(this.code, tppMessageGENERICCERTIFICATEMISSING401.code) &&
+            Objects.equals(this.path, tppMessageGENERICCERTIFICATEMISSING401.path) &&
+            Objects.equals(this.text, tppMessageGENERICCERTIFICATEMISSING401.text);
     }
 
     @Override
@@ -130,6 +139,7 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageGENERICCERTIFICATEMISSING401 {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -154,6 +164,7 @@ public class TppMessageGENERICCERTIFICATEMISSING401 {
      */
     public enum CodeEnum {
         MISSING("CERTIFICATE_MISSING");
+
         private String value;
 
         CodeEnum(String value) {

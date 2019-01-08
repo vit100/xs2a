@@ -15,13 +15,16 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON based account report.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class AccountReport {
     @JsonProperty("booked")
     private TransactionList booked = null;
+
     @JsonProperty("pending")
     private TransactionList pending = null;
+
     @JsonProperty("_links")
     private Map _links = null;
 
@@ -37,7 +40,9 @@ public class AccountReport {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TransactionList getBooked() {
         return booked;
     }
@@ -57,7 +62,9 @@ public class AccountReport {
      * @return pending
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public TransactionList getPending() {
         return pending;
     }
@@ -78,7 +85,9 @@ public class AccountReport {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public Map getLinks() {
         return _links;
     }
@@ -96,8 +105,9 @@ public class AccountReport {
             return false;
         }
         AccountReport accountReport = (AccountReport) o;
-        return Objects.equals(this.booked, accountReport.booked) && Objects.equals(this.pending,
-            accountReport.pending) && Objects.equals(this._links, accountReport._links);
+        return Objects.equals(this.booked, accountReport.booked) &&
+            Objects.equals(this.pending, accountReport.pending) &&
+            Objects.equals(this._links, accountReport._links);
     }
 
     @Override
@@ -109,6 +119,7 @@ public class AccountReport {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class AccountReport {\n");
+
         sb.append("    booked: ").append(toIndentedString(booked)).append("\n");
         sb.append("    pending: ").append(toIndentedString(pending)).append("\n");
         sb.append("    _links: ").append(toIndentedString(_links)).append("\n");

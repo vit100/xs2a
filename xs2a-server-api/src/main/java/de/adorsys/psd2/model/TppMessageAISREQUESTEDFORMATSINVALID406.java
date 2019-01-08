@@ -12,14 +12,15 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * Message to the TPP: The requested formats in the Accept header entry are not matching the formats offered by the
+ * Message to the TPP:  The requested formats in the Accept header entry are not matching the formats offered by the
  * ASPSP.
  */
-@ApiModel(description = "Message to the TPP: The requested formats in the Accept header entry are not matching the " +
+@ApiModel(description = "Message to the TPP:  The requested formats in the Accept header entry are not matching the " +
     "formats offered by the ASPSP. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageAISREQUESTEDFORMATSINVALID406 {
     @JsonProperty("category")
     private TppMessageCategory category = null;
@@ -42,7 +43,9 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -63,6 +66,7 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public CodeEnum getCode() {
         return code;
     }
@@ -82,6 +86,7 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -101,6 +106,7 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -119,7 +125,10 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
         }
         TppMessageAISREQUESTEDFORMATSINVALID406 tppMessageAISREQUESTEDFORMATSINVALID406 =
             (TppMessageAISREQUESTEDFORMATSINVALID406) o;
-        return Objects.equals(this.category, tppMessageAISREQUESTEDFORMATSINVALID406.category) && Objects.equals(this.code, tppMessageAISREQUESTEDFORMATSINVALID406.code) && Objects.equals(this.path, tppMessageAISREQUESTEDFORMATSINVALID406.path) && Objects.equals(this.text, tppMessageAISREQUESTEDFORMATSINVALID406.text);
+        return Objects.equals(this.category, tppMessageAISREQUESTEDFORMATSINVALID406.category) &&
+            Objects.equals(this.code, tppMessageAISREQUESTEDFORMATSINVALID406.code) &&
+            Objects.equals(this.path, tppMessageAISREQUESTEDFORMATSINVALID406.path) &&
+            Objects.equals(this.text, tppMessageAISREQUESTEDFORMATSINVALID406.text);
     }
 
     @Override
@@ -131,6 +140,7 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageAISREQUESTEDFORMATSINVALID406 {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -155,6 +165,7 @@ public class TppMessageAISREQUESTEDFORMATSINVALID406 {
      */
     public enum CodeEnum {
         INVALID("REQUESTED_FORMATS_INVALID");
+
         private String value;
 
         CodeEnum(String value) {

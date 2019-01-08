@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * This is the overall lifecycle status of the consent.  Valid values are:   - 'received': The consent data have been
- * received and are technically correct.     The data is not authorised yet.   - 'rejected': The consent data have
+ * received and are technically correct.      The data is not authorised yet.   - 'rejected': The consent data have
  * been rejected e.g. since no successful authorisation has taken place.   - 'valid': The consent is accepted and
  * valid for GET account data calls and others as specified in the consent object.   - 'revokedByPsu': The consent
  * has been revoked by the PSU towards the ASPSP.   - 'expired': The consent expired.   - 'terminatedByTpp': The
@@ -14,8 +14,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * and has to be added to this API definition as well.
  */
 public enum ConsentStatus {
-    RECEIVED("received"), REJECTED("rejected"), VALID("valid"), REVOKEDBYPSU("revokedByPsu"), EXPIRED("expired"),
+
+    RECEIVED("received"),
+
+    REJECTED("rejected"),
+
+    VALID("valid"),
+
+    REVOKEDBYPSU("revokedByPsu"),
+
+    EXPIRED("expired"),
+
     TERMINATEDBYTPP("terminatedByTpp");
+
     private String value;
 
     ConsentStatus(String value) {

@@ -15,17 +15,22 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the response for a successful cancel payment request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class PaymentInitiationCancelResponse200202 {
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
+
     @JsonProperty("scaMethods")
     private ScaMethods scaMethods = null;
+
     @JsonProperty("chosenScaMethod")
     private ChosenScaMethod chosenScaMethod = null;
+
     @JsonProperty("challengeData")
     private ChallengeData challengeData = null;
+
     @JsonProperty("_links")
     private Map _links = null;
 
@@ -41,7 +46,9 @@ public class PaymentInitiationCancelResponse200202 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TransactionStatus getTransactionStatus() {
         return transactionStatus;
     }
@@ -61,7 +68,9 @@ public class PaymentInitiationCancelResponse200202 {
      * @return scaMethods
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ScaMethods getScaMethods() {
         return scaMethods;
     }
@@ -81,7 +90,9 @@ public class PaymentInitiationCancelResponse200202 {
      * @return chosenScaMethod
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChosenScaMethod getChosenScaMethod() {
         return chosenScaMethod;
     }
@@ -101,7 +112,9 @@ public class PaymentInitiationCancelResponse200202 {
      * @return challengeData
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChallengeData getChallengeData() {
         return challengeData;
     }
@@ -121,7 +134,9 @@ public class PaymentInitiationCancelResponse200202 {
      * @return _links
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public Map getLinks() {
         return _links;
     }
@@ -140,7 +155,11 @@ public class PaymentInitiationCancelResponse200202 {
         }
         PaymentInitiationCancelResponse200202 paymentInitiationCancelResponse200202 =
             (PaymentInitiationCancelResponse200202) o;
-        return Objects.equals(this.transactionStatus, paymentInitiationCancelResponse200202.transactionStatus) && Objects.equals(this.scaMethods, paymentInitiationCancelResponse200202.scaMethods) && Objects.equals(this.chosenScaMethod, paymentInitiationCancelResponse200202.chosenScaMethod) && Objects.equals(this.challengeData, paymentInitiationCancelResponse200202.challengeData) && Objects.equals(this._links, paymentInitiationCancelResponse200202._links);
+        return Objects.equals(this.transactionStatus, paymentInitiationCancelResponse200202.transactionStatus) &&
+            Objects.equals(this.scaMethods, paymentInitiationCancelResponse200202.scaMethods) &&
+            Objects.equals(this.chosenScaMethod, paymentInitiationCancelResponse200202.chosenScaMethod) &&
+            Objects.equals(this.challengeData, paymentInitiationCancelResponse200202.challengeData) &&
+            Objects.equals(this._links, paymentInitiationCancelResponse200202._links);
     }
 
     @Override
@@ -152,6 +171,7 @@ public class PaymentInitiationCancelResponse200202 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class PaymentInitiationCancelResponse200202 {\n");
+
         sb.append("    transactionStatus: ").append(toIndentedString(transactionStatus)).append("\n");
         sb.append("    scaMethods: ").append(toIndentedString(scaMethods)).append("\n");
         sb.append("    chosenScaMethod: ").append(toIndentedString(chosenScaMethod)).append("\n");

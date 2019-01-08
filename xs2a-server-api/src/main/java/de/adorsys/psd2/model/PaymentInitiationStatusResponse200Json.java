@@ -15,8 +15,9 @@ import java.util.Objects;
 @ApiModel(description = "Body of the response for a successful payment initiation status request in case of an JSON " +
     "based endpoint.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class PaymentInitiationStatusResponse200Json {
     @JsonProperty("transactionStatus")
     private TransactionStatus transactionStatus = null;
@@ -33,7 +34,9 @@ public class PaymentInitiationStatusResponse200Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TransactionStatus getTransactionStatus() {
         return transactionStatus;
     }
@@ -64,6 +67,7 @@ public class PaymentInitiationStatusResponse200Json {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class PaymentInitiationStatusResponse200Json {\n");
+
         sb.append("    transactionStatus: ").append(toIndentedString(transactionStatus)).append("\n");
         sb.append("}");
         return sb.toString();

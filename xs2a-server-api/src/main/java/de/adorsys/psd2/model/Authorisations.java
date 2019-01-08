@@ -14,8 +14,9 @@ import java.util.Objects;
  */
 @ApiModel(description = "An array of all authorisationIds")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class Authorisations {
     @JsonProperty("authorisationIds")
     private AuthorisationsList authorisationIds = null;
@@ -32,7 +33,9 @@ public class Authorisations {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public AuthorisationsList getAuthorisationIds() {
         return authorisationIds;
     }
@@ -62,6 +65,7 @@ public class Authorisations {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class Authorisations {\n");
+
         sb.append("    authorisationIds: ").append(toIndentedString(authorisationIds)).append("\n");
         sb.append("}");
         return sb.toString();

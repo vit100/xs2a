@@ -14,15 +14,19 @@ import java.util.Objects;
  */
 @ApiModel(description = "One Message to the TPP on operational issues.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageGeneric {
     @JsonProperty("category")
     private TppMessageCategory category = null;
+
     @JsonProperty("code")
     private Object code = null;
+
     @JsonProperty("path")
     private String path = null;
+
     @JsonProperty("text")
     private String text = null;
 
@@ -38,7 +42,9 @@ public class TppMessageGeneric {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -59,6 +65,7 @@ public class TppMessageGeneric {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Object getCode() {
         return code;
     }
@@ -78,6 +85,7 @@ public class TppMessageGeneric {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -97,6 +105,7 @@ public class TppMessageGeneric {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -114,9 +123,10 @@ public class TppMessageGeneric {
             return false;
         }
         TppMessageGeneric tppMessageGeneric = (TppMessageGeneric) o;
-        return Objects.equals(this.category, tppMessageGeneric.category) && Objects.equals(this.code,
-            tppMessageGeneric.code) && Objects.equals(this.path, tppMessageGeneric.path) && Objects.equals(this.text,
-            tppMessageGeneric.text);
+        return Objects.equals(this.category, tppMessageGeneric.category) &&
+            Objects.equals(this.code, tppMessageGeneric.code) &&
+            Objects.equals(this.path, tppMessageGeneric.path) &&
+            Objects.equals(this.text, tppMessageGeneric.text);
     }
 
     @Override
@@ -128,6 +138,7 @@ public class TppMessageGeneric {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageGeneric {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");

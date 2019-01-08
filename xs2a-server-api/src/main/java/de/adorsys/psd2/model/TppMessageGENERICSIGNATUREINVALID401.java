@@ -16,8 +16,9 @@ import java.util.Objects;
  */
 @ApiModel(description = "Application layer eIDAS Signature for TPP authentication is not correct.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class TppMessageGENERICSIGNATUREINVALID401 {
     @JsonProperty("category")
     private TppMessageCategory category = null;
@@ -40,7 +41,9 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public TppMessageCategory getCategory() {
         return category;
     }
@@ -61,6 +64,7 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public CodeEnum getCode() {
         return code;
     }
@@ -80,6 +84,7 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
      * @return path
      **/
     @ApiModelProperty(value = "")
+
     public String getPath() {
         return path;
     }
@@ -99,6 +104,7 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
      * @return text
      **/
     @ApiModelProperty(value = "")
+
     public String getText() {
         return text;
     }
@@ -117,7 +123,10 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
         }
         TppMessageGENERICSIGNATUREINVALID401 tppMessageGENERICSIGNATUREINVALID401 =
             (TppMessageGENERICSIGNATUREINVALID401) o;
-        return Objects.equals(this.category, tppMessageGENERICSIGNATUREINVALID401.category) && Objects.equals(this.code, tppMessageGENERICSIGNATUREINVALID401.code) && Objects.equals(this.path, tppMessageGENERICSIGNATUREINVALID401.path) && Objects.equals(this.text, tppMessageGENERICSIGNATUREINVALID401.text);
+        return Objects.equals(this.category, tppMessageGENERICSIGNATUREINVALID401.category) &&
+            Objects.equals(this.code, tppMessageGENERICSIGNATUREINVALID401.code) &&
+            Objects.equals(this.path, tppMessageGENERICSIGNATUREINVALID401.path) &&
+            Objects.equals(this.text, tppMessageGENERICSIGNATUREINVALID401.text);
     }
 
     @Override
@@ -129,6 +138,7 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TppMessageGENERICSIGNATUREINVALID401 {\n");
+
         sb.append("    category: ").append(toIndentedString(category)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -153,6 +163,7 @@ public class TppMessageGENERICSIGNATUREINVALID401 {
      */
     public enum CodeEnum {
         INVALID("SIGNATURE_INVALID");
+
         private String value;
 
         CodeEnum(String value) {

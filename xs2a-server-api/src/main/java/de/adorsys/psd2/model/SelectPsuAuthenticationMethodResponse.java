@@ -15,17 +15,22 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successful select PSU Authentication Method request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class SelectPsuAuthenticationMethodResponse {
     @JsonProperty("chosenScaMethod")
     private ChosenScaMethod chosenScaMethod = null;
+
     @JsonProperty("challengeData")
     private ChallengeData challengeData = null;
+
     @JsonProperty("_links")
     private Map _links = null;
+
     @JsonProperty("scaStatus")
     private ScaStatus scaStatus = null;
+
     @JsonProperty("psuMessage")
     private String psuMessage = null;
 
@@ -40,7 +45,9 @@ public class SelectPsuAuthenticationMethodResponse {
      * @return chosenScaMethod
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChosenScaMethod getChosenScaMethod() {
         return chosenScaMethod;
     }
@@ -60,7 +67,9 @@ public class SelectPsuAuthenticationMethodResponse {
      * @return challengeData
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ChallengeData getChallengeData() {
         return challengeData;
     }
@@ -80,7 +89,9 @@ public class SelectPsuAuthenticationMethodResponse {
      * @return _links
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public Map getLinks() {
         return _links;
     }
@@ -101,7 +112,9 @@ public class SelectPsuAuthenticationMethodResponse {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public ScaStatus getScaStatus() {
         return scaStatus;
     }
@@ -121,6 +134,7 @@ public class SelectPsuAuthenticationMethodResponse {
      * @return psuMessage
      **/
     @ApiModelProperty(value = "")
+
     public String getPsuMessage() {
         return psuMessage;
     }
@@ -139,7 +153,11 @@ public class SelectPsuAuthenticationMethodResponse {
         }
         SelectPsuAuthenticationMethodResponse selectPsuAuthenticationMethodResponse =
             (SelectPsuAuthenticationMethodResponse) o;
-        return Objects.equals(this.chosenScaMethod, selectPsuAuthenticationMethodResponse.chosenScaMethod) && Objects.equals(this.challengeData, selectPsuAuthenticationMethodResponse.challengeData) && Objects.equals(this._links, selectPsuAuthenticationMethodResponse._links) && Objects.equals(this.scaStatus, selectPsuAuthenticationMethodResponse.scaStatus) && Objects.equals(this.psuMessage, selectPsuAuthenticationMethodResponse.psuMessage);
+        return Objects.equals(this.chosenScaMethod, selectPsuAuthenticationMethodResponse.chosenScaMethod) &&
+            Objects.equals(this.challengeData, selectPsuAuthenticationMethodResponse.challengeData) &&
+            Objects.equals(this._links, selectPsuAuthenticationMethodResponse._links) &&
+            Objects.equals(this.scaStatus, selectPsuAuthenticationMethodResponse.scaStatus) &&
+            Objects.equals(this.psuMessage, selectPsuAuthenticationMethodResponse.psuMessage);
     }
 
     @Override
@@ -151,6 +169,7 @@ public class SelectPsuAuthenticationMethodResponse {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SelectPsuAuthenticationMethodResponse {\n");
+
         sb.append("    chosenScaMethod: ").append(toIndentedString(chosenScaMethod)).append("\n");
         sb.append("    challengeData: ").append(toIndentedString(challengeData)).append("\n");
         sb.append("    _links: ").append(toIndentedString(_links)).append("\n");

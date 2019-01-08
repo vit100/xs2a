@@ -13,8 +13,9 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response with SCA Status")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class ScaStatusResponse {
     @JsonProperty("scaStatus")
     private ScaStatus scaStatus = null;
@@ -30,7 +31,9 @@ public class ScaStatusResponse {
      * @return scaStatus
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public ScaStatus getScaStatus() {
         return scaStatus;
     }
@@ -60,6 +63,7 @@ public class ScaStatusResponse {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ScaStatusResponse {\n");
+
         sb.append("    scaStatus: ").append(toIndentedString(scaStatus)).append("\n");
         sb.append("}");
         return sb.toString();

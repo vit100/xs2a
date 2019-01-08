@@ -15,19 +15,25 @@ import java.util.Objects;
  */
 @ApiModel(description = "JSON body for a cross-border payment initation. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class PaymentInitiationCrossBorderBulkElementJson {
     @JsonProperty("instructedAmount")
     private Amount instructedAmount = null;
+
     @JsonProperty("creditorAccount")
     private Object creditorAccount = null;
+
     @JsonProperty("creditorAgent")
     private String creditorAgent = null;
+
     @JsonProperty("creditorName")
     private String creditorName = null;
+
     @JsonProperty("creditorAddress")
     private Address creditorAddress = null;
+
     @JsonProperty("remittanceInformationUnstructured")
     private String remittanceInformationUnstructured = null;
 
@@ -43,7 +49,9 @@ public class PaymentInitiationCrossBorderBulkElementJson {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public Amount getInstructedAmount() {
         return instructedAmount;
     }
@@ -64,6 +72,7 @@ public class PaymentInitiationCrossBorderBulkElementJson {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Object getCreditorAccount() {
         return creditorAccount;
     }
@@ -83,6 +92,7 @@ public class PaymentInitiationCrossBorderBulkElementJson {
      * @return creditorAgent
      **/
     @ApiModelProperty(value = "")
+
     public String getCreditorAgent() {
         return creditorAgent;
     }
@@ -103,6 +113,7 @@ public class PaymentInitiationCrossBorderBulkElementJson {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getCreditorName() {
         return creditorName;
     }
@@ -122,7 +133,9 @@ public class PaymentInitiationCrossBorderBulkElementJson {
      * @return creditorAddress
      **/
     @ApiModelProperty(value = "")
+
     @Valid
+
     public Address getCreditorAddress() {
         return creditorAddress;
     }
@@ -142,6 +155,7 @@ public class PaymentInitiationCrossBorderBulkElementJson {
      * @return remittanceInformationUnstructured
      **/
     @ApiModelProperty(value = "")
+
     @Size(max = 140)
     public String getRemittanceInformationUnstructured() {
         return remittanceInformationUnstructured;
@@ -161,7 +175,13 @@ public class PaymentInitiationCrossBorderBulkElementJson {
         }
         PaymentInitiationCrossBorderBulkElementJson paymentInitiationCrossBorderBulkElementJson =
             (PaymentInitiationCrossBorderBulkElementJson) o;
-        return Objects.equals(this.instructedAmount, paymentInitiationCrossBorderBulkElementJson.instructedAmount) && Objects.equals(this.creditorAccount, paymentInitiationCrossBorderBulkElementJson.creditorAccount) && Objects.equals(this.creditorAgent, paymentInitiationCrossBorderBulkElementJson.creditorAgent) && Objects.equals(this.creditorName, paymentInitiationCrossBorderBulkElementJson.creditorName) && Objects.equals(this.creditorAddress, paymentInitiationCrossBorderBulkElementJson.creditorAddress) && Objects.equals(this.remittanceInformationUnstructured, paymentInitiationCrossBorderBulkElementJson.remittanceInformationUnstructured);
+        return Objects.equals(this.instructedAmount, paymentInitiationCrossBorderBulkElementJson.instructedAmount) &&
+            Objects.equals(this.creditorAccount, paymentInitiationCrossBorderBulkElementJson.creditorAccount) &&
+            Objects.equals(this.creditorAgent, paymentInitiationCrossBorderBulkElementJson.creditorAgent) &&
+            Objects.equals(this.creditorName, paymentInitiationCrossBorderBulkElementJson.creditorName) &&
+            Objects.equals(this.creditorAddress, paymentInitiationCrossBorderBulkElementJson.creditorAddress) &&
+            Objects.equals(this.remittanceInformationUnstructured,
+                paymentInitiationCrossBorderBulkElementJson.remittanceInformationUnstructured);
     }
 
     @Override
@@ -174,6 +194,7 @@ public class PaymentInitiationCrossBorderBulkElementJson {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class PaymentInitiationCrossBorderBulkElementJson {\n");
+
         sb.append("    instructedAmount: ").append(toIndentedString(instructedAmount)).append("\n");
         sb.append("    creditorAccount: ").append(toIndentedString(creditorAccount)).append("\n");
         sb.append("    creditorAgent: ").append(toIndentedString(creditorAgent)).append("\n");

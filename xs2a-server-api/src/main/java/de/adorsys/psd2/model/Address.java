@@ -12,17 +12,22 @@ import java.util.Objects;
  * Address
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class Address {
     @JsonProperty("street")
     private String street = null;
+
     @JsonProperty("buildingNumber")
     private String buildingNumber = null;
+
     @JsonProperty("city")
     private String city = null;
+
     @JsonProperty("postalCode")
     private String postalCode = null;
+
     @JsonProperty("country")
     private String country = null;
 
@@ -37,6 +42,7 @@ public class Address {
      * @return street
      **/
     @ApiModelProperty(value = "")
+
     @Size(max = 70)
     public String getStreet() {
         return street;
@@ -57,6 +63,7 @@ public class Address {
      * @return buildingNumber
      **/
     @ApiModelProperty(value = "")
+
     public String getBuildingNumber() {
         return buildingNumber;
     }
@@ -76,6 +83,7 @@ public class Address {
      * @return city
      **/
     @ApiModelProperty(value = "")
+
     public String getCity() {
         return city;
     }
@@ -95,6 +103,7 @@ public class Address {
      * @return postalCode
      **/
     @ApiModelProperty(value = "")
+
     public String getPostalCode() {
         return postalCode;
     }
@@ -115,6 +124,7 @@ public class Address {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getCountry() {
         return country;
     }
@@ -132,9 +142,11 @@ public class Address {
             return false;
         }
         Address address = (Address) o;
-        return Objects.equals(this.street, address.street) && Objects.equals(this.buildingNumber,
-            address.buildingNumber) && Objects.equals(this.city, address.city) && Objects.equals(this.postalCode,
-            address.postalCode) && Objects.equals(this.country, address.country);
+        return Objects.equals(this.street, address.street) &&
+            Objects.equals(this.buildingNumber, address.buildingNumber) &&
+            Objects.equals(this.city, address.city) &&
+            Objects.equals(this.postalCode, address.postalCode) &&
+            Objects.equals(this.country, address.country);
     }
 
     @Override
@@ -146,6 +158,7 @@ public class Address {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class Address {\n");
+
         sb.append("    street: ").append(toIndentedString(street)).append("\n");
         sb.append("    buildingNumber: ").append(toIndentedString(buildingNumber)).append("\n");
         sb.append("    city: ").append(toIndentedString(city)).append("\n");

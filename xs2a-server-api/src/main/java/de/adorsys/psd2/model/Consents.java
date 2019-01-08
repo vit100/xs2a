@@ -15,17 +15,22 @@ import java.util.Objects;
  */
 @ApiModel(description = "Content of the body of a consent request. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class Consents {
     @JsonProperty("access")
     private AccountAccess access = null;
+
     @JsonProperty("recurringIndicator")
     private Boolean recurringIndicator = null;
+
     @JsonProperty("validUntil")
     private LocalDate validUntil = null;
+
     @JsonProperty("frequencyPerDay")
     private Integer frequencyPerDay = null;
+
     @JsonProperty("combinedServiceIndicator")
     private Boolean combinedServiceIndicator = null;
 
@@ -41,7 +46,9 @@ public class Consents {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public AccountAccess getAccess() {
         return access;
     }
@@ -62,6 +69,7 @@ public class Consents {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Boolean getRecurringIndicator() {
         return recurringIndicator;
     }
@@ -82,7 +90,9 @@ public class Consents {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public LocalDate getValidUntil() {
         return validUntil;
     }
@@ -103,6 +113,7 @@ public class Consents {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Integer getFrequencyPerDay() {
         return frequencyPerDay;
     }
@@ -124,6 +135,7 @@ public class Consents {
     @ApiModelProperty(required = true, value = "If \"true\" indicates that a payment initiation service will be " +
         "addressed in the same \"session\". ")
     @NotNull
+
     public Boolean isCombinedServiceIndicator() {
         return combinedServiceIndicator;
     }
@@ -141,8 +153,11 @@ public class Consents {
             return false;
         }
         Consents consents = (Consents) o;
-        return Objects.equals(this.access, consents.access) && Objects.equals(this.recurringIndicator,
-            consents.recurringIndicator) && Objects.equals(this.validUntil, consents.validUntil) && Objects.equals(this.frequencyPerDay, consents.frequencyPerDay) && Objects.equals(this.combinedServiceIndicator, consents.combinedServiceIndicator);
+        return Objects.equals(this.access, consents.access) &&
+            Objects.equals(this.recurringIndicator, consents.recurringIndicator) &&
+            Objects.equals(this.validUntil, consents.validUntil) &&
+            Objects.equals(this.frequencyPerDay, consents.frequencyPerDay) &&
+            Objects.equals(this.combinedServiceIndicator, consents.combinedServiceIndicator);
     }
 
     @Override
@@ -154,6 +169,7 @@ public class Consents {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class Consents {\n");
+
         sb.append("    access: ").append(toIndentedString(access)).append("\n");
         sb.append("    recurringIndicator: ").append(toIndentedString(recurringIndicator)).append("\n");
         sb.append("    validUntil: ").append(toIndentedString(validUntil)).append("\n");

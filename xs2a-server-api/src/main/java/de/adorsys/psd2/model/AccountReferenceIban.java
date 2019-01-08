@@ -9,17 +9,19 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * Reference to an account by the Primary Account Number (PAN) of a card, can be tokenised by the ASPSP due to PCI
+ * Reference to an account by the Primary Account Number (PAN) of a card,  can be tokenised by the ASPSP due to PCI
  * DSS requirements.
  */
-@ApiModel(description = "Reference to an account by the Primary Account Number (PAN) of a card, can be tokenised by " +
+@ApiModel(description = "Reference to an account by the Primary Account Number (PAN) of a card,  can be tokenised by " +
     "the ASPSP due to PCI DSS requirements. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class AccountReferenceIban {
     @JsonProperty("iban")
     private String iban = null;
+
     @JsonProperty("currency")
     private String currency = null;
 
@@ -35,6 +37,7 @@ public class AccountReferenceIban {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public String getIban() {
         return iban;
     }
@@ -54,6 +57,7 @@ public class AccountReferenceIban {
      * @return currency
      **/
     @ApiModelProperty(value = "")
+
     public String getCurrency() {
         return currency;
     }
@@ -71,8 +75,8 @@ public class AccountReferenceIban {
             return false;
         }
         AccountReferenceIban accountReferenceIban = (AccountReferenceIban) o;
-        return Objects.equals(this.iban, accountReferenceIban.iban) && Objects.equals(this.currency,
-            accountReferenceIban.currency);
+        return Objects.equals(this.iban, accountReferenceIban.iban) &&
+            Objects.equals(this.currency, accountReferenceIban.currency);
     }
 
     @Override
@@ -84,6 +88,7 @@ public class AccountReferenceIban {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class AccountReferenceIban {\n");
+
         sb.append("    iban: ").append(toIndentedString(iban)).append("\n");
         sb.append("    currency: ").append(toIndentedString(currency)).append("\n");
         sb.append("}");

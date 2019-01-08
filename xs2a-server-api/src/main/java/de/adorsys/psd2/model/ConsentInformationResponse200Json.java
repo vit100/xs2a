@@ -15,19 +15,25 @@ import java.util.Objects;
  */
 @ApiModel(description = "Body of the JSON response for a successfull get consent request.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class ConsentInformationResponse200Json {
     @JsonProperty("access")
     private AccountAccess access = null;
+
     @JsonProperty("recurringIndicator")
     private Boolean recurringIndicator = null;
+
     @JsonProperty("validUntil")
     private LocalDate validUntil = null;
+
     @JsonProperty("frequencyPerDay")
     private Integer frequencyPerDay = null;
+
     @JsonProperty("lastActionDate")
     private LocalDate lastActionDate = null;
+
     @JsonProperty("consentStatus")
     private ConsentStatus consentStatus = null;
 
@@ -43,7 +49,9 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public AccountAccess getAccess() {
         return access;
     }
@@ -64,6 +72,7 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Boolean getRecurringIndicator() {
         return recurringIndicator;
     }
@@ -84,7 +93,9 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public LocalDate getValidUntil() {
         return validUntil;
     }
@@ -105,6 +116,7 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     public Integer getFrequencyPerDay() {
         return frequencyPerDay;
     }
@@ -125,7 +137,9 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public LocalDate getLastActionDate() {
         return lastActionDate;
     }
@@ -146,7 +160,9 @@ public class ConsentInformationResponse200Json {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public ConsentStatus getConsentStatus() {
         return consentStatus;
     }
@@ -164,7 +180,12 @@ public class ConsentInformationResponse200Json {
             return false;
         }
         ConsentInformationResponse200Json consentInformationResponse200Json = (ConsentInformationResponse200Json) o;
-        return Objects.equals(this.access, consentInformationResponse200Json.access) && Objects.equals(this.recurringIndicator, consentInformationResponse200Json.recurringIndicator) && Objects.equals(this.validUntil, consentInformationResponse200Json.validUntil) && Objects.equals(this.frequencyPerDay, consentInformationResponse200Json.frequencyPerDay) && Objects.equals(this.lastActionDate, consentInformationResponse200Json.lastActionDate) && Objects.equals(this.consentStatus, consentInformationResponse200Json.consentStatus);
+        return Objects.equals(this.access, consentInformationResponse200Json.access) &&
+            Objects.equals(this.recurringIndicator, consentInformationResponse200Json.recurringIndicator) &&
+            Objects.equals(this.validUntil, consentInformationResponse200Json.validUntil) &&
+            Objects.equals(this.frequencyPerDay, consentInformationResponse200Json.frequencyPerDay) &&
+            Objects.equals(this.lastActionDate, consentInformationResponse200Json.lastActionDate) &&
+            Objects.equals(this.consentStatus, consentInformationResponse200Json.consentStatus);
     }
 
     @Override
@@ -176,6 +197,7 @@ public class ConsentInformationResponse200Json {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ConsentInformationResponse200Json {\n");
+
         sb.append("    access: ").append(toIndentedString(access)).append("\n");
         sb.append("    recurringIndicator: ").append(toIndentedString(recurringIndicator)).append("\n");
         sb.append("    validUntil: ").append(toIndentedString(validUntil)).append("\n");

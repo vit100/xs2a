@@ -16,8 +16,9 @@ import java.util.Objects;
  */
 @ApiModel(description = "List of accounts with details. ")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-11T14:55" +
-    ":45.627+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-08T12:03" +
+    ":25.103+01:00[Europe/Berlin]")
+
 public class AccountList {
     @JsonProperty("accounts")
     @Valid
@@ -40,7 +41,9 @@ public class AccountList {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
+
     @Valid
+
     public List<AccountDetails> getAccounts() {
         return accounts;
     }
@@ -70,6 +73,7 @@ public class AccountList {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class AccountList {\n");
+
         sb.append("    accounts: ").append(toIndentedString(accounts)).append("\n");
         sb.append("}");
         return sb.toString();
