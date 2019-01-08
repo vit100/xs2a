@@ -33,7 +33,7 @@ import de.adorsys.psd2.xs2a.spi.service.CommonPaymentSpi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,20 +46,18 @@ public class RedirectAndEmbeddedCommonPaymentService implements ScaCommonPayment
     private final SpiErrorMapper spiErrorMapper;
 
     @Override
-    public CommonPaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct) {
-        List<PsuIdData> psuDataList = payment.getPsuDataList();
-        PsuIdData psuIdData = psuDataList.get(0);
-        SpiContextData spiContextData = spiContextDataProvider.provide(psuIdData, tppInfo);
+    public CommonPaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
+        SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuIdData);
 
-        AspspConsentData aspspConsentData = pisAspspDataService.getAspspConsentData(payment.getPaymentId());
+        AspspConsentData aspspConsentData = new AspspConsentData(null, UUID.randomUUID().toString());
         SpiResponse<SpiPaymentInitiationResponse> spiResponse = commonPaymentSpi.initiatePayment(spiContextData, mapToSpiPaymentRequest(payment, paymentProduct), aspspConsentData);
-        pisAspspDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
+        pisAspspDataService.updateAspspConsentData(new AspspConsentData(spiResponse.getAspspConsentData().getAspspConsentData(), spiResponse.getPayload().getPaymentId()));
 
         if (spiResponse.hasError()) {
             return new CommonPaymentInitiationResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
         }
 
-        return spiToXs2aPaymentMapper.mapToCommonPaymentInitiateResponse(spiResponse.getPayload(),payment.getPaymentType());
+        return spiToXs2aPaymentMapper.mapToCommonPaymentInitiateResponse(spiResponse.getPayload(), payment.getPaymentType());
     }
 
     private SpiPaymentInfo mapToSpiPaymentRequest(CommonPayment payment, String paymentProduct) {

@@ -81,6 +81,12 @@ public class Xs2aToCmsPisCommonPaymentRequestMapper {
         return request;
     }
 
+    public PisPaymentInfo mapToPisPaymentInfo(PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, TransactionStatus transactionStatus, String paymentId, byte[] paymentData) {
+        PisPaymentInfo request = mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, transactionStatus, paymentId);
+        request.setPaymentData(paymentData);
+        return request;
+    }
+
     public PisCommonPaymentRequest mapToCmsSinglePisCommonPaymentRequest(SinglePayment singlePayment, String paymentProduct) {
         PisCommonPaymentRequest request = new PisCommonPaymentRequest();
         request.setPayments(Collections.singletonList(mapToPisPaymentForSinglePayment(singlePayment)));
