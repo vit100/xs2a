@@ -58,7 +58,7 @@ public class AisConsentMapper {
     public AisAccountConsent mapToInitialAisAccountConsent(AisConsent consent) {
         return new AisAccountConsent(
             consent.getExternalId(),
-            mapToTppAccountReference(consent.getAccesses()),
+            mapToAisAccountAccess(consent.getAccesses()),
             consent.isRecurringIndicator(),
             consent.getExpireDate(),
             consent.getTppFrequencyPerDay(),
@@ -89,7 +89,7 @@ public class AisConsentMapper {
                    .orElse(null);
     }
 
-    private AisAccountAccess mapToTppAccountReference(List<TppAccountAccess> accountAccesses) {
+    private AisAccountAccess mapToAisAccountAccess(List<TppAccountAccess> accountAccesses) {
         return new AisAccountAccess(mapToInitialAccountReferences(accountAccesses, TypeAccess.ACCOUNT),
             mapToInitialAccountReferences(accountAccesses, TypeAccess.BALANCE),
             mapToInitialAccountReferences(accountAccesses, TypeAccess.TRANSACTION));
