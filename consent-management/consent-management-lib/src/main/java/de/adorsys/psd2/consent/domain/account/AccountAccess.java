@@ -40,12 +40,12 @@ public abstract class AccountAccess {
     @ApiModelProperty(value = "Currency Type", example = "EUR")
     private Currency currency;
 
-    @Column(name = "type_access", length = 15, nullable = false)
+    @Column(name = "type_access", length = 30, nullable = false)
     @Enumerated(value = EnumType.STRING)
     @ApiModelProperty(value = "Types of given accesses: account, balance, transaction, payment", example = "ACCOUNT")
     private TypeAccess typeAccess;
 
-    @Column(name = "account_reference_type", nullable = false, length = 15)
+    @Column(name = "account_reference_type", nullable = false, length = 30)
     @Enumerated(value = EnumType.STRING)
     @ApiModelProperty(value = "Type of the account: IBAN, BBAN, IBAN, BBAN, PAN, MASKED_PAN, MSISDN", required = true, example = "IBAN")
     private AccountReferenceType accountReferenceType;

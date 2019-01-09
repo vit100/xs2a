@@ -31,7 +31,6 @@ import java.util.Currency;
 @NoArgsConstructor
 @Embeddable
 @ApiModel(description = "Account access", value = "AccountAccess")
-//TODO refactor class and change DB scheme https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/491
 public class TppAccountAccess extends AccountAccess {
 
     public TppAccountAccess(String accountIdentifier, TypeAccess typeAccess, AccountReferenceType accountReferenceType, Currency currency) {

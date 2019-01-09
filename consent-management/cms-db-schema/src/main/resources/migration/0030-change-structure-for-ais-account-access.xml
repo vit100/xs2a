@@ -27,7 +27,7 @@
                       tableName="ais_account_access"/>
 
         <addColumn tableName="ais_account_access">
-            <column name="account_reference_type" type="VARCHAR(15)">
+            <column name="account_reference_type" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -56,19 +56,19 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="resource_id" type="VARCHAR(40)"/>
+            <column name="resource_id" type="VARCHAR(100)"/>
 
-            <column name="aspsp_account_id" type="VARCHAR(34)"/>
+            <column name="aspsp_account_id" type="VARCHAR(100)"/>
 
             <column name="account_identifier" type="VARCHAR(34)"/>
 
             <column name="currency" type="VARCHAR(3)"/>
 
-            <column name="type_access" type="VARCHAR(15)">
+            <column name="type_access" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="account_reference_type" type="VARCHAR(15)">
+            <column name="account_reference_type" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

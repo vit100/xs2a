@@ -47,6 +47,9 @@ public class AspspAccountAccessHolder extends AccountAccessHolder<AspspAccountAc
         }
     }
 
+    /**
+     * According to specification if user gives access to TRANSACTION or BALANCE the access to accounts is granted automatically
+     */
     private void addAccountAccess(String aspspAccountId, String accountIdentifier, String resourceId, Currency currency, AccountReferenceType accountReferenceType, TypeAccess typeAccess) {
         accountAccesses.add(new AspspAccountAccess(accountIdentifier, typeAccess, accountReferenceType, currency, resourceId, aspspAccountId));
         if (EnumSet.of(BALANCE, TRANSACTION).contains(typeAccess)) {

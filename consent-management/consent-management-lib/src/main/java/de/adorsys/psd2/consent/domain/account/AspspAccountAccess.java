@@ -35,11 +35,11 @@ import java.util.Currency;
 @ApiModel(description = "Aspsp Account access", value = "AspspAccountAccess")
 public class AspspAccountAccess extends AccountAccess {
 
-    @Column(name = "resource_id")
+    @Column(name = "resource_id", length = 100)
     @ApiModelProperty(value = "RESOURCE-ID: This identification is denoting the addressed account.")
     private String resourceId;
 
-    @Column(name = "aspsp_account_id", length = 34)
+    @Column(name = "aspsp_account_id", length = 100)
     @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "DE2310010010123456789")
     private String aspspAccountId;
 
