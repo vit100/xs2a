@@ -52,6 +52,12 @@ public class Xs2aToCmsPisCommonPaymentRequestMapper {
         return request;
     }
 
+    public PisPaymentInfo mapToPisPaymentInfo(PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo, TransactionStatus transactionStatus, String paymentId, byte[] paymentData) {
+        PisPaymentInfo request = mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, transactionStatus, paymentId);
+        request.setPaymentData(paymentData);
+        return request;
+    }
+
     private PisPaymentInfo mapToPisPaymentInfo(CommonPayment paymentInitRequest) {
         return Optional.ofNullable(paymentInitRequest)
                    .map(dta -> {
