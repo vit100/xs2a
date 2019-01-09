@@ -66,7 +66,7 @@ public class AccountSpiImpl implements AccountSpi {
             if (EnumSet.of(GLOBAL, BANK_OFFERED).contains(accountConsent.getAisConsentRequestType())) {
                 accountDetailsList = getAccountDetailsByPsuId(accountConsent);
             } else {
-                accountDetailsList = getAccountDetailsFromReferences(withBalance, accountConsent);
+                accountDetailsList = getAccountDetailsFromReferences(accountConsent);
             }
 
             return SpiResponse.<List<SpiAccountDetails>>builder()
@@ -245,14 +245,9 @@ public class AccountSpiImpl implements AccountSpi {
             .orElseGet(Collections::emptyList);
     }
 
-    private List<SpiAccountDetails> getAccountDetailsFromReferences(boolean withBalance, SpiAccountConsent accountConsent) { // TODO remove consentId param, when SpiAccountConsent contains it https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/430
+    private List<SpiAccountDetails> getAccountDetailsFromReferences(SpiAccountConsent accountConsent) { // TODO remove consentId param, when SpiAccountConsent contains it https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/430
         SpiAccountAccess accountAccess = accountConsent.getAccess();
-
-        List<SpiAccountReference> references = withBalance
-            ? accountAccess.getBalances()
-            : accountAccess.getAccounts();
-
-        return getAccountDetailsFromReferences(references);
+        return getAccountDetailsFromReferences(accountAccess.getAccounts());
     }
 
     private List<SpiAccountDetails> getAccountDetailsFromReferences(List<SpiAccountReference> references) {

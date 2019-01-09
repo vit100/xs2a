@@ -56,9 +56,8 @@ public class AccountReferenceInConsentUpdater {
      *
      * @param consentId      an external ID of consent, where account access to be stored
      * @param accountDetails list of account details with referenceId set
-     * @param withBalance    boolean representing if the responded AccountDetails should contain List of AccountDetails with balances
      */
-    public void updateAccountReferences(@NotNull String consentId, @NotNull List<Xs2aAccountDetails> accountDetails, boolean withBalance) {
+    public void updateAccountReferences(@NotNull String consentId, @NotNull List<Xs2aAccountDetails> accountDetails) {
         List<AccountReference> accounts = new ArrayList<>();
         List<AccountReference> transactions = new ArrayList<>();
         List<AccountReference> balances = new ArrayList<>();
@@ -68,9 +67,7 @@ public class AccountReferenceInConsentUpdater {
 
             accounts.add(reference);
             transactions.add(reference);
-            if (withBalance) {
-                balances.add(reference);
-            }
+            balances.add(reference);
         }
         Xs2aAccountAccess xs2aAccountAccess = new Xs2aAccountAccess(accounts, balances, transactions, null, null);
 
