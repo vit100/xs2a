@@ -21,7 +21,6 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aCreatePisAuthorisationResponse;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
@@ -61,22 +60,24 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
     @Override
     public ResponseObject<PaymentInitiationResponse> createPayment(CommonPayment payment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo) {
         PsuIdData psuData = paymentInitiationParameters.getPsuData();
+
         PaymentInitiationResponse response = scaPaymentService.createPayment(payment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
+        String externalPaymentId = response.getExternalPaymentId();
 
-        PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId(), payment.getPaymentData());
-        Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(pisPaymentInfo), psuData);
-
-        if (StringUtils.isBlank(pisCommonPayment.getPaymentId())) {
+        if (StringUtils.isBlank(externalPaymentId)) {
             return ResponseObject.<PaymentInitiationResponse>builder()
                        .fail(new MessageError(MessageErrorCode.PAYMENT_FAILED))
                        .build();
         }
 
+        PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId(), payment.getPaymentData());
+        pisCommonPaymentService.createCommonPayment(pisPaymentInfo);
+
+
         payment.setTransactionStatus(response.getTransactionStatus());
         payment.setPaymentId(response.getPaymentId());
-        pisCommonPaymentService.updateCommonPayment(payment, pisCommonPayment.getPaymentId());
+        pisCommonPaymentService.updateCommonPayment(payment, externalPaymentId);
 
-        String externalPaymentId = pisCommonPayment.getPaymentId();
         response.setPaymentId(externalPaymentId);
 
         boolean implicitMethod = authorisationMethodDecider.isImplicitMethod(paymentInitiationParameters.isTppExplicitAuthorisationPreferred());

@@ -38,11 +38,12 @@ public class SpiToXs2aPaymentMapper {
         return response;
     }
 
-    public CommonPaymentInitiationResponse mapToCommonPaymentInitiateResponse(SpiPaymentInitiationResponse spiResponse, PaymentType type) {
+    public CommonPaymentInitiationResponse mapToCommonPaymentInitiateResponse(SpiPaymentInitiationResponse spiResponse, PaymentType type, String externalId) {
         CommonPaymentInitiationResponse commonPaymentInitiationResponse = new CommonPaymentInitiationResponse();
         commonPaymentInitiationResponse.setPaymentType(type);
         commonPaymentInitiationResponse.setPaymentId(spiResponse.getPaymentId());
         commonPaymentInitiationResponse.setTransactionStatus(TransactionStatus.getByValue(spiResponse.getTransactionStatus().getName()));
+        commonPaymentInitiationResponse.setExternalPaymentId(externalId);
 
         return commonPaymentInitiationResponse;
     }
