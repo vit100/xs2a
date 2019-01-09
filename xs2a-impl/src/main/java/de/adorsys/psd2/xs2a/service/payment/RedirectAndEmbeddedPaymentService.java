@@ -57,15 +57,14 @@ public class RedirectAndEmbeddedPaymentService implements ScaPaymentService {
         SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuIdData);
 
         AspspConsentData aspspConsentData = new AspspConsentData(null, UUID.randomUUID().toString());
-
         SpiResponse<SpiSinglePaymentInitiationResponse> spiResponse = singlePaymentSpi.initiatePayment(spiContextData, xs2AToSpiSinglePaymentMapper.mapToSpiSinglePayment(payment, paymentProduct), aspspConsentData);
-        String externalPaymentId = pisAspspDataService.encryptPaymentId(spiResponse.getPayload().getPaymentId());
-
-        pisAspspDataService.updateAspspConsentData(new AspspConsentData(spiResponse.getAspspConsentData().getAspspConsentData(), externalPaymentId));
 
         if (spiResponse.hasError()) {
             return new SinglePaymentInitiationResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
         }
+
+        String externalPaymentId = pisAspspDataService.encryptPaymentId(spiResponse.getPayload().getPaymentId());
+        pisAspspDataService.updateAspspConsentData(new AspspConsentData(spiResponse.getAspspConsentData().getAspspConsentData(), externalPaymentId));
 
         return spiToXs2aPaymentMapper.mapToPaymentInitiateResponse(spiResponse.getPayload(), SinglePaymentInitiationResponse::new, externalPaymentId);
     }
@@ -76,14 +75,13 @@ public class RedirectAndEmbeddedPaymentService implements ScaPaymentService {
 
         AspspConsentData aspspConsentData = new AspspConsentData(null, UUID.randomUUID().toString());
         SpiResponse<SpiPeriodicPaymentInitiationResponse> spiResponse = periodicPaymentSpi.initiatePayment(spiContextData, xs2aToSpiPeriodicPaymentMapper.mapToSpiPeriodicPayment(payment, paymentProduct), aspspConsentData);
-        String externalPaymentId = pisAspspDataService.encryptPaymentId(spiResponse.getPayload().getPaymentId());
-
-        pisAspspDataService.updateAspspConsentData(new AspspConsentData(spiResponse.getAspspConsentData().getAspspConsentData(), externalPaymentId));
-
 
         if (spiResponse.hasError()) {
             return new PeriodicPaymentInitiationResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
         }
+
+        String externalPaymentId = pisAspspDataService.encryptPaymentId(spiResponse.getPayload().getPaymentId());
+        pisAspspDataService.updateAspspConsentData(new AspspConsentData(spiResponse.getAspspConsentData().getAspspConsentData(), externalPaymentId));
 
         return spiToXs2aPaymentMapper.mapToPaymentInitiateResponse(spiResponse.getPayload(), PeriodicPaymentInitiationResponse::new, externalPaymentId);
     }
@@ -94,13 +92,13 @@ public class RedirectAndEmbeddedPaymentService implements ScaPaymentService {
 
         AspspConsentData aspspConsentData = new AspspConsentData(null, UUID.randomUUID().toString());
         SpiResponse<SpiBulkPaymentInitiationResponse> spiResponse = bulkPaymentSpi.initiatePayment(spiContextData, xs2aToSpiBulkPaymentMapper.mapToSpiBulkPayment(bulkPayment, paymentProduct), aspspConsentData);
-        String externalPaymentId = pisAspspDataService.encryptPaymentId(spiResponse.getPayload().getPaymentId());
-
-        pisAspspDataService.updateAspspConsentData(new AspspConsentData(spiResponse.getAspspConsentData().getAspspConsentData(), externalPaymentId));
 
         if (spiResponse.hasError()) {
             return new BulkPaymentInitiationResponse(spiErrorMapper.mapToErrorHolder(spiResponse));
         }
+
+        String externalPaymentId = pisAspspDataService.encryptPaymentId(spiResponse.getPayload().getPaymentId());
+        pisAspspDataService.updateAspspConsentData(new AspspConsentData(spiResponse.getAspspConsentData().getAspspConsentData(), externalPaymentId));
 
         return spiToXs2aPaymentMapper.mapToPaymentInitiateResponse(spiResponse.getPayload(), BulkPaymentInitiationResponse::new, externalPaymentId);
     }
