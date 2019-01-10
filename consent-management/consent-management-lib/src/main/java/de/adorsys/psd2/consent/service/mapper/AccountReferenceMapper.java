@@ -56,6 +56,7 @@ public class AccountReferenceMapper {
                        accountReference.setMaskedPan(ref.getMaskedPan());
                        accountReference.setMsisdn(ref.getMsisdn());
                        accountReference.setCurrency(ref.getCurrency());
+                       accountReference.setAspspAccountId(ref.getAspspAccountId());
 
                        return accountReference;
                    }).orElse(null);
@@ -77,6 +78,7 @@ public class AccountReferenceMapper {
                        accountReferenceEntity.setMaskedPan(ref.getMaskedPan());
                        accountReferenceEntity.setMsisdn(ref.getMsisdn());
                        accountReferenceEntity.setCurrency(ref.getCurrency());
+                       accountReferenceEntity.setAspspAccountId(ref.getAspspAccountId());
 
                        return accountReferenceEntity;
                    }).orElse(null);
