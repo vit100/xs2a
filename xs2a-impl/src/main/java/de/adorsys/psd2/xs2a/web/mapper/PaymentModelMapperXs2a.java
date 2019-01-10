@@ -65,11 +65,6 @@ public class PaymentModelMapperXs2a {
         return buildBinaryBodyData(httpServletRequest);
     }
 
-    private boolean isRawPaymentProduct(String paymentProduct) {
-        // TODO make correct value of method https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/533
-        return paymentProduct.contains("pain.");
-    }
-
     private <R> R validatePayment(Object payment, Class<R> clazz) {
         R result = mapper.convertValue(payment, clazz);
         validationService.validate(result);
