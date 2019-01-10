@@ -94,7 +94,6 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
             response.setScaStatus(authorisationResponse.getScaStatus());
         }
 
-
         return ResponseObject.<PaymentInitiationResponse>builder()
                    .body(response)
                    .build();
