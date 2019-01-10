@@ -80,7 +80,6 @@ public class Xs2aToCmsPisCommonPaymentRequestMapper {
         paymentInfo.setPaymentProduct(paymentInitiationParameters.getPaymentProduct());
         paymentInfo.setPaymentType(paymentInitiationParameters.getPaymentType());
         paymentInfo.setTransactionStatus(transactionStatus);
-        paymentInfo.setPaymentData(null);
         paymentInfo.setTppInfo(tppInfo);
         paymentInfo.setPaymentId(paymentId);
         paymentInfo.setPsuDataList(Collections.singletonList(paymentInitiationParameters.getPsuData()));
