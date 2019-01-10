@@ -38,7 +38,7 @@ import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -104,6 +104,50 @@ public class PaymentController implements PaymentApi {
         PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData);
         ResponseObject serviceResponse =
             xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aPayment(body, paymentInitiationParameters), paymentInitiationParameters);
+
+        return serviceResponse.hasError()
+                   ? responseMapper.created(serviceResponse)
+                   : responseMapper.created(ResponseObject
+                                                .builder()
+                                                .body(paymentModelMapperPsd2.mapToPaymentInitiationResponse12(serviceResponse.getBody()))
+                                                .build());
+    }
+
+    @RequestMapping(value = "/v1/{payment-service}/{payment-product}",
+        produces = {"application/json"},
+        consumes = {"application/xml", "multipart/form-data"},
+        method = RequestMethod.POST)
+    public ResponseEntity<Object> initiateXmlPayment(@RequestPart(value = "xml_sct", required = false) String xmlPayment,
+                                                     @RequestPart(value = "json_standingordermanagement", required = false) String jsonPeriodicData,
+                                                     @PathVariable("payment-service") String paymentService,
+                                                     @PathVariable("payment-product") String paymentProduct,
+                                                     @RequestHeader(value = "X-Request-ID", required = true) UUID xRequestID,
+                                                     @RequestHeader(value = "PSU-IP-Address", required = true) String psUIPAddress,
+                                                     @RequestHeader(value = "Digest", required = false) String digest,
+                                                     @RequestHeader(value = "Signature", required = false) String signature,
+                                                     @RequestHeader(value = "TPP-Signature-Certificate", required = false) byte[] tpPSignatureCertificate,
+                                                     @RequestHeader(value = "PSU-ID", required = false) String PSU_ID,
+                                                     @RequestHeader(value = "PSU-ID-Type", required = false) String psUIDType,
+                                                     @RequestHeader(value = "PSU-Corporate-ID", required = false) String psUCorporateID,
+                                                     @RequestHeader(value = "PSU-Corporate-ID-Type", required = false) String psUCorporateIDType,
+                                                     @RequestHeader(value = "Consent-ID", required = false) String consentID,
+                                                     @RequestHeader(value = "TPP-Redirect-Preferred", required = false) Boolean tpPRedirectPreferred,
+                                                     @RequestHeader(value = "TPP-Redirect-URI", required = false) String tpPRedirectURI,
+                                                     @RequestHeader(value = "TPP-Nok-Redirect-URI", required = false) String tpPNokRedirectURI,
+                                                     @RequestHeader(value = "TPP-Explicit-Authorisation-Preferred", required = false) Boolean tpPExplicitAuthorisationPreferred,
+                                                     @RequestHeader(value = "PSU-IP-Port", required = false) Object psUIPPort,
+                                                     @RequestHeader(value = "PSU-Accept", required = false) String psUAccept,
+                                                     @RequestHeader(value = "PSU-Accept-Charset", required = false) String psUAcceptCharset,
+                                                     @RequestHeader(value = "PSU-Accept-Encoding", required = false) String psUAcceptEncoding,
+                                                     @RequestHeader(value = "PSU-Accept-Language", required = false) String psUAcceptLanguage,
+                                                     @RequestHeader(value = "PSU-User-Agent", required = false) String psUUserAgent,
+                                                     @RequestHeader(value = "PSU-Http-Method", required = false) String psUHttpMethod,
+                                                     @RequestHeader(value = "PSU-Device-ID", required = false) UUID psUDeviceID,
+                                                     @RequestHeader(value = "PSU-Geo-Location", required = false) String psUGeoLocation) {
+        PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
+        PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData);
+        ResponseObject serviceResponse =
+            xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aXmlPayment(paymentInitiationParameters), paymentInitiationParameters);
 
         return serviceResponse.hasError()
                    ? responseMapper.created(serviceResponse)

@@ -52,9 +52,6 @@ public class PaymentModelMapperXs2a {
     private final HttpServletRequest httpServletRequest;
 
     public Object mapToXs2aPayment(Object payment, PaymentInitiationParameters requestParameters) {
-        if (isRawPaymentProduct(requestParameters.getPaymentProduct())) {
-            return buildBinaryBodyData(httpServletRequest);
-        }
         if (requestParameters.getPaymentType() == SINGLE) {
             return mapToXs2aSinglePayment(validatePayment(payment, PaymentInitiationSctJson.class));
         } else if (requestParameters.getPaymentType() == PERIODIC) {
@@ -62,6 +59,10 @@ public class PaymentModelMapperXs2a {
         } else {
             return mapToXs2aBulkPayment(validatePayment(payment, BulkPaymentInitiationSctJson.class));
         }
+    }
+
+    public Object mapToXs2aXmlPayment(PaymentInitiationParameters requestParameters) {
+        return buildBinaryBodyData(httpServletRequest);
     }
 
     private boolean isRawPaymentProduct(String paymentProduct) {
