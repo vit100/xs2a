@@ -74,7 +74,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="consent_id" baseTableName="ais_aspsp_account_access"
-                                 constraintName="fk_ais_aspsp_access_ais_consent" deferrable="false"
+                                 constraintName="fk_aspsp_access_ais_consent" deferrable="false"
                                  initiallyDeferred="false"
                                  referencedColumnNames="id" referencedTableName="ais_consent"/>
     </changeSet>
