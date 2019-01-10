@@ -57,6 +57,7 @@ public class AspspConsentData {
      *
      * @return empty AspspConsentData
      */
+    @SuppressWarnings("ConstantConditions") //this is the only one case when we use consentId as null
     public static AspspConsentData emptyConsentData() {
         return new AspspConsentData(null, null);
     }
