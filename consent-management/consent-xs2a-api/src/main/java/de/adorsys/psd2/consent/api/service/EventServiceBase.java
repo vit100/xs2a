@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
  * @see de.adorsys.psd2.consent.api.service.EventService
  * @see de.adorsys.psd2.consent.api.service.EventServiceEncrypted
  */
-interface EventServiceBase {
+public interface EventServiceBase {
     /**
      * Records new Event in the CMS
      *

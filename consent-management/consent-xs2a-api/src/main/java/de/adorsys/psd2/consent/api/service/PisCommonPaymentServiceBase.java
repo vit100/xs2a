@@ -39,7 +39,7 @@ import java.util.Optional;
  * @see PisCommonPaymentService
  * @see PisCommonPaymentServiceEncrypted
  */
-interface PisCommonPaymentServiceBase {
+public interface PisCommonPaymentServiceBase {
 
     Optional<CreatePisCommonPaymentResponse> createCommonPayment(PisPaymentInfo request);
 

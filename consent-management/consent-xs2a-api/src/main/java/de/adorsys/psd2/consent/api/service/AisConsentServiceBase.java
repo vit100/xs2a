@@ -31,7 +31,7 @@ import java.util.Optional;
  * @see de.adorsys.psd2.consent.api.service.AisConsentService
  * @see de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted
  */
-interface AisConsentServiceBase {
+public interface AisConsentServiceBase {
 
     /**
      * Create AIS consent

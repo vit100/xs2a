@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
  * @see de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiService
  * @see de.adorsys.psd2.consent.api.service.UpdatePaymentStatusAfterSpiServiceEncrypted
  */
-interface UpdatePaymentStatusAfterSpiServiceBase {
+public interface UpdatePaymentStatusAfterSpiServiceBase {
 
     /**
      * Updates a Status of Payment object by its ID and PSU ID
