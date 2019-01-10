@@ -33,9 +33,9 @@ public class AspspProfileServiceWrapper {
     private final AspspProfileService aspspProfileService;
 
     /**
-     * Gets a list of payment types and products allowed by current ASPSP from ASPSP profile service
+     * Gets a map with payment types and products allowed by current ASPSP from ASPSP profile service
      *
-     * @return List of payment types and  products supported by current ASPSP
+     * @return Map with payment types and  products supported by current ASPSP
      */
     public Map<PaymentType, Set<String>> getSupportedPaymentTypeAndProductMatrix() {
         return readAspspSettings().getSupportedPaymentTypeAndProductMatrix();
