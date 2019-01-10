@@ -78,11 +78,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public MultipartResolver multipartResolver() {
-        return new StandardServletMultipartResolver();
-    }
-
-    @Bean
     public RequestValidatorService requestValidatorService() {
         return new RequestValidatorService();
     }
