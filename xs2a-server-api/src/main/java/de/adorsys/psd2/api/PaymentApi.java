@@ -302,7 +302,7 @@ public interface PaymentApi {
     }
 
     // Override this method
-    default ResponseEntity<Object> initiatePayment(Object body,UUID xRequestID,String psUIPAddress,String paymentService,String paymentProduct,String digest,String signature,byte[] tpPSignatureCertificate,String PSU_ID,String psUIDType,String psUCorporateID,String psUCorporateIDType,String consentID,String tpPRedirectPreferred,String tpPRedirectURI,String tpPNokRedirectURI,String tpPExplicitAuthorisationPreferred,String psUIPPort,String psUAccept,String psUAcceptCharset,String psUAcceptEncoding,String psUAcceptLanguage,String psUUserAgent,String psUHttpMethod,UUID psUDeviceID,String psUGeoLocation) {
+    default ResponseEntity<Object> initiatePayment(Object body,UUID xRequestID,String psUIPAddress,String paymentService,String paymentProduct,String digest,String signature,byte[] tpPSignatureCertificate,String PSU_ID,String psUIDType,String psUCorporateID,String psUCorporateIDType,String consentID,String tpPRedirectPreferred,String tpPRedirectURI,String tpPNokRedirectURI,boolean tpPExplicitAuthorisationPreferred,String psUIPPort,String psUAccept,String psUAcceptCharset,String psUAcceptEncoding,String psUAcceptLanguage,String psUUserAgent,String psUHttpMethod,UUID psUDeviceID,String psUGeoLocation) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
         } else {
             log.warn("ObjectMapper or HttpServletRequest not configured in default V1Api interface so no example is generated");

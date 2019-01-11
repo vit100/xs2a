@@ -160,8 +160,8 @@ public class PaymentModelMapperPsd2 {
         return parameters;
     }
 
-    public PaymentInitiationCancelResponse200202 mapToPaymentInitiationCancelResponse(CancelPaymentResponse cancelPaymentResponse) {
-        PaymentInitiationCancelResponse200202 response = new PaymentInitiationCancelResponse200202();
+    public PaymentInitiationCancelResponse204202 mapToPaymentInitiationCancelResponse(CancelPaymentResponse cancelPaymentResponse) {
+        PaymentInitiationCancelResponse204202 response = new PaymentInitiationCancelResponse204202();
         response.setTransactionStatus(mapToTransactionStatus12(cancelPaymentResponse.getTransactionStatus()));
         response.setScaMethods(mapToScaMethods(cancelPaymentResponse.getScaMethods()));
         response.setChosenScaMethod(mapToChosenScaMethod(cancelPaymentResponse.getChosenScaMethod()));
