@@ -295,10 +295,9 @@ public class AccountModelMapperTest {
 
     private Xs2aExchangeRate createExchangeRate() {
         Xs2aExchangeRate exchangeRate = new Xs2aExchangeRate();
-        exchangeRate.setCurrencyFrom(Currency.getInstance("EUR"));
-        exchangeRate.setRateFrom("Rate from");
-        exchangeRate.setCurrencyTo(Currency.getInstance("USD"));
-        exchangeRate.setRateTo("Rate to");
+        exchangeRate.setUnitCurrency("unit currency");
+        exchangeRate.setRate("rate");
+        exchangeRate.setSourceCurrency("source currency");
         exchangeRate.setRateDate(LocalDate.of(2017, 1, 1));
         exchangeRate.setRateContract("Rate contract");
         return exchangeRate;
