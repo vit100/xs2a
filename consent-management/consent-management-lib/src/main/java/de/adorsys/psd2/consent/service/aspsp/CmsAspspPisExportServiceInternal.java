@@ -61,4 +61,18 @@ public class CmsAspspPisExportServiceInternal implements CmsAspspPisExportServic
         List<PisCommonPaymentData> commonPayments = pisCommonPaymentDataRepository.findAll(pisCommonPaymentDataSpecification.byPsuIdDataAndCreationPeriodAndInstanceId(psuIdData, createDateFrom, createDateTo, instanceId));
         return cmsPsuPisMapper.mapPaymentDataToCmsPayments(commonPayments);
     }
+
+    @Override
+    public Collection<CmsPayment> exportPaymentsByAccountId(@NotNull String aspspAccountId, @Nullable String tppAuthorisationNumber, @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo, @NotNull String instanceId) {
+        if (StringUtils.isBlank(aspspAccountId)
+                || StringUtils.isBlank(tppAuthorisationNumber)
+                || StringUtils.isBlank(instanceId)) {
+
+            return Collections.emptyList();
+        }
+
+        List<PisCommonPaymentData> commonPayments = pisCommonPaymentDataRepository.findAll(pisCommonPaymentDataSpecification.byAspspAccountIdAndTppIdAndCreationPeriodAndInstanceId(aspspAccountId, tppAuthorisationNumber, createDateFrom, createDateTo, instanceId));
+
+        return cmsPsuPisMapper.mapPaymentDataToCmsPayments(commonPayments);
+    }
 }

@@ -17,10 +17,10 @@
 package de.adorsys.psd2.consent.api.pis;
 
 import de.adorsys.psd2.consent.api.CmsAddress;
+import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.xs2a.core.pis.PisDayOfExecution;
 import de.adorsys.psd2.xs2a.core.pis.PisExecutionRule;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
-import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -41,7 +41,7 @@ public class PisPayment {
     private String endToEndIdentification;
 
     @ApiModelProperty(value = "Debtor account", required = true)
-    private AccountReference debtorAccount;
+    private CmsAccountReference debtorAccount;
 
     @ApiModelProperty(value = "Name of the ultimate debtor", required = true, example = "Mueller")
     private String ultimateDebtor;
@@ -53,7 +53,7 @@ public class PisPayment {
     private BigDecimal amount;
 
     @ApiModelProperty(value = "Creditor account", required = true)
-    private AccountReference creditorAccount;
+    private CmsAccountReference creditorAccount;
 
     @ApiModelProperty(value = "Creditor agent", example = "Telekom")
     private String creditorAgent;

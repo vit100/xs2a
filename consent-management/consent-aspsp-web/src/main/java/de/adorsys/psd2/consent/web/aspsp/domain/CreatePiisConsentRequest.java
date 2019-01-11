@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.web.aspsp.domain;
 
-import de.adorsys.psd2.xs2a.core.profile.AccountReference;
+import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,7 +32,7 @@ public class CreatePiisConsentRequest {
     private TppInfo tppInfo;
 
     @ApiModelProperty(value = "Accounts for which the consent is created")
-    private List<AccountReference> accounts;
+    private List<CmsAccountReference> accounts;
 
     @ApiModelProperty(value = "Consent`s expiration date. The content is the local ASPSP date in ISODate Format", example = "2020-10-10")
     private LocalDate validUntil;

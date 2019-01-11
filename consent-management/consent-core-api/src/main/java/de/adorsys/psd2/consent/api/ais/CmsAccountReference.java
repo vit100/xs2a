@@ -27,16 +27,9 @@ import java.util.Currency;
 @NoArgsConstructor
 // Warning: it is important to keep constructor annotations before @Data annotation in order to get compiled on Java 11
 @Data
-/**
- *
- * @deprecated since 1.11. Will be removed in 1.12. Use de.adorsys.psd2.xs2a.core.profile.AccountReference instead
- * @see de.adorsys.psd2.xs2a.core.profile.AccountReference
- *
- */
-@Deprecated
 public class CmsAccountReference {
-    @ApiModelProperty(value = "RESOURCE-ID: This identification is denoting the addressed account.")
-    private String resourceId;
+    @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "DE2310010010123456789")
+    private String aspspAccountId;
 
     @ApiModelProperty(value = "IBAN: This data element can be used in the body of the CreateConsentReq Request Message for retrieving account access consent from this payment account", example = "DE89370400440532013000")
     private String iban;
@@ -55,8 +48,4 @@ public class CmsAccountReference {
 
     @ApiModelProperty(value = "Codes following ISO 4217", example = "EUR")
     private Currency currency;
-
-    public CmsAccountReference(String resourceId, String iban, Currency currency) {
-        this(resourceId, iban, null, null, null, null, currency);
-    }
 }

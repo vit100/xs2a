@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.service;
 
+import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.consent.aspsp.api.piis.CmsAspspPiisService;
 import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import de.adorsys.psd2.consent.repository.PiisConsentRepository;
@@ -26,7 +27,6 @@ import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsentTppAccessType;
-import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
     @Transactional
     public Optional<String> createConsent(@NotNull PsuIdData psuIdData,
                                           @Nullable TppInfo tppInfo,
-                                          @NotNull List<AccountReference> accounts,
+                                          @NotNull List<CmsAccountReference> accounts,
                                           @NotNull LocalDate validUntil,
                                           int allowedFrequencyPerDay) {
         PiisConsentEntity consent = buildPiisConsent(psuIdData, tppInfo, accounts, validUntil, allowedFrequencyPerDay);
@@ -95,7 +95,7 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
 
     private PiisConsentEntity buildPiisConsent(PsuIdData psuIdData,
                                                TppInfo tppInfo,
-                                               List<AccountReference> accounts,
+                                               List<CmsAccountReference> accounts,
                                                LocalDate validUntil,
                                                int allowedFrequencyPerDay) {
         PiisConsentEntity consent = new PiisConsentEntity();

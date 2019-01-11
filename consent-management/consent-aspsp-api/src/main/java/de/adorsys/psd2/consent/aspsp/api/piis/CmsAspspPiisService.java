@@ -16,8 +16,8 @@
 
 package de.adorsys.psd2.consent.aspsp.api.piis;
 
+import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
-import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public interface CmsAspspPiisService {
      * @return Consent id if the consent was created
      */
     Optional<String> createConsent(@NotNull PsuIdData psuIdData, @Nullable TppInfo tppInfo,
-                                   @NotNull List<AccountReference> accounts, @NotNull LocalDate validUntil,
+                                   @NotNull List<CmsAccountReference> accounts, @NotNull LocalDate validUntil,
                                    int allowedFrequencyPerDay);
 
     /**

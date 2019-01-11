@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
+import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,9 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class AccountReferenceMapper {
-    AccountReference mapToCmsAccountReference(AccountReferenceEntity accountReferenceEntity) {
+   CmsAccountReference mapToCmsAccountReference(AccountReferenceEntity accountReferenceEntity) {
         return Optional.ofNullable(accountReferenceEntity)
-                   .map(ref -> new AccountReference(null, null,
+                   .map(ref -> new CmsAccountReference(ref.getAspspAccountId(),
                                                        ref.getIban(),
                                                        ref.getBban(),
                                                        ref.getPan(),
@@ -62,13 +63,13 @@ public class AccountReferenceMapper {
                    }).orElse(null);
     }
 
-    public List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<AccountReference> cmsAccountReferences) {
+    public List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<CmsAccountReference> cmsAccountReferences) {
         return cmsAccountReferences.stream()
                    .map(this::mapToAccountReferenceEntity)
                    .collect(Collectors.toList());
     }
 
-    public AccountReferenceEntity mapToAccountReferenceEntity(AccountReference accountReference) {
+    public AccountReferenceEntity mapToAccountReferenceEntity(CmsAccountReference accountReference) {
         return Optional.ofNullable(accountReference)
                    .map(ref -> {
                        AccountReferenceEntity accountReferenceEntity = new AccountReferenceEntity();
