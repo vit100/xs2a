@@ -16,23 +16,18 @@
 
 package de.adorsys.psd2.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import de.adorsys.psd2.model.Amount;
-import de.adorsys.psd2.model.ChallengeData;
-import de.adorsys.psd2.model.ChosenScaMethod;
-import de.adorsys.psd2.model.ScaMethods;
-import de.adorsys.psd2.model.TppMessage2XX;
-import de.adorsys.psd2.model.TransactionStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * Body of the response for a successful payment initiation request.
@@ -84,9 +79,7 @@ public class PaymentInitationRequestResponse201   {
   **/
   @ApiModelProperty(required = true, value = "")
   @NotNull
-
   @Valid
-
   public TransactionStatus getTransactionStatus() {
     return transactionStatus;
   }
@@ -106,8 +99,6 @@ public class PaymentInitationRequestResponse201   {
   **/
   @ApiModelProperty(required = true, value = "")
   @NotNull
-
-
   public String getPaymentId() {
     return paymentId;
   }
@@ -126,9 +117,7 @@ public class PaymentInitationRequestResponse201   {
    * @return transactionFees
   **/
   @ApiModelProperty(value = "")
-
   @Valid
-
   public Amount getTransactionFees() {
     return transactionFees;
   }
@@ -147,8 +136,6 @@ public class PaymentInitationRequestResponse201   {
    * @return transactionFeeIndicator
   **/
   @ApiModelProperty(value = "")
-
-
   public Boolean getTransactionFeeIndicator() {
     return transactionFeeIndicator;
   }
@@ -167,9 +154,7 @@ public class PaymentInitationRequestResponse201   {
    * @return scaMethods
   **/
   @ApiModelProperty(value = "")
-
   @Valid
-
   public ScaMethods getScaMethods() {
     return scaMethods;
   }
@@ -188,9 +173,7 @@ public class PaymentInitationRequestResponse201   {
    * @return chosenScaMethod
   **/
   @ApiModelProperty(value = "")
-
   @Valid
-
   public ChosenScaMethod getChosenScaMethod() {
     return chosenScaMethod;
   }
@@ -209,9 +192,7 @@ public class PaymentInitationRequestResponse201   {
    * @return challengeData
   **/
   @ApiModelProperty(value = "")
-
   @Valid
-
   public ChallengeData getChallengeData() {
     return challengeData;
   }
@@ -231,9 +212,7 @@ public class PaymentInitationRequestResponse201   {
   **/
   @ApiModelProperty(required = true, value = "")
   @NotNull
-
   @Valid
-
   public Map getLinks() {
     return _links;
   }
@@ -252,8 +231,7 @@ public class PaymentInitationRequestResponse201   {
    * @return psuMessage
   **/
   @ApiModelProperty(value = "")
-
-@Size(max=512) 
+  @Size(max=512)
   public String getPsuMessage() {
     return psuMessage;
   }
@@ -280,9 +258,7 @@ public class PaymentInitationRequestResponse201   {
    * @return tppMessages
   **/
   @ApiModelProperty(value = "")
-
   @Valid
-
   public List<TppMessage2XX> getTppMessages() {
     return tppMessages;
   }

@@ -21,7 +21,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.adorsys.psd2.model.AccountDetails;
 import de.adorsys.psd2.model.AccountList;
 import de.adorsys.psd2.model.AccountReport;
-import de.adorsys.psd2.model.ReadBalanceResponse200;
 import de.adorsys.psd2.xs2a.component.JsonConverter;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.domain.*;

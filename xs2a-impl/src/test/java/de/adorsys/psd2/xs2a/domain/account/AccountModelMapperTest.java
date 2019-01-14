@@ -161,7 +161,7 @@ public class AccountModelMapperTest {
         AccountReference expectedCreditorAccount = transactions.getCreditorAccount();
         assertNotNull(expectedCreditorAccount);
 
-        AccountReferenceIban actualCreditorAccount = (AccountReferenceIban) transactionDetails.getCreditorAccount();
+        de.adorsys.psd2.model.AccountReference actualCreditorAccount =  transactionDetails.getCreditorAccount();
         assertNotNull(actualCreditorAccount);
 
         assertEquals(expectedCreditorAccount.getIban(), actualCreditorAccount.getIban());
@@ -172,7 +172,7 @@ public class AccountModelMapperTest {
         AccountReference expectedDebtorAccount = transactions.getDebtorAccount();
         assertNotNull(expectedDebtorAccount);
 
-        AccountReferenceIban actualDebtorAccount = (AccountReferenceIban) transactionDetails.getDebtorAccount();
+        de.adorsys.psd2.model.AccountReference actualDebtorAccount = transactionDetails.getDebtorAccount();
         assertNotNull(actualDebtorAccount);
 
         assertEquals(expectedDebtorAccount.getIban(), actualDebtorAccount.getIban());

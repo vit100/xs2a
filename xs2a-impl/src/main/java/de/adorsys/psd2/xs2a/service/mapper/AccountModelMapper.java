@@ -246,7 +246,16 @@ public class AccountModelMapper {
         return transactionDetails;
     }
 
-    private de.adorsys.psd2.model.AccountReference mapToAccountReference(AccountReference accountReference) {
+    public List<de.adorsys.psd2.model.AccountReference> mapToAccountReferences(List<AccountReference> accountReferences) {
+        if(CollectionUtils.isNotEmpty(accountReferences)){
+            return Collections.emptyList();
+        }
+        return accountReferences.stream()
+                   .map(this::mapToAccountReference)
+                   .collect(Collectors.toList());
+    }
+
+    public de.adorsys.psd2.model.AccountReference mapToAccountReference(AccountReference accountReference) {
         return Optional.ofNullable(accountReference)
                    .map(account -> {
                        de.adorsys.psd2.model.AccountReference reference = new de.adorsys.psd2.model.AccountReference();

@@ -134,6 +134,7 @@ public class PaymentModelMapperPsd2 {
                    .orElse(null);
     }
 
+    // TODO create error mapper according to new version of specification 1.3 https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/592
     public Object mapToPaymentInitiationResponse12(Object response) {
         PaymentInitationRequestResponse201 response201 = new PaymentInitationRequestResponse201();
         PaymentInitiationResponse specificResponse = (PaymentInitiationResponse) response;
