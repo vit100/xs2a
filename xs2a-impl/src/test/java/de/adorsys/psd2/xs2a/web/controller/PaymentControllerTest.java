@@ -46,7 +46,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.nio.charset.Charset;
-import java.util.UUID;
 
 import static de.adorsys.psd2.xs2a.core.profile.PaymentType.SINGLE;
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
@@ -67,7 +66,7 @@ public class PaymentControllerTest {
     private static final Charset UTF_8 = Charset.forName("utf-8");
     private static final String REDIRECT_LINK = "http://localhost:4200/consent/confirmation/pis";
     private static final PsuIdData PSU_ID_DATA = new PsuIdData(null, null, null, null);
-    private static final UUID REQUEST_ID = UUID.fromString("ddd36e05-d67a-4830-93ad-9462f71ae1e6");
+    private static final String REQUEST_ID = "ddd36e05-d67a-4830-93ad-9462f71ae1e6";
     private static final String BULK_PAYMENT_DATA = "/json/BulkPaymentTestData.json";
     private static final String BULK_PAYMENT_RESP_DATA = "/json/BulkPaymentResponseTestData.json";
     private static final String PAYMENT_CANCELLATION_ID = "42af2f4a-0d9f-4a7f-8677-8acda5e718f0";
