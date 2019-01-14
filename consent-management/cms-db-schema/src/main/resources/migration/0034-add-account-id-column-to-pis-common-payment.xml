@@ -20,9 +20,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet author="rye@adorsys.com.ua" id="2019-01-10-1">
-        <comment>Add aspsp_account_id column to account_reference</comment>
+        <comment>Add aspsp_account_id column to pis_common_payment</comment>
 
-        <addColumn tableName="account_reference">
+        <addColumn tableName="pis_common_payment">
             <column name="aspsp_account_id" type="VARCHAR(100)"/>
         </addColumn>
     </changeSet>

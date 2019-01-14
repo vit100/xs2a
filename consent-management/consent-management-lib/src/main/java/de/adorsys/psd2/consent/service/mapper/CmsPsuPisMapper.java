@@ -138,7 +138,7 @@ public class CmsPsuPisMapper {
 
     private CmsAccountReference mapToCmsAccountReference(AccountReferenceEntity pisAccountReference) {
         return Optional.ofNullable(pisAccountReference)
-                   .map(ref -> new CmsAccountReference(ref.getAspspAccountId(),
+                   .map(ref -> new CmsAccountReference(null,
                                                        ref.getIban(),
                                                        ref.getBban(),
                                                        ref.getPan(),

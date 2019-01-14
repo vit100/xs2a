@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
-import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
@@ -63,13 +62,10 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
      */
     @Override
     public ResponseObject<SinglePaymentInitiationResponse> createPayment(SinglePayment singlePayment, PaymentInitiationParameters paymentInitiationParameters, TppInfo tppInfo) {
-
         PsuIdData psuData = paymentInitiationParameters.getPsuData();
+        SinglePaymentInitiationResponse response = scaPaymentService.createSinglePayment(singlePayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
 
-        SinglePayment newSinglePayment = fillAspsAccountId(singlePayment);
-        SinglePaymentInitiationResponse response = scaPaymentService.createSinglePayment(newSinglePayment, tppInfo, paymentInitiationParameters.getPaymentProduct(), psuData);
-
-        PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response.getTransactionStatus(), response.getPaymentId());
+        PisPaymentInfo pisPaymentInfo = xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(paymentInitiationParameters, tppInfo, response);
         Xs2aPisCommonPayment pisCommonPayment = xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(pisCommonPaymentService.createCommonPayment(pisPaymentInfo), psuData);
 
         String externalPaymentId = pisCommonPayment.getPaymentId();
@@ -83,9 +79,9 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
         AspspConsentData aspspConsentData = response.getAspspConsentData();
         pisAspspDataService.updateAspspConsentData(new AspspConsentData(aspspConsentData.getAspspConsentData(), externalPaymentId));
 
-        newSinglePayment.setTransactionStatus(response.getTransactionStatus());
-        newSinglePayment.setPaymentId(response.getPaymentId());
-        pisCommonPaymentService.updateSinglePaymentInCommonPayment(newSinglePayment, paymentInitiationParameters, pisCommonPayment.getPaymentId());
+        singlePayment.setTransactionStatus(response.getTransactionStatus());
+        singlePayment.setPaymentId(response.getPaymentId());
+        pisCommonPaymentService.updateSinglePaymentInCommonPayment(singlePayment, paymentInitiationParameters, pisCommonPayment.getPaymentId());
 
         response.setPaymentId(externalPaymentId);
 
@@ -106,18 +102,4 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
                    .body(response)
                    .build();
     }
-
-    private SinglePayment fillAspsAccountId(SinglePayment singlePayment) {
-        AccountReference debtorAccount = singlePayment.getDebtorAccount();
-        debtorAccount.setAspspAccountId("11111_debtorAccount");
-
-        AccountReference creditorAccount = singlePayment.getCreditorAccount();
-        creditorAccount.setAspspAccountId("2222_creditorAccount");
-
-        singlePayment.setDebtorAccount(debtorAccount);
-        singlePayment.setCreditorAccount(creditorAccount);
-
-        return singlePayment;
-    }
-
 }

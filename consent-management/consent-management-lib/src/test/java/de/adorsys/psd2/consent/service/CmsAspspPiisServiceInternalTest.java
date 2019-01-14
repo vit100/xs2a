@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import de.adorsys.psd2.consent.repository.PiisConsentRepository;
@@ -27,6 +26,7 @@ import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
+import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -93,7 +93,7 @@ public class CmsAspspPiisServiceInternalTest {
 
         // Given
         PsuIdData psuIdData = buildPsuIdData();
-        List<CmsAccountReference> accounts = buildAccountReferenceList();
+        List<AccountReference> accounts = buildAccountReferenceList();
 
         // When
         Optional<String> actual = cmsAspspPiisServiceInternal.createConsent(psuIdData, null, accounts,
@@ -112,7 +112,7 @@ public class CmsAspspPiisServiceInternalTest {
 
         // Given
         PsuIdData psuIdData = buildPsuIdData();
-        List<CmsAccountReference> accounts = buildAccountReferenceList();
+        List<AccountReference> accounts = buildAccountReferenceList();
 
         // When
         Optional<String> actual = cmsAspspPiisServiceInternal.createConsent(psuIdData, null, accounts,
@@ -217,17 +217,17 @@ public class CmsAspspPiisServiceInternalTest {
         return new PsuIdData(psuId, null, null, null);
     }
 
-    private CmsAccountReference buildAccountReference() {
-        return new CmsAccountReference("aspspAccountId",
-                                       "DE89370400440532013000",
-                                       null,
-                                       null,
-                                       null,
-                                       null,
-                                       null);
+    private AccountReference buildAccountReference() {
+        return new AccountReference("aspspAccountId", "resourceId",
+                                    "DE89370400440532013000",
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null);
     }
 
-    private List<CmsAccountReference> buildAccountReferenceList() {
+    private List<AccountReference> buildAccountReferenceList() {
         return Collections.singletonList(buildAccountReference());
     }
 

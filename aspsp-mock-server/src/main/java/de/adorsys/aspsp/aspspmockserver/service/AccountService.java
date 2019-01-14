@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,6 +81,23 @@ public class AccountService {
                                    .filter(aD -> aD.getIban().equals(iban))
                                    .collect(Collectors.toList()))
                    .orElseGet(Collections::emptyList);
+    }
+
+    /**
+     * Returns a aspsp account Id by requested IBAN And Currency
+     *
+     * @param iban account IBAN
+     * @param currency currency
+     * @return  aspsp account id
+     */
+    public Optional<String> getAccountIdByIbanAndCurrency(String iban, Currency currency) {
+        return psuRepository.findPsuByAccountDetailsList_Iban(iban)
+                   .flatMap(psu -> psu.getAccountDetailsList().stream()
+                                       .filter(aD -> aD.getIban().equals(iban))
+                                       .filter(aD -> aD.getCurrency() == currency)
+                                       .map(AspspAccountDetails::getAspspAccountId)
+                                       .findFirst()
+                   );
     }
 
     Optional<String> getPsuIdByIban(String iban) {

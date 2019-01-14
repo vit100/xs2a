@@ -66,6 +66,7 @@ public class CreateSinglePaymentServiceTest {
     private final CreatePisCommonPaymentResponse PIS_COMMON_PAYMENT_RESPONSE = new CreatePisCommonPaymentResponse(PAYMENT_ID);
     private final PisPaymentInfo PAYMENT_INFO = buildPisPaymentInfoRequest();
     private static final AspspConsentData ASPSP_CONSENT_DATA = new AspspConsentData(new byte[0], "Some Consent ID");
+    private final SinglePaymentInitiationResponse RESPONSE = buildSinglePaymentInitiationResponse();
 
     @InjectMocks
     private CreateSinglePaymentService createSinglePaymentService;
@@ -86,11 +87,11 @@ public class CreateSinglePaymentServiceTest {
 
     @Before
     public void init() {
-        when(scaPaymentService.createSinglePayment(buildSinglePayment(), TPP_INFO, "sepa-credit-transfers", PSU_DATA)).thenReturn(buildSinglePaymentInitiationResponse());
+        when(scaPaymentService.createSinglePayment(buildSinglePayment(), TPP_INFO, "sepa-credit-transfers", PSU_DATA)).thenReturn(RESPONSE);
         when(pisAspspDataService.getInternalPaymentIdByEncryptedString(anyString())).thenReturn(PAYMENT_ID);
         when(pisCommonPaymentService.createCommonPayment(PAYMENT_INFO)).thenReturn(PIS_COMMON_PAYMENT_RESPONSE);
         when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(PIS_COMMON_PAYMENT_RESPONSE, PARAM.getPsuData())).thenReturn(PIS_COMMON_PAYMENT);
-        when(xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(PARAM, TPP_INFO, TransactionStatus.RCVD,PAYMENT_ID ))
+        when(xs2aToCmsPisCommonPaymentRequestMapper.mapToPisPaymentInfo(PARAM, TPP_INFO, RESPONSE ))
             .thenReturn(PAYMENT_INFO);
     }
 

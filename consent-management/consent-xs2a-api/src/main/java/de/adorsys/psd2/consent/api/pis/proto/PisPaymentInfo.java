@@ -47,4 +47,7 @@ public class PisPaymentInfo {
 
     @ApiModelProperty(value = "Corresponding PSU list", required = true)
     private List<PsuIdData> psuDataList;
+
+    @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "DE2310010010123456789")
+    private String aspspAccountId;
 }

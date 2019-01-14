@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
-import de.adorsys.psd2.consent.api.ais.CmsAccountReference;
 import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +28,9 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class AccountReferenceMapper {
-   CmsAccountReference mapToCmsAccountReference(AccountReferenceEntity accountReferenceEntity) {
+    AccountReference mapToCmsAccountReference(AccountReferenceEntity accountReferenceEntity) {
         return Optional.ofNullable(accountReferenceEntity)
-                   .map(ref -> new CmsAccountReference(ref.getAspspAccountId(),
+                   .map(ref -> new AccountReference(null, null,
                                                        ref.getIban(),
                                                        ref.getBban(),
                                                        ref.getPan(),
@@ -57,19 +56,18 @@ public class AccountReferenceMapper {
                        accountReference.setMaskedPan(ref.getMaskedPan());
                        accountReference.setMsisdn(ref.getMsisdn());
                        accountReference.setCurrency(ref.getCurrency());
-                       accountReference.setAspspAccountId(ref.getAspspAccountId());
 
                        return accountReference;
                    }).orElse(null);
     }
 
-    public List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<CmsAccountReference> cmsAccountReferences) {
+    public List<AccountReferenceEntity> mapToAccountReferenceEntityList(List<AccountReference> cmsAccountReferences) {
         return cmsAccountReferences.stream()
                    .map(this::mapToAccountReferenceEntity)
                    .collect(Collectors.toList());
     }
 
-    public AccountReferenceEntity mapToAccountReferenceEntity(CmsAccountReference accountReference) {
+    public AccountReferenceEntity mapToAccountReferenceEntity(AccountReference accountReference) {
         return Optional.ofNullable(accountReference)
                    .map(ref -> {
                        AccountReferenceEntity accountReferenceEntity = new AccountReferenceEntity();
@@ -79,7 +77,6 @@ public class AccountReferenceMapper {
                        accountReferenceEntity.setMaskedPan(ref.getMaskedPan());
                        accountReferenceEntity.setMsisdn(ref.getMsisdn());
                        accountReferenceEntity.setCurrency(ref.getCurrency());
-                       accountReferenceEntity.setAspspAccountId(ref.getAspspAccountId());
 
                        return accountReferenceEntity;
                    }).orElse(null);

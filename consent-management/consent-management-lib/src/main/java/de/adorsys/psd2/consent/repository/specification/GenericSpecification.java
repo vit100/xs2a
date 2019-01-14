@@ -16,10 +16,8 @@
 
 package de.adorsys.psd2.consent.repository.specification;
 
-import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.TppInfoEntity;
-import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.data.jpa.domain.Specification;
@@ -111,15 +109,7 @@ public abstract class GenericSpecification {
      * @return resulting specification
      */
     protected <T> Specification<T> byAspspAccountId(@Nullable String aspspAccountId) {
-        return (root, query, cb) -> {
-            Join<T, List<PisPaymentData>> paymentsJoin = root.join(PAYMENTS_ATTRIBUTE);
-            Join<T, AccountReferenceEntity> debtorAccountJoin = paymentsJoin.join(DEBTOR_ACCOUNT_ATTRIBUTE);
-            Join<T, AccountReferenceEntity> creditorAccountJoin = paymentsJoin.join(CREDITOR_ACCOUNT_ATTRIBUTE);
-
-            return Specifications.where(provideSpecificationForJoinedEntityAttribute(debtorAccountJoin, ASPSP_ACCOUNT_ID_ATTRIBUTE, aspspAccountId))
-                       .or(provideSpecificationForJoinedEntityAttribute(creditorAccountJoin, ASPSP_ACCOUNT_ID_ATTRIBUTE, aspspAccountId))
-                       .toPredicate(root, query, cb);
-        };
+            return provideSpecificationForEntityAttribute(ASPSP_ACCOUNT_ID_ATTRIBUTE, aspspAccountId);
     }
 
     /**
