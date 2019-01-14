@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.service.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.psd2.model.*;
-import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.domain.pis.BulkPayment;
@@ -52,7 +51,7 @@ public class PaymentModelMapperTest {
     private static final String PAYMENT_ID = "123456789";
     private static final String IBAN = "DE1234567890";
     private static final String CURRENCY = "EUR";
-    private static final String DAY_OF_EXECUTION = "02";
+    private static final DayOfExecution DAY_OF_EXECUTION = DayOfExecution._2;
     private static final boolean BATCH_BOOKING_PREFERRED = true;
 
     @InjectMocks
@@ -72,18 +71,6 @@ public class PaymentModelMapperTest {
 
     @Spy
     AccountModelMapper accountModelMapper = new AccountModelMapper(new ObjectMapper());
-
-    @Test
-    public void mapToTransactionStatus12() {
-        //Given
-        TransactionStatus[] xs2aStatuses = TransactionStatus.values();
-        de.adorsys.psd2.model.TransactionStatus[] statuses12 = de.adorsys.psd2.model.TransactionStatus.values();
-        //When
-        assertThat(xs2aStatuses.length).isEqualTo(statuses12.length);
-        for (int i = 0; i < xs2aStatuses.length; i++) {
-            testTransactionStatus12(xs2aStatuses[i], statuses12[i]);
-        }
-    }
 
     private void testTransactionStatus12(de.adorsys.psd2.xs2a.core.pis.TransactionStatus status, de.adorsys.psd2.model.TransactionStatus expected) {
         //When
@@ -152,7 +139,7 @@ public class PaymentModelMapperTest {
         assertThat(result.getExecutionRule().getValue()).isNotBlank();
         assertThat(result.getEndDate()).isNotNull();
         assertThat(result.getFrequency()).isNotNull();
-        assertThat(result.getDayOfExecution().getValue()).isEqualTo(DAY_OF_EXECUTION);
+        assertThat(result.getDayOfExecution().name()).isEqualTo(DAY_OF_EXECUTION.name());
     }
 
     @Test
@@ -240,7 +227,7 @@ public class PaymentModelMapperTest {
         payment.setEndDate(endDate ? LocalDate.of(2017, 1, 2) : null);
         payment.setExecutionRule(execution ? ExecutionRule.FOLLOWING : null);
         payment.setFrequency(frequency ? FrequencyCode.DAILY : null);
-        payment.setDayOfExecution(dayOfExecution ? DayOfExecution.fromValue(DAY_OF_EXECUTION) : null);
+        payment.setDayOfExecution(dayOfExecution ? DAY_OF_EXECUTION : null);
         return payment;
     }
 
