@@ -127,7 +127,7 @@ public class RequestValidatorService {
 
     private Map<String, String> getViolationMapForPaymentTypeAndPaymentProduct(HttpServletRequest request) {
         Map<String, String> pathVariableMap = getPathVariableMap(request);
-        Optional<PaymentType> paymentType= getPaymentTypeFromRequest(pathVariableMap);
+        Optional<PaymentType> paymentType = getPaymentTypeFromRequest(pathVariableMap);
         Optional<String> paymentProduct = getPaymentProductFromRequest(pathVariableMap);
 
         if (paymentType.isPresent() && paymentProduct.isPresent()) {
@@ -139,26 +139,25 @@ public class RequestValidatorService {
 
     private Optional<String> getPaymentProductFromRequest(Map<String, String> pathVariableMap) {
         return Optional.ofNullable(pathVariableMap)
-                                 .map(mp -> mp.get(PAYMENT_PRODUCT_PATH_VAR));
+                   .map(mp -> mp.get(PAYMENT_PRODUCT_PATH_VAR));
     }
 
     private Optional<PaymentType> getPaymentTypeFromRequest(Map<String, String> pathVariableMap) {
         return Optional.ofNullable(pathVariableMap)
-                                      .map(m -> m.get(PAYMENT_SERVICE_PATH_VAR))
-                                      .flatMap(PaymentType::getByValue);
+                   .map(m -> m.get(PAYMENT_SERVICE_PATH_VAR))
+                   .flatMap(PaymentType::getByValue);
     }
 
     private Map<String, String> arePaymentTypeAndProductAvailable(PaymentType paymentType, String paymentProduct) {
-        PaymentType consentPaymentType = PaymentType.valueOf(paymentType.name());
         Map<PaymentType, Set<String>> supportedPaymentTypeAndProductMatrix = aspspProfileService.getSupportedPaymentTypeAndProductMatrix();
 
-        if (supportedPaymentTypeAndProductMatrix.containsKey(consentPaymentType)) {
+        if (supportedPaymentTypeAndProductMatrix.containsKey(paymentType)) {
             if (supportedPaymentTypeAndProductMatrix.get(paymentType).contains(paymentProduct)) {
                 return Collections.emptyMap();
             }
             return Collections.singletonMap(MessageErrorCode.PRODUCT_UNKNOWN.getName(), "Wrong payment product: " + paymentProduct);
         }
-        return Collections.singletonMap(MessageErrorCode.PARAMETER_NOT_SUPPORTED.getName(), "Wrong payment type: " + consentPaymentType.getValue());
+        return Collections.singletonMap(MessageErrorCode.PARAMETER_NOT_SUPPORTED.getName(), "Wrong payment type: " + paymentType.getValue());
 
     }
 
