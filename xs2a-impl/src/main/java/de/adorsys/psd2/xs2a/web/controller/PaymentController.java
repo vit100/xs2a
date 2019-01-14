@@ -69,7 +69,7 @@ public class PaymentController implements PaymentApi {
                                                      String psUAcceptLanguage, String psUUserAgent,
                                                      String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
 
-        ResponseObject<de.adorsys.psd2.xs2a.core.pis.TransactionStatus> response = PaymentType.getByValue(paymentService)
+        ResponseObject<TransactionStatus> response = PaymentType.getByValue(paymentService)
                                                                                        .map(pt -> xs2aPaymentService.getPaymentStatusById(pt, paymentId))
                                                                                        .orElseGet(ResponseObject.<TransactionStatus>builder()
                                                                                                       .fail(new MessageError(FORMAT_ERROR))::build);
