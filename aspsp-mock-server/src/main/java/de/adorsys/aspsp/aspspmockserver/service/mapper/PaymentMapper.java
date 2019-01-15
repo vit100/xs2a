@@ -40,7 +40,7 @@ public class PaymentMapper {
         aspspPayment.setPaymentProduct(paymentInfo.getPaymentProduct());
         aspspPayment.setPisPaymentType(PisPaymentType.valueOf(paymentInfo.getPisPaymentType()));
         aspspPayment.setPaymentData(paymentInfo.getPaymentData());
-        aspspPayment.setDebtorAccount(mapToDefaultAspspAccountReference());
+        aspspPayment.setDebtorAccount(new AspspAccountReference(UUID.randomUUID().toString(), Currency.getInstance("EUR")));
         return aspspPayment;
     }
 
@@ -167,16 +167,5 @@ public class PaymentMapper {
                        return periodic;
                    })
                    .orElse(null);
-    }
-
-    private AspspAccountReference mapToDefaultAspspAccountReference() {
-        return new AspspAccountReference(
-            UUID.randomUUID().toString(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            Currency.getInstance("EUR"));
     }
 }

@@ -88,7 +88,7 @@ public class PisCommonPaymentData extends InstanceDependableEntity {
     private OffsetDateTime creationTimestamp = OffsetDateTime.now();
 
     @Column(name = "aspsp_account_id", length = 100)
-    @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "DE2310010010123456789")
+    @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "26bb59a3-2f63-4027-ad38-67d87e59611a")
     private String aspspAccountId;
 
     public boolean isConfirmationExpired(long expirationPeriodMs) {

@@ -77,26 +77,23 @@ public class AccountService {
      */
     public List<AspspAccountDetails> getAccountsByIban(String iban) {
         return psuRepository.findPsuByAccountDetailsList_Iban(iban)
-                   .map(psu -> psu.getAccountDetailsList().stream()
-                                   .filter(aD -> aD.getIban().equals(iban))
-                                   .collect(Collectors.toList()))
+                   .map(Psu::getAccountDetailsList)
                    .orElseGet(Collections::emptyList);
     }
 
     /**
-     * Returns an aspsp account Id by requested IBAN And Currency
+     * Returns an aspsp account Id by given IBAN And Currency
      *
      * @param iban     account IBAN
      * @param currency currency
      * @return aspsp account id
      */
-    public Optional<String> getAccountIdByIbanAndCurrency(String iban, Currency currency) {
+    Optional<String> getAccountIdByIbanAndCurrency(String iban, Currency currency) {
         return psuRepository.findPsuByAccountDetailsList_Iban(iban)
                    .flatMap(psu -> psu.getAccountDetailsList().stream()
-                                       .filter(aD -> aD.getIban().equals(iban))
                                        .filter(aD -> aD.getCurrency() == currency)
-                                       .map(AspspAccountDetails::getAspspAccountId)
                                        .findFirst()
+                                       .map(AspspAccountDetails::getAspspAccountId)
                    );
     }
 

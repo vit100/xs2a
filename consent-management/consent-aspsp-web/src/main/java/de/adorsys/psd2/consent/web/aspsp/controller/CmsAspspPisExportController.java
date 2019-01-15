@@ -110,7 +110,7 @@ public class CmsAspspPisExportController {
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
         @ApiParam(value = "ID of the particular service instance")
         @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
-        Collection<CmsPayment> payments = cmsAspspPisExportService.exportPaymentsByAccountId(aspspAccountId, tppId, start, end, instanceId);
+        Collection<CmsPayment> payments = cmsAspspPisExportService.exportPaymentsByAccountIdAndTpp(aspspAccountId, tppId, start, end, instanceId);
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
 }

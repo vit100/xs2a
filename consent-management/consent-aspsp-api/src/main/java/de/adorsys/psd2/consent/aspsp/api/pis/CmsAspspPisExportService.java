@@ -75,9 +75,9 @@ public interface CmsAspspPisExportService {
      * @throws TooManyResultsException If CMS is not able to provide result due to overflow,
      *                                 developer shall limit his/her request, making pagination by dates.
      */
-    Collection<CmsPayment> exportPaymentsByAccountId(@NotNull String aspspAccountId,
-                                                     @NotNull String tppAuthorisationNumber,
-                                                     @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo,
-                                                     @NotNull String instanceId);
+    Collection<CmsPayment> exportPaymentsByAccountIdAndTpp(@NotNull String aspspAccountId,
+                                                           @NotNull String tppAuthorisationNumber,
+                                                           @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo,
+                                                           @NotNull String instanceId);
 
 }

@@ -63,7 +63,7 @@ public class CmsAspspPisExportServiceInternal implements CmsAspspPisExportServic
     }
 
     @Override
-    public Collection<CmsPayment> exportPaymentsByAccountId(@NotNull String aspspAccountId, @Nullable String tppAuthorisationNumber, @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo, @NotNull String instanceId) {
+    public Collection<CmsPayment> exportPaymentsByAccountIdAndTpp(@NotNull String aspspAccountId, @NotNull String tppAuthorisationNumber, @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo, @NotNull String instanceId) {
         if (StringUtils.isBlank(aspspAccountId)
                 || StringUtils.isBlank(tppAuthorisationNumber)
                 || StringUtils.isBlank(instanceId)) {
