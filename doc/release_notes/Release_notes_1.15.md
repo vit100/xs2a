@@ -114,3 +114,6 @@ Other payment products can be added for every payment type.
 Now we get `aspspAccountId` from ASPSP in response when payment is created. 
 And add this `aspspAccountId` to new commonPayment when we save payment to CMS.
 Also we can export payment list by `aspspAccountId, tppAuthorisationNumber, createDateFrom, createDateTo and instanceId` from CMS.  
+
+## One active authorisation per consent for one PSU
+When PSU creates new authorisation for consent, all previous authorisations, created by this PSU for the same consent, will be failed and expired.
