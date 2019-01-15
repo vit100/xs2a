@@ -225,7 +225,7 @@ variables: &variables
 .helm_env_deploy: &helm_env_deploy
   image: adorsys/ci-helm:2.10
   script:
-    - git clone --branch RAT_move_deployment_files https://gitlab-ci-token:${CI_JOB_TOKEN}@git.adorsys.de/xs2a/xs2a-openshift.git .helm
+    - git clone --branch RAT_move_deployment_files https://gitlab-ci-token:${CI_JOB_TOKEN}@git.adorsys.de/adorsys/xs2a/xs2a-openshift.git .helm
     - cd .helm/charts/xs2a
     - helm init --client-only
     - oc login openshift.adorsys.de --token=${HELM_TOKEN}
