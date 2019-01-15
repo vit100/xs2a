@@ -76,7 +76,7 @@ public interface CmsAspspPisExportService {
      *                                 developer shall limit his/her request, making pagination by dates.
      */
     Collection<CmsPayment> exportPaymentsByAccountId(@NotNull String aspspAccountId,
-                                                     @Nullable String tppAuthorisationNumber,
+                                                     @NotNull String tppAuthorisationNumber,
                                                      @Nullable LocalDate createDateFrom, @Nullable LocalDate createDateTo,
                                                      @NotNull String instanceId);
 
