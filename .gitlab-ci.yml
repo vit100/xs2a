@@ -171,7 +171,7 @@ variables: &variables
     - echo $HELM_RELEASE
     - >-
       helm diff upgrade ${HELM_RELEASE} .
-      --set profile-image-sha=$PROFILE_IMAGE_SHA
+      --set profileImageSha=$PROFILE_IMAGE_SHA
       --allow-unreleased -q
       -f env/${HELM_VALUE}
     - >-
