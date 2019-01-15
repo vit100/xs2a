@@ -86,6 +86,8 @@ public class PaymentModelMapperXs2a {
         payment.setPurposeCode(new Xs2aPurposeCode("N/A"));
         payment.setRemittanceInformationUnstructured(paymentRequest.getRemittanceInformationUnstructured());
         payment.setRemittanceInformationStructured(new Remittance());
+        payment.setRequestedExecutionDate(paymentRequest.getRequestedExecutionDate());
+        payment.setRequestedExecutionTime(paymentRequest.getRequestedExecutionTime());
         return payment;
     }
 
