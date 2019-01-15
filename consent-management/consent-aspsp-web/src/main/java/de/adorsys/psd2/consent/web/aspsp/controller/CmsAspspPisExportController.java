@@ -43,7 +43,7 @@ public class CmsAspspPisExportController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK")})
     public ResponseEntity<Collection<CmsPayment>> getPaymentsByTpp(
-        @ApiParam(value = "TPP ID", example = "12345987")
+        @ApiParam(value = "TPP ID", required = true, example = "12345987")
         @PathVariable("tpp-id") String tppId,
         @ApiParam(value = "Creation start date", example = "2010-01-01")
         @RequestHeader(value = "start-date", required = false)
@@ -98,9 +98,9 @@ public class CmsAspspPisExportController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK")})
     public ResponseEntity<Collection<CmsPayment>> getPaymentsByAccountId(
-        @ApiParam(value = "TPP ID", example = "12345987")
+        @ApiParam(value = "TPP ID", required = true, example = "12345987")
         @PathVariable("tpp-id") String tppId,
-        @ApiParam(value = "Bank specific account identifier.", example = "11111-99999")
+        @ApiParam(value = "Bank specific account identifier.", required = true, example = "11111-99999")
         @PathVariable("account-id") String aspspAccountId,
         @ApiParam(value = "Creation start date", example = "2010-01-01")
         @RequestHeader(value = "start-date", required = false)

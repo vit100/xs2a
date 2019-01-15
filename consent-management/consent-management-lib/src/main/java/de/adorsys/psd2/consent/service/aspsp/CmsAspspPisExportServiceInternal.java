@@ -72,7 +72,6 @@ public class CmsAspspPisExportServiceInternal implements CmsAspspPisExportServic
         }
 
         List<PisCommonPaymentData> commonPayments = pisCommonPaymentDataRepository.findAll(pisCommonPaymentDataSpecification.byAspspAccountIdAndTppIdAndCreationPeriodAndInstanceId(aspspAccountId, tppAuthorisationNumber, createDateFrom, createDateTo, instanceId));
-
         return cmsPsuPisMapper.mapPaymentDataToCmsPayments(commonPayments);
     }
 }
