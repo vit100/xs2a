@@ -126,13 +126,13 @@ variables: &variables
 # Test building docker images
 .test_docker_image: &test_docker_image
   script:
-    - docker build -t "$GITLAB_IMAGE_NAME_XS2A:$DOCKER_TAG" spi-mock
-    - docker build -t "$GITLAB_IMAGE_NAME_MOCKSRV:$DOCKER_TAG" aspsp-mock-server
-    - docker build -t "$GITLAB_IMAGE_NAME_KEYCLOAK:$DOCKER_TAG" aspsp-idp
-    - docker build -t "$GITLAB_IMAGE_NAME_CNT_MGMNT:$DOCKER_TAG" consent-management/cms-standalone-service
-    - docker build -t "$GITLAB_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG" aspsp-profile/aspsp-profile-server
-    - docker build -t "$GITLAB_IMAGE_NAME_ONLINE_BANKING_DEMO:$DOCKER_TAG" online-banking-demo
-    - docker build -t "$GITLAB_IMAGE_NAME_ONLINE_BANKING_UI:$DOCKER_TAG" online-banking-demo-ui
+    - docker build -t "$DOCKER_IMAGE_NAME_XS2A:$DOCKER_TAG" spi-mock
+    - docker build -t "$DOCKER_IMAGE_NAME_MOCKSRV:$DOCKER_TAG" aspsp-mock-server
+    - docker build -t "$DOCKER_IMAGE_NAME_KEYCLOAK:$DOCKER_TAG" aspsp-idp
+    - docker build -t "$DOCKER_IMAGE_NAME_CNT_MGMNT:$DOCKER_TAG" consent-management/cms-standalone-service
+    - docker build -t "$DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG" aspsp-profile/aspsp-profile-server
+    - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO:$DOCKER_TAG" online-banking-demo
+    - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_UI:$DOCKER_TAG" online-banking-demo-ui
 
 # Build docker images and put them to DOCKER HUB repo
 .build_push_dockerhub: &build_push_dockerhub
@@ -166,8 +166,11 @@ variables: &variables
     - oc login openshift.adorsys.de --token=${HELM_TOKEN}
     - echo "${VAULT_PWD}" > $ANSIBLE_VAULT_PASSWORD_FILE
     - ansible-vault view env/${HELM_VALUE}.enc > env/${HELM_VALUE}
+    - export PROFILE_IMAGE_SHA=$(docker pull $DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG 2>&1 > /dev/null && docker inspect $DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG | jq -r .[0].RepoDigests[0])
+    - echo $PROFILE_IMAGE_SHA
     - >-
       helm diff upgrade ${HELM_RELEASE} .
+      --set profile-image-sha=$PROFILE_IMAGE_SHA
       --allow-unreleased -q
       -f env/${HELM_VALUE}
     - >-
