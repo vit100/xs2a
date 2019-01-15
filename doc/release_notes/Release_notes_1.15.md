@@ -109,3 +109,8 @@ should be filled:
    - instant-sepa-credit-transfers
   
 Other payment products can be added for every payment type.
+
+## Add specific bank account identifier in all types of payments
+Now we get `aspspAccountId` from ASPSP in response when payment is created. 
+And add this `aspspAccountId` to new commonPayment when we save payment to CMS.
+Also we can export payment list by `aspspAccountId, tppAuthorisationNumber, createDateFrom, createDateTo and instanceId` from CMS.  

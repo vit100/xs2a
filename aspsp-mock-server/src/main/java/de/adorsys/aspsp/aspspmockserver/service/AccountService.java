@@ -84,11 +84,11 @@ public class AccountService {
     }
 
     /**
-     * Returns a aspsp account Id by requested IBAN And Currency
+     * Returns an aspsp account Id by requested IBAN And Currency
      *
-     * @param iban account IBAN
+     * @param iban     account IBAN
      * @param currency currency
-     * @return  aspsp account id
+     * @return aspsp account id
      */
     public Optional<String> getAccountIdByIbanAndCurrency(String iban, Currency currency) {
         return psuRepository.findPsuByAccountDetailsList_Iban(iban)

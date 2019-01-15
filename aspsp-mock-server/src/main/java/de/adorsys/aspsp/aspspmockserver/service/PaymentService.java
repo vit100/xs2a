@@ -66,7 +66,6 @@ public class PaymentService {
      */
     public Optional<AspspSinglePayment> addPayment(AspspSinglePayment payment) {
         if (payment.getInstructedAmount() != null && areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getAmount())) {
-
             payment.setDebtorAccount(enrichAccountReferenceWithAspspAccountId(payment.getDebtorAccount()));
 
             AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, SINGLE));
