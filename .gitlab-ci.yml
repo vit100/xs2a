@@ -479,7 +479,7 @@ deploy_branch_stage:
   <<: *helm_env_deploy
   when: manual
   only:
-  - /^.*-helm-.*$/
+  - /^.*[-_]helm[-_].*$/
   variables:
     <<: *variables
     OPENSHIFT_NAMESPACE: "${DEV_NAMESPACE}"
