@@ -473,7 +473,7 @@ deploy_image_integtest:
   <<: *push_docker_openshift
 
 
-# Branches with -helm- in naming are used for testing deployment scripts
+# Branches with -helm- or _helm_ in the name are used for testing deployment scripts
 deploy_branch_stage:
   stage: "deploy:static"
   <<: *helm_env_deploy
