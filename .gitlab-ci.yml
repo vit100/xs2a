@@ -225,7 +225,8 @@ variables: &variables
 .helm_env_deploy: &helm_env_deploy
   image: adorsys/ci-helm:2.10
   script:
-    - cd devops/charts/xs2a
+    - git clone --branch RAT_move_deployment_files ../xs2a-openshift.git .helm
+    - cd .helm/charts/xs2a
     - helm init --client-only
     - oc login openshift.adorsys.de --token=${HELM_TOKEN}
     - echo "${VAULT_PWD}" > $ANSIBLE_VAULT_PASSWORD_FILE
