@@ -46,7 +46,7 @@ public class RequestValidatorService {
     @Autowired
     private Validator validator;
     @Autowired
-    private AspspProfileServiceWrapper aspspProfileService;
+    private AspspProfileServiceWrapper aspspProfileServiceWrapper;
 
     private static final String PAYMENT_PRODUCT_PATH_VAR = "payment-product";
     private static final String PAYMENT_SERVICE_PATH_VAR = "payment-service";
@@ -149,7 +149,7 @@ public class RequestValidatorService {
     }
 
     private Map<String, String> arePaymentTypeAndProductAvailable(PaymentType paymentType, String paymentProduct) {
-        Map<PaymentType, Set<String>> supportedPaymentTypeAndProductMatrix = aspspProfileService.getSupportedPaymentTypeAndProductMatrix();
+        Map<PaymentType, Set<String>> supportedPaymentTypeAndProductMatrix = aspspProfileServiceWrapper.getSupportedPaymentTypeAndProductMatrix();
 
         if (supportedPaymentTypeAndProductMatrix.containsKey(paymentType)) {
             if (supportedPaymentTypeAndProductMatrix.get(paymentType).contains(paymentProduct)) {
