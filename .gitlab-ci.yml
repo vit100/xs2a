@@ -251,7 +251,7 @@ build_package_java8:
     <<: *java_artifacts
     expire_in: "1 day"
 
-build_package_java11:
+.build_package_java11:
   image: "maven:3.6-jdk-11"
   variables:
     JAVA_TOOL_OPTIONS: "-Djavax.net.ssl.trustStorePassword=changeit -XX:MaxRAM=3G"
