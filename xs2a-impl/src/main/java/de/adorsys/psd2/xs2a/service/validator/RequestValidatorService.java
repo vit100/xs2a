@@ -130,11 +130,15 @@ public class RequestValidatorService {
         Optional<PaymentType> paymentType = getPaymentTypeFromRequest(pathVariableMap);
         Optional<String> paymentProduct = getPaymentProductFromRequest(pathVariableMap);
 
-        if (paymentType.isPresent() && paymentProduct.isPresent()) {
-            return arePaymentTypeAndProductAvailable(paymentType.get(), paymentProduct.get());
+        if (!paymentType.isPresent()) {
+            return Collections.singletonMap(MessageErrorCode.PARAMETER_NOT_SUPPORTED.getName(), "Wrong payment type");
         }
 
-        return Collections.emptyMap();
+        if (!paymentProduct.isPresent()) {
+            return Collections.singletonMap(MessageErrorCode.PRODUCT_UNKNOWN.getName(), "Wrong payment product!");
+        }
+
+        return arePaymentTypeAndProductAvailable(paymentType.get(), paymentProduct.get());
     }
 
     private Optional<String> getPaymentProductFromRequest(Map<String, String> pathVariableMap) {
