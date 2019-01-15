@@ -168,6 +168,7 @@ variables: &variables
     - ansible-vault view env/${HELM_VALUE}.enc > env/${HELM_VALUE}
     - export PROFILE_IMAGE_SHA=$(docker pull $DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG 2>&1 > /dev/null && docker inspect $DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG | jq -r .[0].RepoDigests[0])
     - echo $PROFILE_IMAGE_SHA
+    - echo $HELM_RELEASE
     - >-
       helm diff upgrade ${HELM_RELEASE} .
       --set profile-image-sha=$PROFILE_IMAGE_SHA
@@ -305,7 +306,7 @@ deploy_dev_demo:
   variables:
     <<: *variables
     OPENSHIFT_NAMESPACE: "${DEV_NAMESPACE}"
-    DOCKER_TAG: "${CI_COMMIT_REF_SLUG}"
+    DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
     HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
     HELM_VALUE: develop.yaml
   environment:
