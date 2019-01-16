@@ -190,7 +190,11 @@ public class PaymentModelMapperXs2a {
             throw new IllegalArgumentException("Invalid body of the multipart request!");
         }
 
-        String body = xmlPart + "\n" + jsonPart;
+        String body = new StringBuilder()
+                          .append(xmlPart)
+                          .append("\n")
+                          .append(jsonPart)
+                          .toString();
         return body.getBytes(Charset.forName("UTF-8"));
     }
 }
