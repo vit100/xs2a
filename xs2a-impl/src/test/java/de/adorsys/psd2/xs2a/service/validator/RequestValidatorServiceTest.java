@@ -36,10 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.PARAMETER_NOT_SUPPORTED;
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.PRODUCT_UNKNOWN;
@@ -119,7 +116,7 @@ public class RequestValidatorServiceTest {
         templates.put("payment-product", "cross-border-credit-transfers");
         templates.put("payment-service", PaymentType.SINGLE.getValue());
         request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, templates);
-        HandlerMethod handler = getPaymentInitiationControllerHandler();
+        HandlerMethod handler = getInitiatePaymentHandler();
 
         //When:
         Map<String, String> actualViolations = requestValidatorService.getRequestViolationMap(request, handler);
