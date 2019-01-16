@@ -242,7 +242,6 @@ deploy_dev:
     - develop
     - TNE_RAT_automatic_deployments
   variables:
-    <<: *variables
     OPENSHIFT_NAMESPACE: "${DEV_NAMESPACE}"
     DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
     HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
@@ -257,7 +256,6 @@ deploy_demo:
   only:
     - master
   variables:
-    <<: *variables
     OPENSHIFT_NAMESPACE: "${DEMO_NAMESPACE}"
     DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
     HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
@@ -272,7 +270,6 @@ deploy_integ:
   only:
     - schedules
   variables:
-    <<: *variables
     OPENSHIFT_NAMESPACE: "${INTEG_NAMESPACE}"
     DOCKER_TAG: nightly
     HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
