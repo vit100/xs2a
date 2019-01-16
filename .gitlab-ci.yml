@@ -318,7 +318,7 @@ deploy_integ:
     - schedules
   variables:
     <<: *variables
-    OPENSHIFT_NAMESPACE: "${DEV_NAMESPACE}"
+    OPENSHIFT_NAMESPACE: "${INTEG_NAMESPACE}"
     DOCKER_TAG: nightly
     HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
     HELM_VALUE: develop.yaml
