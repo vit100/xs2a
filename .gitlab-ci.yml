@@ -26,42 +26,34 @@ variables: &variables
   DOCKER_NAMESPACE: "adorsys"
 
   OPENSHIFT_REGISTRY: "openshift-registry.adorsys.de:443"
-  OPENSHIFT_NAMESPACE: "multibanking-xs2a"
 
   # XS2A Service
   GITLAB_IMAGE_NAME_XS2A: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}"
   DOCKER_IMAGE_NAME_XS2A: "${DOCKER_NAMESPACE}/xs2a-service"
-  OPENSHIFT_IMAGE_NAME_XS2A: "${OPENSHIFT_REGISTRY}/${OPENSHIFT_NAMESPACE}/aspsp-xs2a"
 
   # Content management service
   GITLAB_IMAGE_NAME_CNT_MGMNT: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/cnt-mgmnt"
   DOCKER_IMAGE_NAME_CNT_MGMNT: "${DOCKER_NAMESPACE}/xs2a-consent-management"
-  OPENSHIFT_IMAGE_NAME_CNT_MGMNT: "${OPENSHIFT_REGISTRY}/${OPENSHIFT_NAMESPACE}/xs2a-cnt-mgmnt"
 
   # ASPSP Mock Server
   GITLAB_IMAGE_NAME_MOCKSRV: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/aspsp-mock-server"
   DOCKER_IMAGE_NAME_MOCKSRV: "${DOCKER_NAMESPACE}/xs2a-mock-server"
-  OPENSHIFT_IMAGE_NAME_MOCKSRV: "${OPENSHIFT_REGISTRY}/${OPENSHIFT_NAMESPACE}/aspsp-mock-server"
 
   # XS2A IDP Keycloak
   GITLAB_IMAGE_NAME_KEYCLOAK: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/keycloak-xs2a"
   DOCKER_IMAGE_NAME_KEYCLOAK: "${DOCKER_NAMESPACE}/xs2a-idp"
-  OPENSHIFT_IMAGE_NAME_KEYCLOAK: "${OPENSHIFT_REGISTRY}/${OPENSHIFT_NAMESPACE}/keycloak-xs2a"
 
   # XS2A IDP ASPSP Profile
   GITLAB_IMAGE_NAME_ASPSP_PROFILE: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/xs2a-aspsp-profile"
   DOCKER_IMAGE_NAME_ASPSP_PROFILE: "${DOCKER_NAMESPACE}/xs2a-aspsp-profile"
-  OPENSHIFT_IMAGE_NAME_ASPSP_PROFILE: "${OPENSHIFT_REGISTRY}/${OPENSHIFT_NAMESPACE}/xs2a-aspsp-profile"
 
   # Online banking demo
   GITLAB_IMAGE_NAME_ONLINE_BANKING_DEMO: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/online-banking-demo"
   DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO: "${DOCKER_NAMESPACE}/xs2a-mock-online-banking-backend"
-  OPENSHIFT_IMAGE_NAME_ONLINE_BANKING_DEMO: "${OPENSHIFT_REGISTRY}/${OPENSHIFT_NAMESPACE}/online-banking-demo"
 
   # Online banking UIapp
   GITLAB_IMAGE_NAME_ONLINE_BANKING_UI: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/online-banking-ui"
   DOCKER_IMAGE_NAME_ONLINE_BANKING_UI: "${DOCKER_NAMESPACE}/xs2a-mock-online-banking-ui"
-  OPENSHIFT_IMAGE_NAME_ONLINE_BANKING_UI: "${OPENSHIFT_REGISTRY}/${OPENSHIFT_NAMESPACE}/online-banking-ui"
 
 
   ###########################
@@ -167,17 +159,8 @@ variables: &variables
     - echo "${VAULT_PWD}" > $ANSIBLE_VAULT_PASSWORD_FILE
     - ansible-vault view env/${HELM_VALUE}.enc > env/${HELM_VALUE}
     - export PROFILE_IMAGE_WITH_SHA=$(docker pull $DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG 2>&1 > /dev/null && docker inspect $DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG | jq -r .[0].RepoDigests[0])
-    - echo $PROFILE_IMAGE_WITH_SHA
-    - echo $HELM_RELEASE
-    - >-
-      helm diff upgrade ${HELM_RELEASE} .
-      --set profileImage="$PROFILE_IMAGE_WITH_SHA"
-      --allow-unreleased -q
-      -f env/${HELM_VALUE}
-    - >-
-      helm upgrade -i ${HELM_RELEASE} .
-      --namespace=${OPENSHIFT_NAMESPACE} --wait --timeout=600
-      -f env/${HELM_VALUE}
+    - helm diff upgrade ${HELM_RELEASE} . --set profileImage="$PROFILE_IMAGE_WITH_SHA" --allow-unreleased -q -f env/${HELM_VALUE}
+    - helm upgrade -i ${HELM_RELEASE} . --namespace=${OPENSHIFT_NAMESPACE} --wait --timeout=600 -f env/${HELM_VALUE}
 
 # ------------------------------------------------------------------
 # jobs
@@ -296,16 +279,31 @@ push_dockerhub_nightly:
     DOCKER_TAG: nightly
   <<: *build_push_dockerhub
 
-deploy_dev_demo:
+deploy_dev:
   stage: deploy
   <<: *helm_env_deploy
   only:
     - develop
-    - master
     - RAT_move_helm_deployment_files
   variables:
     <<: *variables
     OPENSHIFT_NAMESPACE: "${DEV_NAMESPACE}"
+    DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
+    HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
+    HELM_VALUE: develop.yaml
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+    url: ~
+
+deploy_demo:
+  stage: deploy
+  <<: *helm_env_deploy
+  only:
+    - master
+    - RAT_move_helm_deployment_files
+  variables:
+    <<: *variables
+    OPENSHIFT_NAMESPACE: "${DEMO_NAMESPACE}"
     DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
     HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
     HELM_VALUE: develop.yaml
