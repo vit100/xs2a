@@ -16,21 +16,17 @@
 
 package de.adorsys.psd2.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import de.adorsys.psd2.model.AccountReference;
-import de.adorsys.psd2.model.Address;
-import de.adorsys.psd2.model.Amount;
-import de.adorsys.psd2.model.DayOfExecution;
-import de.adorsys.psd2.model.ExecutionRule;
-import de.adorsys.psd2.model.FrequencyCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDate;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * JSON Body for a periodic SCT INST payment initation. 
@@ -345,7 +341,6 @@ public class PeriodicPaymentInitiationSctInstJson   {
   @ApiModelProperty(value = "")
 
   @Valid
-@Size(max=2) 
   public DayOfExecution getDayOfExecution() {
     return dayOfExecution;
   }

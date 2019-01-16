@@ -16,18 +16,15 @@
 
 package de.adorsys.psd2.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import de.adorsys.psd2.model.DayOfExecution;
-import de.adorsys.psd2.model.ExecutionRule;
-import de.adorsys.psd2.model.FrequencyCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDate;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * The body part 2 of a periodic payment initation request containes the execution related informations  of the periodic payment. 
@@ -150,7 +147,6 @@ public class PeriodicPaymentInitiationXmlPart2StandingorderTypeJson   {
   @ApiModelProperty(value = "")
 
   @Valid
-@Size(max=2) 
   public DayOfExecution getDayOfExecution() {
     return dayOfExecution;
   }
