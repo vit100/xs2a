@@ -21,6 +21,7 @@ import de.adorsys.psd2.consent.api.ActionStatus;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
 import de.adorsys.psd2.consent.domain.PsuData;
+import de.adorsys.psd2.consent.domain.TppInfoEntity;
 import de.adorsys.psd2.consent.domain.account.*;
 import de.adorsys.psd2.consent.repository.AisConsentActionRepository;
 import de.adorsys.psd2.consent.repository.AisConsentAuthorizationRepository;
@@ -45,7 +46,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.RECEIVED;
+import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -137,6 +138,31 @@ public class AisConsentServiceInternal implements AisConsentService {
         return aisConsentRepository.findByExternalId(consentId)
                    .map(this::checkAndUpdateOnExpiration)
                    .map(consentMapper::mapToInitialAisAccountConsent);
+    }
+
+    @Override
+    @Transactional
+    public boolean findAndTerminateOldConsentsByNewConsentId(String newConsentId) {
+        AisConsent newConsent = aisConsentRepository.findByExternalId(newConsentId)
+                                    .orElseThrow(() -> new IllegalArgumentException("Wrong consent id: " + newConsentId));
+
+        PsuData psuData = newConsent.getPsuData();
+        TppInfoEntity tppInfo = newConsent.getTppInfo();
+
+        if (psuData == null || tppInfo == null) {
+            throw new IllegalArgumentException("Wrong consent data");
+        }
+
+        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(psuData.getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
+                                                                                              newConsent.getInstanceId(), newConsent.getExternalId(), EnumSet.of(RECEIVED, VALID));
+
+        if (oldConsents.isEmpty()) {
+            return false;
+        }
+
+        oldConsents.forEach(c -> c.setConsentStatus(TERMINATED_BY_TPP));
+        aisConsentRepository.save(oldConsents);
+        return true;
     }
 
     /**
