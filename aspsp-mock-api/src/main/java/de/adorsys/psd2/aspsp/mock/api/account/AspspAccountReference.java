@@ -21,11 +21,12 @@ import lombok.Setter;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Currency;
 
 @Value
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor_ = {@PersistenceConstructor})
 public class AspspAccountReference {
     @Id
     @Setter
@@ -42,7 +43,7 @@ public class AspspAccountReference {
      * Creates AspspAccountReference by default
      *
      * @param aspspAccountId Bank specific account ID
-     * @param currency Currency according codes following ISO 4217
+     * @param currency       Currency according codes following ISO 4217
      */
     public AspspAccountReference(String aspspAccountId, Currency currency) {
         this(aspspAccountId, null, null, null, null, null, currency);
