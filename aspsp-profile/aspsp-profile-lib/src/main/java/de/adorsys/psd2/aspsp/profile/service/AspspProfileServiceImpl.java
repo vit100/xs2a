@@ -53,7 +53,8 @@ public class AspspProfileServiceImpl implements AspspProfileService {
             setting.getPisPaymentCancellationRedirectUrlToAspsp(),
             setting.getNotConfirmedConsentExpirationPeriodMs(),
             setting.getNotConfirmedPaymentExpirationPeriodMs(),
-            setting.getSupportedPaymentTypeAndProductMatrix());
+            setting.getSupportedPaymentTypeAndProductMatrix(),
+            setting.getPaymentCancellationRedirectUrlExpirationTimeMs());
     }
 
     @Override

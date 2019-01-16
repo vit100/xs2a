@@ -38,3 +38,4 @@ setting:
   BULK:
    - sepa-credit-transfers
    - instant-sepa-credit-transfers
+ paymentCancellationRedirectUrlExpirationTimeMs: 600000
