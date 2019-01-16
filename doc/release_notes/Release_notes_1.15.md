@@ -131,6 +131,9 @@ We give redirect id (= authorisation id) in redirect link now, and to get paymen
  **GET /psu-api/v1/pis/consent/redirects/cancellation/{redirect-id}** endpoint of consent management system.
 If redirect url is not expired, online banking gets payment, authorisation id, not ok tpp redirect url and ok tpp redirect url (for now these urls are null temporary) in response, otherwise http code 408 Request Timeout is sent.
 
+## Bugfix: Deleted consent changes its status to terminatedByTpp
+When TPP sends request to delete consent, status of consent will be terminatedByTpp instead of revokedByPsu.
+
 ## Support single, periodic and bulk payment initiation with pain.001 XML message
 Now TPP can initiate payments with pain.001 XML message body. Content type of the request should be `application/xml` for single and bulk payments; 
 and `multipart/form-data; boundary=AaaBbbCcc` for periodic payments. The body of the payment is stored as a byte array in the consent management system.
