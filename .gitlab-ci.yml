@@ -6,55 +6,28 @@ stages:
 - "build:src"    # build jar and provide as artifact
 - "build:qa"     # run tests and code quality checks
 - "build:image"  # dockerize jar and push to docker registry
-# TODO remove when docker hub images will be applied to deployment https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/169
 - "deploy"       # push to openshift registry (snapshot deployment) or release registry
-
 
 # ------------------------------------------------------------------
 # variables
 # ------------------------------------------------------------------
 
-variables: &variables
-
+variables:
   ###########################
   # Docker images variables #
   ###########################
 
   GITLAB_REGISTRY: "gitlab-registry.adorsys.de"
   GITLAB_NAMESPACE: "adorsys/xs2a/aspsp-xs2a"
-
-  DOCKER_NAMESPACE: "docker.io/adorsys"
-
   OPENSHIFT_REGISTRY: "openshift-registry.adorsys.de:443"
 
-  # XS2A Service
-  GITLAB_IMAGE_NAME_XS2A: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}"
-  DOCKER_IMAGE_NAME_XS2A: "${DOCKER_NAMESPACE}/xs2a-service"
-
-  # Content management service
-  GITLAB_IMAGE_NAME_CNT_MGMNT: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/cnt-mgmnt"
-  DOCKER_IMAGE_NAME_CNT_MGMNT: "${DOCKER_NAMESPACE}/xs2a-consent-management"
-
-  # ASPSP Mock Server
-  GITLAB_IMAGE_NAME_MOCKSRV: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/aspsp-mock-server"
-  DOCKER_IMAGE_NAME_MOCKSRV: "${DOCKER_NAMESPACE}/xs2a-mock-server"
-
-  # XS2A IDP Keycloak
-  GITLAB_IMAGE_NAME_KEYCLOAK: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/keycloak-xs2a"
-  DOCKER_IMAGE_NAME_KEYCLOAK: "${DOCKER_NAMESPACE}/xs2a-idp"
-
-  # XS2A IDP ASPSP Profile
-  GITLAB_IMAGE_NAME_ASPSP_PROFILE: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/xs2a-aspsp-profile"
-  DOCKER_IMAGE_NAME_ASPSP_PROFILE: "${DOCKER_NAMESPACE}/xs2a-aspsp-profile"
-
-  # Online banking demo
-  GITLAB_IMAGE_NAME_ONLINE_BANKING_DEMO: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/online-banking-demo"
-  DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO: "${DOCKER_NAMESPACE}/xs2a-mock-online-banking-backend"
-
-  # Online banking UIapp
-  GITLAB_IMAGE_NAME_ONLINE_BANKING_UI: "${GITLAB_REGISTRY}/${GITLAB_NAMESPACE}/online-banking-ui"
-  DOCKER_IMAGE_NAME_ONLINE_BANKING_UI: "${DOCKER_NAMESPACE}/xs2a-mock-online-banking-ui"
-
+  DOCKER_IMAGE_NAME_XS2A: "docker.io/adorsys/xs2a-service"
+  DOCKER_IMAGE_NAME_CNT_MGMNT: "docker.io/adorsys/xs2a-consent-management"
+  DOCKER_IMAGE_NAME_MOCKSRV: "docker.io/adorsys/xs2a-mock-server"
+  DOCKER_IMAGE_NAME_KEYCLOAK: "docker.io/adorsys/xs2a-idp"
+  DOCKER_IMAGE_NAME_ASPSP_PROFILE: "docker.io/adorsys/xs2a-aspsp-profile"
+  DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO: "docker.io/adorsys/xs2a-mock-online-banking-backend"
+  DOCKER_IMAGE_NAME_ONLINE_BANKING_UI: "docker.io/adorsys/xs2a-mock-online-banking-ui"
 
   ###########################
   # Build variables         #
@@ -62,7 +35,6 @@ variables: &variables
 
   JAVA_TOOL_OPTIONS: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAM=3G -XX:MaxRAMFraction=3"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
 
   ###########################
   # Deployment variables    #
@@ -78,35 +50,12 @@ variables: &variables
 # reusable yaml anchors
 # ------------------------------------------------------------------
 
-.java_artifacts: &java_artifacts
-  paths:
-    - "spi-mock/target/spi-mock*jar"
-    - "consent-management/cms-standalone-service/target/consent-management*jar"
-    - "aspsp-profile/aspsp-profile-server/target/aspsp-profile*jar"
-    - "aspsp-mock-server/target/aspsp-mock-server*jar"
-    - "aspsp-idp/keycloak-provider-extension/keycloak-clientregistration-provider/target/keycloak-clientregistration-provider.jar"
-    - "online-banking-demo/target/online-banking-demo*jar"
-  name: "$CI_PROJECT_NAME-${CI_BUILD_REF_NAME#*v}"
-
-.angular_artifacts: &angular_artifacts
-  paths:
-    - "online-banking-demo-ui/dist"
-  name: "$CI_PROJECT_NAME-${CI_BUILD_REF_NAME#*v}"
-
 .build_java: &build_java
   stage: "build:src"
   script:
     - cat /sys/fs/cgroup/memory/memory.limit_in_bytes
     - java -XX:+PrintFlagsFinal -version | grep -Ei "maxheapsize|maxram"
     - mvn -DskipTests clean install
-
-.build_angular: &build_angular
-  stage: "build:src"
-  image: "alexsuch/angular-cli:6.0.1"
-  script:
-    - cd online-banking-demo-ui
-    - npm install
-    - npm run build --prod
 
 .java_tests: &java_tests
   stage: "build:qa"
@@ -115,18 +64,6 @@ variables: &variables
     - java -XX:+PrintFlagsFinal -version | grep -Ei "maxheapsize|maxram"
     - mvn --fail-at-end clean install
 
-# Test building docker images
-.test_docker_image: &test_docker_image
-  script:
-    - docker build -t "$DOCKER_IMAGE_NAME_XS2A:$DOCKER_TAG" spi-mock
-    - docker build -t "$DOCKER_IMAGE_NAME_MOCKSRV:$DOCKER_TAG" aspsp-mock-server
-    - docker build -t "$DOCKER_IMAGE_NAME_KEYCLOAK:$DOCKER_TAG" aspsp-idp
-    - docker build -t "$DOCKER_IMAGE_NAME_CNT_MGMNT:$DOCKER_TAG" consent-management/cms-standalone-service
-    - docker build -t "$DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG" aspsp-profile/aspsp-profile-server
-    - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO:$DOCKER_TAG" online-banking-demo
-    - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_UI:$DOCKER_TAG" online-banking-demo-ui
-
-# Build docker images and put them to DOCKER HUB repo
 .build_push_dockerhub: &build_push_dockerhub
   script:
     - docker build -t "$DOCKER_IMAGE_NAME_XS2A:$DOCKER_TAG" spi-mock
@@ -136,9 +73,7 @@ variables: &variables
     - docker build -t "$DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG" aspsp-profile/aspsp-profile-server
     - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO:$DOCKER_TAG" online-banking-demo
     - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_UI:$DOCKER_TAG" online-banking-demo-ui
-
     - docker login -u $DOCKER_HUB_LOGIN -p $DOCKER_HUB_PASS
-
     - docker push "$DOCKER_IMAGE_NAME_XS2A:$DOCKER_TAG"
     - docker push "$DOCKER_IMAGE_NAME_MOCKSRV:$DOCKER_TAG"
     - docker push "$DOCKER_IMAGE_NAME_KEYCLOAK:$DOCKER_TAG"
@@ -146,7 +81,6 @@ variables: &variables
     - docker push "$DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG"
     - docker push "$DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO:$DOCKER_TAG"
     - docker push "$DOCKER_IMAGE_NAME_ONLINE_BANKING_UI:$DOCKER_TAG"
-
     - docker logout
 
 .helm_env_deploy: &helm_env_deploy
@@ -171,7 +105,14 @@ build_package_java8:
   image: "adorsys/openjdk-build-base:8"
   <<: *build_java
   artifacts:
-    <<: *java_artifacts
+    paths:
+      - "spi-mock/target/spi-mock*jar"
+      - "consent-management/cms-standalone-service/target/consent-management*jar"
+      - "aspsp-profile/aspsp-profile-server/target/aspsp-profile*jar"
+      - "aspsp-mock-server/target/aspsp-mock-server*jar"
+      - "aspsp-idp/keycloak-provider-extension/keycloak-clientregistration-provider/target/keycloak-clientregistration-provider.jar"
+      - "online-banking-demo/target/online-banking-demo*jar"
+    name: "$CI_PROJECT_NAME-${CI_BUILD_REF_NAME#*v}"
     expire_in: "1 day"
 
 .build_package_java11:
@@ -182,9 +123,16 @@ build_package_java8:
 
 
 build_frontend:
-  <<: *build_angular
+  stage: "build:src"
+  image: "alexsuch/angular-cli:6.0.1"
+  script:
+    - cd online-banking-demo-ui
+    - npm install
+    - npm run build --prod
   artifacts:
-    <<: *angular_artifacts
+    paths:
+      - "online-banking-demo-ui/dist"
+    name: "$CI_PROJECT_NAME-${CI_BUILD_REF_NAME#*v}"
     expire_in: "1 day"
 
 .pmd_report:
@@ -193,7 +141,7 @@ build_frontend:
   script:
     - cat /sys/fs/cgroup/memory/memory.limit_in_bytes
     - java -XX:+PrintFlagsFinal -version | grep -Ei "maxheapsize|maxram"
-    - mvn -Dmaven.test.skip=true package pmd:pmd
+    - mvn -DskipTests package pmd:pmd
   artifacts:
     paths:
     - "qa/pmd/pmd-ruleset.xml"
@@ -208,7 +156,7 @@ build_frontend:
   script:
     - cat /sys/fs/cgroup/memory/memory.limit_in_bytes
     - java -XX:+PrintFlagsFinal -version | grep -Ei "maxheapsize|maxram"
-    - mvn -Dmaven.test.skip=true package pmd:check
+    - mvn -DskipTests package pmd:check
 
 .check_javadoc:
   stage: "build:qa"
@@ -216,7 +164,7 @@ build_frontend:
   script:
     - cat /sys/fs/cgroup/memory/memory.limit_in_bytes
     - java -XX:+PrintFlagsFinal -version | grep -Ei "maxheapsize|maxram"
-    - mvn -Dmaven.test.skip=true package javadoc:javadoc
+    - mvn -DskipTests package javadoc:javadoc
   artifacts:
     paths:
     - "**/target/site/*"
@@ -231,7 +179,7 @@ build_frontend:
   script:
     - cat /sys/fs/cgroup/memory/memory.limit_in_bytes
     - java -XX:+PrintFlagsFinal -version | grep -Ei "maxheapsize|maxram"
-    - mvn -Dmaven.test.skip=true package javadoc:javadoc
+    - mvn -DskipTests package javadoc:javadoc
 
 .unit_tests_java8:
   <<: *java_tests
@@ -250,7 +198,14 @@ build_frontend:
 
 .test_build_docker:
   stage: "build:qa"
-  <<: *test_docker_image
+  script:
+    - docker build -t "$DOCKER_IMAGE_NAME_XS2A:$DOCKER_TAG" spi-mock
+    - docker build -t "$DOCKER_IMAGE_NAME_MOCKSRV:$DOCKER_TAG" aspsp-mock-server
+    - docker build -t "$DOCKER_IMAGE_NAME_KEYCLOAK:$DOCKER_TAG" aspsp-idp
+    - docker build -t "$DOCKER_IMAGE_NAME_CNT_MGMNT:$DOCKER_TAG" consent-management/cms-standalone-service
+    - docker build -t "$DOCKER_IMAGE_NAME_ASPSP_PROFILE:$DOCKER_TAG" aspsp-profile/aspsp-profile-server
+    - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_DEMO:$DOCKER_TAG" online-banking-demo
+    - docker build -t "$DOCKER_IMAGE_NAME_ONLINE_BANKING_UI:$DOCKER_TAG" online-banking-demo-ui
   variables:
     DOCKER_TAG: "snapshot"
 
