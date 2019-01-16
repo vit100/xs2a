@@ -34,8 +34,6 @@ public class AspspProfileServiceImpl implements AspspProfileService {
         return new AspspSettings(
             setting.getFrequencyPerDay(),
             setting.isCombinedServiceIndicator(),
-            setting.getAvailablePaymentProducts(),
-            setting.getAvailablePaymentTypes(),
             setting.isTppSignatureRequired(),
             setting.getPisRedirectUrlToAspsp(),
             setting.getAisRedirectUrlToAspsp(),
@@ -55,7 +53,8 @@ public class AspspProfileServiceImpl implements AspspProfileService {
             setting.getPisPaymentCancellationRedirectUrlToAspsp(),
             setting.getNotConfirmedConsentExpirationPeriodMs(),
             setting.getNotConfirmedPaymentExpirationPeriodMs(),
-            setting.getSupportedPaymentTypeAndProductMatrix());
+            setting.getSupportedPaymentTypeAndProductMatrix(),
+            setting.getPaymentCancellationRedirectUrlExpirationTimeMs());
     }
 
     @Override

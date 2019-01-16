@@ -55,8 +55,6 @@ public class AspspProfileUpdateServiceImpl implements AspspProfileUpdateService 
         BankProfileSetting setting = profileConfiguration.getSetting();
         setting.setFrequencyPerDay(aspspSettings.getFrequencyPerDay());
         setting.setCombinedServiceIndicator(aspspSettings.isCombinedServiceIndicator());
-        setting.setAvailablePaymentProducts(aspspSettings.getAvailablePaymentProducts());
-        setting.setAvailablePaymentTypes(aspspSettings.getAvailablePaymentTypes());
         setting.setTppSignatureRequired(aspspSettings.isTppSignatureRequired());
         setting.setPisRedirectUrlToAspsp(aspspSettings.getPisRedirectUrlToAspsp());
         setting.setAisRedirectUrlToAspsp(aspspSettings.getAisRedirectUrlToAspsp());
@@ -77,5 +75,6 @@ public class AspspProfileUpdateServiceImpl implements AspspProfileUpdateService 
         setting.setNotConfirmedConsentExpirationPeriodMs(aspspSettings.getNotConfirmedConsentExpirationPeriodMs());
         setting.setNotConfirmedPaymentExpirationPeriodMs(aspspSettings.getNotConfirmedPaymentExpirationPeriodMs());
         setting.setSupportedPaymentTypeAndProductMatrix(aspspSettings.getSupportedPaymentTypeAndProductMatrix());
+        setting.setPaymentCancellationRedirectUrlExpirationTimeMs(aspspSettings.getPaymentCancellationRedirectUrlExpirationTimeMs());
     }
 }

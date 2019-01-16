@@ -43,8 +43,6 @@ import static org.mockito.Mockito.when;
 public class AspspProfileControllerTest {
     private static final int FREQUENCY_PER_DAY = 5;
     private static final boolean COMBINED_SERVICE_INDICATOR = false;
-    private static final List<String> AVAILABLE_PAYMENT_PRODUCTS = getPaymentProducts();
-    private static final List<PaymentType> AVAILABLE_PAYMENT_TYPES = getPaymentTypes();
     private static final boolean TPP_SIGNATURE_REQUIRED = false;
     private static final String PIS_REDIRECT_LINK = "https://localhost/payment/confirmation/";
     private static final String AIS_REDIRECT_LINK = "https://localhost/view/account/";
@@ -65,6 +63,7 @@ public class AspspProfileControllerTest {
     private static final long NOT_CONFIRMED_PAYMENT_EXPIRATION_PERIOD_MS = 86400000;
     private static final String PIS_PAYMENT_CANCELLATION_REDIRECT_URL_TO_ASPSP = "https://localhost/payment/cancellation/";
     private static Map<PaymentType, Set<String>> SUPPORTED_PAYMENT_TYPE_AND_PRODUCT_MATRIX = buildSupportedPaymentTypeAndProductMatrix();
+    private static final long PAYMENT_CANCELLATION_REDIRECT_URL_EXPIRATION_TIME_MS = 600000;
 
     @InjectMocks
     private AspspProfileController aspspProfileController;
@@ -110,8 +109,6 @@ public class AspspProfileControllerTest {
         return new AspspSettings(
             FREQUENCY_PER_DAY,
             COMBINED_SERVICE_INDICATOR,
-            AVAILABLE_PAYMENT_PRODUCTS,
-            AVAILABLE_PAYMENT_TYPES,
             TPP_SIGNATURE_REQUIRED,
             PIS_REDIRECT_LINK,
             AIS_REDIRECT_LINK,
@@ -131,23 +128,12 @@ public class AspspProfileControllerTest {
             PIS_PAYMENT_CANCELLATION_REDIRECT_URL_TO_ASPSP,
             NOT_CONFIRMED_CONSENT_EXPIRATION_PERIOD_MS,
             NOT_CONFIRMED_PAYMENT_EXPIRATION_PERIOD_MS,
-            SUPPORTED_PAYMENT_TYPE_AND_PRODUCT_MATRIX);
+            SUPPORTED_PAYMENT_TYPE_AND_PRODUCT_MATRIX,
+            PAYMENT_CANCELLATION_REDIRECT_URL_EXPIRATION_TIME_MS);
     }
 
     private static List<SupportedAccountReferenceField> getSupportedAccountReferenceFields() {
         return Collections.singletonList(IBAN);
-    }
-
-    private static List<String> getPaymentProducts() {
-        return Arrays.asList(
-            "sepa-credit-transfers",
-            "instant-sepa-credit-transfers");
-    }
-
-    private static List<PaymentType> getPaymentTypes() {
-        return Arrays.asList(
-            PaymentType.PERIODIC,
-            PaymentType.BULK);
     }
 
     private static List<BookingStatus> getBookingStatuses() {
