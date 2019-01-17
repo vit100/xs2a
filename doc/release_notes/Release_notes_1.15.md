@@ -143,28 +143,6 @@ The body of the pain.001 xml payment is stored as a byte array in the consent ma
 
 ## Implementation of specification 1.3 according to the yaml file from Berlin Group.
 Now XS2A interface are updated according to the requirements of specification 1.3 from Berlin Group. No changes on SPI level were performed, only controllers and related classes were changed.
-For successful migration, we followed next steps: 
-
-1. Open https://github.com/swagger-api/swagger-codegen and clone the repository.
-2. Build project with `mvn clean install`.
-3. Copy file with a new version of PSD2 API `psd2-api-1.3.yaml` to directory `swagger-codegen-cli/target`.
-4. Add the following file `config.json` to directory `swagger-codegen-cli/target`: 
-```{
- “title”: “XS2A server api”,
- “basePackage”: “de.adorsys.psd2",
- “configPackage”: “de.adorsys.psd2",
- “modelPackage”: “de.adorsys.psd2.model”,
- “apiPackage”: “de.adorsys.psd2.api”,
- “interfaceOnly”: true,
- “dateLibrary” : “java8”,
- “java8": true,
- “implicitHeaders” : false,
- “delegatePattern” : true
-}
-```
-
-5. Run in command line: `java -jar swagger-codegen-cli.jar generate -i psd2-api-1.3.yaml -c config.json -l spring -o psd2-api-spring --template-engine mustache`.
-6. You will get generated classes and interfaces in the folder `psd2-api-spring`.
 
 Payment product  was added as a path parameter to certain PIS endpoints:
 
