@@ -16,8 +16,10 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
+import de.adorsys.psd2.consent.domain.piis.PiisConsentAccountReferenceEntity;
 import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
+import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +42,7 @@ public class PiisConsentMapper {
                                psuDataMapper.mapToPsuIdData(piisConsentEntity.getPsuData()),
                                tppInfoMapper.mapToTppInfo(piisConsentEntity.getTppInfo()),
                                piisConsentEntity.getConsentStatus(),
-                               accountReferenceMapper.mapToAccountReferenceList(piisConsentEntity.getAccounts()),
+                               mapToAccountReferenceList(piisConsentEntity.getAccounts()),
                                piisConsentEntity.getTppAccessType(),
                                piisConsentEntity.getAllowedFrequencyPerDay(),
                                piisConsentEntity.getInstanceId());
@@ -49,6 +51,12 @@ public class PiisConsentMapper {
     public List<PiisConsent> mapToPiisConsentList(List<PiisConsentEntity> consentEntities) {
         return consentEntities.stream()
                    .map(this::mapToPiisConsent)
+                   .collect(Collectors.toList());
+    }
+
+    private List<AccountReference> mapToAccountReferenceList(List<PiisConsentAccountReferenceEntity> accounts) {
+        return accounts.stream()
+                   .map(e -> accountReferenceMapper.mapToAccountReferenceEntity(e.getAccount()))
                    .collect(Collectors.toList());
     }
 }

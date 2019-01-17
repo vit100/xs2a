@@ -12,10 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package de.adorsys.psd2.consent.service;
 
+import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
 import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import de.adorsys.psd2.consent.repository.PiisConsentRepository;
@@ -60,6 +62,7 @@ public class CmsAspspPiisServiceInternalTest {
     private static final LocalDate EXPIRE_DATE = LocalDate.now().plusDays(100);
     private static final int FREQUENCY_PER_DAY = 4;
     private static final String DEFAULT_SERVICE_INSTANCE_ID = "UNDEFINED";
+    private static final String ASPSP_ACCOUNT_ID = "3278921mxl-n2131-13nw";
 
     @Mock
     private PiisConsentRepository piisConsentRepository;
@@ -84,6 +87,7 @@ public class CmsAspspPiisServiceInternalTest {
         when(piisConsentRepository.findByExternalId(CONSENT_EXTERNAL_ID)).thenReturn(Optional.of(buildPiisConsentEntity()));
         when(piisConsentRepository.findByExternalId(CONSENT_EXTERNAL_ID_WRONG)).thenReturn(Optional.empty());
         when(piisConsentRepository.save(any(PiisConsentEntity.class))).thenReturn(buildPiisConsentEntity());
+        when(accountReferenceMapper.mapToAccountReferenceEntity(buildAccountReference())).thenReturn(buildAccountReferenceEntity());
     }
 
     @Test
@@ -97,7 +101,7 @@ public class CmsAspspPiisServiceInternalTest {
 
         // When
         Optional<String> actual = cmsAspspPiisServiceInternal.createConsent(psuIdData, null, accounts,
-                                                                            EXPIRE_DATE, FREQUENCY_PER_DAY);
+                                                                            EXPIRE_DATE, ASPSP_ACCOUNT_ID, FREQUENCY_PER_DAY);
 
         // Then
         assertThat(actual.isPresent()).isTrue();
@@ -116,7 +120,7 @@ public class CmsAspspPiisServiceInternalTest {
 
         // When
         Optional<String> actual = cmsAspspPiisServiceInternal.createConsent(psuIdData, null, accounts,
-                                                                            EXPIRE_DATE, FREQUENCY_PER_DAY);
+                                                                            EXPIRE_DATE, ASPSP_ACCOUNT_ID, FREQUENCY_PER_DAY);
 
         // Then
         assertThat(actual.isPresent()).isFalse();
@@ -246,4 +250,15 @@ public class CmsAspspPiisServiceInternalTest {
         consent.setId(CONSENT_EXTERNAL_ID);
         return consent;
     }
+
+    private AccountReferenceEntity buildAccountReferenceEntity() {
+        return new AccountReference("aspspAccountId", "resourceId",
+                                    "DE89370400440532013000",
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null);
+    }
 }
+*/

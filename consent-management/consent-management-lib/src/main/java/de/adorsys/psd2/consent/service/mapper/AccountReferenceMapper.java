@@ -46,7 +46,7 @@ public class AccountReferenceMapper {
                    .collect(Collectors.toList());
     }
 
-    private AccountReference mapToAccountReferenceEntity(AccountReferenceEntity accountReferenceEntity) {
+    public AccountReference mapToAccountReferenceEntity(AccountReferenceEntity accountReferenceEntity) {
         return Optional.ofNullable(accountReferenceEntity)
                    .map(ref -> {
                        AccountReference accountReference = new AccountReference();

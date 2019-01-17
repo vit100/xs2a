@@ -30,6 +30,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Data
@@ -75,11 +76,12 @@ public class PiisConsentEntity extends InstanceDependableEntity {
     @ApiModelProperty(value = "The following code values are permitted 'received', 'valid', 'rejected', 'expired', 'revoked by psu', 'terminated by tpp'. These values might be extended by ASPSP by more values.", required = true, example = "VALID")
     private ConsentStatus consentStatus;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "piis_consent_acc_reference",
-        joinColumns = @JoinColumn(name = "piis_consent_id"),
-        inverseJoinColumns = @JoinColumn(name = "account_reference_id"))
-    private List<AccountReferenceEntity> accounts = new ArrayList<>();
+    @OneToMany(
+        mappedBy = "consent",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<PiisConsentAccountReferenceEntity> accounts = new ArrayList<>();
 
     @Column(name = "tpp_access_type", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -89,4 +91,23 @@ public class PiisConsentEntity extends InstanceDependableEntity {
     @Column(name = "allowed_frequency_per_day", nullable = false)
     @ApiModelProperty(value = "Maximum frequency for an access per day. For a once-off access, this attribute is set to 1", required = true, example = "4")
     private int allowedFrequencyPerDay;
+
+    public void addAccountReference(AccountReferenceEntity account, String aspspAccountId) {
+        PiisConsentAccountReferenceEntity piisConsentAccReference = new PiisConsentAccountReferenceEntity(this, account, aspspAccountId);
+        accounts.add(piisConsentAccReference);
+    }
+
+    public void removeAccountReference(PiisConsentAccountReferenceEntity account) {
+        for (Iterator<PiisConsentAccountReferenceEntity> iterator = accounts.iterator();
+             iterator.hasNext(); ) {
+            PiisConsentAccountReferenceEntity piisConsentAccReference = iterator.next();
+
+            if (piisConsentAccReference.getConsent().equals(this) &&
+                    piisConsentAccReference.getAccount().equals(account)) {
+                iterator.remove();
+                piisConsentAccReference.setConsent(null);
+                piisConsentAccReference.setAccount(null);
+            }
+        }
+    }
 }

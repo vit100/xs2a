@@ -55,7 +55,7 @@ public class CmsAspspPiisControllerTest {
 
     @Before
     public void setUp() {
-        when(cmsAspspPiisService.createConsent(any(), any(), any(), any(), anyInt()))
+        when(cmsAspspPiisService.createConsent(any(), any(), any(), any(), any(), anyInt()))
             .thenReturn(Optional.of(CONSENT_ID));
         when(cmsAspspPiisService.getConsentsForPsu(eq(buildPsuIdData(PSU_ID)), eq(DEFAULT_SERVICE_INSTANCE_ID)))
             .thenReturn(buildPiisConsentList());
@@ -80,7 +80,7 @@ public class CmsAspspPiisControllerTest {
 
     @Test
     public void createConsent_Failure() {
-        when(cmsAspspPiisService.createConsent(any(), any(), any(), any(), anyInt())).thenReturn(Optional.empty());
+        when(cmsAspspPiisService.createConsent(any(), any(), any(), any(), any(), anyInt())).thenReturn(Optional.empty());
 
         //When
         ResponseEntity<CreatePiisConsentResponse> actual =

@@ -53,7 +53,7 @@ public class CmsAspspPiisController {
                                                                    @ApiParam(value = "Might be mandated in the ASPSP's documentation. Only used in a corporate context. ")
                                                                    @RequestHeader(value = "psu-corporate-id-type", required = false) String psuCorporateIdType) {
         PsuIdData psuIdData = getPsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
-        return cmsAspspPiisService.createConsent(psuIdData, request.getTppInfo(), request.getAccounts(), request.getValidUntil(), request.getAllowedFrequencyPerDay())
+        return cmsAspspPiisService.createConsent(psuIdData, request.getTppInfo(), request.getAccounts(), request.getValidUntil(), request.getAspspAccountId(), request.getAllowedFrequencyPerDay())
                    .map(consentId -> new ResponseEntity<>(new CreatePiisConsentResponse(consentId), HttpStatus.CREATED))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }

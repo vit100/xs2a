@@ -39,5 +39,8 @@ public class CreatePiisConsentRequest {
 
     @ApiModelProperty(value = "Maximum frequency for an access per day. For a once-off access, this attribute is set to 1", required = true, example = "4")
     private int allowedFrequencyPerDay;
+
+    @ApiModelProperty(value = "Aspsp-Account-ID: Bank specific account ID", example = "26bb59a3-2f63-4027-ad38-67d87e59611a")
+    private String aspspAccountId;
 }
 

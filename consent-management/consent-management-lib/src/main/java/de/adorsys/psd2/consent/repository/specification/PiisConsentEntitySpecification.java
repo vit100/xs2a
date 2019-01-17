@@ -16,10 +16,15 @@
 
 package de.adorsys.psd2.consent.repository.specification;
 
+import de.adorsys.psd2.consent.domain.account.AisConsent;
 import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
+import de.adorsys.psd2.xs2a.core.piis.PiisConsent;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 import static de.adorsys.psd2.consent.repository.specification.EntityAttribute.CONSENT_EXTERNAL_ID_ATTRIBUTE;
 import static de.adorsys.psd2.consent.repository.specification.EntityAttribute.INSTANCE_ID_ATTRIBUTE;
@@ -31,5 +36,23 @@ public class PiisConsentEntitySpecification extends GenericSpecification {
     public Specification<PiisConsentEntity> byConsentIdAndInstanceId(String consentId, String instanceId) {
         return Specifications.<PiisConsentEntity>where(provideSpecificationForEntityAttribute(INSTANCE_ID_ATTRIBUTE, instanceId))
                    .and(provideSpecificationForEntityAttribute(CONSENT_EXTERNAL_ID_ATTRIBUTE, consentId));
+    }
+
+    /**
+     * Returns specification for PiisConsent entity for filtering data by Aspsp account id, creation date and instance ID.
+     *
+     * @param aspspAccountId Bank specific account identifier
+     * @param createDateFrom optional creation date that limits resulting data to Piis consents created after this date(inclusive)
+     * @param createDateTo   optional creation date that limits resulting data to Piis consents created before this date(inclusive)
+     * @param instanceId     optional instance ID
+     * @return specification for PiisConsent entity
+     */
+    public Specification<PiisConsent> byAspspAccountIdCreationPeriodAndInstanceId(@Nullable String aspspAccountId,
+                                                                                  @Nullable LocalDate createDateFrom,
+                                                                                  @Nullable LocalDate createDateTo,
+                                                                                  @Nullable String instanceId) {
+        return Specifications.<PiisConsent>where(byAspspAccountId(aspspAccountId))
+                   .and(byCreationTimestamp(createDateFrom, createDateTo))
+                   .and(byInstanceId(instanceId));
     }
 }

@@ -17,6 +17,8 @@
 package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.consent.aspsp.api.piis.CmsAspspPiisService;
+import de.adorsys.psd2.consent.domain.AccountReferenceEntity;
+import de.adorsys.psd2.consent.domain.piis.PiisConsentAccountReferenceEntity;
 import de.adorsys.psd2.consent.domain.piis.PiisConsentEntity;
 import de.adorsys.psd2.consent.repository.PiisConsentRepository;
 import de.adorsys.psd2.consent.repository.specification.PiisConsentEntitySpecification;
@@ -61,8 +63,9 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
                                           @Nullable TppInfo tppInfo,
                                           @NotNull List<AccountReference> accounts,
                                           @NotNull LocalDate validUntil,
+                                          @NotNull String aspspAccountId,
                                           int allowedFrequencyPerDay) {
-        PiisConsentEntity consent = buildPiisConsent(psuIdData, tppInfo, accounts, validUntil, allowedFrequencyPerDay);
+        PiisConsentEntity consent = buildPiisConsent(psuIdData, tppInfo, accounts, validUntil, aspspAccountId, allowedFrequencyPerDay);
         consent.setExternalId(UUID.randomUUID().toString());
         PiisConsentEntity saved = piisConsentRepository.save(consent);
         return saved.getId() != null
@@ -97,6 +100,7 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
                                                TppInfo tppInfo,
                                                List<AccountReference> accounts,
                                                LocalDate validUntil,
+                                               String aspspAccountId,
                                                int allowedFrequencyPerDay) {
         PiisConsentEntity consent = new PiisConsentEntity();
         consent.setConsentStatus(VALID);
@@ -104,7 +108,7 @@ public class CmsAspspPiisServiceInternal implements CmsAspspPiisService {
         consent.setExpireDate(validUntil);
         consent.setPsuData(psuDataMapper.mapToPsuData(psuIdData));
         consent.setTppInfo(tppInfoMapper.mapToTppInfoEntity(tppInfo));
-        consent.setAccounts(accountReferenceMapper.mapToAccountReferenceEntityList(accounts));
+        accounts.forEach(a -> consent.addAccountReference(accountReferenceMapper.mapToAccountReferenceEntity(a), aspspAccountId));
         PiisConsentTppAccessType accessType = tppInfo != null
                                                   ? PiisConsentTppAccessType.SINGLE_TPP
                                                   : PiisConsentTppAccessType.ALL_TPP;
