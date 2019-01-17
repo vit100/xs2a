@@ -69,6 +69,7 @@ public class Amount   {
   **/
   @ApiModelProperty(required = true, value = "")
   @NotNull
+  @Pattern(regexp="-?[0-9]{1,14}(.[0-9]{1,3})?")
   public String getAmount() {
     return amount;
   }
