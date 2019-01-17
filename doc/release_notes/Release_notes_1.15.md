@@ -165,3 +165,19 @@ For successful migration, we followed next steps:
 
 5. Run in command line: `java -jar swagger-codegen-cli.jar generate -i psd2-api-1.3.yaml -c config.json -l spring -o psd2-api-spring --template-engine mustache`.
 6. You will get generated classes and interfaces in the folder `psd2-api-spring`.
+
+Payment product  was added as a path parameter to certain PIS endpoints:
+
+| Method | Context                                                                  | Old path                                                                       | New path                                                                                         |
+|--------|--------------------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| GET    | Get Payment Request                                                      | /v1/{payment-service}/{paymentId}                                              | /v1/{payment-service}/{payment-product}/{paymentId}                                              |
+| GET    | Get Transaction Status Request                                           | /v1/{payment-service}/{paymentId}/status                                       | /v1/{payment-service}/{payment-product}/{paymentId}/status                                       |
+| DELETE | Payment Cancellation Request                                             | /v1/{payment-service}/{paymentId}                                              | /v1/{payment-service}/{payment-product}/{paymentId}                                              |
+| GET    | Get Cancellation Authorisation Sub-Resources Request                     | /v1/{payment-service}/{paymentId}/cancellation-authorisations                  | /v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations                  |
+| POST   | Start Authorisation Process in context of a Payment Initiation Request   | /v1/{payment-service}/{paymentId}/authorisations                               | /v1/{payment-service}/{payment-product}/{paymentId}/authorisations                               |
+| POST   | Start Authorisation Process in context of a Payment Cancellation Request | /v1/{payment-service}/{paymentId}/cancellation-authorisations                  | /v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations                  |
+| PUT    | Update PSU Data in the context of a Payment Initiation Request           | /v1/{payment-service}/{paymentId}/authorisations/{authorisationId}             | /v1/{payment-service}/{paymentId}/{payment-product}/authorisations/{authorisationId}             |
+| PUT    | Update PSU Data in the context of a Payment Cancellation Request         | /v1/{payment-service}/{paymentId}/cancellation-authorisations/{cancellationId} | /v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations/{cancellationId} |
+
+Also from now on parameters `creditorAgent` and `country`(part of `address`) in the request body are being validated.
+Please ensure that `creditorAgent` is a valid BICFI identifier(e.g. `AAAADEBBXXX`) and that `country` is a 2 character ISO 3166 country code(e.g. `SE`).
