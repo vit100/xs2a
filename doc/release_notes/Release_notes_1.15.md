@@ -110,5 +110,52 @@ should be filled:
   
 Other payment products can be added for every payment type.
 
+## Add specific bank account identifier in all types of payments and accounts
+Now we get `aspspAccountId` from ASPSP in response when payment is created. 
+And add this `aspspAccountId` to new commonPayment when we save payment to CMS.
+Also we can export payment list by `aspspAccountId, tppAuthorisationNumber, createDateFrom, createDateTo and instanceId` from CMS.  
+
+Also we store `aspspAccountId` in account details in consents.
+
 ## One active authorisation per consent for one PSU
 When PSU creates new authorisation for consent, all previous authorisations, created by this PSU for the same consent, will be failed and expired.
+
+## Added expiration time for payment cancellation redirect url
+A new `paymentCancellationRedirectUrlExpirationTimeMs` parameter has been added to ASPSP profile.
+
+| Option                                         | Meaning                                                                                                          | Default value | Possible values         |
+|------------------------------------------------|------------------------------------------------------------------------------------------------------------------|---------------|-------------------------|
+| paymentCancellationRedirectUrlExpirationTimeMs | This field contains the limit of an expiration time of redirect url for payment cancellation set in milliseconds | 600 000       | milliseconds (1, 2,...) |
+
+Payment cancellation redirect url and related authorisation now have an expiration time. The value for expiration time is counted with formula 
+"current time of authorisation creation + payment cancellation redirect url expiration time (set in ASPSP-profile)". 
+We give redirect id (= authorisation id) in redirect link now, and to get payment information, online banking should call 
+ **GET /psu-api/v1/pis/consent/redirects/cancellation/{redirect-id}** endpoint of consent management system.
+If redirect url is not expired, online banking gets payment, authorisation id, not ok tpp redirect url and ok tpp redirect url (for now these urls are null temporary) in response, otherwise http code 408 Request Timeout is sent.
+
+## Bugfix: Deleted consent changes its status to terminatedByTpp
+When TPP sends request to delete consent, status of consent will be terminatedByTpp instead of revokedByPsu.
+
+## Support single, periodic and bulk payment initiation with pain.001 XML message
+Now TPP can initiate payments with pain.001 XML message body. Content type of the request should be `application/xml` for single and bulk payments 
+and `multipart/form-data; boundary=AaaBbbCcc` for periodic payments with xml body part named `xml_sct` and json body part named `json_standingorderType`. 
+The body of the pain.001 xml payment is stored as a byte array in the consent management system.
+
+## Implementation of specification 1.3 according to the yaml file from Berlin Group.
+Now XS2A interface are updated according to the requirements of specification 1.3 from Berlin Group. No changes on SPI level were performed, only controllers and related classes were changed.
+
+Payment product  was added as a path parameter to certain PIS endpoints:
+
+| Method | Context                                                                  | Old path                                                                       | New path                                                                                         |
+|--------|--------------------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| GET    | Get Payment Request                                                      | /v1/{payment-service}/{paymentId}                                              | /v1/{payment-service}/{payment-product}/{paymentId}                                              |
+| GET    | Get Transaction Status Request                                           | /v1/{payment-service}/{paymentId}/status                                       | /v1/{payment-service}/{payment-product}/{paymentId}/status                                       |
+| DELETE | Payment Cancellation Request                                             | /v1/{payment-service}/{paymentId}                                              | /v1/{payment-service}/{payment-product}/{paymentId}                                              |
+| GET    | Get Cancellation Authorisation Sub-Resources Request                     | /v1/{payment-service}/{paymentId}/cancellation-authorisations                  | /v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations                  |
+| POST   | Start Authorisation Process in context of a Payment Initiation Request   | /v1/{payment-service}/{paymentId}/authorisations                               | /v1/{payment-service}/{payment-product}/{paymentId}/authorisations                               |
+| POST   | Start Authorisation Process in context of a Payment Cancellation Request | /v1/{payment-service}/{paymentId}/cancellation-authorisations                  | /v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations                  |
+| PUT    | Update PSU Data in the context of a Payment Initiation Request           | /v1/{payment-service}/{paymentId}/authorisations/{authorisationId}             | /v1/{payment-service}/{paymentId}/{payment-product}/authorisations/{authorisationId}             |
+| PUT    | Update PSU Data in the context of a Payment Cancellation Request         | /v1/{payment-service}/{paymentId}/cancellation-authorisations/{cancellationId} | /v1/{payment-service}/{payment-product}/{paymentId}/cancellation-authorisations/{cancellationId} |
+
+Also from now on parameters `creditorAgent` and `country`(part of `address`) in the request body are being validated.
+Please ensure that `creditorAgent` is a valid BICFI identifier(e.g. `AAAADEBBXXX`) and that `country` is a 2 character ISO 3166 country code(e.g. `SE`).

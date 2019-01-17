@@ -43,16 +43,6 @@ public class BankProfileSetting {
     private boolean combinedServiceIndicator;
 
     /**
-     * List of payment products supported by ASPSP
-     */
-    private List<String> availablePaymentProducts = new ArrayList<>();
-
-    /**
-     * List of payment types supported by ASPSP
-     */
-    private List<PaymentType> availablePaymentTypes = new ArrayList<>();
-
-    /**
      * SCA Approach supported by ASPSP
      */
     private ScaApproach scaApproach;
@@ -158,4 +148,9 @@ public class BankProfileSetting {
      * A matrix payment-product/payment-type which allows to choose needed types
      */
     private Map<PaymentType, Set<String>> supportedPaymentTypeAndProductMatrix;
+
+    /**
+     * This field contains the limit of an expiration time of redirect url for payment cancellation set in milliseconds
+     */
+    private long paymentCancellationRedirectUrlExpirationTimeMs;
 }
