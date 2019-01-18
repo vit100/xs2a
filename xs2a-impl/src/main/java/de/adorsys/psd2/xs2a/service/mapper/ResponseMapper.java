@@ -31,6 +31,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 @Component
 public class ResponseMapper {
+    private final ErrorMapperHolder errorMapperHolder;
     private final MessageErrorMapper messageErrorMapper;
 
     public <T, R> ResponseEntity<?> ok(ResponseObject<T> response, Function<T, R> mapper) { //NOPMD short method name ok corresponds to status code
@@ -74,15 +75,15 @@ public class ResponseMapper {
 
         ResponseEntity.BodyBuilder responseBuilder =
             ResponseEntity
-                 .status(positiveStatus);
+                .status(positiveStatus);
 
         if (body instanceof CustomContentTypeProvider) {
             responseBuilder = responseBuilder
-                                  .contentType( ((CustomContentTypeProvider) body).getCustomContentType() );
+                                  .contentType(((CustomContentTypeProvider) body).getCustomContentType());
         }
 
         return responseBuilder
-                 .body(getBody(body, mapper));
+                   .body(getBody(body, mapper));
     }
 
     private <T, R> Object getBody(T body, Function<T, R> mapper) {
@@ -94,5 +95,9 @@ public class ResponseMapper {
     // TODO create error mapper according to new version of specification 1.3 https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/592
     private ResponseEntity createErrorResponse(MessageError error) {
         return new ResponseEntity<>(messageErrorMapper.mapToTppMessage(error), valueOf(error.getTppMessage().getMessageErrorCode().getCode()));
+    }
+
+    public ResponseEntity generateErrorResponse(ResponseObject response, HttpStatus status) {
+        return new ResponseEntity<>(errorMapperHolder.getErrorBody(response.getError(), status), status);
     }
 }

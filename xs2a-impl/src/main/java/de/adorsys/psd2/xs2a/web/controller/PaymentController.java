@@ -37,6 +37,7 @@ import de.adorsys.psd2.xs2a.web.mapper.PaymentModelMapperXs2a;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -111,7 +112,7 @@ public class PaymentController implements PaymentApi {
             xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aPayment(body, paymentInitiationParameters), paymentInitiationParameters);
 
         return serviceResponse.hasError()
-                   ? responseMapper.created(serviceResponse)
+                   ? responseMapper.generateErrorResponse(serviceResponse, HttpStatus.BAD_REQUEST)
                    : responseMapper.created(ResponseObject
                                                 .builder()
                                                 .body(paymentModelMapperPsd2.mapToPaymentInitiationResponse12(serviceResponse.getBody()))

@@ -22,30 +22,37 @@ import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
-import io.swagger.annotations.ApiModelProperty;
+import de.adorsys.psd2.xs2a.service.mapper.SourceType;
 import lombok.Data;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.RJCT;
 import static java.util.Collections.singletonList;
 
 @Data
 public class MessageError {
     @JsonUnwrapped
-    @ApiModelProperty(value = "Transaction status", example = "Rejected")
     private TransactionStatus transactionStatus;
-
-    @ApiModelProperty(value = "Tpp messages information of the Berlin Group XS2A Interface")
     private Set<TppMessageInformation> tppMessages = new HashSet<>();
+    private SourceType source;
+    // TODO move MessageErrorCode here from TppMessageInformation
+
+    public MessageError(SourceType source, TppMessageInformation... tppMessageInformation) {
+        this.source = source;
+        fillTppMessage(tppMessageInformation);
+    }
 
     public MessageError(TppMessageInformation tppMessage) {
-        this(TransactionStatus.RJCT, tppMessage);
+        this(RJCT, tppMessage);
     }
 
     public MessageError(List<TppMessageInformation> tppMessages) {
-        this(TransactionStatus.RJCT, tppMessages);
+        this(RJCT, tppMessages);
     }
 
     public MessageError(TransactionStatus status, TppMessageInformation tppMessage) {
@@ -62,7 +69,7 @@ public class MessageError {
     }
 
     public MessageError(MessageErrorCode errorCode, String message) {
-        this(TransactionStatus.RJCT, singletonList(new TppMessageInformation(MessageCategory.ERROR, errorCode, message)));
+        this(RJCT, singletonList(new TppMessageInformation(MessageCategory.ERROR, errorCode, message)));
     }
 
     public MessageError(MessageErrorCode errorCode) {
@@ -73,5 +80,16 @@ public class MessageError {
     @JsonIgnore
     public TppMessageInformation getTppMessage() {
         return tppMessages.iterator().next();
+    }
+
+    private void fillTppMessage(TppMessageInformation[] tppMessages) {
+        if (isNotEmpty(tppMessages)) {
+            this.tppMessages.addAll(Arrays.stream(tppMessages)
+                                        .collect(Collectors.toSet()));
+        }
+    }
+
+    private boolean isNotEmpty(TppMessageInformation[] tppMessages) {
+        return tppMessages != null && tppMessages.length >= 1;
     }
 }

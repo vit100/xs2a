@@ -19,7 +19,6 @@ package de.adorsys.psd2.xs2a.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Arrays;
@@ -27,8 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@ApiModel(description = "MessageErrorCode", value = "Message error codes and related http response codes.")
 public enum MessageErrorCode {
+    // TODO remove status code
     CERTIFICATE_INVALID(401),  // "The contents of the signature/corporate seal certificate are not matching PSD2 general PSD2 or attribute requirements
     CERTIFICATE_EXPIRED(401),  //Signature/corporate seal certificate is expired
     CERTIFICATE_BLOCKED(401),  //Signature/corporate seal certificate has been blocked by the ASPSP
