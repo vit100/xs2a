@@ -112,7 +112,7 @@ public class PaymentController implements PaymentApi {
             xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aPayment(body, paymentInitiationParameters), paymentInitiationParameters);
 
         return serviceResponse.hasError()
-                   ? responseMapper.generateErrorResponse(serviceResponse, HttpStatus.BAD_REQUEST)
+                   ? responseMapper.generateErrorResponse(serviceResponse, HttpStatus.BAD_REQUEST) // TODO move http status
                    : responseMapper.created(ResponseObject
                                                 .builder()
                                                 .body(paymentModelMapperPsd2.mapToPaymentInitiationResponse12(serviceResponse.getBody()))
