@@ -22,7 +22,7 @@ import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
-import de.adorsys.psd2.xs2a.service.mapper.SourceType;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType;
 import lombok.Data;
 
 import java.util.Arrays;
@@ -34,16 +34,16 @@ import java.util.stream.Collectors;
 import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.RJCT;
 import static java.util.Collections.singletonList;
 
+// TODO remove obsolete methods
 @Data
 public class MessageError {
     @JsonUnwrapped
     private TransactionStatus transactionStatus;
     private Set<TppMessageInformation> tppMessages = new HashSet<>();
-    private SourceType source;
-    // TODO move MessageErrorCode here from TppMessageInformation
+    private ErrorType errorType;
 
-    public MessageError(SourceType source, TppMessageInformation... tppMessageInformation) {
-        this.source = source;
+    public MessageError(ErrorType errorType, TppMessageInformation... tppMessageInformation) {
+        this.errorType = errorType;
         fillTppMessage(tppMessageInformation);
     }
 
@@ -82,14 +82,14 @@ public class MessageError {
         return tppMessages.iterator().next();
     }
 
-    private void fillTppMessage(TppMessageInformation[] tppMessages) {
+    private void fillTppMessage(TppMessageInformation... tppMessages) {
         if (isNotEmpty(tppMessages)) {
             this.tppMessages.addAll(Arrays.stream(tppMessages)
                                         .collect(Collectors.toSet()));
         }
     }
 
-    private boolean isNotEmpty(TppMessageInformation[] tppMessages) {
+    private boolean isNotEmpty(TppMessageInformation... tppMessages) {
         return tppMessages != null && tppMessages.length >= 1;
     }
 }

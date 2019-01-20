@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper;
+package de.adorsys.psd2.xs2a.service.mapper.psd2;
 
-public enum SourceType {
-    PIS,
-    AIS,
-    PIIS,
-    AUTH_START
+public enum ErrorType {
+    PIS_400,
+    PIS_401
 }

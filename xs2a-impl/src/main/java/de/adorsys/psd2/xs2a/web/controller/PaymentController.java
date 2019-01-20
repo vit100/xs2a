@@ -29,6 +29,7 @@ import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.PaymentAuthorisationService;
 import de.adorsys.psd2.xs2a.service.PaymentCancellationAuthorisationService;
 import de.adorsys.psd2.xs2a.service.PaymentService;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.ResponseErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.web.mapper.AuthorisationMapper;
 import de.adorsys.psd2.xs2a.web.mapper.ConsentModelMapper;
@@ -37,7 +38,6 @@ import de.adorsys.psd2.xs2a.web.mapper.PaymentModelMapperXs2a;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,6 +53,7 @@ import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
 public class PaymentController implements PaymentApi {
     private final PaymentService xs2aPaymentService;
     private final ResponseMapper responseMapper;
+    private final ResponseErrorMapper responseErrorMapper;
     private final PaymentModelMapperPsd2 paymentModelMapperPsd2;
     private final PaymentModelMapperXs2a paymentModelMapperXs2a;
     private final ConsentModelMapper consentModelMapper;
@@ -112,7 +113,7 @@ public class PaymentController implements PaymentApi {
             xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aPayment(body, paymentInitiationParameters), paymentInitiationParameters);
 
         return serviceResponse.hasError()
-                   ? responseMapper.generateErrorResponse(serviceResponse, HttpStatus.BAD_REQUEST) // TODO move http status
+                   ? responseErrorMapper.generateErrorResponse(serviceResponse.getError())
                    : responseMapper.created(ResponseObject
                                                 .builder()
                                                 .body(paymentModelMapperPsd2.mapToPaymentInitiationResponse12(serviceResponse.getBody()))

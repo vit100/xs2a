@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper;
+package de.adorsys.psd2.xs2a.service.mapper.psd2;
 
 import de.adorsys.psd2.model.Error400NGPIS;
 import de.adorsys.psd2.model.MessageCode400PIS;
@@ -22,7 +22,7 @@ import de.adorsys.psd2.model.TppMessage400PIS;
 import de.adorsys.psd2.model.TppMessageCategory;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
-import de.adorsys.psd2.xs2a.service.message.MessageService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -34,13 +34,14 @@ import java.util.stream.Collectors;
 @Component
 public class PIS400ErrorMapper extends Psd2ErrorMapper<MessageError, Error400NGPIS> {
 
-    public PIS400ErrorMapper(MessageService messageService) {
-        super(messageService);
-    }
-
     @Override
     public Function<MessageError, Error400NGPIS> getMapper() {
         return this::mapToPsd2Error;
+    }
+
+    @Override
+    public HttpStatus getErrorStatus() {
+        return HttpStatus.BAD_REQUEST;
     }
 
     private Error400NGPIS mapToPsd2Error(MessageError messageError) {

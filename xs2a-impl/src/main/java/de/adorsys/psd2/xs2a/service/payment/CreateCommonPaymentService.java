@@ -42,7 +42,7 @@ import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.PAYMENT_FAILED;
 import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
-import static de.adorsys.psd2.xs2a.service.mapper.SourceType.PIS;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +75,7 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
 
         if (StringUtils.isBlank(externalPaymentId)) {
             return ResponseObject.<PaymentInitiationResponse>builder()
-                       .fail(new MessageError(PIS, new TppMessageInformation(ERROR, PAYMENT_FAILED))) // TODO move source type to controller layer
+                       .fail(new MessageError(PIS_400, new TppMessageInformation(ERROR, PAYMENT_FAILED)))
                        .build();
         }
 

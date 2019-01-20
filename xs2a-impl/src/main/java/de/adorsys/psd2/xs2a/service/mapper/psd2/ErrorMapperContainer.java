@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper;
+package de.adorsys.psd2.xs2a.service.mapper.psd2;
 
-import de.adorsys.psd2.model.Error400NGPIS;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -26,31 +25,35 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-import static de.adorsys.psd2.xs2a.service.mapper.SourceType.PIS;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_401;
 
 @Component
 @RequiredArgsConstructor
-public class ErrorMapperHolder {
-    private Map<ErrorKey, Function<MessageError, Error400NGPIS>> errorsContainer = new HashMap<>();
+public class ErrorMapperContainer {
+    private final Map<ErrorType, Psd2ErrorMapper> mapperContainer = new HashMap<>();
 
     private final PIS400ErrorMapper pis400ErrorMapper;
+    private final PIS401ErrorMapper pis401ErrorMapper;
 
     @PostConstruct
     public void fillErrorMapperContainer() {
-        errorsContainer.put(new ErrorKey(PIS, BAD_REQUEST), pis400ErrorMapper.getMapper());
+        mapperContainer.put(PIS_400, pis400ErrorMapper);
+        mapperContainer.put(PIS_401, pis401ErrorMapper);
     }
 
-    public Object getErrorBody(MessageError error, HttpStatus status) {
-        return errorsContainer.get(new ErrorKey(error.getSource(), status))
-                   .apply(error);
+    @SuppressWarnings("unchecked")
+    public ErrorBody getErrorBody(MessageError error) {
+        Psd2ErrorMapper psd2ErrorMapper = mapperContainer.get(error.getErrorType());
+
+        return new ErrorBody(psd2ErrorMapper.getMapper()
+                                 .apply(error), psd2ErrorMapper.getErrorStatus());
     }
 
     @Value
-    private class ErrorKey {
-        private SourceType sourceType;
+    public class ErrorBody {
+        private Object body;
         private HttpStatus status;
     }
 }

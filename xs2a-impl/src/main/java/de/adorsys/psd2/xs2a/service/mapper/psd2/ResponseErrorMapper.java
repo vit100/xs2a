@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper;
+package de.adorsys.psd2.xs2a.service.mapper.psd2;
 
-import de.adorsys.psd2.xs2a.service.message.MessageService;
+import de.adorsys.psd2.xs2a.exception.MessageError;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
-public abstract class Psd2ErrorMapper<T, R> {
-    protected final MessageService messageService;
+public class ResponseErrorMapper {
+    private final ErrorMapperContainer errorMapperHolder;
 
-    abstract Function<T, R> getMapper();
+    public ResponseEntity generateErrorResponse(MessageError error) {
+        ErrorMapperContainer.ErrorBody errorBody = errorMapperHolder.getErrorBody(error);
+        return new ResponseEntity<>(errorBody.getBody(), errorBody.getStatus());
+    }
 }

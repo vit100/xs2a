@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.exception;
+package de.adorsys.psd2.xs2a.service.mapper.psd2;
 
-import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
-import lombok.Getter;
+import de.adorsys.psd2.xs2a.service.message.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
-@Getter
-public class RestException extends RuntimeException {
-    private HttpStatus httpStatus;
-    private String message;
-    private MessageErrorCode messageErrorCode = MessageErrorCode.INTERNAL_SERVER_ERROR;
+import java.util.function.Function;
 
-    public RestException(HttpStatus httpStatus, String message) {
-        this.httpStatus = httpStatus;
-        this.message = message;
-    }
+@Component
+public abstract class Psd2ErrorMapper<T, R> {
+    @Autowired
+    protected MessageService messageService;
+
+    public abstract Function<T, R> getMapper();
+
+    public abstract HttpStatus getErrorStatus();
 }
