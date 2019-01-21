@@ -56,8 +56,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AisConsentServiceInternalTest {
@@ -276,6 +275,20 @@ public class AisConsentServiceInternalTest {
             .thenReturn(Optional.empty());
 
         aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID_NOT_EXIST);
+    }
+
+    @Test
+    public void findAndTerminateOldConsentsByNewConsentId_success_newConsentRecurringIndicatorIsFalse() {
+        when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID))
+            .thenReturn(Optional.of(aisConsentMocked));
+
+        when(aisConsentMocked.isOneAccessType())
+            .thenReturn(true);
+
+        boolean result = aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
+
+        assertFalse(result);
+        verify(aisConsentRepository, never()).findOldConsentsByNewConsentParams(any(), any(), any(), any(), any(), any());
     }
 
     @Test(expected = IllegalArgumentException.class)
