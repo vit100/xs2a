@@ -146,6 +146,10 @@ public class AisConsentServiceInternal implements AisConsentService {
         AisConsent newConsent = aisConsentRepository.findByExternalId(newConsentId)
                                     .orElseThrow(() -> new IllegalArgumentException("Wrong consent id: " + newConsentId));
 
+        if (newConsent.isOneAccessType()) {
+            return false;
+        }
+
         PsuData psuData = newConsent.getPsuData();
         TppInfoEntity tppInfo = newConsent.getTppInfo();
 
