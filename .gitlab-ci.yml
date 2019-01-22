@@ -264,7 +264,6 @@ push_dockerhub_nightly:
   stage: "build:image"
   only:
     - schedules
-    - TNE_RAT_automatic_deployments
   variables:
     DOCKER_TAG: nightly
   <<: *build_push_dockerhub
@@ -274,6 +273,7 @@ deploy_dev:
   <<: *helm_env_deploy
   only:
     - develop
+    - TNE_RAT_automatic_deployments
   variables:
     OPENSHIFT_NAMESPACE: "${DEV_NAMESPACE}"
     DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
@@ -288,6 +288,7 @@ deploy_demo:
   <<: *helm_env_deploy
   only:
     - master
+    - TNE_RAT_automatic_deployments
   variables:
     OPENSHIFT_NAMESPACE: "${DEMO_NAMESPACE}"
     DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
@@ -302,7 +303,6 @@ deploy_integ:
   <<: *helm_env_deploy
   only:
     - schedules
-    - TNE_RAT_automatic_deployments
   variables:
     OPENSHIFT_NAMESPACE: "${INTEG_NAMESPACE}"
     DOCKER_TAG: nightly
