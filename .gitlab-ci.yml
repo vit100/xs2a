@@ -248,7 +248,6 @@ push_dockerhub_master_develop:
   only:
     - develop
     - master
-    - TNE_RAT_automatic_deployments
   variables:
     DOCKER_TAG: ${CI_BUILD_REF_NAME}
   <<: *build_push_dockerhub
@@ -265,6 +264,7 @@ push_dockerhub_nightly:
   stage: "build:image"
   only:
     - schedules
+    - TNE_RAT_automatic_deployments
   variables:
     DOCKER_TAG: nightly
   <<: *build_push_dockerhub
@@ -274,14 +274,13 @@ deploy_dev:
   <<: *helm_env_deploy
   only:
     - develop
-    - TNE_RAT_automatic_deployments
   variables:
     OPENSHIFT_NAMESPACE: "${DEV_NAMESPACE}"
     DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
-    HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
+    HELM_RELEASE: "dev-psd2"
     HELM_VALUE: develop.yaml
   environment:
-    name: ${CI_COMMIT_REF_NAME}
+    name: dev
     url: ~
 
 deploy_demo:
@@ -292,10 +291,10 @@ deploy_demo:
   variables:
     OPENSHIFT_NAMESPACE: "${DEMO_NAMESPACE}"
     DOCKER_TAG: "${CI_COMMIT_REF_NAME}"
-    HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
+    HELM_RELEASE: "demo-psd2"
     HELM_VALUE: develop.yaml
   environment:
-    name: ${CI_COMMIT_REF_NAME}
+    name: demo
     url: ~
 
 deploy_integ:
@@ -303,10 +302,11 @@ deploy_integ:
   <<: *helm_env_deploy
   only:
     - schedules
+    - TNE_RAT_automatic_deployments
   variables:
     OPENSHIFT_NAMESPACE: "${INTEG_NAMESPACE}"
     DOCKER_TAG: nightly
-    HELM_RELEASE: "${CI_ENVIRONMENT_SLUG}-psd2"
+    HELM_RELEASE: "integ-psd2"
     HELM_VALUE: develop.yaml
   environment:
     name: integ
