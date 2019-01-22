@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a5b8c1c0-6738-49c9-8874-741462cee654",
+		"_postman_id": "9179959a-f5f9-42b6-8d1d-f9fe041da30e",
 		"name": "3_2 Payment cancellation redirect URL expiration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,7 +13,7 @@
 					"script": {
 						"id": "96d686a3-5f56-4cd2-b043-50dc3bf36d7c",
 						"exec": [
-							"const jsonData = pm.response.json();",
+							"const jsonData = pm.response.json().PaymentInitationRequestResponse201;",
 							"",
 							"pm.test(\"Status code is 201\", function () {",
 							"    pm.response.to.have.status(201);",
@@ -110,7 +110,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"endToEndIdentification\": \"RI-1234567890\",\n\"debtorAccount\": {\n  \"currency\": \"EUR\",\n  \"iban\": \"DE89370400440532013000\"\n },\n\"instructedAmount\": {\n  \"amount\": 1000,\n  \"currency\": \"EUR\"\n },\n\"creditorAccount\": {\n  \"currency\": \"EUR\",\n  \"iban\": \"DE89370400440532013000\"\n },\n\"creditorAgent\": \"Some AGENT\",\n\"creditorName\": \"Telekom\",\n \"creditorAddress\": {\n  \"buildingNumber\": \"123-34\",\n  \"city\": \"Nürnberg\",\n  \"country\": \"49\",\n  \"postalCode\": 90431,\n  \"street\": \"Herrnstraße\"\n },\n \"remittanceInformationUnstructured\": \"Ref. Number TELEKOM-1222\"\n }"
+					"raw": "{\n    \"endToEndIdentification\": \"WBG-123456789\",\n    \"debtorAccount\": {\n      \"currency\": \"EUR\",\n      \"iban\": \"DE38760700240320465700\"\n    },\n    \"instructedAmount\": {\n      \"currency\": \"EUR\",\n      \"amount\": \"20.00\"\n    },\n    \"creditorAccount\": {\n      \"currency\": \"EUR\",\n      \"iban\": \"DE15500105172295759744\"\n    },\n    \"creditorAgent\" : \"AAAADEBBXXX\",\n    \"creditorName\": \"WBG\",\n    \"creditorAddress\": {\n      \"buildingNumber\": \"56\",\n      \"city\": \"Nürnberg\",\n      \"country\": \"DE\",\n      \"postalCode\": \"90543\",\n      \"street\": \"WBG Straße\"\n    },\n    \"remittanceInformationUnstructured\": \"Ref. Number WBG-1222\"\n  }"
 				},
 				"url": {
 					"raw": "{{protocol}}://{{url_xs2a}}/v1/{{payment_service}}/{{payment_product}}",
@@ -190,9 +190,12 @@
 						"type": "text"
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_id}}",
+					"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_product}}/{{payment_id}}",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url_xs2a}}"
@@ -200,6 +203,7 @@
 					"path": [
 						"v1",
 						"payments",
+						"{{payment_product}}",
 						"{{payment_id}}"
 					]
 				}
@@ -207,14 +211,14 @@
 			"response": []
 		},
 		{
-			"name": "3. Start cancellation authorisation",
+			"name": "3. Srart cancellation authorisation",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "1eddaafd-18cd-4244-a860-794ddabe95a4",
 						"exec": [
-							"const jsonData = pm.response.json();",
+							"const jsonData = pm.response.json().StartScaprocessResponse;",
 							"",
 							"// const authorisationId = jsonData.links.startAuthorisationWithPsuAuthentication.split('/').pop();",
 							"const authorisationId = jsonData.links.scaStatus.split('/').pop();",
@@ -268,9 +272,12 @@
 						"value": "{{x_request_id}}"
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_id}}/cancellation-authorisations",
+					"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_product}}/{{payment_id}}/cancellation-authorisations",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url_xs2a}}"
@@ -278,6 +285,7 @@
 					"path": [
 						"v1",
 						"payments",
+						"{{payment_product}}",
 						"{{payment_id}}",
 						"cancellation-authorisations"
 					]
