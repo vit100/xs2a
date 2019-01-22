@@ -124,12 +124,12 @@ public class AisConsentController {
 
     @DeleteMapping(path = "/{consent-id}/old-consents")
     @ApiOperation(value = "Find old consents for current TPP and PSU and terminates them")
-    @ApiResponse(code = 200, message = "OK")
+    @ApiResponse(code = 204, message = "No Content")
     public ResponseEntity<Void> findAndTerminateOldConsentsByNewConsentId(
         @ApiParam(name = "consent-id", value = "The account consent identification assigned to the new account consent.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("consent-id") String consentId) {
         aisConsentService.findAndTerminateOldConsentsByNewConsentId(consentId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(path = "/{consent-id}/authorizations")
