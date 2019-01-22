@@ -151,10 +151,13 @@ public class InitiatePayments_explicitTest {
         httpHeadersExplicit.add("Content-Type", "application/json");
         httpHeadersExplicit.add("tpp-qwac-certificate", "qwac certificate");
         httpHeadersExplicit.add("X-Request-ID", "2f77a125-aa7a-45c0-b414-cea25a116035");
-        httpHeadersExplicit.add("PSU-ID", "aspsp2");
+        httpHeadersExplicit.add("PSU-ID", "PSU-123");
+        httpHeadersExplicit.add("PSU-ID-Type", "Some type");
+        httpHeadersExplicit.add("PSU-Corporate-ID", "Some corporate id");
+        httpHeadersExplicit.add("PSU-Corporate-ID-Type", "Some corporate id type");
         httpHeadersExplicit.add("PSU-IP-Address", "1.1.1.1");
 
-        // when Explicit auth mode we need to set 'true' and value 'signingBasketSupported' in profile also should be 'true'
+        // when we use Explicit auth mode we need to set 'true' and value 'signingBasketSupported' in profile also should be 'true'
         httpHeadersExplicit.add("TPP-Explicit-Authorisation-Preferred", "true");
     }
 

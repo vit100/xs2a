@@ -76,7 +76,6 @@ public class PaymentControllerTest {
     private static String ENCRYPT_PAYMENT_ID = "DfLtDOgo1tTK6WQlHlb-TMPL2pkxRlhZ4feMa5F4tOWwNN45XLNAVfWwoZUKlQwb_=_bS6p6XvTWI";
     private static String AUTHORISATION_ID = "e8356ea7-8e3e-474f-b5ea-2b89346cb2dc";
     private final TppInfo TPP_INFO = TppInfoBuilder.buildTppInfo();
-    private HttpHeaders httpHeadersImplicit = new HttpHeaders();
     private HttpHeaders httpHeadersExplicit = new HttpHeaders();
 
     @Autowired
@@ -108,13 +107,16 @@ public class PaymentControllerTest {
         given(eventServiceEncrypted.recordEvent(any(Event.class)))
             .willReturn(true);
 
-        httpHeadersImplicit.add("Content-Type", "application/json");
-        httpHeadersImplicit.add("tpp-qwac-certificate", "qwac certificate");
-        httpHeadersImplicit.add("X-Request-ID", "2f77a125-aa7a-45c0-b414-cea25a116035");
-        httpHeadersImplicit.add("PSU-ID", "aspsp2");
-        httpHeadersImplicit.add("PSU-IP-Address", "1.1.1.1");
+        httpHeadersExplicit.add("Content-Type", "application/json");
+        httpHeadersExplicit.add("tpp-qwac-certificate", "qwac certificate");
+        httpHeadersExplicit.add("X-Request-ID", "2f77a125-aa7a-45c0-b414-cea25a116035");
+        httpHeadersExplicit.add("PSU-ID", "PSU-123");
+        httpHeadersExplicit.add("PSU-ID-Type", "Some type");
+        httpHeadersExplicit.add("PSU-Corporate-ID", "Some corporate id");
+        httpHeadersExplicit.add("PSU-Corporate-ID-Type", "Some corporate id type");
+        httpHeadersExplicit.add("PSU-IP-Address", "1.1.1.1");
 
-        httpHeadersExplicit = httpHeadersImplicit;
+        // when we use Explicit auth mode we need to set 'true' and value 'signingBasketSupported' in profile also should be 'true'
         httpHeadersExplicit.add("TPP-Explicit-Authorisation-Preferred", "true");
     }
 
