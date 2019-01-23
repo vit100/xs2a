@@ -109,7 +109,7 @@ public class InitiatePayments_successfulTest {
     private final TppInfo TPP_INFO = TppInfoBuilder.buildTppInfo();
     private HttpHeaders httpHeadersImplicit = new HttpHeaders();
     private HttpHeaders httpHeadersExplicit = new HttpHeaders();
-    MultiKeyMap responseMap = new MultiKeyMap();
+    private MultiKeyMap responseMap = new MultiKeyMap();
 
     @Autowired
     private MockMvc mockMvc;
