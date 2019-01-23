@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "8c214568-b08c-476c-99cf-6a945b70a755",
-		"name": "3_1 Obsoleting",
+		"_postman_id": "fcd4ee85-f4ed-49d4-a2e8-d6df0c70753d",
+		"name": "Obsoleting",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -152,7 +152,10 @@
 								"value": "{{psu_id_multiple}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{protocol}}://{{url_xs2a}}/v1/consents/{{consent_id}}/authorisations",
 							"protocol": "{{protocol}}",
@@ -324,7 +327,7 @@
 									"    pm.response.to.have.status(201);",
 									"});",
 									"",
-									"const jsonData = pm.response.json();",
+									"const jsonData = pm.response.json().PaymentInitationRequestResponse201;",
 									"",
 									"pm.globals.set(\"payment_id\", jsonData.paymentId);"
 								],
@@ -374,7 +377,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"endToEndIdentification\": \"RI-1234567890\",\n\"debtorAccount\": {\n  \"currency\": \"EUR\",\n  \"iban\": \"DE89370400440532013000\"\n },\n\"instructedAmount\": {\n  \"amount\": 1000,\n  \"currency\": \"EUR\"\n },\n\"creditorAccount\": {\n  \"currency\": \"EUR\",\n  \"iban\": \"DE89370400440532013000\"\n },\n\"creditorAgent\": \"Some AGENT\",\n\"creditorName\": \"Telekom\",\n \"creditorAddress\": {\n  \"buildingNumber\": \"123-34\",\n  \"city\": \"Nürnberg\",\n  \"country\": \"49\",\n  \"postalCode\": 90431,\n  \"street\": \"Herrnstraße\"\n },\n \"remittanceInformationUnstructured\": \"Ref. Number TELEKOM-1222\"\n }"
+							"raw": "{\n    \"endToEndIdentification\": \"WBG-123456789\",\n    \"debtorAccount\": {\n      \"currency\": \"EUR\",\n      \"iban\": \"DE52500105173911841934\"\n    },\n    \"instructedAmount\": {\n      \"currency\": \"EUR\",\n      \"amount\": \"20.00\"\n    },\n    \"creditorAccount\": {\n      \"currency\": \"EUR\",\n      \"iban\": \"DE15500105172295759744\"\n    },\n    \"creditorAgent\" : \"AAAADEBBXXX\",\n    \"creditorName\": \"WBG\",\n    \"creditorAddress\": {\n      \"buildingNumber\": \"56\",\n      \"city\": \"Nürnberg\",\n      \"country\": \"DE\",\n      \"postalCode\": \"90543\",\n      \"street\": \"WBG Straße\"\n    },\n    \"remittanceInformationUnstructured\": \"Ref. Number WBG-1222\"\n  }"
 						},
 						"url": {
 							"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/sepa-credit-transfers",
@@ -403,7 +406,7 @@
 									"    pm.response.to.have.status(201);",
 									"});",
 									"",
-									"const jsonData = pm.response.json();",
+									"const jsonData = pm.response.json().StartScaprocessResponse;",
 									"",
 									"const authorisationId = jsonData.links.startAuthorisationWithPsuAuthentication.split('/').pop();",
 									"pm.globals.set(\"authorisation_id\", authorisationId);"
@@ -448,7 +451,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_id}}/authorisations",
+							"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_product}}/{{payment_id}}/authorisations",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{url_xs2a}}"
@@ -456,6 +459,7 @@
 							"path": [
 								"v1",
 								"payments",
+								"{{payment_product}}",
 								"{{payment_id}}",
 								"authorisations"
 							]
@@ -503,10 +507,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"psuData\":{\n   \"password\":\"zzz\"\n}}"
+							"raw": "{\n\t\"psuData\": {\n\t\t\"password\": \"{{psu_id_password}}\"\n\t}\n}"
 						},
 						"url": {
-							"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_id}}/authorisations/{{authorisation_id}}",
+							"raw": "{{protocol}}://{{url_xs2a}}/v1/payments/{{payment_product}}/{{payment_id}}/authorisations/{{authorisation_id}}",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{url_xs2a}}"
@@ -514,6 +518,7 @@
 							"path": [
 								"v1",
 								"payments",
+								"{{payment_product}}",
 								"{{payment_id}}",
 								"authorisations",
 								"{{authorisation_id}}"
@@ -548,7 +553,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{protocol}}://{{url_xs2a}}/v1/{{payment_service}}/{{payment_id}}/status",
+							"raw": "{{protocol}}://{{url_xs2a}}/v1/{{payment_service}}/{{payment_product}}/{{payment_id}}/status",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{url_xs2a}}"
@@ -556,6 +561,7 @@
 							"path": [
 								"v1",
 								"{{payment_service}}",
+								"{{payment_product}}",
 								"{{payment_id}}",
 								"status"
 							]
@@ -582,7 +588,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{protocol}}://{{url_xs2a}}/v1/{{payment_service}}/{{payment_id}}/authorisations/{{authorisation_id}}",
+							"raw": "{{protocol}}://{{url_xs2a}}/v1/{{payment_service}}/{{payment_product}}/{{payment_id}}/authorisations/{{authorisation_id}}",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{url_xs2a}}"
@@ -590,6 +596,7 @@
 							"path": [
 								"v1",
 								"{{payment_service}}",
+								"{{payment_product}}",
 								"{{payment_id}}",
 								"authorisations",
 								"{{authorisation_id}}"
