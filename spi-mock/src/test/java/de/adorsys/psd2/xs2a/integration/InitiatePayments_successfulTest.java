@@ -39,7 +39,7 @@ import de.adorsys.psd2.xs2a.integration.builder.payment.AspspBulkPaymentBuilder;
 import de.adorsys.psd2.xs2a.integration.builder.payment.AspspPeriodicPaymentBuilder;
 import de.adorsys.psd2.xs2a.integration.builder.payment.AspspSinglePaymentBuilder;
 import de.adorsys.psd2.xs2a.service.TppService;
-import javafx.util.Pair;
+import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +56,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -83,7 +84,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     Xs2aEndpointPathConstant.class,
     Xs2aInterfaceConfig.class
 })
-public class InitiatePayments_implicitTest {
+public class InitiatePayments_successfulTest {
     private static final Charset UTF_8 = Charset.forName("utf-8");
     private static final String SINGLE_PAYMENT_REQUEST_JSON_PATH = "/json/payment/req/SinglePaymentInitiate_request.json";
     private static final String PERIODIC_PAYMENT_REQUEST_JSON_PATH = "/json/payment/req/PeriodicPaymentInitiate_request.json";
@@ -107,7 +108,8 @@ public class InitiatePayments_implicitTest {
 
     private final TppInfo TPP_INFO = TppInfoBuilder.buildTppInfo();
     private HttpHeaders httpHeadersImplicit = new HttpHeaders();
-    HashMap<Pair<PaymentType, ScaApproach>, String> responseMap = new HashMap<>();
+    private HttpHeaders httpHeadersExplicit = new HttpHeaders();
+    MultiKeyMap responseMap = new MultiKeyMap();
 
     @Autowired
     private MockMvc mockMvc;
@@ -132,15 +134,37 @@ public class InitiatePayments_implicitTest {
 
     @Before
     public void init() {
-        // common actions for all tests
-        responseMap.put(new Pair(PaymentType.SINGLE, ScaApproach.REDIRECT), "/json/payment/res/implicit/SinglePaymentInitiate_redirect_implicit_response.json");
-        responseMap.put(new Pair(PaymentType.SINGLE, ScaApproach.EMBEDDED), "/json/payment/res/implicit/SinglePaymentInitiate_embedded_implicit_response.json");
+        HashMap<String, String> headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "application/json");
+        headerMap.put("tpp-qwac-certificate", "qwac certificate");
+        headerMap.put("X-Request-ID", "2f77a125-aa7a-45c0-b414-cea25a116035");
+        headerMap.put("PSU-ID", "PSU-123");
+        headerMap.put("PSU-ID-Type", "Some type");
+        headerMap.put("PSU-Corporate-ID", "Some corporate id");
+        headerMap.put("PSU-Corporate-ID-Type", "Some corporate id type");
+        headerMap.put("PSU-IP-Address", "1.1.1.1");
 
-        responseMap.put(new Pair(PaymentType.PERIODIC, ScaApproach.REDIRECT), "/json/payment/res/implicit/PeriodicPaymentInitiate_redirect_implicit_response.json");
-        responseMap.put(new Pair(PaymentType.PERIODIC, ScaApproach.EMBEDDED), "/json/payment/res/implicit/PeriodicPaymentInitiate_embedded_implicit_response.json");
+        httpHeadersImplicit.setAll(headerMap);
+        // when Implicit auth mode we need to set 'false'
+        httpHeadersImplicit.add("TPP-Implicit-Authorisation-Preferred", "false");
 
-        responseMap.put(new Pair(PaymentType.BULK, ScaApproach.REDIRECT), "/json/payment/res/implicit/BulkPaymentInitiate_redirect_implicit_response.json");
-        responseMap.put(new Pair(PaymentType.BULK, ScaApproach.EMBEDDED), "/json/payment/res/implicit/BulkPaymentInitiate_embedded_implicit_response.json");
+        httpHeadersExplicit.setAll(headerMap);
+        // when we use Explicit auth mode we need to set 'true' and value 'signingBasketSupported' in profile also should be 'true'
+        httpHeadersExplicit.add("TPP-Explicit-Authorisation-Preferred", "true");
+
+        responseMap.put(httpHeadersImplicit, PaymentType.SINGLE, ScaApproach.REDIRECT, "/json/payment/res/implicit/SinglePaymentInitiate_redirect_implicit_response.json");
+        responseMap.put(httpHeadersImplicit, PaymentType.SINGLE, ScaApproach.EMBEDDED, "/json/payment/res/implicit/SinglePaymentInitiate_embedded_implicit_response.json");
+        responseMap.put(httpHeadersImplicit, PaymentType.PERIODIC, ScaApproach.REDIRECT, "/json/payment/res/implicit/PeriodicPaymentInitiate_redirect_implicit_response.json");
+        responseMap.put(httpHeadersImplicit, PaymentType.PERIODIC, ScaApproach.EMBEDDED, "/json/payment/res/implicit/PeriodicPaymentInitiate_embedded_implicit_response.json");
+        responseMap.put(httpHeadersImplicit, PaymentType.BULK, ScaApproach.REDIRECT, "/json/payment/res/implicit/BulkPaymentInitiate_redirect_implicit_response.json");
+        responseMap.put(httpHeadersImplicit, PaymentType.BULK, ScaApproach.EMBEDDED, "/json/payment/res/implicit/BulkPaymentInitiate_embedded_implicit_response.json");
+
+        responseMap.put(httpHeadersExplicit, PaymentType.SINGLE, ScaApproach.REDIRECT, "/json/payment/res/explicit/SinglePaymentInitiateExplicit_response.json");
+        responseMap.put(httpHeadersExplicit, PaymentType.SINGLE, ScaApproach.EMBEDDED, "/json/payment/res/explicit/SinglePaymentInitiateExplicit_response.json");
+        responseMap.put(httpHeadersExplicit, PaymentType.PERIODIC, ScaApproach.REDIRECT, "/json/payment/res/explicit/PeriodicPaymentInitiateExplicit_response.json");
+        responseMap.put(httpHeadersExplicit, PaymentType.PERIODIC, ScaApproach.EMBEDDED, "/json/payment/res/explicit/PeriodicPaymentInitiateExplicit_response.json");
+        responseMap.put(httpHeadersExplicit, PaymentType.BULK, ScaApproach.REDIRECT, "/json/payment/res/explicit/BulkPaymentInitiateExplicit_response.json");
+        responseMap.put(httpHeadersExplicit, PaymentType.BULK, ScaApproach.EMBEDDED, "/json/payment/res/explicit/BulkPaymentInitiateExplicit_response.json");
 
         given(aspspProfileService.getAspspSettings())
             .willReturn(AspspSettingsBuilder.buildAspspSettings());
@@ -159,49 +183,73 @@ public class InitiatePayments_implicitTest {
 
         given(pisCommonPaymentServiceEncrypted.createAuthorization(ENCRYPT_PAYMENT_ID, CmsAuthorisationType.CREATED, PsuIdDataBuilder.buildPsuIdData()))
             .willReturn(Optional.of(new CreatePisAuthorisationResponse(AUTHORISATION_ID)));
+    }
 
-        httpHeadersImplicit.add("Content-Type", "application/json");
-        httpHeadersImplicit.add("tpp-qwac-certificate", "qwac certificate");
-        httpHeadersImplicit.add("X-Request-ID", "2f77a125-aa7a-45c0-b414-cea25a116035");
-        httpHeadersImplicit.add("PSU-ID", "PSU-123");
-        httpHeadersImplicit.add("PSU-ID-Type", "Some type");
-        httpHeadersImplicit.add("PSU-Corporate-ID", "Some corporate id");
-        httpHeadersImplicit.add("PSU-Corporate-ID-Type", "Some corporate id type");
-        httpHeadersImplicit.add("PSU-IP-Address", "1.1.1.1");
-        httpHeadersImplicit.add("TPP-Implicit-Authorisation-Preferred", "false"); // when Implicit auth mode we need to set 'false'
+    // =============== IMPLICIT MODE
+    //
+    @Test
+    public void initiateSinglePayment_implicit_embedded_successful() throws Exception {
+        initiateSinglePayment_successful(httpHeadersImplicit, ScaApproach.EMBEDDED);
     }
 
     @Test
-    public void initiateSinglePayment_embedded_successful() throws Exception {
-        initiateSinglePayment_successful(ScaApproach.EMBEDDED);
+    public void initiateSinglePayment_implicit_redirect_successful() throws Exception {
+        initiateSinglePayment_successful(httpHeadersImplicit, ScaApproach.REDIRECT);
     }
 
     @Test
-    public void initiateSinglePayment_redirect_successful() throws Exception {
-        initiateSinglePayment_successful(ScaApproach.REDIRECT);
+    public void initiatePeriodicPayment_implicit_embedded_successful() throws Exception {
+        initiatePeriodicPayment_successful(httpHeadersImplicit, ScaApproach.EMBEDDED);
     }
 
     @Test
-    public void initiatePeriodicPayment_embedded_successful() throws Exception {
-        initiatePeriodicPayment_successful(ScaApproach.EMBEDDED);
+    public void initiatePeriodicPayment_implicit_redirect_successful() throws Exception {
+        initiatePeriodicPayment_successful(httpHeadersImplicit, ScaApproach.REDIRECT);
     }
 
     @Test
-    public void initiatePeriodicPayment_redirect_successful() throws Exception {
-        initiatePeriodicPayment_successful(ScaApproach.REDIRECT);
+    public void initiateBulkPayment_implicit_embedded_successful() throws Exception {
+        initiateBulkPayment_successful(httpHeadersImplicit, ScaApproach.EMBEDDED);
     }
 
     @Test
-    public void initiateBulkPayment_embedded_successful() throws Exception {
-        initiateBulkPayment_successful(ScaApproach.EMBEDDED);
+    public void initiateBulkPayment_implicit_redirect_successful() throws Exception {
+        initiateBulkPayment_successful(httpHeadersImplicit, ScaApproach.REDIRECT);
+    }
+
+    // =============== EXPLICIT MODE
+    //
+    @Test
+    public void initiateSinglePayment_explicit_embedded_successful() throws Exception {
+        initiateSinglePayment_successful(httpHeadersExplicit, ScaApproach.EMBEDDED);
     }
 
     @Test
-    public void initiateBulkPayment_redirect_successful() throws Exception {
-        initiateBulkPayment_successful(ScaApproach.REDIRECT);
+    public void initiateSinglePayment_explicit_redirect_successful() throws Exception {
+        initiateSinglePayment_successful(httpHeadersExplicit, ScaApproach.REDIRECT);
     }
 
-    private void initiateSinglePayment_successful(ScaApproach scaApproach) throws Exception {
+    @Test
+    public void initiatePeriodicPayment_explicit_embedded_successful() throws Exception {
+        initiatePeriodicPayment_successful(httpHeadersExplicit, ScaApproach.EMBEDDED);
+    }
+
+    @Test
+    public void initiatePeriodicPayment_explicit_redirect_successful() throws Exception {
+        initiatePeriodicPayment_successful(httpHeadersExplicit, ScaApproach.REDIRECT);
+    }
+
+    @Test
+    public void initiateBulkPayment_explicit_embedded_successful() throws Exception {
+        initiateBulkPayment_successful(httpHeadersExplicit, ScaApproach.EMBEDDED);
+    }
+
+    @Test
+    public void initiateBulkPayment_explicit_redirect_successful() throws Exception {
+        initiateBulkPayment_successful(httpHeadersExplicit, ScaApproach.REDIRECT);
+    }
+
+    private void initiateSinglePayment_successful(HttpHeaders headers, ScaApproach scaApproach) throws Exception {
         // Given
         given(aspspProfileService.getScaApproach()).willReturn(scaApproach);
         AspspSinglePayment testPayment = new AspspSinglePaymentBuilder().buildAspspSinglePayment(PAYMENT_ID, DEB_IBAN, CRED_IBAN, CURRENCY, AMOUNT_OPERATION_113);
@@ -211,8 +259,8 @@ public class InitiatePayments_implicitTest {
         given(consentRestTemplate.exchange(any(String.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class), any(String.class)))
             .willReturn(ResponseEntity.ok(Void.class));
 
-        MockHttpServletRequestBuilder requestBuilder = post(UrlBuilder.buildInitiatePaymentUrl(SINGLE_PAYMENT_TYPE.getValue(), SEPA_PAYMENT_PRODUCT));
-        requestBuilder.headers(httpHeadersImplicit);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(UrlBuilder.buildInitiatePaymentUrl(SINGLE_PAYMENT_TYPE.getValue(), SEPA_PAYMENT_PRODUCT));
+        requestBuilder.headers(headers);
         requestBuilder.content(IOUtils.resourceToString(SINGLE_PAYMENT_REQUEST_JSON_PATH, UTF_8));
 
         // When
@@ -221,10 +269,10 @@ public class InitiatePayments_implicitTest {
         //Then
         resultActions.andExpect(status().isCreated())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(content().json(IOUtils.resourceToString(responseMap.get(new Pair<>(PaymentType.SINGLE, scaApproach)), UTF_8)));
+            .andExpect(content().json(IOUtils.resourceToString((String) responseMap.get(headers, PaymentType.SINGLE, scaApproach), UTF_8)));
     }
 
-    private void initiatePeriodicPayment_successful(ScaApproach scaApproach) throws Exception {
+    private void initiatePeriodicPayment_successful(HttpHeaders headers, ScaApproach scaApproach) throws Exception {
         // Given
         given(aspspProfileService.getScaApproach()).willReturn(scaApproach);
         AspspPeriodicPayment testPayment = new AspspPeriodicPaymentBuilder().buildAspspPeriodicPayment(PAYMENT_ID, DEB_IBAN, CRED_IBAN, CURRENCY, AMOUNT_OPERATION_113);
@@ -235,7 +283,7 @@ public class InitiatePayments_implicitTest {
             .willReturn(ResponseEntity.ok(Void.class));
 
         MockHttpServletRequestBuilder requestBuilder = post(UrlBuilder.buildInitiatePaymentUrl(PERIODIC_PAYMENT_TYPE.getValue(), SEPA_PAYMENT_PRODUCT));
-        requestBuilder.headers(httpHeadersImplicit);
+        requestBuilder.headers(headers);
         requestBuilder.content(IOUtils.resourceToString(PERIODIC_PAYMENT_REQUEST_JSON_PATH, UTF_8));
 
         // When
@@ -244,10 +292,10 @@ public class InitiatePayments_implicitTest {
         //Then
         resultActions.andExpect(status().isCreated())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(content().json(IOUtils.resourceToString(responseMap.get(new Pair<>(PaymentType.PERIODIC, scaApproach)), UTF_8)));
+            .andExpect(content().json(IOUtils.resourceToString((String) responseMap.get(headers, PaymentType.PERIODIC, scaApproach), UTF_8)));
     }
 
-    private void initiateBulkPayment_successful(ScaApproach scaApproach) throws Exception {
+    private void initiateBulkPayment_successful(HttpHeaders headers, ScaApproach scaApproach) throws Exception {
         // Given
         HashMap<String, BigDecimal> amountMap = new HashMap<>();
         amountMap.put("DE21500105176194357737", new BigDecimal("666"));
@@ -262,7 +310,7 @@ public class InitiatePayments_implicitTest {
             .willReturn(ResponseEntity.ok(Void.class));
 
         MockHttpServletRequestBuilder requestBuilder = post(UrlBuilder.buildInitiatePaymentUrl(BULK_PAYMENT_TYPE.getValue(), SEPA_PAYMENT_PRODUCT));
-        requestBuilder.headers(httpHeadersImplicit);
+        requestBuilder.headers(headers);
         requestBuilder.content(IOUtils.resourceToString(BULK_PAYMENT_REQUEST_JSON_PATH, UTF_8));
 
         // When
@@ -271,7 +319,7 @@ public class InitiatePayments_implicitTest {
         //Then
         resultActions.andExpect(status().isCreated())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(content().json(IOUtils.resourceToString(responseMap.get(new Pair<>(PaymentType.BULK, scaApproach)), UTF_8)));
+            .andExpect(content().json(IOUtils.resourceToString((String) responseMap.get(headers, PaymentType.BULK, scaApproach), UTF_8)));
     }
 }
 
