@@ -89,7 +89,7 @@ public class CreateCommonPaymentService implements CreatePaymentService<CommonPa
             Optional<Xs2aCreatePisAuthorisationResponse> consentAuthorisation = pisScaAuthorisationService.createCommonPaymentAuthorisation(externalPaymentId, payment.getPaymentType(), paymentInitiationParameters.getPsuData());
             if (!consentAuthorisation.isPresent()) {
                 return ResponseObject.<PaymentInitiationResponse>builder()
-                           .fail(new MessageError(PAYMENT_FAILED))
+                           .fail(new MessageError(PIS_400, new TppMessageInformation(ERROR, PAYMENT_FAILED)))
                            .build();
             }
 

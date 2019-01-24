@@ -94,7 +94,7 @@ public class CreateSinglePaymentService implements CreatePaymentService<SinglePa
             Optional<Xs2aCreatePisAuthorisationResponse> consentAuthorisation = pisScaAuthorisationService.createCommonPaymentAuthorisation(externalPaymentId, PaymentType.SINGLE, psuData);
             if (!consentAuthorisation.isPresent()) {
                 return ResponseObject.<SinglePaymentInitiationResponse>builder()
-                           .fail(new MessageError(PAYMENT_FAILED))
+                           .fail(new MessageError(PIS_400, new TppMessageInformation(ERROR, PAYMENT_FAILED)))
                            .build();
             }
             Xs2aCreatePisAuthorisationResponse authorisationResponse = consentAuthorisation.get();
