@@ -25,6 +25,7 @@ import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
+import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationRequest;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationResponse;
 import de.adorsys.psd2.xs2a.domain.fund.PiisConsentValidationResult;
@@ -49,8 +50,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
-import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_404;
+import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.*;
+import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIIS_400;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIIS_404;
 
 @Slf4j
 @Service
@@ -83,7 +86,7 @@ public class FundsConfirmationService {
             if (validationResult.hasError()) {
                 ErrorHolder errorHolder = validationResult.getErrorHolder();
                 return ResponseObject.<FundsConfirmationResponse>builder()
-                           .fail(new MessageError(errorHolder))
+                           .fail(new MessageError(PIIS_400, new TppMessageInformation(ERROR, FORMAT_ERROR)))
                            .build();
             }
 
@@ -95,9 +98,9 @@ public class FundsConfirmationService {
         FundsConfirmationResponse response = executeRequest(psuIdData, consent, request, aspspConsentData);
 
         if (response.hasError()) {
-            ErrorHolder errorHolder = response.getErrorHolder();
+            //ErrorHolder errorHolder = response.getErrorHolder();
             return ResponseObject.<FundsConfirmationResponse>builder()
-                       .fail(new MessageError(errorHolder))
+                       .fail(new MessageError(PIIS_404, new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_404)))
                        .build();
         }
 
