@@ -19,5 +19,6 @@ package de.adorsys.psd2.xs2a.service.mapper.psd2;
 public enum ServiceType {
     AIS,
     PIS,
-    PIIS
+    PIIS,
+    SB
 }

@@ -29,12 +29,6 @@ public class SpiErrorMapper {
     private final SpiResponseStatusToXs2aMessageErrorCodeMapper spiToXs2aMessageErrorCodeMapper;
     private final SpiResponseToServiceAndErrorTypeMapper spiToServiceAndErrorTypeMapper;
 
-    public ErrorHolder mapToErrorHolder(SpiResponse<?> spiResponse) {
-        return ErrorHolder.builder(spiToXs2aMessageErrorCodeMapper.mapToMessageErrorCode(spiResponse.getResponseStatus()))
-                   .messages(spiResponse.getMessages())
-                   .build();
-    }
-
     public ErrorHolder mapToErrorHolder(SpiResponse<?> spiResponse, ServiceType serviceType) {
         SpiResponseStatus responseStatus = spiResponse.getResponseStatus();
         return ErrorHolder.builder(spiToXs2aMessageErrorCodeMapper.mapToMessageErrorCode(responseStatus))

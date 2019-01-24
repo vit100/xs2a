@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public enum MessageErrorCode {
-    // TODO remove status code
     CERTIFICATE_INVALID(401),  // "The contents of the signature/corporate seal certificate are not matching PSD2 general PSD2 or attribute requirements
     CERTIFICATE_EXPIRED(401),  //Signature/corporate seal certificate is expired
     CERTIFICATE_BLOCKED(401),  //Signature/corporate seal certificate has been blocked by the ASPSP
@@ -131,6 +130,7 @@ public enum MessageErrorCode {
     INTERNAL_SERVER_ERROR(500),
     UNAUTHORIZED(401),
     CONTENT_TYPE_NOT_SUPPORTED(406),
+    UNSUPPORTED_MEDIA_TYPE(415)
     ;
 
     private static Map<String, MessageErrorCode> container = new HashMap<>();
