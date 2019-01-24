@@ -50,7 +50,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.*;
+import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
+import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_404;
 import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIIS_400;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIIS_404;
@@ -86,7 +87,7 @@ public class FundsConfirmationService {
             if (validationResult.hasError()) {
                 ErrorHolder errorHolder = validationResult.getErrorHolder();
                 return ResponseObject.<FundsConfirmationResponse>builder()
-                           .fail(new MessageError(PIIS_400, new TppMessageInformation(ERROR, FORMAT_ERROR)))
+                           .fail(new MessageError(errorHolder.getErrorType(), new TppMessageInformation(ERROR, errorHolder.getErrorCode(), errorHolder.getMessage())))
                            .build();
             }
 
@@ -98,9 +99,9 @@ public class FundsConfirmationService {
         FundsConfirmationResponse response = executeRequest(psuIdData, consent, request, aspspConsentData);
 
         if (response.hasError()) {
-            //ErrorHolder errorHolder = response.getErrorHolder();
+            ErrorHolder errorHolder = response.getErrorHolder();
             return ResponseObject.<FundsConfirmationResponse>builder()
-                       .fail(new MessageError(PIIS_404, new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_404)))
+                       .fail(new MessageError(errorHolder.getErrorType(), new TppMessageInformation(ERROR, errorHolder.getErrorCode(), errorHolder.getMessage())))
                        .build();
         }
 
@@ -114,7 +115,7 @@ public class FundsConfirmationService {
 
         if (selector == null) {
             log.warn("No account identifier in the request {}", accountReference);
-            return new PiisConsentValidationResult(ErrorHolder.builder(FORMAT_ERROR).build());
+            return new PiisConsentValidationResult(ErrorHolder.builder(FORMAT_ERROR).errorType(PIIS_400).build());
         }
 
         List<PiisConsent> response = piisConsentService.getPiisConsentListByAccountIdentifier(accountReference.getCurrency(),
@@ -143,7 +144,7 @@ public class FundsConfirmationService {
         }
 
         if (fundsSufficientCheck.hasError()) {
-            return new FundsConfirmationResponse(ErrorHolder.builder(RESOURCE_UNKNOWN_404).build());
+            return new FundsConfirmationResponse(ErrorHolder.builder(RESOURCE_UNKNOWN_404).errorType(PIIS_404).build());
         }
 
         return spiToXs2aFundsConfirmationMapper.mapToFundsConfirmationResponse(fundsSufficientCheck.getPayload());
