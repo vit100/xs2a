@@ -90,23 +90,24 @@ public class InitiatePayments_successfulTest {
     private static final String PERIODIC_PAYMENT_REQUEST_JSON_PATH = "/json/payment/req/PeriodicPaymentInitiate_request.json";
     private static final String BULK_PAYMENT_REQUEST_JSON_PATH = "/json/payment/req/BulkPaymentInitiate_request.json";
 
-    private static PaymentType SINGLE_PAYMENT_TYPE = PaymentType.SINGLE;
-    private static PaymentType PERIODIC_PAYMENT_TYPE = PaymentType.PERIODIC;
-    private static PaymentType BULK_PAYMENT_TYPE = PaymentType.BULK;
+    private static final PaymentType SINGLE_PAYMENT_TYPE = PaymentType.SINGLE;
+    private static final PaymentType PERIODIC_PAYMENT_TYPE = PaymentType.PERIODIC;
+    private static final PaymentType BULK_PAYMENT_TYPE = PaymentType.BULK;
 
-    private static String SEPA_PAYMENT_PRODUCT = "sepa-credit-transfers";
+    private static final String SEPA_PAYMENT_PRODUCT = "sepa-credit-transfers";
 
-    private static String ENCRYPT_PAYMENT_ID = "DfLtDOgo1tTK6WQlHlb-TMPL2pkxRlhZ4feMa5F4tOWwNN45XLNAVfWwoZUKlQwb_=_bS6p6XvTWI";
-    private static String PAYMENT_ID = "5c408672d3121704efe90394";
+    private static final String ENCRYPT_PAYMENT_ID = "DfLtDOgo1tTK6WQlHlb-TMPL2pkxRlhZ4feMa5F4tOWwNN45XLNAVfWwoZUKlQwb_=_bS6p6XvTWI";
+    private static final String PAYMENT_ID = "5c408672d3121704efe90394";
     private static final String ASPSP_ACCOUNT_ID = "33333-33333";
-    private static String AUTHORISATION_ID = "e8356ea7-8e3e-474f-b5ea-2b89346cb2dc";
+    private static final String AUTHORISATION_ID = "e8356ea7-8e3e-474f-b5ea-2b89346cb2dc";
 
     private static final Currency CURRENCY = Currency.getInstance("EUR");
     private static final BigDecimal AMOUNT_OPERATION_113 = new BigDecimal("113");
     private static final String DEB_IBAN = "LU280019400644750000";
     private static final String CRED_IBAN = "DE89370400440532013000";
 
-    private final TppInfo TPP_INFO = TppInfoBuilder.buildTppInfo();
+    private static final TppInfo TPP_INFO = TppInfoBuilder.buildTppInfo();
+
     private HttpHeaders httpHeadersImplicit = new HttpHeaders();
     private HttpHeaders httpHeadersExplicit = new HttpHeaders();
     private MultiKeyMap responseMap = new MultiKeyMap();
@@ -177,7 +178,7 @@ public class InitiatePayments_successfulTest {
         given(eventServiceEncrypted.recordEvent(any(Event.class)))
             .willReturn(true);
 
-        PisPaymentInfo pisPaymentInfo = new PisPaymentInfoBuilder().buildPisPaymentInfo(SEPA_PAYMENT_PRODUCT, SINGLE_PAYMENT_TYPE, ASPSP_ACCOUNT_ID);
+        PisPaymentInfo pisPaymentInfo = PisPaymentInfoBuilder.buildPisPaymentInfo(SEPA_PAYMENT_PRODUCT, SINGLE_PAYMENT_TYPE, ASPSP_ACCOUNT_ID);
         given(pisCommonPaymentServiceEncrypted.createCommonPayment(pisPaymentInfo))
             .willReturn(Optional.of(new CreatePisCommonPaymentResponse(ENCRYPT_PAYMENT_ID)));
 
@@ -252,7 +253,7 @@ public class InitiatePayments_successfulTest {
     private void initiateSinglePayment_successful(HttpHeaders headers, ScaApproach scaApproach) throws Exception {
         // Given
         given(aspspProfileService.getScaApproach()).willReturn(scaApproach);
-        AspspSinglePayment testPayment = new AspspSinglePaymentBuilder().buildAspspSinglePayment(PAYMENT_ID, DEB_IBAN, CRED_IBAN, CURRENCY, AMOUNT_OPERATION_113);
+        AspspSinglePayment testPayment = AspspSinglePaymentBuilder.buildAspspSinglePayment(PAYMENT_ID, DEB_IBAN, CRED_IBAN, CURRENCY, AMOUNT_OPERATION_113);
 
         given(aspspRestTemplate.postForEntity(any(String.class), any(AspspSinglePayment.class), any(Class.class)))
             .willReturn(ResponseEntity.ok(testPayment));
@@ -275,7 +276,7 @@ public class InitiatePayments_successfulTest {
     private void initiatePeriodicPayment_successful(HttpHeaders headers, ScaApproach scaApproach) throws Exception {
         // Given
         given(aspspProfileService.getScaApproach()).willReturn(scaApproach);
-        AspspPeriodicPayment testPayment = new AspspPeriodicPaymentBuilder().buildAspspPeriodicPayment(PAYMENT_ID, DEB_IBAN, CRED_IBAN, CURRENCY, AMOUNT_OPERATION_113);
+        AspspPeriodicPayment testPayment = AspspPeriodicPaymentBuilder.buildAspspPeriodicPayment(PAYMENT_ID, DEB_IBAN, CRED_IBAN, CURRENCY, AMOUNT_OPERATION_113);
 
         given(aspspRestTemplate.postForEntity(any(String.class), any(AspspPeriodicPayment.class), any(Class.class)))
             .willReturn(ResponseEntity.ok(testPayment));
@@ -302,7 +303,7 @@ public class InitiatePayments_successfulTest {
         amountMap.put("DE54500105173424724776", new BigDecimal("888"));
 
         given(aspspProfileService.getScaApproach()).willReturn(scaApproach);
-        AspspBulkPayment testPayment = new AspspBulkPaymentBuilder().buildAspspBulkPayment(PAYMENT_ID, DEB_IBAN, CURRENCY, amountMap);
+        AspspBulkPayment testPayment = AspspBulkPaymentBuilder.buildAspspBulkPayment(PAYMENT_ID, DEB_IBAN, CURRENCY, amountMap);
 
         given(aspspRestTemplate.postForEntity(any(String.class), any(AspspBulkPayment.class), any(Class.class)))
             .willReturn(ResponseEntity.ok(testPayment));

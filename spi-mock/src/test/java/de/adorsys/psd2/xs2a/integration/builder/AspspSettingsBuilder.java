@@ -28,9 +28,9 @@ import static de.adorsys.psd2.aspsp.profile.domain.BookingStatus.*;
 import static de.adorsys.psd2.aspsp.profile.domain.SupportedAccountReferenceField.IBAN;
 
 public class AspspSettingsBuilder {
-    private static int FREQUENCY_PER_DAY = 5;
-    private static boolean COMBINED_SERVICE_INDICATOR = false;
-    private static boolean TPP_SIGNATURE_REQUIRED = false;
+    private static final int FREQUENCY_PER_DAY = 5;
+    private static final boolean COMBINED_SERVICE_INDICATOR = false;
+    private static final boolean TPP_SIGNATURE_REQUIRED = false;
     private static final String PIS_REDIRECT_LINK = "http://localhost:4200/pis/{redirect-id}/";
     private static final String AIS_REDIRECT_LINK = "http://localhost:4200/ais/{redirect-id}/";
     private static final MulticurrencyAccountLevel MULTICURRENCY_ACCOUNT_LEVEL = MulticurrencyAccountLevel.SUBACCOUNT;
@@ -49,7 +49,7 @@ public class AspspSettingsBuilder {
     private static final long NOT_CONFIRMED_CONSENT_EXPIRATION_PERIOD_MS = 86400000;
     private static final long NOT_CONFIRMED_PAYMENT_EXPIRATION_PERIOD_MS = 86400000;
     private static final String PIS_PAYMENT_CANCELLATION_REDIRECT_URL_TO_ASPSP = "http://localhost:4200/pis/cancellation/{redirect-id}/";
-    private static Map<PaymentType, Set<String>> SUPPORTED_PAYMENT_TYPE_AND_PRODUCT_MATRIX = buildSupportedPaymentTypeAndProductMatrix();
+    private static final Map<PaymentType, Set<String>> SUPPORTED_PAYMENT_TYPE_AND_PRODUCT_MATRIX = buildSupportedPaymentTypeAndProductMatrix();
     private static final long PAYMENT_CANCELLATION_REDIRECT_URL_EXPIRATION_TIME_MS = 600000;
 
     public static AspspSettings buildAspspSettings() {

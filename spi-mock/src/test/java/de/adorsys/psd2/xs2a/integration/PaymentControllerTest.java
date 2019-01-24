@@ -71,11 +71,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     Xs2aInterfaceConfig.class
 })
 public class PaymentControllerTest {
-    private static PaymentType SINGLE_PAYMENT_TYPE = PaymentType.SINGLE;
-    private static String SEPA_PAYMENT_PRODUCT = "sepa-credit-transfers";
-    private static String ENCRYPT_PAYMENT_ID = "DfLtDOgo1tTK6WQlHlb-TMPL2pkxRlhZ4feMa5F4tOWwNN45XLNAVfWwoZUKlQwb_=_bS6p6XvTWI";
-    private static String AUTHORISATION_ID = "e8356ea7-8e3e-474f-b5ea-2b89346cb2dc";
-    private final TppInfo TPP_INFO = TppInfoBuilder.buildTppInfo();
+    private final static PaymentType SINGLE_PAYMENT_TYPE = PaymentType.SINGLE;
+    private final static String SEPA_PAYMENT_PRODUCT = "sepa-credit-transfers";
+    private final static String ENCRYPT_PAYMENT_ID = "DfLtDOgo1tTK6WQlHlb-TMPL2pkxRlhZ4feMa5F4tOWwNN45XLNAVfWwoZUKlQwb_=_bS6p6XvTWI";
+    private final static String AUTHORISATION_ID = "e8356ea7-8e3e-474f-b5ea-2b89346cb2dc";
+    private final static TppInfo TPP_INFO = TppInfoBuilder.buildTppInfo();
     private HttpHeaders httpHeadersExplicit = new HttpHeaders();
 
     @Autowired
