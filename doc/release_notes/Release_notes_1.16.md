@@ -16,3 +16,11 @@ New conditions:
 * if consent `recurringIndicator` property is `false`, the consent status is set to `EXPIRED` after consent has been used;
 * when PSU send a consent creation request with the following data: `recurringIndicator` property is `false` AND `frequencyPerDay` is more than `1`, 
 the response with `400 FORMAT_ERROR` is returned.
+
+## Inner integration tests
+Added integration tests in spi-mock service.
+12 tests check successes payments initiation:
+  - for payment types Single, Periodic and Bulk 
+  - for modes Explicit and Implicit 
+  - for sca approach Redirect and Embedded
+1 test checks payment sca status
