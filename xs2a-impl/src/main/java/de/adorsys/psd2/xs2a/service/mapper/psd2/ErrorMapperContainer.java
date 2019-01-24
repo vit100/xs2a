@@ -26,8 +26,7 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
-import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_401;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.*;
 
 @Component
 @RequiredArgsConstructor
@@ -36,11 +35,21 @@ public class ErrorMapperContainer {
 
     private final PIS400ErrorMapper pis400ErrorMapper;
     private final PIS401ErrorMapper pis401ErrorMapper;
+    private final PIS403ErrorMapper pis403ErrorMapper;
+    private final PIS404ErrorMapper pis404ErrorMapper;
+    private final PIS405ErrorMapper pis405ErrorMapper;
+    private final PIS409ErrorMapper pis409ErrorMapper;
+    private final PISCANC405ErrorMapper pisCanc405ErrorMapper;
 
     @PostConstruct
     public void fillErrorMapperContainer() {
         mapperContainer.put(PIS_400, pis400ErrorMapper);
         mapperContainer.put(PIS_401, pis401ErrorMapper);
+        mapperContainer.put(PIS_403, pis403ErrorMapper);
+        mapperContainer.put(PIS_404, pis404ErrorMapper);
+        mapperContainer.put(PIS_405, pis405ErrorMapper);
+        mapperContainer.put(PIS_409, pis409ErrorMapper);
+        mapperContainer.put(PIS_CANC_405, pisCanc405ErrorMapper);
     }
 
     @SuppressWarnings("unchecked")
