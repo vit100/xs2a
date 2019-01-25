@@ -36,8 +36,7 @@ public class TppInfoBuilder {
     private static TppRedirectUri buildTppRedirectUri() {
         return new TppRedirectUri("redirectUri", "nokRedirectUri");
     }
-
-
+    
     public static TppUniqueParamsHolder buildTppUniqueParamsHolder() {
         return new TppUniqueParamsHolder(TPP_ID, AUTHORITY_ID);
     }
