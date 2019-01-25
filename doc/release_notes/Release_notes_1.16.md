@@ -22,3 +22,6 @@ the response with `400 FORMAT_ERROR` is returned.
 |----------------------------------------------|--------------------------------------------------------------------------------------------------------|---------------|
 | availableAccountsConsentSupported            | This field indicates if ASPSP supports available accounts for a consent                                | true          |
 | scaByOneTimeAvailableAccountsConsentRequired | This field indicates if ASPSP requires usage of SCA to validate a one-time available accounts consent  | true          |
+
+## Bugfix: Remove default values for TPP in the database
+From now on default values for TPP-related fields are no longer provided in the database.
