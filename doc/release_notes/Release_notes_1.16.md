@@ -32,3 +32,13 @@ New version of API Yaml file published by Berlin Group contains three new status
 | PATC | PartiallyAcceptedTechnicalCorrect   |  The payment initiation needs multiple authentications, where some but not yet all have been performed. Syntactical and semantical validations are successful.         |
 
 XS2A Classes were updated with these new values, so that they may be used in SPI level.
+
+## Bugfix: Remove TPP-ID from get payments by aspspAccountId endpoint in CMS
+TPP-ID was removed as a parameter from `exportPaymentsByAccountIdAndTpp` method in `de.adorsys.psd2.consent.aspsp.api.pis.CmsAspspPisExportService`, 
+the method itself  was renamed to `exportPaymentsByAccountId`.
+Corresponding endpoint in the CMS controller was changed as well:
+
+| Method | Context                          | Old path                                                     | New path                                        |
+|--------|----------------------------------|--------------------------------------------------------------|-------------------------------------------------|
+| GET    | Get payments by ASPSP account ID | aspsp-api/v1/pis/payments/tpp/{tpp-id}/accounts/{account-id} | aspsp-api/v1/pis/payments/accounts/{account-id} |
+
