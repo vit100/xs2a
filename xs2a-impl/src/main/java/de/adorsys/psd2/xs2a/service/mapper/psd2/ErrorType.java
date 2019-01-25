@@ -39,6 +39,12 @@ public enum ErrorType {
     AIS_415,
     AIS_500,
 
+    SB_400,
+    SB_401,
+    SB_403,
+    SB_404,
+    SB_405,
+    SB_409,
     SB_415,
     SB_500
 }
