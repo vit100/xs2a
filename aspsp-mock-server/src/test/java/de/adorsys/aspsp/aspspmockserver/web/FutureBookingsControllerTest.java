@@ -21,6 +21,7 @@ import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountBalance;
 import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountDetails;
 import de.adorsys.psd2.aspsp.mock.api.account.AspspBalanceType;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspAmount;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -93,7 +94,7 @@ public class FutureBookingsControllerTest {
     private Optional<AspspAccountDetails> getAspspAccountDetails(BigDecimal amount) {
         return Optional.of(new AspspAccountDetails(ASPSP_ACCOUNT_ID, "qwertyuiop12345678", "DE99999999999999", null, "4444333322221111",
                                                    "444433xxxxxx1111", null, Currency.getInstance("EUR"), "Emily", "GIRO",
-                                                   null, null, "ACVB222", null, null, null, getNewBalanceList(amount)));
+                                                   null, null, Collections.singletonList(new AspspPsuData("PSU_001", "psu-type", "123456", "corp-type")), "ACVB222", null, null, null, getNewBalanceList(amount)));
     }
 
     private List<AspspAccountBalance> getNewBalanceList(BigDecimal amount) {

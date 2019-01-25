@@ -22,17 +22,17 @@ import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.address.Xs2aAddress;
 import de.adorsys.psd2.xs2a.domain.address.Xs2aCountryCode;
 import de.adorsys.psd2.xs2a.domain.code.Xs2aPurposeCode;
 import de.adorsys.psd2.xs2a.domain.pis.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -81,7 +81,10 @@ public class Xs2aToCmsPisCommonPaymentRequestMapper {
         paymentInfo.setTransactionStatus(response.getTransactionStatus());
         paymentInfo.setTppInfo(tppInfo);
         paymentInfo.setPaymentId(response.getPaymentId());
-        paymentInfo.setPsuDataList(Collections.singletonList(paymentInitiationParameters.getPsuData()));
+        List<PsuIdData> psuData = CollectionUtils.isNotEmpty(response.getPsuDataList()) && response.getPsuDataList().size() > 1
+                                      ? response.getPsuDataList()
+                                      : Collections.singletonList(paymentInitiationParameters.getPsuData());
+        paymentInfo.setPsuDataList(psuData);
         paymentInfo.setAspspAccountId(response.getAspspAccountId());
         return paymentInfo;
     }

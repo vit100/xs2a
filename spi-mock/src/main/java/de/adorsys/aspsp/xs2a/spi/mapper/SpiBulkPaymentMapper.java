@@ -1,4 +1,5 @@
 /*
+/*
  * Copyright 2018-2018 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
 public class SpiBulkPaymentMapper {
     private final SpiSinglePaymentMapper spiSinglePaymentMapper;
     private final SpiPaymentMapper spiPaymentMapper;
+    private final SpiPsuDataMapper spiPsuDataMapper;
 
     public AspspBulkPayment mapToAspspBulkPayment(@NotNull SpiBulkPayment payment, SpiTransactionStatus transactionStatus) {
         AspspBulkPayment bulk = new AspspBulkPayment();
@@ -57,6 +59,7 @@ public class SpiBulkPaymentMapper {
                                   .orElse(null));
         spi.setPayments(mapToListSpiSinglePayments(payment.getPayments(), paymentProduct));
         spi.setPaymentId(payment.getPaymentId());
+        spi.setPsuDataList(spiPsuDataMapper.mapToPsuIdDataList(payment.getPayments().get(0).getPsuDataList()));
 
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);

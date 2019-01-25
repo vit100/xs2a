@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.aspsp.mock.api.payment;
+package de.adorsys.aspsp.aspspmockserver.repository;
 
-import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
-import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
-import lombok.Value;
+import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountDetails;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.Currency;
 import java.util.List;
 
-@Value
-public class AspspPaymentInfo {
-    private String paymentId;
-    private AspspTransactionStatus paymentStatus;
-    private String paymentProduct;
-    private String pisPaymentType;
-    private byte[] paymentData;
-    private List<AspspPsuData> psuDataList;
-    private String aspspAccountId;
+@Repository
+@Profile({"mongo", "fongo"})
+public interface AccountDetailsRepository extends MongoRepository<AspspAccountDetails, String> {
+    List<AspspAccountDetails> findByIban(String iban);
 }

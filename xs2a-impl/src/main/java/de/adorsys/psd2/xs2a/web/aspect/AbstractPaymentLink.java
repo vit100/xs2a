@@ -76,8 +76,9 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
         String paymentService = paymentRequestParameters.getPaymentType().getValue();
         String paymentId = body.getPaymentId();
         String authorizationId = body.getAuthorizationId();
+        boolean isExplicitLinks = isExplicitAuthorisation(body.isMultiLevelScaPaymentInitiation(), paymentRequestParameters.isTppExplicitAuthorisationPreferred());
 
-        if (authorisationMethodDecider.isExplicitMethod(paymentRequestParameters.isTppExplicitAuthorisationPreferred())) {
+        if (isExplicitLinks) {
             links.setStartAuthorisation(buildPath("/v1/{payment-service}/{payment-id}/authorisations", paymentService, paymentId));
         } else {
             links.setScaStatus(
@@ -93,8 +94,9 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
         String paymentService = paymentRequestParameters.getPaymentType().getValue();
         String paymentId = body.getPaymentId();
         String authorisationId = body.getAuthorizationId();
+        boolean isExplicitLinks = isExplicitAuthorisation(body.isMultiLevelScaPaymentInitiation(), paymentRequestParameters.isTppExplicitAuthorisationPreferred());
 
-        if (authorisationMethodDecider.isExplicitMethod(paymentRequestParameters.isTppExplicitAuthorisationPreferred())) {
+        if (isExplicitLinks) {
             links.setStartAuthorisation(buildPath("/v1/{payment-service}/{payment-id}/authorisations", paymentService, paymentId));
         } else {
             String scaRedirectLink = redirectLinkBuilder.buildPaymentScaRedirectLink(body.getPaymentId(), authorisationId);
@@ -103,5 +105,9 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
                 buildPath("/v1/{payment-service}/{payment-id}/authorisations/{authorisation-id}", paymentService, paymentId, authorisationId));
         }
         return links;
+    }
+
+    private boolean isExplicitAuthorisation(boolean isMultiLevelScaPaymentInitiation, boolean tppExplicitAuthorisationPreferred) {
+        return isMultiLevelScaPaymentInitiation || authorisationMethodDecider.isExplicitMethod(tppExplicitAuthorisationPreferred);
     }
 }

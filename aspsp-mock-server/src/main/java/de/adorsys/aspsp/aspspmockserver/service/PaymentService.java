@@ -25,6 +25,7 @@ import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountReference;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspAmount;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
 import de.adorsys.psd2.aspsp.mock.api.payment.*;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -46,6 +47,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
     private final AccountService accountService;
+    private final AccountDetailsService accountDetailsService;
 
     /**
      * Creates new payment
@@ -67,6 +69,7 @@ public class PaymentService {
     public Optional<AspspSinglePayment> addPayment(AspspSinglePayment payment) {
         if (payment.getInstructedAmount() != null && areFundsSufficient(payment.getDebtorAccount(), payment.getInstructedAmount().getAmount())) {
             payment.setDebtorAccount(enrichAccountReferenceWithAspspAccountId(payment.getDebtorAccount()));
+            payment.setPsuDataList(readAccountPsuData(payment.getDebtorAccount()));
 
             AspspPayment saved = paymentRepository.save(paymentMapper.mapToAspspPayment(payment, SINGLE));
             return Optional.ofNullable(paymentMapper.mapToAspspSinglePayment(saved));
@@ -304,5 +307,9 @@ public class PaymentService {
         }
 
         return reference;
+    }
+
+    private List<AspspPsuData> readAccountPsuData(AspspAccountReference debtorAccount) {
+        return accountDetailsService.getPsuDataByAccount(debtorAccount);
     }
 }

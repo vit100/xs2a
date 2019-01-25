@@ -19,11 +19,13 @@ package de.adorsys.psd2.aspsp.mock.api.payment;
 import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountReference;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspAmount;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class AspspSinglePayment {
@@ -32,6 +34,7 @@ public class AspspSinglePayment {
     private String paymentId;
     private String endToEndIdentification;
     private AspspAccountReference debtorAccount;
+    private List<AspspPsuData> psuDataList;
     @Deprecated // Since 1.2
     private String ultimateDebtor;
     private AspspAmount instructedAmount;

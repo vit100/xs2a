@@ -38,6 +38,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SpiPeriodicPaymentMapper {
     private final SpiPaymentMapper spiPaymentMapper;
+    private final SpiPsuDataMapper spiPsuDataMapper;
 
     public AspspPeriodicPayment mapToAspspPeriodicPayment(@NotNull SpiPeriodicPayment payment, SpiTransactionStatus transactionStatus) {
         AspspPeriodicPayment periodic = new AspspPeriodicPayment();
@@ -58,6 +59,7 @@ public class SpiPeriodicPaymentMapper {
         periodic.setDayOfExecution(mapToAspspDayOfExecution(payment.getDayOfExecution()).orElse(null));
         periodic.setRequestedExecutionTime(Optional.ofNullable(payment.getRequestedExecutionTime()).map(OffsetDateTime::toLocalDateTime).orElse(null));
         periodic.setRequestedExecutionDate(payment.getRequestedExecutionDate());
+        periodic.setPsuDataList(spiPsuDataMapper.mapToAspspPsuDataList(payment.getPsuDataList()));
         return periodic;
     }
 
@@ -80,6 +82,7 @@ public class SpiPeriodicPaymentMapper {
         periodic.setDayOfExecution(mapToPisDayOfExecution(payment.getDayOfExecution()).orElse(null));
         periodic.setRequestedExecutionTime(Optional.ofNullable(payment.getRequestedExecutionTime()).map(t -> t.atOffset(ZoneOffset.UTC)).orElse(null));
         periodic.setRequestedExecutionDate(payment.getRequestedExecutionDate());
+        periodic.setPsuDataList(spiPsuDataMapper.mapToPsuIdDataList(payment.getPsuDataList()));
         return periodic;
     }
 
@@ -89,6 +92,7 @@ public class SpiPeriodicPaymentMapper {
                                   .map(AspspAccountReference::getAccountId)
                                   .orElse(null));
         spi.setPaymentId(payment.getPaymentId());
+        spi.setPsuDataList(spiPsuDataMapper.mapToPsuIdDataList(payment.getPsuDataList()));
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);
         } else {

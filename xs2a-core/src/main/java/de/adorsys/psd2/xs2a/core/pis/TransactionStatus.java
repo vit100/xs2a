@@ -31,7 +31,8 @@ public enum TransactionStatus {
     RCVD("Received", false),  //Payment initiation has been received by the receiving agent
     PDNG("Pending", false),  //Payment initiation or individual transaction included in the payment initiation is pending. Further checks and status update will be performed
     RJCT("Rejected", true),  //Payment initiation or individual transaction included in the payment initiation has been rejected
-    CANC("Canceled", true); //Canceled
+    CANC("Canceled", true), //Canceled
+    PACT("PartiallyAcceptedTechnicalCorrect", false); // Payment authorisation successfully passed for one of the several PSUs
 
     private static Map<String, TransactionStatus> container = new HashMap<>();
 

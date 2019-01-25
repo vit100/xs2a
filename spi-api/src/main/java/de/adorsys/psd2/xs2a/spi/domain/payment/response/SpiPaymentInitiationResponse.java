@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.spi.domain.payment.response;
 
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiAmount;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
@@ -35,5 +36,6 @@ public abstract class SpiPaymentInitiationResponse {
     private ChallengeData challengeData;
     private String psuMessage;
     private List<String> tppMessages;
+    private List<PsuIdData> psuDataList;
     private String aspspAccountId;
 }

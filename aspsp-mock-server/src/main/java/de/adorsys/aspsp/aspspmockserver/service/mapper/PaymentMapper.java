@@ -50,6 +50,7 @@ public class PaymentMapper {
                                     aspspPayment.getPaymentProduct(),
                                     aspspPayment.getPisPaymentType().name(),
                                     aspspPayment.getPaymentData(),
+                                    aspspPayment.getPsuDataList(),
                                     Optional.ofNullable(aspspPayment.getDebtorAccount())
                                         .map(AspspAccountReference::getAccountId)
                                         .orElse(null)
@@ -112,6 +113,7 @@ public class PaymentMapper {
         aspsp.setPaymentStatus(single.getPaymentStatus());
         aspsp.setRemittanceInformationStructured(single.getRemittanceInformationStructured());
         aspsp.setRemittanceInformationUnstructured(single.getRemittanceInformationUnstructured());
+        aspsp.setPsuDataList(single.getPsuDataList());
         return aspsp;
     }
 
@@ -135,6 +137,7 @@ public class PaymentMapper {
                        single.setPaymentStatus(aspspPayment.getPaymentStatus());
                        single.setRemittanceInformationStructured(aspsp.getRemittanceInformationStructured());
                        single.setRemittanceInformationUnstructured(aspsp.getRemittanceInformationUnstructured());
+                       single.setPsuDataList(aspspPayment.getPsuDataList());
                        return single;
                    })
                    .orElse(null);
@@ -164,6 +167,7 @@ public class PaymentMapper {
                        periodic.setPaymentStatus(aspspPayment.getPaymentStatus());
                        periodic.setRemittanceInformationStructured(aspsp.getRemittanceInformationStructured());
                        periodic.setRemittanceInformationUnstructured(aspsp.getRemittanceInformationUnstructured());
+                       periodic.setPsuDataList(aspspPayment.getPsuDataList());
                        return periodic;
                    })
                    .orElse(null);

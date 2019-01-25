@@ -19,6 +19,7 @@ package de.adorsys.aspsp.aspspmockserver.web;
 import de.adorsys.aspsp.aspspmockserver.service.PaymentService;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspPaymentInfo;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus.*;
@@ -39,6 +42,7 @@ public class CommonPaymentControllerTest {
     private static final String PAYMENT_ID = "123456789";
     private static final String WRONG_PAYMENT_ID = "Wrong payment id";
     private static final String ASPSP_ACCOUNT_ID = "3278921mxl-n2131-13nw";
+    private static final List<AspspPsuData> PSU_DATA_LIST = Collections.singletonList(new AspspPsuData("TEST_PSU", null, null, null));
 
     @InjectMocks
     private CommonPaymentController commonPaymentController;
@@ -124,6 +128,7 @@ public class CommonPaymentControllerTest {
             "sepa-credit-transfers",
             "SINGLE",
             new byte[16],
+            PSU_DATA_LIST,
             ASPSP_ACCOUNT_ID
         );
     }

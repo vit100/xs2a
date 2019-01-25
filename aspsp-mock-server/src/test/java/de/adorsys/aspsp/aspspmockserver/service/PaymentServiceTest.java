@@ -29,6 +29,7 @@ import de.adorsys.psd2.aspsp.mock.api.payment.AspspBulkPayment;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspPaymentCancellationResponse;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspPaymentInfo;
 import de.adorsys.psd2.aspsp.mock.api.payment.AspspSinglePayment;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +55,7 @@ public class PaymentServiceTest {
     private static final long AMOUNT_TO_TRANSFER = 50;
     private static final long EXCEEDING_AMOUNT_TO_TRANSFER = BALANCE_AMOUNT + 1;
     private static final Currency CURRENCY = Currency.getInstance("EUR");
+    private static final List<AspspPsuData> PSU_DATA_LIST = Collections.singletonList(new AspspPsuData("TEST_PSU", null, null, null));
 
     @InjectMocks
     private PaymentService paymentService;
@@ -63,6 +65,8 @@ public class PaymentServiceTest {
     private AccountService accountService;
     @Mock
     private PaymentMapper paymentMapper;
+    @Mock
+    private AccountDetailsService accountDetailsService;
 
     @Before
     public void setUp() {
@@ -182,7 +186,7 @@ public class PaymentServiceTest {
         //Given
         AspspBulkPayment spiBulkPayment = new AspspBulkPayment();
         List<AspspSinglePayment> payments = Arrays.asList(getAspspSinglePayment(AMOUNT_TO_TRANSFER),
-            getAspspSinglePayment(EXCEEDING_AMOUNT_TO_TRANSFER));
+                                                          getAspspSinglePayment(EXCEEDING_AMOUNT_TO_TRANSFER));
         spiBulkPayment.setPayments(payments);
 
         //When
@@ -291,6 +295,7 @@ public class PaymentServiceTest {
             "sepa-credit-transfers",
             "SINGLE",
             new byte[16],
+            PSU_DATA_LIST,
             ASPSP_ACCOUNT_ID
         );
     }
@@ -319,7 +324,7 @@ public class PaymentServiceTest {
 
     private List<AspspAccountDetails> getAccountDetails() {
         return Collections.singletonList(
-            new AspspAccountDetails(ASPSP_ACCOUNT_ID, "12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, getBalances())
+            new AspspAccountDetails(ASPSP_ACCOUNT_ID, "12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, null, getBalances())
         );
     }
 

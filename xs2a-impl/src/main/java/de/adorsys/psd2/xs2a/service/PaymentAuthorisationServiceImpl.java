@@ -91,6 +91,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
                        .build();
         }
 
+        request.setMultilevelSca(isMutlilevelSca(pisCommonPaymentResponse));
         Xs2aUpdatePisCommonPaymentPsuDataResponse response = pisScaAuthorisationService.updateCommonPaymentPsuData(request);
 
         if (response.hasError()) {
@@ -142,5 +143,11 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
         return ResponseObject.<ScaStatus>builder()
                    .body(scaStatus.get())
                    .build();
+    }
+
+    private boolean isMutlilevelSca(Optional<PisCommonPaymentResponse> pisCommonPaymentResponse) {
+        return pisCommonPaymentResponse
+                   .map(r -> r.getPsuData().size() > 1)
+                   .orElse(false);
     }
 }

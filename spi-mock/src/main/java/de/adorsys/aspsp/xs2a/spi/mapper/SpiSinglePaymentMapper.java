@@ -33,6 +33,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SpiSinglePaymentMapper {
     private final SpiPaymentMapper spiPaymentMapper;
+    private final SpiPsuDataMapper spiPsuDataMapper;
 
     public AspspSinglePayment mapToAspspSinglePayment(@NotNull SpiSinglePayment payment, SpiTransactionStatus transactionStatus) {
         AspspSinglePayment single = new AspspSinglePayment();
@@ -48,6 +49,7 @@ public class SpiSinglePaymentMapper {
         single.setPaymentStatus(spiPaymentMapper.mapToAspspTransactionStatus(transactionStatus));
         single.setRequestedExecutionTime(Optional.ofNullable(payment.getRequestedExecutionTime()).map(OffsetDateTime::toLocalDateTime).orElse(null));
         single.setRequestedExecutionDate(payment.getRequestedExecutionDate());
+        single.setPsuDataList(spiPsuDataMapper.mapToAspspPsuDataList(payment.getPsuDataList()));
         return single;
     }
 
@@ -65,6 +67,7 @@ public class SpiSinglePaymentMapper {
         single.setPaymentStatus(spiPaymentMapper.mapToSpiTransactionStatus(payment.getPaymentStatus()));
         single.setRequestedExecutionTime(Optional.ofNullable(payment.getRequestedExecutionTime()).map(t -> t.atOffset(ZoneOffset.UTC)).orElse(null));
         single.setRequestedExecutionDate(payment.getRequestedExecutionDate());
+        single.setPsuDataList(spiPsuDataMapper.mapToPsuIdDataList(payment.getPsuDataList()));
         return single;
     }
 
@@ -74,6 +77,7 @@ public class SpiSinglePaymentMapper {
                                   .map(AspspAccountReference::getAccountId)
                                   .orElse(null));
         spi.setPaymentId(payment.getPaymentId());
+        spi.setPsuDataList(spiPsuDataMapper.mapToPsuIdDataList(payment.getPsuDataList()));
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);
         } else {

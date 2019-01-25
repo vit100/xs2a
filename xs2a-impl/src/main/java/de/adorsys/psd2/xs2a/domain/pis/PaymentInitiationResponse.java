@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
@@ -30,6 +31,9 @@ import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -48,6 +52,7 @@ public abstract class PaymentInitiationResponse {
     private Links links;
     private String authorizationId;
     private AspspConsentData aspspConsentData;
+    private List<PsuIdData> psuDataList;
     private String aspspAccountId;
     private ErrorHolder errorHolder;
 
@@ -55,8 +60,16 @@ public abstract class PaymentInitiationResponse {
         this.errorHolder = errorHolder;
     }
 
-    public boolean hasError(){
+    public boolean hasError() {
         return errorHolder != null;
+    }
+
+    public boolean isMultiLevelScaPaymentInitiation() {
+        return CollectionUtils.isNotEmpty(psuDataList) && psuDataList.size() > 1;
+    }
+
+    public boolean isNotMultiLevelScaPaymentInitiation() {
+        return !isMultiLevelScaPaymentInitiation();
     }
 
     abstract PaymentType getPaymentType();

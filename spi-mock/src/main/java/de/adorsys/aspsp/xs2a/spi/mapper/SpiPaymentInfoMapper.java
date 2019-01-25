@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class SpiPaymentInfoMapper {
     private final SpiPaymentMapper spiPaymentMapper;
+    private final SpiPsuDataMapper spiPsuDataMapper;
 
     public AspspPaymentInfo mapToAspspPayment(@NotNull SpiPaymentInfo payment, SpiTransactionStatus transactionStatus) {
         return new AspspPaymentInfo(payment.getPaymentId(),
@@ -38,6 +39,7 @@ public class SpiPaymentInfoMapper {
                                     payment.getPaymentProduct(),
                                     payment.getPaymentType().name(),
                                     payment.getPaymentData(),
+                                    spiPsuDataMapper.mapToAspspPsuDataList(payment.getPsuDataList()),
                                     null
         );
     }
@@ -48,6 +50,7 @@ public class SpiPaymentInfoMapper {
         spiPayment.setPaymentType(PaymentType.valueOf(payment.getPisPaymentType()));
         spiPayment.setStatus(TransactionStatus.getByValue(payment.getPaymentStatus().getName()));
         spiPayment.setPaymentData(payment.getPaymentData());
+        spiPayment.setPsuDataList(spiPsuDataMapper.mapToPsuIdDataList(payment.getPsuDataList()));
         return spiPayment;
     }
 
@@ -55,6 +58,7 @@ public class SpiPaymentInfoMapper {
         SpiCommonPaymentInitiationResponse spi = new SpiCommonPaymentInitiationResponse();
         spi.setPaymentId(payment.getPaymentId());
         spi.setAspspAccountId(payment.getAspspAccountId());
+        spi.setPsuDataList(spiPsuDataMapper.mapToPsuIdDataList(payment.getPsuDataList()));
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);
         } else {

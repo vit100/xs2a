@@ -162,15 +162,15 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     /**
      * Update common payment authorisation
      *
-     * @param authorizationId id of the authorisation to be updated
+     * @param authorisationId id of the authorisation to be updated
      * @param request         contains data for updating authorisation
      * @return response contains updated data
      */
     @Override
     @Transactional
-    public Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisAuthorisation(String authorizationId, UpdatePisCommonPaymentPsuDataRequest request) {
+    public Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisAuthorisation(String authorisationId, UpdatePisCommonPaymentPsuDataRequest request) {
         Optional<PisAuthorization> pisAuthorisationOptional = pisAuthorizationRepository.findByExternalIdAndAuthorizationType(
-            authorizationId, CmsAuthorisationType.CREATED);
+            authorisationId, CmsAuthorisationType.CREATED);
 
         if (pisAuthorisationOptional.isPresent()) {
             ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisAuthorisationOptional.get());
@@ -183,8 +183,8 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     /**
      * Update common payment cancellation authorisation
      *
-     * @param cancellationId id of the authorisation to be updated
-     * @param request        contains data for updating authorisation
+     * @param cancellationId id of the cancellation-authorisation to be updated
+     * @param request        contains data for updating cancellation-authorisation
      * @return response contains updated data
      */
     @Override

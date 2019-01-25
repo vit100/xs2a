@@ -17,6 +17,7 @@
 package de.adorsys.psd2.xs2a.spi.domain.payment;
 
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountReference;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiAmount;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
@@ -25,6 +26,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Data
 public class SpiSinglePayment implements SpiPayment {
@@ -41,6 +43,7 @@ public class SpiSinglePayment implements SpiPayment {
     protected String paymentProduct;
     private LocalDate requestedExecutionDate;
     private OffsetDateTime requestedExecutionTime;
+    private List<PsuIdData> psuDataList;
 
     public SpiSinglePayment(String paymentProduct) {
         this.paymentProduct = paymentProduct;
