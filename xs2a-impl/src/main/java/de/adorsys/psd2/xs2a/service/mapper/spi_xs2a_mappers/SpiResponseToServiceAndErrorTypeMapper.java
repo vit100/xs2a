@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
-import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_401;
-import static de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType.PIS;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.*;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.SB_400;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType.*;
 import static de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus.*;
 
 @Component
@@ -35,20 +35,32 @@ public class SpiResponseToServiceAndErrorTypeMapper {
     private static final Map<SpiResponseStatus, Map<ServiceType, ErrorType>> spiResponseToServiceAndErrorType;
 
     static {
+        Map<ServiceType, ErrorType> technicalFailureServiceTypeToErrorType = new HashMap<>();
+        technicalFailureServiceTypeToErrorType.put(PIS, PIS_500);
+        technicalFailureServiceTypeToErrorType.put(PIIS, PIIS_500);
+        technicalFailureServiceTypeToErrorType.put(SB, SB_500);
+        // TODO add the same for AIS
+
         Map<ServiceType, ErrorType> unauthorizedFailureServiceTypeToErrorType = new HashMap<>();
         unauthorizedFailureServiceTypeToErrorType.put(PIS, PIS_401);
-        // TODO add the same for AIS and PIIS
+        unauthorizedFailureServiceTypeToErrorType.put(PIIS, PIIS_401);
+        unauthorizedFailureServiceTypeToErrorType.put(SB, SB_401);
+        // TODO add the same for AIS
 
         Map<ServiceType, ErrorType> logicalFailureServiceTypeToErrorType = new HashMap<>();
         logicalFailureServiceTypeToErrorType.put(PIS, PIS_400);
-        // TODO add the same for AIS and PIIS
+        logicalFailureServiceTypeToErrorType.put(PIIS, PIIS_400);
+        logicalFailureServiceTypeToErrorType.put(SB, SB_400);
+        // TODO add the same for AIS
 
         Map<ServiceType, ErrorType> notSupportedFailureServiceTypeToErrorType = new HashMap<>();
         notSupportedFailureServiceTypeToErrorType.put(PIS, PIS_400);
-        // TODO add the same for AIS and PIIS
+        notSupportedFailureServiceTypeToErrorType.put(PIIS, PIIS_400);
+        notSupportedFailureServiceTypeToErrorType.put(SB, SB_400);
+        // TODO add the same for AIS
 
         spiResponseToServiceAndErrorType = new HashMap<>();
-        // TODO DISCUSS for TECHNICAL_FAILURE
+        spiResponseToServiceAndErrorType.put(TECHNICAL_FAILURE, technicalFailureServiceTypeToErrorType);
         spiResponseToServiceAndErrorType.put(UNAUTHORIZED_FAILURE, unauthorizedFailureServiceTypeToErrorType);
         spiResponseToServiceAndErrorType.put(LOGICAL_FAILURE, logicalFailureServiceTypeToErrorType);
         spiResponseToServiceAndErrorType.put(NOT_SUPPORTED, notSupportedFailureServiceTypeToErrorType);

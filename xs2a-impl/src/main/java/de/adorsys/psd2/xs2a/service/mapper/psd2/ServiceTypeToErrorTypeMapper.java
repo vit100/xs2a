@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.*;
-import static de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType.PIS;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType.*;
 
 @Component
 public class ServiceTypeToErrorTypeMapper {
@@ -37,11 +37,35 @@ public class ServiceTypeToErrorTypeMapper {
         pisHttpCodeToErrorType.put(404, PIS_404);
         pisHttpCodeToErrorType.put(405, PIS_405);
         pisHttpCodeToErrorType.put(409, PIS_409);
+        pisHttpCodeToErrorType.put(415, PIS_415);
+        pisHttpCodeToErrorType.put(500, PIS_500);
 
-        // TODO do the same for AIS and PIIS
+        Map<Integer, ErrorType> piisHttpCodeToErrorType = new HashMap<>();
+        piisHttpCodeToErrorType.put(400, PIIS_400);
+        piisHttpCodeToErrorType.put(401, PIIS_401);
+        piisHttpCodeToErrorType.put(403, PIIS_403);
+        piisHttpCodeToErrorType.put(404, PIIS_404);
+        piisHttpCodeToErrorType.put(405, PIIS_405);
+        piisHttpCodeToErrorType.put(409, PIIS_409);
+        piisHttpCodeToErrorType.put(415, PIIS_415);
+        piisHttpCodeToErrorType.put(500, PIIS_500);
+
+        Map<Integer, ErrorType> sbHttpCodeToErrorType = new HashMap<>();
+        sbHttpCodeToErrorType.put(400, SB_400);
+        sbHttpCodeToErrorType.put(401, SB_401);
+        sbHttpCodeToErrorType.put(403, SB_403);
+        sbHttpCodeToErrorType.put(404, SB_404);
+        sbHttpCodeToErrorType.put(405, SB_405);
+        sbHttpCodeToErrorType.put(409, SB_409);
+        sbHttpCodeToErrorType.put(415, SB_415);
+        sbHttpCodeToErrorType.put(500, SB_500);
+
+        // TODO do the same for AIS
 
         serviceTypeToHttpCodeAndErrorType = new HashMap<>();
         serviceTypeToHttpCodeAndErrorType.put(PIS, pisHttpCodeToErrorType);
+        serviceTypeToHttpCodeAndErrorType.put(PIIS, piisHttpCodeToErrorType);
+        serviceTypeToHttpCodeAndErrorType.put(SB, sbHttpCodeToErrorType);
     }
 
     public ErrorType mapToErrorType(ServiceType serviceType, int httpCode) {
