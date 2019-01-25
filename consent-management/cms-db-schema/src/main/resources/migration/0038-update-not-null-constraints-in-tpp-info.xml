@@ -37,6 +37,7 @@
 
         <update tableName="tpp_info">
             <column name="authorisation_number" type="VARCHAR(50)" value="default authorisation number"/>
+            <where>authorisation_number IS NULL</where>
         </update>
     </changeSet>
 
