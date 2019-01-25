@@ -51,6 +51,8 @@ public class AspspSettingsBuilder {
     private static final String PIS_PAYMENT_CANCELLATION_REDIRECT_URL_TO_ASPSP = "http://localhost:4200/pis/cancellation/{redirect-id}/";
     private static final Map<PaymentType, Set<String>> SUPPORTED_PAYMENT_TYPE_AND_PRODUCT_MATRIX = buildSupportedPaymentTypeAndProductMatrix();
     private static final long PAYMENT_CANCELLATION_REDIRECT_URL_EXPIRATION_TIME_MS = 600000;
+    private static final boolean AVAILABLE_ACCOUNTS_CONSENT_SUPPORTED = false;
+    private static final boolean SCA_BY_ONE_TIME_AVAILABLE_ACCOUNTS_CONSENT_REQUIRED = false;
 
     public static AspspSettings buildAspspSettings() {
         return new AspspSettings(
@@ -76,7 +78,9 @@ public class AspspSettingsBuilder {
             NOT_CONFIRMED_CONSENT_EXPIRATION_PERIOD_MS,
             NOT_CONFIRMED_PAYMENT_EXPIRATION_PERIOD_MS,
             SUPPORTED_PAYMENT_TYPE_AND_PRODUCT_MATRIX,
-            PAYMENT_CANCELLATION_REDIRECT_URL_EXPIRATION_TIME_MS);
+            PAYMENT_CANCELLATION_REDIRECT_URL_EXPIRATION_TIME_MS,
+            AVAILABLE_ACCOUNTS_CONSENT_SUPPORTED,
+            SCA_BY_ONE_TIME_AVAILABLE_ACCOUNTS_CONSENT_REQUIRED);
     }
 
     private static List<SupportedAccountReferenceField> getSupportedAccountReferenceFields() {
