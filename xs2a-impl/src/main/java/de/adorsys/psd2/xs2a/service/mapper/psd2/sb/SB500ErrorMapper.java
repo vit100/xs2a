@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper.psd2;
+package de.adorsys.psd2.xs2a.service.mapper.psd2.sb;
 
-import de.adorsys.psd2.model.*;
+import de.adorsys.psd2.model.TppMessageCategory;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.exception.model.error500.Error500NGSB;
+import de.adorsys.psd2.xs2a.exception.model.error500.MessageCode500SB;
+import de.adorsys.psd2.xs2a.exception.model.error500.TppMessage500SB;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -29,28 +33,28 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class PIS403ErrorMapper extends Psd2ErrorMapper<MessageError, Error403NGPIS> {
+public class SB500ErrorMapper extends Psd2ErrorMapper<MessageError, Error500NGSB> {
 
     @Override
-    public Function<MessageError, Error403NGPIS> getMapper() {
+    public Function<MessageError, Error500NGSB> getMapper() {
         return this::mapToPsd2Error;
     }
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.FORBIDDEN;
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
-    private Error403NGPIS mapToPsd2Error(MessageError messageError) {
-        return new Error403NGPIS().tppMessages(mapToTppMessage403PIS(messageError.getTppMessages()))
+    private Error500NGSB mapToPsd2Error(MessageError messageError) {
+        return new Error500NGSB().tppMessages(mapToTppMessage500SB(messageError.getTppMessages()))
                    ._links(Collections.EMPTY_MAP);
     }
 
-    private List<TppMessage403PIS> mapToTppMessage403PIS(Set<TppMessageInformation> tppMessages) {
+    private List<TppMessage500SB> mapToTppMessage500SB(Set<TppMessageInformation> tppMessages) {
         return tppMessages.stream()
-                   .map(m -> new TppMessage403PIS()
+                   .map(m -> new TppMessage500SB()
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
-                                 .code(MessageCode403PIS.fromValue(m.getMessageErrorCode().getName()))
+                                 .code(MessageCode500SB.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
                                  .text(messageService.getMessage(m.getMessageErrorCode().getName()))
                    ).collect(Collectors.toList());

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper.psd2;
+package de.adorsys.psd2.xs2a.service.mapper.psd2.piis;
 
-import de.adorsys.psd2.model.Error409NGPIS;
-import de.adorsys.psd2.model.MessageCode409PIS;
-import de.adorsys.psd2.model.TppMessage409PIS;
 import de.adorsys.psd2.model.TppMessageCategory;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.exception.model.error500.Error500NGPIIS;
+import de.adorsys.psd2.xs2a.exception.model.error500.MessageCode500PIIS;
+import de.adorsys.psd2.xs2a.exception.model.error500.TppMessage500PIIS;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -32,28 +33,28 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class PIS409ErrorMapper extends Psd2ErrorMapper<MessageError, Error409NGPIS> {
+public class PIIS500ErrorMapper extends Psd2ErrorMapper<MessageError, Error500NGPIIS> {
 
     @Override
-    public Function<MessageError, Error409NGPIS> getMapper() {
+    public Function<MessageError, Error500NGPIIS> getMapper() {
         return this::mapToPsd2Error;
     }
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.CONFLICT;
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
-    private Error409NGPIS mapToPsd2Error(MessageError messageError) {
-        return new Error409NGPIS().tppMessages(mapToTppMessage409PIS(messageError.getTppMessages()))
+    private Error500NGPIIS mapToPsd2Error(MessageError messageError) {
+        return new Error500NGPIIS().tppMessages(mapToTppMessage500PIIS(messageError.getTppMessages()))
                    ._links(Collections.EMPTY_MAP);
     }
 
-    private List<TppMessage409PIS> mapToTppMessage409PIS(Set<TppMessageInformation> tppMessages) {
+    private List<TppMessage500PIIS> mapToTppMessage500PIIS(Set<TppMessageInformation> tppMessages) {
         return tppMessages.stream()
-                   .map(m -> new TppMessage409PIS()
+                   .map(m -> new TppMessage500PIIS()
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
-                                 .code(MessageCode409PIS.fromValue(m.getMessageErrorCode().getName()))
+                                 .code(MessageCode500PIIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
                                  .text(messageService.getMessage(m.getMessageErrorCode().getName()))
                    ).collect(Collectors.toList());

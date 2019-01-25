@@ -23,6 +23,8 @@ public enum ErrorType {
     PIS_404,
     PIS_405,
     PIS_409,
+    PIS_415,
+    PIS_500,
     PIS_CANC_405,
 
     PIIS_400,
@@ -30,5 +32,13 @@ public enum ErrorType {
     PIIS_403,
     PIIS_404,
     PIIS_405,
-    PIIS_409
+    PIIS_409,
+    PIIS_415,
+    PIIS_500,
+
+    AIS_415,
+    AIS_500,
+
+    SB_415,
+    SB_500
 }

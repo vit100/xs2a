@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper.psd2;
+package de.adorsys.psd2.xs2a.service.mapper.psd2.sb;
 
-import de.adorsys.psd2.model.*;
+import de.adorsys.psd2.model.TppMessageCategory;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.exception.model.error415.Error415NGSB;
+import de.adorsys.psd2.xs2a.exception.model.error415.MessageCode415SB;
+import de.adorsys.psd2.xs2a.exception.model.error415.TppMessage415SB;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -29,28 +33,28 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class PIS401ErrorMapper extends Psd2ErrorMapper<MessageError, Error401NGPIS> {
+public class SB415ErrorMapper extends Psd2ErrorMapper<MessageError, Error415NGSB> {
 
     @Override
-    public Function<MessageError, Error401NGPIS> getMapper() {
+    public Function<MessageError, Error415NGSB> getMapper() {
         return this::mapToPsd2Error;
     }
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.UNAUTHORIZED;
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
-    private Error401NGPIS mapToPsd2Error(MessageError messageError) {
-        return new Error401NGPIS().tppMessages(mapToTppMessage400PIS(messageError.getTppMessages()))
+    private Error415NGSB mapToPsd2Error(MessageError messageError) {
+        return new Error415NGSB().tppMessages(mapToTppMessage415SB(messageError.getTppMessages()))
                    ._links(Collections.EMPTY_MAP);
     }
 
-    private List<TppMessage401PIS> mapToTppMessage400PIS(Set<TppMessageInformation> tppMessages) {
+    private List<TppMessage415SB> mapToTppMessage415SB(Set<TppMessageInformation> tppMessages) {
         return tppMessages.stream()
-                   .map(m -> new TppMessage401PIS()
+                   .map(m -> new TppMessage415SB()
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
-                                 .code(MessageCode401PIS.fromValue(m.getMessageErrorCode().getName()))
+                                 .code(MessageCode415SB.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
                                  .text(messageService.getMessage(m.getMessageErrorCode().getName()))
                    ).collect(Collectors.toList());
