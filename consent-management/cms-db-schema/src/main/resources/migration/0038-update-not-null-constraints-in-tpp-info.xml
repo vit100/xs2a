@@ -31,8 +31,9 @@
         <dropNotNullConstraint tableName="tpp_info" columnName="state" columnDataType="CLOB"/>
     </changeSet>
 
-    <changeSet id="2019-01-25-2" author="ssh@adorsys.com.ua">
-        <comment>Set value of authorisation_number in tpp_info to "default authorisation number" for existing records
+    <changeSet id="2019-01-25-2" author="ssh@adorsys.com.ua" dbms="mariadb">
+        <comment>Set value of authorisation_number in tpp_info to "default authorisation number" for existing records in
+            MariaDB
         </comment>
 
         <update tableName="tpp_info">
@@ -41,8 +42,8 @@
         </update>
     </changeSet>
 
-    <changeSet id="2019-01-25-3" author="ssh@adorsys.com.ua">
-        <comment>Add not null constraint to authorisation_number column in tpp_info</comment>
+    <changeSet id="2019-01-25-3" author="ssh@adorsys.com.ua" dbms="mariadb">
+        <comment>Add not null constraint to authorisation_number column in tpp_info in MariaDB</comment>
 
         <addNotNullConstraint tableName="tpp_info" columnName="authorisation_number" columnDataType="VARCHAR(50)"/>
     </changeSet>
