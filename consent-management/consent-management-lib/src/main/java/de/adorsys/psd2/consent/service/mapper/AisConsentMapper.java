@@ -39,6 +39,14 @@ public class AisConsentMapper {
     private final PsuDataMapper psuDataMapper;
     private final TppInfoMapper tppInfoMapper;
 
+    /**
+     * Maps AisConsent to AisAccountConsent with accesses populated with account references, provided by ASPSP.
+     * <p>
+     * If no account references were provided by the ASPSP, TPP accesses will be used instead.
+     *
+     * @param consent AIS consent entity
+     * @return mapped AIS consent
+     */
     public AisAccountConsent mapToAisAccountConsent(AisConsent consent) {
         AisAccountAccess aisAccountAccess;
         if (consent.getAspspAccountAccesses().isEmpty()) {
@@ -62,6 +70,12 @@ public class AisConsentMapper {
             tppInfoMapper.mapToTppInfo(consent.getTppInfo()));
     }
 
+    /**
+     * Maps AisConsent to AisAccountConsent with accesses populated with account references, provided by TPP.
+     *
+     * @param consent AIS consent entity
+     * @return mapped AIS consent
+     */
     public AisAccountConsent mapToInitialAisAccountConsent(AisConsent consent) {
         return new AisAccountConsent(
             consent.getExternalId(),
