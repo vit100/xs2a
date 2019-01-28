@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 
@@ -68,7 +69,7 @@ public class HandlerInterceptor extends HandlerInterceptorAdapter {
             response.setStatus(messageCode.getCode());
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Type", "application/json");
-            response.getWriter().write(objectMapper.writeValueAsString(createErrorBody(messageCode, violationsMap.values()).getBody()));
+            response.getWriter().write(objectMapper.writeValueAsString(createError(messageCode, violationsMap.values())));
             response.flushBuffer();
             return false;
         }
@@ -79,9 +80,11 @@ public class HandlerInterceptor extends HandlerInterceptorAdapter {
                    .orElse(MessageErrorCode.FORMAT_ERROR);
     }
 
-    private ErrorMapperContainer.ErrorBody createErrorBody(MessageErrorCode errorCode, Collection<String> errorMessages) {
+    private Object createError(MessageErrorCode errorCode, Collection<String> errorMessages) {
         MessageError messageError = getMessageError(errorCode, errorMessages);
-        return errorMapperHolder.getErrorBody(messageError);
+        return Optional.ofNullable(errorMapperHolder.getErrorBody(messageError))
+                   .map(ErrorMapperContainer.ErrorBody::getBody)
+                   .orElse(null);
     }
 
     private MessageError getMessageError(MessageErrorCode errorCode, Collection<String> errorMessages) {

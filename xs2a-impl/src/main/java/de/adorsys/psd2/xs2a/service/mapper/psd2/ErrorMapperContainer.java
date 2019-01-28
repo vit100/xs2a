@@ -129,7 +129,7 @@ public class ErrorMapperContainer {
     }
 
     @Value
-    public class ErrorBody {
+    public static class ErrorBody {
         private Object body;
         private HttpStatus status;
     }
