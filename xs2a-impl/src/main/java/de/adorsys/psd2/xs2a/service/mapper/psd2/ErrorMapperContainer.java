@@ -69,6 +69,14 @@ public class ErrorMapperContainer {
     private final SB415ErrorMapper sb415ErrorMapper;
     private final SB500ErrorMapper sb500ErrorMapper;
 
+    private final AIS400ErrorMapper ais400ErrorMapper;
+    private final AIS401ErrorMapper ais401ErrorMapper;
+    private final AIS403ErrorMapper ais403ErrorMapper;
+    private final AIS404ErrorMapper ais404ErrorMapper;
+    private final AIS405ErrorMapper ais405ErrorMapper;
+    private final AIS406ErrorMapper ais406ErrorMapper;
+    private final AIS429ErrorMapper ais429ErrorMapper;
+
     @PostConstruct
     public void fillErrorMapperContainer() {
         mapperContainer.put(PIS_400, pis400ErrorMapper);
@@ -90,7 +98,14 @@ public class ErrorMapperContainer {
         mapperContainer.put(PIIS_415, piis415ErrorMapper);
         mapperContainer.put(PIIS_500, piis500ErrorMapper);
 
+        mapperContainer.put(AIS_400, ais400ErrorMapper);
+        mapperContainer.put(AIS_401, ais401ErrorMapper);
+        mapperContainer.put(AIS_403, ais403ErrorMapper);
+        mapperContainer.put(AIS_404, ais404ErrorMapper);
+        mapperContainer.put(AIS_405, ais405ErrorMapper);
+        mapperContainer.put(AIS_406, ais406ErrorMapper);
         mapperContainer.put(AIS_415, ais415ErrorMapper);
+        mapperContainer.put(AIS_429, ais429ErrorMapper);
         mapperContainer.put(AIS_500, ais500ErrorMapper);
 
         mapperContainer.put(SB_400, sb400ErrorMapper);
@@ -101,6 +116,8 @@ public class ErrorMapperContainer {
         mapperContainer.put(SB_409, sb409ErrorMapper);
         mapperContainer.put(SB_415, sb415ErrorMapper);
         mapperContainer.put(SB_500, sb500ErrorMapper);
+
+
     }
 
     @SuppressWarnings("unchecked")

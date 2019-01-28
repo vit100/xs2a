@@ -36,6 +36,13 @@ public enum ErrorType {
     PIIS_415,
     PIIS_500,
 
+    AIS_400,
+    AIS_401,
+    AIS_403,
+    AIS_404,
+    AIS_405,
+    AIS_406,
+    AIS_429,
     AIS_415,
     AIS_500,
 

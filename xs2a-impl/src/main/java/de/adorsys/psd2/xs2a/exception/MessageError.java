@@ -43,6 +43,7 @@ public class MessageError {
     private ErrorType errorType;
 
     public MessageError(ErrorType errorType, TppMessageInformation... tppMessageInformation) {
+        this.transactionStatus = RJCT;
         this.errorType = errorType;
         fillTppMessage(tppMessageInformation);
     }
@@ -61,6 +62,7 @@ public class MessageError {
 
     public MessageError(ErrorHolder errorHolder) {
         this(errorHolder.getErrorCode(), errorHolder.getMessage());
+        this.errorType = errorHolder.getErrorType();
     }
 
     public MessageError(TransactionStatus status, List<TppMessageInformation> tppMessages) {

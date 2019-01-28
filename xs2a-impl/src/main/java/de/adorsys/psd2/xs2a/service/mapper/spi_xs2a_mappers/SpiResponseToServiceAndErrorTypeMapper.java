@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.*;
-import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.SB_400;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType.*;
 import static de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus.*;
 
@@ -39,25 +38,25 @@ public class SpiResponseToServiceAndErrorTypeMapper {
         technicalFailureServiceTypeToErrorType.put(PIS, PIS_500);
         technicalFailureServiceTypeToErrorType.put(PIIS, PIIS_500);
         technicalFailureServiceTypeToErrorType.put(SB, SB_500);
-        // TODO add the same for AIS
+        technicalFailureServiceTypeToErrorType.put(AIS, AIS_500);
 
         Map<ServiceType, ErrorType> unauthorizedFailureServiceTypeToErrorType = new HashMap<>();
         unauthorizedFailureServiceTypeToErrorType.put(PIS, PIS_401);
         unauthorizedFailureServiceTypeToErrorType.put(PIIS, PIIS_401);
         unauthorizedFailureServiceTypeToErrorType.put(SB, SB_401);
-        // TODO add the same for AIS
+        unauthorizedFailureServiceTypeToErrorType.put(AIS, AIS_401);
 
         Map<ServiceType, ErrorType> logicalFailureServiceTypeToErrorType = new HashMap<>();
         logicalFailureServiceTypeToErrorType.put(PIS, PIS_400);
         logicalFailureServiceTypeToErrorType.put(PIIS, PIIS_400);
         logicalFailureServiceTypeToErrorType.put(SB, SB_400);
-        // TODO add the same for AIS
+        logicalFailureServiceTypeToErrorType.put(AIS, AIS_400);
 
         Map<ServiceType, ErrorType> notSupportedFailureServiceTypeToErrorType = new HashMap<>();
         notSupportedFailureServiceTypeToErrorType.put(PIS, PIS_400);
         notSupportedFailureServiceTypeToErrorType.put(PIIS, PIIS_400);
         notSupportedFailureServiceTypeToErrorType.put(SB, SB_400);
-        // TODO add the same for AIS
+        notSupportedFailureServiceTypeToErrorType.put(AIS, AIS_400);
 
         spiResponseToServiceAndErrorType = new HashMap<>();
         spiResponseToServiceAndErrorType.put(TECHNICAL_FAILURE, technicalFailureServiceTypeToErrorType);

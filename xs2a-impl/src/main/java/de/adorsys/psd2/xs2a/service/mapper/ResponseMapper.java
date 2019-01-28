@@ -19,11 +19,13 @@ package de.adorsys.psd2.xs2a.service.mapper;
 import de.adorsys.psd2.xs2a.domain.CustomContentTypeProvider;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.ResponseErrorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 import static org.springframework.http.HttpStatus.*;
@@ -32,6 +34,7 @@ import static org.springframework.http.HttpStatus.*;
 @Component
 public class ResponseMapper {
     private final MessageErrorMapper messageErrorMapper;
+    private final ResponseErrorMapper responseErrorMapper;
 
     public <T, R> ResponseEntity<?> ok(ResponseObject<T> response, Function<T, R> mapper) { //NOPMD short method name ok corresponds to status code
         return generateResponse(response, OK, mapper);
@@ -67,6 +70,10 @@ public class ResponseMapper {
 
     private <T, R> ResponseEntity generateResponse(ResponseObject<T> response, HttpStatus positiveStatus, Function<T, R> mapper) {
         if (response.hasError()) {
+            if (Objects.nonNull(response.getError().getErrorType())) {
+                return responseErrorMapper.generateErrorResponse(response.getError());
+            }
+
             return createErrorResponse(response.getError());
         }
 
