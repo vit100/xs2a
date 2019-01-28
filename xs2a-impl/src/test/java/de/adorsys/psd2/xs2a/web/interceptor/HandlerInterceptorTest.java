@@ -17,7 +17,6 @@
 package de.adorsys.psd2.xs2a.web.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.adorsys.psd2.xs2a.service.mapper.MessageErrorMapper;
 import de.adorsys.psd2.xs2a.service.validator.RequestValidatorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,8 +45,6 @@ public class HandlerInterceptorTest {
     RequestValidatorService requestValidatorService;
     @Mock
     private ObjectMapper objectMapper;
-    @Mock
-    private MessageErrorMapper messageErrorMapper;
 
     @Test
     public void preHandle() throws Exception {
