@@ -32,3 +32,7 @@ New version of API Yaml file published by Berlin Group contains three new status
 | PATC | PartiallyAcceptedTechnicalCorrect   |  The payment initiation needs multiple authentications, where some but not yet all have been performed. Syntactical and semantical validations are successful.         |
 
 XS2A Classes were updated with these new values, so that they may be used in SPI level.
+
+## Bugfix: Fix empty SpiAccountAccess being provided in SpiAccountConsent in some cases
+Now `SpiAccountConsent` argument contains proper `SpiAccountAccess` in `de.adorsys.psd2.xs2a.spi.service.AccountSpi#requestAccountList`
+method when no accesses were previously provided by the connector in a response to AIS consent initiation.
