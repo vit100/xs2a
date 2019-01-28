@@ -357,7 +357,7 @@ public class ConsentControllerTest {
 
     private ResponseObject<ScaStatus> buildScaStatusError() {
         return ResponseObject.<ScaStatus>builder()
-                   .fail(new MessageError(MessageErrorCode.RESOURCE_UNKNOWN_403))
+                   .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_403)))
                    .build();
     }
 }

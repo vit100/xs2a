@@ -115,7 +115,7 @@ public class PaymentControllerTest {
             .thenReturn(ResponseObject.builder().body(getXs2aPayment()).build());
         when(xs2aPaymentService.getPaymentById(eq(SINGLE), eq(WRONG_PAYMENT_ID)))
             .thenReturn(ResponseObject.builder().fail(new MessageError(ErrorType.PIS_403,
-                new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
+                                                                       new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
         when(aspspProfileService.getPisRedirectUrlToAspsp())
             .thenReturn(REDIRECT_LINK);
         when(referenceValidationService.validateAccountReferences(any()))
@@ -128,7 +128,7 @@ public class PaymentControllerTest {
             .thenReturn(ResponseObject.<TransactionStatus>builder().body(TransactionStatus.ACCP).build());
         when(xs2aPaymentService.getPaymentStatusById(eq(PaymentType.SINGLE), eq(WRONG_PAYMENT_ID)))
             .thenReturn(ResponseObject.<TransactionStatus>builder().fail(new MessageError(ErrorType.PIS_403,
-                new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
+                                                                                          new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class PaymentControllerTest {
 
     @Test
     public void getPaymentById_Failure() {
-        when(responseErrorMapper.generateErrorResponse(createMessageError(FORMAT_ERROR))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
+        when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_400, FORMAT_ERROR))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
 
         //When
         ResponseEntity response = paymentController.getPaymentInformation(SINGLE.getValue(), WRONG_PAYMENT_ID,
@@ -209,9 +209,9 @@ public class PaymentControllerTest {
     @Test
     public void getTransactionStatusById_WrongId() {
         doReturn(new ResponseEntity<>(new MessageError(ErrorType.PIS_403,
-            new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403)), FORBIDDEN)).when(responseMapper).ok(any(), any());
-        when(responseErrorMapper.generateErrorResponse(createMessageError(RESOURCE_UNKNOWN_403))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
-        when(xs2aPaymentService.getPaymentStatusById(SINGLE, WRONG_PAYMENT_ID)).thenReturn(ResponseObject.<TransactionStatus>builder().fail(createMessageError(RESOURCE_UNKNOWN_403)).build());
+                                                       new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403)), FORBIDDEN)).when(responseMapper).ok(any(), any());
+        when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_403, RESOURCE_UNKNOWN_403))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
+        when(xs2aPaymentService.getPaymentStatusById(SINGLE, WRONG_PAYMENT_ID)).thenReturn(ResponseObject.<TransactionStatus>builder().fail(createMessageError(ErrorType.PIS_403, RESOURCE_UNKNOWN_403)).build());
         //Given:
         HttpStatus expectedHttpStatus = FORBIDDEN;
 
@@ -274,7 +274,7 @@ public class PaymentControllerTest {
     @Test
     public void cancelPayment_WithoutAuthorisation_Fail_FinalisedStatus() {
         when(xs2aPaymentService.cancelPayment(any(), any())).thenReturn(getErrorOnPaymentCancellation());
-        when(responseErrorMapper.generateErrorResponse(createMessageError(FORMAT_ERROR))).thenReturn(ResponseEntity.status(BAD_REQUEST).build());
+        when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_400, FORMAT_ERROR))).thenReturn(ResponseEntity.status(BAD_REQUEST).build());
 
         // Given
         PaymentType paymentType = PaymentType.SINGLE;
@@ -293,7 +293,7 @@ public class PaymentControllerTest {
     @Test
     public void cancelPayment_WithAuthorisation_Fail_FinalisedStatus() {
         when(xs2aPaymentService.cancelPayment(any(), any())).thenReturn(getErrorOnPaymentCancellation());
-        when(responseErrorMapper.generateErrorResponse(createMessageError(FORMAT_ERROR))).thenReturn(ResponseEntity.status(BAD_REQUEST).build());
+        when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_400, FORMAT_ERROR))).thenReturn(ResponseEntity.status(BAD_REQUEST).build());
 
         // Given
         PaymentType paymentType = PaymentType.SINGLE;
@@ -341,7 +341,7 @@ public class PaymentControllerTest {
     public void getPaymentInitiationScaStatus_failure() {
         when(paymentAuthorisationService.getPaymentInitiationAuthorisationScaStatus(WRONG_PAYMENT_ID, AUTHORISATION_ID))
             .thenReturn(buildScaStatusError());
-        when(responseErrorMapper.generateErrorResponse(createMessageError(RESOURCE_UNKNOWN_403))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
+        when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_403, RESOURCE_UNKNOWN_403))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
 
         // When
         ResponseEntity actual = paymentController.getPaymentInitiationScaStatus(SINGLE.getValue(), PRODUCT, WRONG_PAYMENT_ID,
@@ -389,7 +389,7 @@ public class PaymentControllerTest {
     public void getPaymentCancellationScaStatus_failure() {
         when(paymentCancellationAuthorisationService.getPaymentCancellationAuthorisationScaStatus(WRONG_PAYMENT_ID, CANCELLATION_AUTHORISATION_ID))
             .thenReturn(buildScaStatusError());
-        when(responseErrorMapper.generateErrorResponse(createMessageError(RESOURCE_UNKNOWN_403))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
+        when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_403, RESOURCE_UNKNOWN_403))).thenReturn(ResponseEntity.status(FORBIDDEN).build());
 
         // When
         ResponseEntity actual = paymentController.getPaymentCancellationScaStatus(SINGLE.getValue(), PRODUCT, WRONG_PAYMENT_ID,
@@ -419,7 +419,7 @@ public class PaymentControllerTest {
 
     private ResponseObject<CancelPaymentResponse> getErrorOnPaymentCancellation() {
         return ResponseObject.<CancelPaymentResponse>builder()
-                   .fail(new MessageError(FORMAT_ERROR))
+                   .fail(new MessageError(ErrorType.PIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR)))
                    .build();
     }
 
@@ -429,12 +429,12 @@ public class PaymentControllerTest {
 
     private ResponseObject<de.adorsys.psd2.xs2a.core.sca.ScaStatus> buildScaStatusError() {
         return ResponseObject.<de.adorsys.psd2.xs2a.core.sca.ScaStatus>builder()
-                   .fail(new MessageError(MessageErrorCode.RESOURCE_UNKNOWN_403))
+                   .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_403)))
                    .build();
     }
 
-    private MessageError createMessageError(MessageErrorCode errorCode) {
-        return new MessageError(new TppMessageInformation(MessageCategory.ERROR, errorCode));
+    private MessageError createMessageError(ErrorType errorType, MessageErrorCode errorCode) {
+        return new MessageError(errorType, new TppMessageInformation(MessageCategory.ERROR, errorCode));
     }
 
 }

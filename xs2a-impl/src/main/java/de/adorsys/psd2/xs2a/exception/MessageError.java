@@ -48,16 +48,12 @@ public class MessageError {
         this.errorType = errorHolder.getErrorType();
     }
 
-    public MessageError(List<TppMessageInformation> tppMessages) {
-        this.tppMessages.addAll(tppMessages);
-    }
-
-    public MessageError(MessageErrorCode errorCode, String message) {
+    private MessageError(MessageErrorCode errorCode, String message) {
         this(singletonList(new TppMessageInformation(MessageCategory.ERROR, errorCode, message)));
     }
 
-    public MessageError(MessageErrorCode errorCode) {
-        this(errorCode, null);
+    private MessageError(List<TppMessageInformation> tppMessages) {
+        this.tppMessages.addAll(tppMessages);
     }
 
     // TODO task: add logic to resolve resulting MessageError https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/211
