@@ -297,7 +297,7 @@ public class ConsentServiceTest {
 
         //When:
         when(createConsentRequestValidator.validateRequest(req))
-            .thenReturn(createValidationResult(false, createMessageError(MessageErrorCode.PARAMETER_NOT_SUPPORTED)));
+            .thenReturn(createValidationResult(false, createMessageError(ErrorType.AIS_400, MessageErrorCode.PARAMETER_NOT_SUPPORTED)));
 
         when(aspspProfileService.getAllPsd2Support())
             .thenReturn(false);
@@ -538,7 +538,7 @@ public class ConsentServiceTest {
 
         //When
         when(createConsentRequestValidator.validateRequest(req))
-            .thenReturn(createValidationResult(false, createMessageError(MessageErrorCode.PARAMETER_NOT_SUPPORTED)));
+            .thenReturn(createValidationResult(false, createMessageError(ErrorType.AIS_400, MessageErrorCode.PARAMETER_NOT_SUPPORTED)));
 
         when(aspspProfileService.isBankOfferedConsentSupported())
             .thenReturn(false);
@@ -566,7 +566,7 @@ public class ConsentServiceTest {
 
         //When
         when(createConsentRequestValidator.validateRequest(req))
-            .thenReturn(createValidationResult(false, createMessageError(MessageErrorCode.SERVICE_INVALID_405)));
+            .thenReturn(createValidationResult(false, createMessageError(ErrorType.AIS_405, MessageErrorCode.SERVICE_INVALID_405)));
 
         ResponseObject<CreateConsentResponse> responseObj = consentService.createAccountConsentsWithResponse(
             req, PSU_ID_DATA, EXPLICIT_PREFERRED, buildTppRedirectUri());
@@ -574,7 +574,7 @@ public class ConsentServiceTest {
 
         //Then
         assertThat(messageError).isNotNull();
-        assertThat(messageError.getTransactionStatus()).isEqualTo(TransactionStatus.RJCT);
+        assertThat(messageError.getErrorType()).isEqualTo(ErrorType.AIS_405);
 
         TppMessageInformation tppMessage = messageError.getTppMessage();
 
@@ -760,8 +760,8 @@ public class ConsentServiceTest {
         return new ValidationResult(isValid, messageError);
     }
 
-    private MessageError createMessageError(MessageErrorCode errorCode) {
-        return new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, errorCode));
+    private MessageError createMessageError(ErrorType errorType, MessageErrorCode errorCode) {
+        return new MessageError(errorType, new TppMessageInformation(MessageCategory.ERROR, errorCode));
     }
 
     private UpdateConsentPsuDataReq buildUpdateConsentPsuDataReq() {

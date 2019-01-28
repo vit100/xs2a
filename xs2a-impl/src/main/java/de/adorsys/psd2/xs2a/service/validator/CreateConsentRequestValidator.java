@@ -50,7 +50,7 @@ public class CreateConsentRequestValidator {
      *
      * @param request CreateConsentReq request for consent creating
      * @return ValidationResult instance, that contains boolean isValid, that shows if request is valid
-     *         and MessageError for invalid case
+     * and MessageError for invalid case
      */
     public ValidationResult validateRequest(CreateConsentReq request) {
         if (isNotSupportedGlobalConsentForAllPsd2(request)) {
@@ -64,11 +64,11 @@ public class CreateConsentRequestValidator {
         }
 
         if (isNotValidFrequencyForRecurringIndicator(request.isRecurringIndicator(), request.getFrequencyPerDay())) {
-            return new ValidationResult(false, new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR)));
+            return new ValidationResult(false, new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR)));
         }
 
         if (isNotSupportedAvailableAccounts(request)) {
-            return new ValidationResult(false, new MessageError(new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.SERVICE_INVALID_405)));
+            return new ValidationResult(false, new MessageError(ErrorType.AIS_405, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.SERVICE_INVALID_405)));
         }
         return new ValidationResult(true, null);
     }
