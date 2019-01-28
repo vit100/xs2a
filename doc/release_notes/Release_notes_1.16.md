@@ -33,5 +33,13 @@ New version of API Yaml file published by Berlin Group contains three new status
 
 XS2A Classes were updated with these new values, so that they may be used in SPI level.
 
+## Inner integration tests
+Added integration tests in spi-mock service.
+12 tests check successes payments initiation:
+  - for payment types Single, Periodic and Bulk 
+  - for modes Explicit and Implicit 
+  - for sca approach Redirect and Embedded
+1 test checks payment sca status
+
 ## Bugfix: Remove default values for TPP in the database
 From now on default values for TPP-related fields are no longer provided in the database.
