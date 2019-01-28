@@ -18,7 +18,6 @@ package de.adorsys.psd2.xs2a.exception;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
@@ -31,33 +30,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.RJCT;
 import static java.util.Collections.singletonList;
 
-// TODO remove obsolete methods
 @Data
 public class MessageError {
     @JsonUnwrapped
-    private TransactionStatus transactionStatus;
     private Set<TppMessageInformation> tppMessages = new HashSet<>();
     private ErrorType errorType;
 
     public MessageError(ErrorType errorType, TppMessageInformation... tppMessageInformation) {
-        this.transactionStatus = RJCT;
         this.errorType = errorType;
         fillTppMessage(tppMessageInformation);
-    }
-
-    public MessageError(TppMessageInformation tppMessage) {
-        this(RJCT, tppMessage);
-    }
-
-    public MessageError(List<TppMessageInformation> tppMessages) {
-        this(RJCT, tppMessages);
-    }
-
-    public MessageError(TransactionStatus status, TppMessageInformation tppMessage) {
-        this(status, singletonList(tppMessage));
     }
 
     public MessageError(ErrorHolder errorHolder) {
@@ -65,13 +48,12 @@ public class MessageError {
         this.errorType = errorHolder.getErrorType();
     }
 
-    public MessageError(TransactionStatus status, List<TppMessageInformation> tppMessages) {
-        this.transactionStatus = status;
+    public MessageError(List<TppMessageInformation> tppMessages) {
         this.tppMessages.addAll(tppMessages);
     }
 
     public MessageError(MessageErrorCode errorCode, String message) {
-        this(RJCT, singletonList(new TppMessageInformation(MessageCategory.ERROR, errorCode, message)));
+        this(singletonList(new TppMessageInformation(MessageCategory.ERROR, errorCode, message)));
     }
 
     public MessageError(MessageErrorCode errorCode) {

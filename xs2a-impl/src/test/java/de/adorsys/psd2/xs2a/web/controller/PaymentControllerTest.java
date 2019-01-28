@@ -31,6 +31,7 @@ import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.*;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.web.mapper.AuthorisationMapper;
 import de.adorsys.psd2.xs2a.web.mapper.ConsentModelMapper;
@@ -109,8 +110,8 @@ public class PaymentControllerTest {
         when(paymentService.getPaymentById(eq(SINGLE), eq(CORRECT_PAYMENT_ID)))
             .thenReturn(ResponseObject.builder().body(getXs2aPayment()).build());
         when(paymentService.getPaymentById(eq(SINGLE), eq(WRONG_PAYMENT_ID)))
-            .thenReturn(ResponseObject.builder().fail(new MessageError(
-                new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
+            .thenReturn(ResponseObject.builder().fail(new MessageError(ErrorType.PIS_403,
+                                                                       new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
         when(aspspProfileService.getPisRedirectUrlToAspsp())
             .thenReturn(REDIRECT_LINK);
         when(referenceValidationService.validateAccountReferences(any()))
@@ -122,8 +123,8 @@ public class PaymentControllerTest {
         when(paymentService.getPaymentStatusById(eq(PaymentType.SINGLE), eq(CORRECT_PAYMENT_ID)))
             .thenReturn(ResponseObject.<TransactionStatus>builder().body(TransactionStatus.ACCP).build());
         when(paymentService.getPaymentStatusById(eq(PaymentType.SINGLE), eq(WRONG_PAYMENT_ID)))
-            .thenReturn(ResponseObject.<TransactionStatus>builder().fail(new MessageError(
-                new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
+            .thenReturn(ResponseObject.<TransactionStatus>builder().fail(new MessageError(ErrorType.PIS_403,
+                                                                                          new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403))).build());
     }
 
     @Test
@@ -148,8 +149,8 @@ public class PaymentControllerTest {
     @Test
     public void getPaymentById_Failure() {
         when(responseMapper.ok(any()))
-            .thenReturn(new ResponseEntity<>(new MessageError(
-                new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403)), FORBIDDEN));
+            .thenReturn(new ResponseEntity<>(new MessageError(ErrorType.PIS_403,
+                                                              new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403)), FORBIDDEN));
 
         //When
         ResponseEntity response = paymentController.getPaymentInformation(SINGLE.getValue(), WRONG_PAYMENT_ID,
@@ -204,8 +205,8 @@ public class PaymentControllerTest {
 
     @Test
     public void getTransactionStatusById_WrongId() {
-        doReturn(new ResponseEntity<>(new MessageError(
-            new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403)), FORBIDDEN)).when(responseMapper).ok(any(), any());
+        doReturn(new ResponseEntity<>(new MessageError(ErrorType.PIS_403,
+                                                       new TppMessageInformation(ERROR, RESOURCE_UNKNOWN_403)), FORBIDDEN)).when(responseMapper).ok(any(), any());
 
         //Given:
         HttpStatus expectedHttpStatus = FORBIDDEN;
