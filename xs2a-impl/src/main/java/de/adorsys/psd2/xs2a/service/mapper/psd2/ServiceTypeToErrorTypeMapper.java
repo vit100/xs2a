@@ -30,6 +30,17 @@ public class ServiceTypeToErrorTypeMapper {
     private final static Map<ServiceType, Map<Integer, ErrorType>> serviceTypeToHttpCodeAndErrorType;
 
     static {
+        Map<Integer, ErrorType> aisHttpCodeToErrorType = new HashMap<>();
+        aisHttpCodeToErrorType.put(400, AIS_400);
+        aisHttpCodeToErrorType.put(401, AIS_401);
+        aisHttpCodeToErrorType.put(403, AIS_403);
+        aisHttpCodeToErrorType.put(404, AIS_404);
+        aisHttpCodeToErrorType.put(405, AIS_405);
+        aisHttpCodeToErrorType.put(406, AIS_406);
+        aisHttpCodeToErrorType.put(415, AIS_415);
+        aisHttpCodeToErrorType.put(429, AIS_429);
+        aisHttpCodeToErrorType.put(500, AIS_500);
+
         Map<Integer, ErrorType> pisHttpCodeToErrorType = new HashMap<>();
         pisHttpCodeToErrorType.put(400, PIS_400);
         pisHttpCodeToErrorType.put(401, PIS_401);
@@ -60,9 +71,8 @@ public class ServiceTypeToErrorTypeMapper {
         sbHttpCodeToErrorType.put(415, SB_415);
         sbHttpCodeToErrorType.put(500, SB_500);
 
-        // TODO do the same for AIS
-
         serviceTypeToHttpCodeAndErrorType = new HashMap<>();
+        serviceTypeToHttpCodeAndErrorType.put(AIS, aisHttpCodeToErrorType);
         serviceTypeToHttpCodeAndErrorType.put(PIS, pisHttpCodeToErrorType);
         serviceTypeToHttpCodeAndErrorType.put(PIIS, piisHttpCodeToErrorType);
         serviceTypeToHttpCodeAndErrorType.put(SB, sbHttpCodeToErrorType);

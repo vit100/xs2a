@@ -72,7 +72,6 @@ public class GlobalExceptionHandlerController {
         return responseErrorMapper.generateErrorResponse(createMessageError(FORMAT_ERROR));
     }
 
-    // TODO provide error mapping flow for UNSUPPORTED_MEDIA_TYPE(415), as this class is not given by the specification
     @ExceptionHandler(value = HttpMediaTypeNotAcceptableException.class)
     public ResponseEntity mediaTypeNotSupportedException(HttpMediaTypeNotAcceptableException ex, HandlerMethod handlerMethod) {
         log.warn("Media type unsupported exception: {}, message: {}", handlerMethod.getMethod().getDeclaringClass().getSimpleName(), ex.getMessage());
