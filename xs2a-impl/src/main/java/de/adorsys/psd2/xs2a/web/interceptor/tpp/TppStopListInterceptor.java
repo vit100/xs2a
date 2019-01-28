@@ -34,6 +34,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Optional;
+
 import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 
 @RequiredArgsConstructor
@@ -52,7 +54,7 @@ public class TppStopListInterceptor extends HandlerInterceptorAdapter {
         TppInfo tppInfo = tppService.getTppInfo();
 
         if (tppStopListService.checkIfTppBlocked(new TppUniqueParamsHolder(tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId()))) {
-            response.getWriter().write(objectMapper.writeValueAsString(createErrorBody(MessageErrorCode.CERTIFICATE_BLOCKED).getBody()));
+            response.getWriter().write(objectMapper.writeValueAsString(createError(MessageErrorCode.CERTIFICATE_BLOCKED)));
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setStatus(MessageErrorCode.CERTIFICATE_BLOCKED.getCode());
             return false;
@@ -61,9 +63,11 @@ public class TppStopListInterceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
-    private ErrorMapperContainer.ErrorBody createErrorBody(MessageErrorCode errorCode) {
+    private Object createError(MessageErrorCode errorCode) {
         MessageError messageError = new MessageError(errorTypeMapper.mapToErrorType(serviceTypeDiscoveryService.getServiceType(), errorCode.getCode()), buildErrorTppMessages(errorCode));
-        return errorMapperHolder.getErrorBody(messageError);
+        return Optional.ofNullable(errorMapperHolder.getErrorBody(messageError))
+                   .map(ErrorMapperContainer.ErrorBody::getBody)
+                   .orElse(null);
     }
 
     private TppMessageInformation buildErrorTppMessages(MessageErrorCode errorCode) {
