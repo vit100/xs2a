@@ -46,7 +46,7 @@ public class HandlerInterceptor extends HandlerInterceptorAdapter {
     private final RequestValidatorService requestValidatorService;
     private final ServiceTypeDiscoveryService serviceTypeDiscoveryService;
     private final ServiceTypeToErrorTypeMapper errorTypeMapper;
-    private final ErrorMapperContainer errorMapperHolder;
+    private final ErrorMapperContainer errorMapperContainer;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -82,7 +82,7 @@ public class HandlerInterceptor extends HandlerInterceptorAdapter {
 
     private Object createError(MessageErrorCode errorCode, Collection<String> errorMessages) {
         MessageError messageError = getMessageError(errorCode, errorMessages);
-        return Optional.ofNullable(errorMapperHolder.getErrorBody(messageError))
+        return Optional.ofNullable(errorMapperContainer.getErrorBody(messageError))
                    .map(ErrorMapperContainer.ErrorBody::getBody)
                    .orElse(null);
     }

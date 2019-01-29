@@ -31,7 +31,6 @@ import de.adorsys.psd2.xs2a.web.interceptor.tpp.TppStopListInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -57,12 +56,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Qualifier("xs2aCorsConfigProperties")
     private final CorsConfigurationProperties corsConfigurationProperties;
-    private final MessageSource messageSource;
     private final TppService tppService;
     private final TppStopListService tppStopListService;
     private final ServiceTypeDiscoveryService serviceTypeDiscoveryService;
     private final ServiceTypeToErrorTypeMapper errorTypeMapper;
-    private final ErrorMapperContainer errorMapperHolder;
+    private final ErrorMapperContainer errorMapperContainer;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -86,10 +84,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new PaymentLoggingInterceptor(tppService)).addPathPatterns(SINGLE_PAYMENTS_PATH, BULK_PAYMENTS_PATH, PERIODIC_PAYMENTS_PATH);
         registry.addInterceptor(new SigningBasketLoggingInterceptor(tppService)).addPathPatterns(SIGNING_BASKETS_PATH);
 
-        registry.addInterceptor(new TppStopListInterceptor(errorMapperHolder, tppService, tppStopListService, serviceTypeDiscoveryService, errorTypeMapper, objectMapper))
+        registry.addInterceptor(new TppStopListInterceptor(errorMapperContainer, tppService, tppStopListService, serviceTypeDiscoveryService, errorTypeMapper, objectMapper))
             .addPathPatterns(getAllXs2aEndpointPaths());
 
-        registry.addInterceptor(new HandlerInterceptor(requestValidatorService(), serviceTypeDiscoveryService, errorTypeMapper, errorMapperHolder, objectMapper))
+        registry.addInterceptor(new HandlerInterceptor(requestValidatorService(), serviceTypeDiscoveryService, errorTypeMapper, errorMapperContainer, objectMapper))
             .addPathPatterns(getAllXs2aEndpointPaths());
     }
 

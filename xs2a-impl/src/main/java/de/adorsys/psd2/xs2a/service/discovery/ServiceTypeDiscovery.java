@@ -17,7 +17,6 @@
 package de.adorsys.psd2.xs2a.service.discovery;
 
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
-import lombok.Value;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.HashMap;
@@ -26,10 +25,9 @@ import java.util.Map;
 import static de.adorsys.psd2.xs2a.config.Xs2aEndpointPathConstant.*;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType.*;
 
-@Value
 class ServiceTypeDiscovery {
-    private static AntPathMatcher matcher = new AntPathMatcher();
-    private static Map<String, ServiceType> pathToServiceType;
+    private final static AntPathMatcher matcher = new AntPathMatcher();
+    private final static Map<String, ServiceType> pathToServiceType;
 
     static {
         pathToServiceType = new HashMap<>();

@@ -42,7 +42,7 @@ import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 public class TppStopListInterceptor extends HandlerInterceptorAdapter {
     private static final String STOP_LIST_ERROR_MESSAGE = "Signature/corporate seal certificate has been blocked by the ASPSP";
 
-    private final ErrorMapperContainer errorMapperHolder;
+    private final ErrorMapperContainer errorMapperContainer;
     private final TppService tppService;
     private final TppStopListService tppStopListService;
     private final ServiceTypeDiscoveryService serviceTypeDiscoveryService;
@@ -65,7 +65,7 @@ public class TppStopListInterceptor extends HandlerInterceptorAdapter {
 
     private Object createError(MessageErrorCode errorCode) {
         MessageError messageError = new MessageError(errorTypeMapper.mapToErrorType(serviceTypeDiscoveryService.getServiceType(), errorCode.getCode()), buildErrorTppMessages(errorCode));
-        return Optional.ofNullable(errorMapperHolder.getErrorBody(messageError))
+        return Optional.ofNullable(errorMapperContainer.getErrorBody(messageError))
                    .map(ErrorMapperContainer.ErrorBody::getBody)
                    .orElse(null);
     }

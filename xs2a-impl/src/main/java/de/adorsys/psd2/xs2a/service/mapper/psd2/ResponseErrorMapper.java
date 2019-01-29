@@ -24,10 +24,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ResponseErrorMapper {
-    private final ErrorMapperContainer errorMapperHolder;
+    private final ErrorMapperContainer errorMapperContainer;
 
     public ResponseEntity generateErrorResponse(MessageError error) {
-        ErrorMapperContainer.ErrorBody errorBody = errorMapperHolder.getErrorBody(error);
+        ErrorMapperContainer.ErrorBody errorBody = errorMapperContainer.getErrorBody(error);
         return new ResponseEntity<>(errorBody.getBody(), errorBody.getStatus());
     }
 }

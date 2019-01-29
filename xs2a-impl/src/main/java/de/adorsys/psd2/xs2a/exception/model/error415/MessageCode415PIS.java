@@ -19,33 +19,35 @@ package de.adorsys.psd2.xs2a.exception.model.error415;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+// TODO remove, when specification provide a class for such error code https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/634
+
 /**
  * Message codes defined for PIS for HTTP Error code 415 (INTERNAL_SERVER_ERROR).
  */
 public enum MessageCode415PIS {
 
-  INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR");
+    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR");
 
-  private String value;
+    private String value;
 
-  MessageCode415PIS(String value) {
-    this.value = value;
-  }
-
-  @Override
-  @JsonValue
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
-  public static MessageCode415PIS fromValue(String text) {
-    for (MessageCode415PIS b : MessageCode415PIS.values()) {
-      if (String.valueOf(b.value).equals(text)) {
-        return b;
-      }
+    MessageCode415PIS(String value) {
+        this.value = value;
     }
-    return null;
-  }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static MessageCode415PIS fromValue(String text) {
+        for (MessageCode415PIS b : MessageCode415PIS.values()) {
+            if (String.valueOf(b.value).equals(text)) {
+                return b;
+            }
+        }
+        return null;
+    }
 }
 
