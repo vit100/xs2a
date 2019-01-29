@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -43,6 +44,15 @@ public class JsonConverter {
     public <T> Optional<T> toObject(final String json, final Class<T> target){
         try {
             return Optional.ofNullable(objectMapper.readValue(json, target));
+        } catch (IOException e) {
+            log.error("Can't convert json to object: {}", e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
+
+    public <T> Optional<T> toObject(final byte[] bytes, final Class<T> target){
+        try {
+            return Optional.ofNullable(objectMapper.readValue(IOUtils.toString(bytes, "UTF-8"), target));
         } catch (IOException e) {
             log.error("Can't convert json to object: {}", e.getMessage(), e);
         }

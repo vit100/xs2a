@@ -18,6 +18,7 @@ package de.adorsys.psd2.aspsp.mock.api.payment;
 
 import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountReference;
 import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
+import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,8 +31,6 @@ import java.util.List;
 public class AspspBulkPayment {
     @ApiModelProperty(value = "The unique identifier of the payment", required = true)
     private String paymentId;
-
-    private boolean multilevelScaRequired;
 
     @ApiModelProperty(value = "If this element equals \"true\", the PSU prefers only one booking entry. If this element equals \"false\", the PSU prefers individual booking of all contained individual transactions. The ASPSP will follow this preference according to contracts agreed on with the PSU.", example = "true")
     private Boolean batchBookingPreferred;
@@ -51,4 +50,7 @@ public class AspspBulkPayment {
 
     @ApiModelProperty(value = "Transaction status", example = "Pending")
     private AspspTransactionStatus paymentStatus;
+
+    @ApiModelProperty(value = "List of PSU data")
+    private List<AspspPsuData> psuDataList;
 }

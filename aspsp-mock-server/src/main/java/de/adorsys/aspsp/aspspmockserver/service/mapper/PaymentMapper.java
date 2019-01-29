@@ -113,6 +113,7 @@ public class PaymentMapper {
         aspsp.setPaymentStatus(single.getPaymentStatus());
         aspsp.setRemittanceInformationStructured(single.getRemittanceInformationStructured());
         aspsp.setRemittanceInformationUnstructured(single.getRemittanceInformationUnstructured());
+        aspsp.setPsuDataList(single.getPsuDataList());
         return aspsp;
     }
 
@@ -121,7 +122,6 @@ public class PaymentMapper {
                    .map(aspsp -> {
                        AspspSinglePayment single = new AspspSinglePayment();
                        single.setPaymentId(aspsp.getPaymentId());
-                       single.setMultilevelScaRequired("DE89370400440532013004".equals(aspsp.getDebtorAccount().getIban()));
                        single.setEndToEndIdentification(aspsp.getEndToEndIdentification());
                        single.setDebtorAccount(aspsp.getDebtorAccount());
                        single.setUltimateDebtor(aspsp.getUltimateDebtor());
@@ -137,6 +137,7 @@ public class PaymentMapper {
                        single.setPaymentStatus(aspspPayment.getPaymentStatus());
                        single.setRemittanceInformationStructured(aspsp.getRemittanceInformationStructured());
                        single.setRemittanceInformationUnstructured(aspsp.getRemittanceInformationUnstructured());
+                       single.setPsuDataList(aspspPayment.getPsuDataList());
                        return single;
                    })
                    .orElse(null);
@@ -147,7 +148,6 @@ public class PaymentMapper {
                    .map(aspsp -> {
                        AspspPeriodicPayment periodic = new AspspPeriodicPayment();
                        periodic.setPaymentId(aspsp.getPaymentId());
-                       periodic.setMultilevelScaRequired("DE89370400440532013004".equals(aspsp.getDebtorAccount().getIban()));
                        periodic.setEndToEndIdentification(aspsp.getEndToEndIdentification());
                        periodic.setDebtorAccount(aspsp.getDebtorAccount());
                        periodic.setUltimateDebtor(aspsp.getUltimateDebtor());
@@ -167,6 +167,7 @@ public class PaymentMapper {
                        periodic.setPaymentStatus(aspspPayment.getPaymentStatus());
                        periodic.setRemittanceInformationStructured(aspsp.getRemittanceInformationStructured());
                        periodic.setRemittanceInformationUnstructured(aspsp.getRemittanceInformationUnstructured());
+                       periodic.setPsuDataList(aspspPayment.getPsuDataList());
                        return periodic;
                    })
                    .orElse(null);

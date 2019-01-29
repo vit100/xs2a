@@ -63,6 +63,8 @@ public class PaymentServiceTest {
     private AccountService accountService;
     @Mock
     private PaymentMapper paymentMapper;
+    @Mock
+    private AccountDetailsService accountDetailsService;
 
     @Before
     public void setUp() {
@@ -319,7 +321,7 @@ public class PaymentServiceTest {
 
     private List<AspspAccountDetails> getAccountDetails() {
         return Collections.singletonList(
-            new AspspAccountDetails(ASPSP_ACCOUNT_ID, "12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, getBalances())
+            new AspspAccountDetails(ASPSP_ACCOUNT_ID, "12345", IBAN, null, null, null, null, CURRENCY, "Peter", null, null, null, null, null, null, null, null, getBalances())
         );
     }
 

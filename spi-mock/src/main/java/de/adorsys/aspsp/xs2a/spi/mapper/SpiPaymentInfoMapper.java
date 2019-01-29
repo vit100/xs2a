@@ -54,7 +54,7 @@ public class SpiPaymentInfoMapper {
     public SpiPaymentInitiationResponse mapToSpiPaymentInitiationResponse(@NotNull AspspPaymentInfo payment) {
         SpiCommonPaymentInitiationResponse spi = new SpiCommonPaymentInitiationResponse();
         spi.setPaymentId(payment.getPaymentId());
-        spi.setMultilevelScaRequired(payment.isMultilevelScaRequired());
+        spi.setMultilevelScaRequired(false);
         spi.setAspspAccountId(payment.getAspspAccountId());
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);

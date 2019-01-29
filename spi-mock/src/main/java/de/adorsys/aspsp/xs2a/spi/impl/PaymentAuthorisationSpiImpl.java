@@ -67,18 +67,14 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
         Optional<SpiAspspAuthorisationData> accessToken = keycloakInvokerService.obtainAuthorisationData(psuLoginData.getPsuId(), password);
         SpiAuthorisationStatus spiAuthorisationStatus = accessToken.map(t -> SUCCESS)
                                                             .orElse(FAILURE);
-        byte[] payload = accessToken.flatMap(jsonConverter::toJson)
-                             .map(String::getBytes)
-                             .orElse(null);
-
         if (spiAuthorisationStatus == FAILURE) {
             return SpiResponse.<SpiAuthorisationStatus>builder()
-                       .aspspConsentData(aspspConsentData.respondWith(payload))
+                       .aspspConsentData(aspspConsentData)
                        .fail(SpiResponseStatus.UNAUTHORIZED_FAILURE);
         }
 
         return SpiResponse.<SpiAuthorisationStatus>builder()
-                   .aspspConsentData(aspspConsentData.respondWith(payload))
+                   .aspspConsentData(aspspConsentData)
                    .payload(spiAuthorisationStatus)
                    .success();
     }
@@ -94,13 +90,13 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
                                                               .orElseGet(Collections::emptyList);
 
             return SpiResponse.<List<SpiAuthenticationObject>>builder()
-                       .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                       .aspspConsentData(aspspConsentData)
                        .payload(spiScaMethods)
                        .success();
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
                 return SpiResponse.<List<SpiAuthenticationObject>>builder()
-                           .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                           .aspspConsentData(aspspConsentData)
                            .fail(SpiResponseStatus.TECHNICAL_FAILURE);
             }
 
@@ -117,7 +113,7 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
             aspspRestTemplate.exchange(aspspRemoteUrls.getGenerateTanConfirmation(), HttpMethod.POST, null, Void.class, spiContextData.getPsuData().getPsuId(), authenticationMethodId);
 
             return SpiResponse.<SpiAuthorizationCodeResult>builder()
-                       .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                       .aspspConsentData(aspspConsentData)
                        // TODO We need to return real payload data from ASPSP https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/489
                        .payload(getDefaultSpiAuthorizationCodeResult())
                        .success();
@@ -125,7 +121,7 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
                 return SpiResponse.<SpiAuthorizationCodeResult>builder()
-                           .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                           .aspspConsentData(aspspConsentData)
                            .fail(SpiResponseStatus.TECHNICAL_FAILURE);
             }
 
@@ -133,13 +129,13 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
                 SpiAuthorizationCodeResult spiAuthorizationCodeResult = new SpiAuthorizationCodeResult();
                 spiAuthorizationCodeResult.setChallengeData(new ChallengeData());
                 return SpiResponse.<SpiAuthorizationCodeResult>builder()
-                           .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                           .aspspConsentData(aspspConsentData)
                            .payload(spiAuthorizationCodeResult)
                            .success();
             }
 
             return SpiResponse.<SpiAuthorizationCodeResult>builder()
-                       .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                       .aspspConsentData(aspspConsentData)
                        .fail(SpiResponseStatus.LOGICAL_FAILURE);
         }
     }
