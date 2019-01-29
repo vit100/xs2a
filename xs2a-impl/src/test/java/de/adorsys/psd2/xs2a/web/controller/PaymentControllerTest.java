@@ -16,13 +16,9 @@
 
 package de.adorsys.psd2.xs2a.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.adorsys.psd2.model.*;
-import de.adorsys.psd2.xs2a.component.JsonConverter;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
-import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
@@ -48,7 +44,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 import static de.adorsys.psd2.xs2a.core.profile.PaymentType.SINGLE;
@@ -66,19 +61,11 @@ import static org.springframework.http.HttpStatus.*;
 public class PaymentControllerTest {
     private static final String CORRECT_PAYMENT_ID = "33333-444444-55555-55555";
     private static final String WRONG_PAYMENT_ID = "wrong_payment_id";
-    private static final Charset UTF_8 = Charset.forName("utf-8");
     private static final String REDIRECT_LINK = "http://localhost:4200/consent/confirmation/pis";
-    private static final PsuIdData PSU_ID_DATA = new PsuIdData(null, null, null, null);
     private static final UUID REQUEST_ID = UUID.fromString("ddd36e05-d67a-4830-93ad-9462f71ae1e6");
-    private static final String BULK_PAYMENT_DATA = "/json/BulkPaymentTestData.json";
-    private static final String BULK_PAYMENT_RESP_DATA = "/json/BulkPaymentResponseTestData.json";
-    private static final String PAYMENT_CANCELLATION_ID = "42af2f4a-0d9f-4a7f-8677-8acda5e718f0";
     private static final String AUTHORISATION_ID = "3e96e9e0-9974-42aa-beb8-003e91416652";
     private static final String CANCELLATION_AUTHORISATION_ID = "d7ba791c-2231-4ed5-8232-cb1ad4cf7332";
     private static final String PRODUCT = "sepa-credit-transfers";
-
-    private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    private JsonConverter jsonConverter = new JsonConverter(objectMapper);
 
     @InjectMocks
     private PaymentController paymentController;
@@ -231,13 +218,13 @@ public class PaymentControllerTest {
     public void cancelPayment_WithoutAuthorisation_Success() {
         when(responseMapper.ok(any()))
             .thenReturn(new ResponseEntity<>(getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.CANC), HttpStatus.OK));
-        when(paymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(false));
+        when(xs2aPaymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(false));
 
         // Given
         PaymentInitiationCancelResponse204202 response = getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.CANC);
         ResponseEntity<PaymentInitiationCancelResponse204202> expectedResult = new ResponseEntity<>(response, HttpStatus.OK);
 
-        when(xs2aPaymentService.cancelPayment(SINGLE, CORRECT_PAYMENT_ID)).thenReturn(getCancelPaymentResponseObject(false));
+        when(xs2aPaymentService.cancelPayment(SINGLE, PRODUCT, CORRECT_PAYMENT_ID)).thenReturn(getCancelPaymentResponseObject(false));
         when(paymentModelMapperPsd2.mapToPaymentInitiationCancelResponse(any())).thenReturn(response);
         when(responseMapper.ok(any())).thenReturn(expectedResult);
 
@@ -257,8 +244,8 @@ public class PaymentControllerTest {
     public void cancelPayment_WithAuthorisation_Success() {
         when(responseMapper.accepted(any()))
             .thenReturn(new ResponseEntity<>(getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.ACTC), HttpStatus.ACCEPTED));
-        when(xs2aPaymentService.cancelPayment(any(), any())).thenReturn(getCancelPaymentResponseObject(true));
-        when(paymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(true));
+        when(xs2aPaymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(true));
+        when(xs2aPaymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(true));
 
         // Given
         PaymentType paymentType = PaymentType.SINGLE;
@@ -278,7 +265,7 @@ public class PaymentControllerTest {
 
     @Test
     public void cancelPayment_WithoutAuthorisation_Fail_FinalisedStatus() {
-        when(xs2aPaymentService.cancelPayment(any(), any())).thenReturn(getErrorOnPaymentCancellation());
+        when(xs2aPaymentService.cancelPayment(any(), any(), any())).thenReturn(getErrorOnPaymentCancellation());
         when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_400, FORMAT_ERROR))).thenReturn(ResponseEntity.status(BAD_REQUEST).build());
 
         // Given
