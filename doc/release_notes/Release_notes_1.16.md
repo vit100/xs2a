@@ -64,6 +64,15 @@ If endpoint "Delete AIS consent" (DELETE /v1/consents/{consent-id}) is triggered
 the status would be changed to REJECTED, because the consent is not yet authorized and is in the initiation phase. If the consent is in the 
 lifecycle phase (has status VALID), consent status is set to TERMINATED_BY_TPP. This affects only calls made to Xs2a interface, calls made from Online-Banking or to CMS directly are not affected.
 
+## Bugfix: Remove TPP-ID from get payments by aspspAccountId endpoint in CMS
+TPP-ID was removed as a parameter from `exportPaymentsByAccountIdAndTpp` method in `de.adorsys.psd2.consent.aspsp.api.pis.CmsAspspPisExportService`, 
+the method itself  was renamed to `exportPaymentsByAccountId`.
+Corresponding endpoint in the CMS controller was changed as well:
+
+| Method | Context                          | Old path                                                     | New path                                        |
+|--------|----------------------------------|--------------------------------------------------------------|-------------------------------------------------|
+| GET    | Get payments by ASPSP account ID | aspsp-api/v1/pis/payments/tpp/{tpp-id}/accounts/{account-id} | aspsp-api/v1/pis/payments/accounts/{account-id} |
+
 ## Bugfix: Fix empty SpiAccountAccess being provided in SpiAccountConsent in some cases
 Now `SpiAccountConsent` argument contains proper `SpiAccountAccess` in `de.adorsys.psd2.xs2a.spi.service.AccountSpi#requestAccountList`
 method when no accesses were previously provided by the connector in a response to AIS consent initiation.
