@@ -171,7 +171,7 @@ public class PaymentService {
         if (response.hasError()) {
             ErrorHolder errorHolder = response.getErrorHolder();
             return ResponseObject.builder()
-                       .fail(new MessageError(errorHolder.getErrorType(), new TppMessageInformation(MessageCategory.ERROR, errorHolder.getErrorCode(), errorHolder.getMessage())))
+                       .fail(new MessageError(errorHolder))
                        .build();
         }
         return ResponseObject.builder()
