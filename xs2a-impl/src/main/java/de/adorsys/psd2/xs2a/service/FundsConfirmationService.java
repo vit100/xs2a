@@ -25,7 +25,6 @@ import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationRequest;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationResponse;
 import de.adorsys.psd2.xs2a.domain.fund.PiisConsentValidationResult;
@@ -53,7 +52,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
-import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIIS_400;
 
 @Slf4j
@@ -88,7 +86,7 @@ public class FundsConfirmationService {
             if (validationResult.hasError()) {
                 ErrorHolder errorHolder = validationResult.getErrorHolder();
                 return ResponseObject.<FundsConfirmationResponse>builder()
-                           .fail(new MessageError(errorHolder.getErrorType(), new TppMessageInformation(ERROR, errorHolder.getErrorCode(), errorHolder.getMessage())))
+                           .fail(new MessageError(errorHolder))
                            .build();
             }
 
@@ -102,7 +100,7 @@ public class FundsConfirmationService {
         if (response.hasError()) {
             ErrorHolder errorHolder = response.getErrorHolder();
             return ResponseObject.<FundsConfirmationResponse>builder()
-                       .fail(new MessageError(errorHolder.getErrorType(), new TppMessageInformation(ERROR, errorHolder.getErrorCode(), errorHolder.getMessage())))
+                       .fail(new MessageError(errorHolder))
                        .build();
         }
 

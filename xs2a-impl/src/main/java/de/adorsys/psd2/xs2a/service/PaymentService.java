@@ -228,7 +228,7 @@ public class PaymentService {
         if (spiResponse.hasError()) {
             ErrorHolder errorHolder = spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS);
             return ResponseObject.<TransactionStatus>builder()
-                       .fail(new MessageError(errorHolder.getErrorType(), new TppMessageInformation(MessageCategory.ERROR, errorHolder.getErrorCode(), errorHolder.getMessage())))
+                       .fail(new MessageError(errorHolder))
                        .build();
         }
 
