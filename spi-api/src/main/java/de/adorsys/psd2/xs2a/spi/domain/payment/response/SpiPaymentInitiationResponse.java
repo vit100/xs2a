@@ -29,6 +29,7 @@ public abstract class SpiPaymentInitiationResponse {
     private String paymentId;
     private SpiAmount spiTransactionFees;
     private boolean spiTransactionFeeIndicator;
+    private boolean multilevelScaRequired;
     private List<String> scaMethods;
     // TODO Make extendable list of scaMethods https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/411
     private String chosenScaMethod;

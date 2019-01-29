@@ -57,6 +57,7 @@ public class SpiBulkPaymentMapper {
                                   .orElse(null));
         spi.setPayments(mapToListSpiSinglePayments(payment.getPayments(), paymentProduct));
         spi.setPaymentId(payment.getPaymentId());
+        spi.setMultilevelScaRequired(payment.isMultilevelScaRequired());
 
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);

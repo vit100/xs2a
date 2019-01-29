@@ -144,6 +144,7 @@ public class PaymentService {
         result.setPayments(paymentMapper.mapToAspspSinglePaymentList(savedPayments));
         result.setPaymentId(savedPayments.get(0).getBulkId());
         result.setDebtorAccount(enrichAccountReferenceWithAspspAccountId(payments.getDebtorAccount()));
+        result.setMultilevelScaRequired(result.getPayments().get(0).isMultilevelScaRequired());
 
         return Optional.of(result);
     }

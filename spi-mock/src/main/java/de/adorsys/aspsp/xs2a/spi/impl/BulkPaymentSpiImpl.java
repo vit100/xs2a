@@ -29,6 +29,7 @@ import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiBulkPayment;
 import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiBulkPaymentInitiationResponse;
+import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiPaymentExecutionResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
 import de.adorsys.psd2.xs2a.spi.service.BulkPaymentSpi;
@@ -134,48 +135,48 @@ public class BulkPaymentSpiImpl implements BulkPaymentSpi {
     }
 
     @Override
-    public @NotNull SpiResponse<SpiResponse.VoidResponse> executePaymentWithoutSca(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
+    public @NotNull SpiResponse<SpiPaymentExecutionResponse> executePaymentWithoutSca(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
         AspspBulkPayment request = spiBulkPaymentMapper.mapToAspspBulkPayment(payment, SpiTransactionStatus.ACCP);
 
         try {
             aspspRestTemplate.postForEntity(aspspRemoteUrls.createBulkPayment(), request, AspspBulkPayment.class);
 
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
-                       .payload(SpiResponse.voidResponse())
+                       .payload(new SpiPaymentExecutionResponse(SpiTransactionStatus.ACCP))
                        .success();
 
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                return SpiResponse.<SpiResponse.VoidResponse>builder()
+                return SpiResponse.<SpiPaymentExecutionResponse>builder()
                            .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                            .fail(SpiResponseStatus.TECHNICAL_FAILURE);
             }
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                        .fail(SpiResponseStatus.LOGICAL_FAILURE);
         }
     }
 
     @Override
-    public @NotNull SpiResponse<SpiResponse.VoidResponse> verifyScaAuthorisationAndExecutePayment(@NotNull SpiContextData spiContextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
+    public @NotNull SpiResponse<SpiPaymentExecutionResponse> verifyScaAuthorisationAndExecutePayment(@NotNull SpiContextData spiContextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
         try {
             aspspRestTemplate.exchange(aspspRemoteUrls.applyStrongUserAuthorisation(), HttpMethod.PUT, new HttpEntity<>(spiScaConfirmation), ResponseEntity.class);
             AspspBulkPayment request = spiBulkPaymentMapper.mapToAspspBulkPayment(payment, SpiTransactionStatus.ACCP);
             aspspRestTemplate.postForEntity(aspspRemoteUrls.createBulkPayment(), request, AspspBulkPayment.class);
 
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
-                       .payload(SpiResponse.voidResponse())
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
+                       .payload(new SpiPaymentExecutionResponse(SpiTransactionStatus.ACCP))
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                        .success();
 
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                return SpiResponse.<SpiResponse.VoidResponse>builder()
+                return SpiResponse.<SpiPaymentExecutionResponse>builder()
                            .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                            .fail(SpiResponseStatus.TECHNICAL_FAILURE);
             }
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                        .fail(SpiResponseStatus.LOGICAL_FAILURE);
         }

@@ -131,8 +131,9 @@ public class ConsentService {
 
         ResponseObject<CreateConsentResponse> createConsentResponseObject = ResponseObject.<CreateConsentResponse>builder().body(new CreateConsentResponse(RECEIVED.getValue(), consentId, null, null, null, null)).build();
 
+        // TODO add actual value during imlementation of multilevel sca https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/515
         if (isEmbeddedOrRedirectScaApproach()
-                && authorisationMethodDecider.isImplicitMethod(explicitPreferred)) {
+                && authorisationMethodDecider.isImplicitMethod(explicitPreferred, false)) {
             proceedImplicitCaseForCreateConsent(createConsentResponseObject.getBody(), psuData, consentId);
         }
 

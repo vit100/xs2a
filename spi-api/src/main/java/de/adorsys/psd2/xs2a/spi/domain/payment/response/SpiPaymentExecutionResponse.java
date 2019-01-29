@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.aspsp.mock.api.payment;
+package de.adorsys.psd2.xs2a.spi.domain.payment.response;
 
-import de.adorsys.psd2.aspsp.mock.api.common.AspspTransactionStatus;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * A response object that is returned by the ASPSP after the successful execution of payment
+ */
 @Data
-public class AspspPaymentInfo {
-    private String paymentId;
-    private boolean multilevelScaRequired;
-    private AspspTransactionStatus paymentStatus;
-    private String paymentProduct;
-    private String pisPaymentType;
-    private byte[] paymentData;
-    private String aspspAccountId;
+@AllArgsConstructor
+public class SpiPaymentExecutionResponse {
+    SpiTransactionStatus transactionStatus;
 }

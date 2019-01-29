@@ -74,6 +74,7 @@ public class SpiSinglePaymentMapper {
                                   .map(AspspAccountReference::getAccountId)
                                   .orElse(null));
         spi.setPaymentId(payment.getPaymentId());
+        spi.setMultilevelScaRequired(payment.isMultilevelScaRequired());
         if (payment.getPaymentId() == null) {
             spi.setTransactionStatus(SpiTransactionStatus.RJCT);
         } else {

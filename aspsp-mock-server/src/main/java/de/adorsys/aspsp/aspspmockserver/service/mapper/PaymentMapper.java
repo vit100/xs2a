@@ -45,15 +45,16 @@ public class PaymentMapper {
     }
 
     public AspspPaymentInfo mapToAspspPaymentInfo(AspspPayment aspspPayment) {
-        return new AspspPaymentInfo(aspspPayment.getPaymentId(),
-                                    aspspPayment.getPaymentStatus(),
-                                    aspspPayment.getPaymentProduct(),
-                                    aspspPayment.getPisPaymentType().name(),
-                                    aspspPayment.getPaymentData(),
-                                    Optional.ofNullable(aspspPayment.getDebtorAccount())
-                                        .map(AspspAccountReference::getAccountId)
-                                        .orElse(null)
-        );
+        AspspPaymentInfo info = new AspspPaymentInfo();
+        info.setPaymentId(aspspPayment.getPaymentId());
+        info.setPaymentStatus(aspspPayment.getPaymentStatus());
+        info.setPaymentProduct(aspspPayment.getPaymentProduct());
+        info.setPisPaymentType(aspspPayment.getPisPaymentType().name());
+        info.setPaymentData(aspspPayment.getPaymentData());
+        info.setAspspAccountId(Optional.ofNullable(aspspPayment.getDebtorAccount())
+                                   .map(AspspAccountReference::getAccountId)
+                                   .orElse(null));
+        return info;
     }
 
     public List<AspspPayment> mapToAspspPaymentList(List<AspspSinglePayment> payments, String bulkId) {
@@ -120,6 +121,7 @@ public class PaymentMapper {
                    .map(aspsp -> {
                        AspspSinglePayment single = new AspspSinglePayment();
                        single.setPaymentId(aspsp.getPaymentId());
+                       single.setMultilevelScaRequired("DE89370400440532013004".equals(aspsp.getDebtorAccount().getIban()));
                        single.setEndToEndIdentification(aspsp.getEndToEndIdentification());
                        single.setDebtorAccount(aspsp.getDebtorAccount());
                        single.setUltimateDebtor(aspsp.getUltimateDebtor());
@@ -145,6 +147,7 @@ public class PaymentMapper {
                    .map(aspsp -> {
                        AspspPeriodicPayment periodic = new AspspPeriodicPayment();
                        periodic.setPaymentId(aspsp.getPaymentId());
+                       periodic.setMultilevelScaRequired("DE89370400440532013004".equals(aspsp.getDebtorAccount().getIban()));
                        periodic.setEndToEndIdentification(aspsp.getEndToEndIdentification());
                        periodic.setDebtorAccount(aspsp.getDebtorAccount());
                        periodic.setUltimateDebtor(aspsp.getUltimateDebtor());

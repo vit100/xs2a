@@ -27,6 +27,7 @@ import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiSinglePayment;
+import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiPaymentExecutionResponse;
 import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiSinglePaymentInitiationResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
@@ -90,11 +91,11 @@ public class SinglePaymentSpiImpl implements SinglePaymentSpi {
                 aspspRestTemplate.exchange(aspspRemoteUrls.getPaymentById(), HttpMethod.GET, null, new ParameterizedTypeReference<List<AspspSinglePayment>>() {
                 }, payment.getPaymentType().getValue(), payment.getPaymentProduct(), payment.getPaymentId());
             AspspSinglePayment single = aspspResponse.getBody().get(0);
-            SpiSinglePayment spiPeriodicPayment = spiSinglePaymentMapper.mapToSpiSinglePayment(single, payment.getPaymentProduct());
+            SpiSinglePayment spiSinglePayment = spiSinglePaymentMapper.mapToSpiSinglePayment(single, payment.getPaymentProduct());
 
             return SpiResponse.<SpiSinglePayment>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
-                       .payload(spiPeriodicPayment)
+                       .payload(spiSinglePayment)
                        .success();
 
         } catch (RestException e) {
@@ -138,24 +139,24 @@ public class SinglePaymentSpiImpl implements SinglePaymentSpi {
 
     @Override
     @NotNull
-    public SpiResponse<SpiResponse.VoidResponse> executePaymentWithoutSca(@NotNull SpiContextData spiContextData, @NotNull SpiSinglePayment payment, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiPaymentExecutionResponse> executePaymentWithoutSca(@NotNull SpiContextData spiContextData, @NotNull SpiSinglePayment payment, @NotNull AspspConsentData aspspConsentData) {
         AspspSinglePayment request = spiSinglePaymentMapper.mapToAspspSinglePayment(payment, SpiTransactionStatus.ACCP);
 
         try {
             aspspRestTemplate.postForEntity(aspspRemoteUrls.createPayment(), request, de.adorsys.aspsp.xs2a.spi.domain.payment.SpiSinglePayment.class);
 
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
-                       .payload(SpiResponse.voidResponse())
+                       .payload(new SpiPaymentExecutionResponse(SpiTransactionStatus.ACCP))
                        .success();
 
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                return SpiResponse.<SpiResponse.VoidResponse>builder()
+                return SpiResponse.<SpiPaymentExecutionResponse>builder()
                            .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                            .fail(SpiResponseStatus.TECHNICAL_FAILURE);
             }
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                        .fail(SpiResponseStatus.LOGICAL_FAILURE);
         }
@@ -163,26 +164,26 @@ public class SinglePaymentSpiImpl implements SinglePaymentSpi {
 
     @Override
     @NotNull
-    public SpiResponse<SpiResponse.VoidResponse> verifyScaAuthorisationAndExecutePayment(@NotNull SpiContextData spiContextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiSinglePayment payment, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiPaymentExecutionResponse> verifyScaAuthorisationAndExecutePayment(@NotNull SpiContextData spiContextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiSinglePayment payment, @NotNull AspspConsentData aspspConsentData) {
         try {
             aspspRestTemplate.exchange(aspspRemoteUrls.applyStrongUserAuthorisation(), HttpMethod.PUT, new HttpEntity<>(spiScaConfirmation), ResponseEntity.class);
             AspspSinglePayment request = spiSinglePaymentMapper.mapToAspspSinglePayment(payment, SpiTransactionStatus.ACCP);
             aspspRestTemplate.postForEntity(aspspRemoteUrls.createPayment(), request, AspspSinglePayment.class);
 
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
-                       .payload(SpiResponse.voidResponse())
+                       .payload(new SpiPaymentExecutionResponse(SpiTransactionStatus.ACCP))
                        .success();
 
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
 
-                return SpiResponse.<SpiResponse.VoidResponse>builder()
+                return SpiResponse.<SpiPaymentExecutionResponse>builder()
                            .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                            .fail(SpiResponseStatus.TECHNICAL_FAILURE);
             }
 
-            return SpiResponse.<SpiResponse.VoidResponse>builder()
+            return SpiResponse.<SpiPaymentExecutionResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
                        .fail(SpiResponseStatus.LOGICAL_FAILURE);
         }

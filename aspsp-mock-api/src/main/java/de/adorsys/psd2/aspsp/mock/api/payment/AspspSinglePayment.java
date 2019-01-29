@@ -30,6 +30,7 @@ public class AspspSinglePayment {
 
     @Id
     private String paymentId;
+    private boolean multilevelScaRequired;
     private String endToEndIdentification;
     private AspspAccountReference debtorAccount;
     @Deprecated // Since 1.2
