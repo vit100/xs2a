@@ -55,6 +55,10 @@ Due to various internal reasons integration tests on cucumber are removed from t
 and will be not part of Open Source solution anymore.
 Last version with this package in Open Source is 1.15.
 
+## Remove some not null constraints for TPP in the CMS database
+Not null constraints were removed from most of the columns in the `tpp_info` table.
+From now on only `tpp_info_id`, `authorisation_number`, `authority_id` and `instance_id` columns can't be null.
+
 ## Bugfix: Remove TPP-ID from get payments by aspspAccountId endpoint in CMS
 TPP-ID was removed as a parameter from `exportPaymentsByAccountIdAndTpp` method in `de.adorsys.psd2.consent.aspsp.api.pis.CmsAspspPisExportService`, 
 the method itself  was renamed to `exportPaymentsByAccountId`.
