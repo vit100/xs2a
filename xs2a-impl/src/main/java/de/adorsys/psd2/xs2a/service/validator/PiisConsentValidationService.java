@@ -66,7 +66,7 @@ public class PiisConsentValidationService {
                                                   .findAny();
 
         return validResponse.map(PiisConsentValidationResult::new)
-                   .orElseGet(() -> new PiisConsentValidationResult(ErrorHolder.builder(ACCESS_EXCEEDED).errorType(PIIS_409)
+                   .orElseGet(() -> new PiisConsentValidationResult(ErrorHolder.builder(ACCESS_EXCEEDED).errorType(PIIS_429)
                                                                         .build()));
     }
 

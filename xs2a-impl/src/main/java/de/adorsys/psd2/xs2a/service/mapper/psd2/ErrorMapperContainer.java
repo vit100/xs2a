@@ -54,6 +54,7 @@ public class ErrorMapperContainer {
     private final PIIS405ErrorMapper piis405ErrorMapper;
     private final PIIS409ErrorMapper piis409ErrorMapper;
     private final PIIS415ErrorMapper piis415ErrorMapper;
+    private final PIIS429ErrorMapper piis429ErrorMapper;
     private final PIIS500ErrorMapper piis500ErrorMapper;
 
     private final AIS415ErrorMapper ais415ErrorMapper;
@@ -95,6 +96,7 @@ public class ErrorMapperContainer {
         mapperContainer.put(PIIS_405, piis405ErrorMapper);
         mapperContainer.put(PIIS_409, piis409ErrorMapper);
         mapperContainer.put(PIIS_415, piis415ErrorMapper);
+        mapperContainer.put(PIIS_429, piis429ErrorMapper);
         mapperContainer.put(PIIS_500, piis500ErrorMapper);
 
         mapperContainer.put(AIS_400, ais400ErrorMapper);
@@ -115,8 +117,6 @@ public class ErrorMapperContainer {
         mapperContainer.put(SB_409, sb409ErrorMapper);
         mapperContainer.put(SB_415, sb415ErrorMapper);
         mapperContainer.put(SB_500, sb500ErrorMapper);
-
-
     }
 
     @SuppressWarnings("unchecked")

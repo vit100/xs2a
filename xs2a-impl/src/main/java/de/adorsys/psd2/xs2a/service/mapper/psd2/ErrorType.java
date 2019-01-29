@@ -34,6 +34,7 @@ public enum ErrorType {
     PIIS_405,
     PIIS_409,
     PIIS_415,
+    PIIS_429,
     PIIS_500,
 
     AIS_400,
