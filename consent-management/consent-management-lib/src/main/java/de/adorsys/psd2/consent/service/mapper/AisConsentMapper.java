@@ -48,12 +48,9 @@ public class AisConsentMapper {
      * @return mapped AIS consent
      */
     public AisAccountConsent mapToAisAccountConsent(AisConsent consent) {
-        AisAccountAccess aisAccountAccess;
-        if (consent.getAspspAccountAccesses().isEmpty()) {
-            aisAccountAccess = mapToAisAccountAccess(consent.getAccesses());
-        } else {
-            aisAccountAccess = mapToAspspAisAccountAccess(consent.getAspspAccountAccesses());
-        }
+        AisAccountAccess aisAccountAccess = consent.getAspspAccountAccesses().isEmpty()
+                                                ? mapToAisAccountAccess(consent.getAccesses())
+                                                : mapToAspspAisAccountAccess(consent.getAspspAccountAccesses());
 
         return new AisAccountConsent(
             consent.getExternalId(),
