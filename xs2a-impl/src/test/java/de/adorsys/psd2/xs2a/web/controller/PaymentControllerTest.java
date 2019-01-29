@@ -229,6 +229,10 @@ public class PaymentControllerTest {
 
     @Test
     public void cancelPayment_WithoutAuthorisation_Success() {
+        when(responseMapper.ok(any()))
+            .thenReturn(new ResponseEntity<>(getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.CANC), HttpStatus.OK));
+        when(paymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(false));
+
         // Given
         PaymentInitiationCancelResponse204202 response = getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.CANC);
         ResponseEntity<PaymentInitiationCancelResponse204202> expectedResult = new ResponseEntity<>(response, HttpStatus.OK);
@@ -254,6 +258,7 @@ public class PaymentControllerTest {
         when(responseMapper.accepted(any()))
             .thenReturn(new ResponseEntity<>(getPaymentInitiationCancelResponse200202(de.adorsys.psd2.model.TransactionStatus.ACTC), HttpStatus.ACCEPTED));
         when(xs2aPaymentService.cancelPayment(any(), any())).thenReturn(getCancelPaymentResponseObject(true));
+        when(paymentService.cancelPayment(any(), any(), any())).thenReturn(getCancelPaymentResponseObject(true));
 
         // Given
         PaymentType paymentType = PaymentType.SINGLE;
@@ -292,7 +297,7 @@ public class PaymentControllerTest {
 
     @Test
     public void cancelPayment_WithAuthorisation_Fail_FinalisedStatus() {
-        when(xs2aPaymentService.cancelPayment(any(), any())).thenReturn(getErrorOnPaymentCancellation());
+        when(xs2aPaymentService.cancelPayment(any(), any(), any())).thenReturn(getErrorOnPaymentCancellation());
         when(responseErrorMapper.generateErrorResponse(createMessageError(ErrorType.PIS_400, FORMAT_ERROR))).thenReturn(ResponseEntity.status(BAD_REQUEST).build());
 
         // Given
