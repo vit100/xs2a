@@ -288,7 +288,9 @@ build_package_java11:
     JAVA_VERSION: "system@1.11"
     JAVA_TOOL_OPTIONS: "-Djavax.net.ssl.trustStorePassword=changeit -XX:MaxRAM=3G"
   <<: *build_java
-
+  artifacts:
+    <<: *java_artifacts
+    expire_in: "1 day"
 
 build_frontend:
   <<: *build_angular
@@ -379,9 +381,6 @@ unit_tests_java8:
 
 unit_tests_java11:
   <<: *java_tests
-  artifacts:
-    <<: *java_artifacts
-    expire_in: "1 day"
   variables:
     JAVA_VERSION: "system@1.11"
     JAVA_TOOL_OPTIONS: "-Djavax.net.ssl.trustStorePassword=changeit -XX:MaxRAM=3G"
