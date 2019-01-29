@@ -26,5 +26,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SpiPaymentExecutionResponse {
-    SpiTransactionStatus transactionStatus;
+    private SpiTransactionStatus transactionStatus;
 }

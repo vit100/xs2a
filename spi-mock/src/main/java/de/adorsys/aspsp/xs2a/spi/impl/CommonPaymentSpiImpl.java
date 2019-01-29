@@ -33,7 +33,6 @@ import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
 import de.adorsys.psd2.xs2a.spi.service.CommonPaymentSpi;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
@@ -44,7 +43,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@Data
 @AllArgsConstructor
 public class CommonPaymentSpiImpl implements CommonPaymentSpi {
     private static final String TEST_ASPSP_DATA = "Test aspsp data";
@@ -169,7 +167,6 @@ public class CommonPaymentSpiImpl implements CommonPaymentSpi {
 
             AspspPaymentInfo request = spiPaymentInfoMapper.mapToAspspPayment(payment, SpiTransactionStatus.ACCP);
             aspspRestTemplate.postForEntity(aspspRemoteUrls.createCommonPayment(), request, AspspPaymentInfo.class);
-
 
 
             return SpiResponse.<SpiPaymentExecutionResponse>builder()
