@@ -47,3 +47,7 @@ If TPP-Nok-Redirect-URI was not sent from TPP and in CMS is stored null, then CM
 
 ## Bugfix: Remove default values for TPP in the database
 From now on default values for TPP-related fields are no longer provided in the database.
+
+## Remove some not null constraints for TPP in the CMS database
+Not null constraints were removed from most of the columns in the `tpp_info` table.
+From now on only `tpp_info_id`, `authorisation_number`, `authority_id` and `instance_id` columns can't be null.
