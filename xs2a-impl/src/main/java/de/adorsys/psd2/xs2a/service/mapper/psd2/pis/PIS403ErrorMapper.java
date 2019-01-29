@@ -56,7 +56,7 @@ public class PIS403ErrorMapper extends Psd2ErrorMapper<MessageError, Error403NGP
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode403PIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

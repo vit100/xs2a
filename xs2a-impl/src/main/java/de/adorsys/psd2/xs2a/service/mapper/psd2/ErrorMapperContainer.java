@@ -17,8 +17,7 @@
 package de.adorsys.psd2.xs2a.service.mapper.psd2;
 
 import de.adorsys.psd2.xs2a.exception.MessageError;
-import de.adorsys.psd2.xs2a.service.mapper.psd2.ais.AIS415ErrorMapper;
-import de.adorsys.psd2.xs2a.service.mapper.psd2.ais.AIS500ErrorMapper;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.ais.*;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.piis.*;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.pis.*;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.sb.*;

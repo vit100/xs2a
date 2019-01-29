@@ -56,7 +56,7 @@ public class PIIS405ErrorMapper extends Psd2ErrorMapper<MessageError, Error405NG
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode405PIIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

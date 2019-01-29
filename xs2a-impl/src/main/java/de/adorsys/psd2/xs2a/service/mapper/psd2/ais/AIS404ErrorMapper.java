@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper.psd2;
+package de.adorsys.psd2.xs2a.service.mapper.psd2.ais;
 
 import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -29,28 +30,28 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class AIS400ErrorMapper extends Psd2ErrorMapper<MessageError, Error400NGAIS> {
+public class AIS404ErrorMapper extends Psd2ErrorMapper<MessageError, Error404NGAIS> {
 
     @Override
-    public Function<MessageError, Error400NGAIS> getMapper() {
+    public Function<MessageError, Error404NGAIS> getMapper() {
         return this::mapToPsd2Error;
     }
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.BAD_REQUEST;
+        return HttpStatus.NOT_FOUND;
     }
 
-    private Error400NGAIS mapToPsd2Error(MessageError messageError) {
-        return new Error400NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()))
+    private Error404NGAIS mapToPsd2Error(MessageError messageError) {
+        return new Error404NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()))
                    ._links(Collections.EMPTY_MAP);
     }
 
-    private List<TppMessage400AIS> mapToTppMessages(Set<TppMessageInformation> tppMessages) {
+    private List<TppMessage404AIS> mapToTppMessages(Set<TppMessageInformation> tppMessages) {
         return tppMessages.stream()
-                   .map(m -> new TppMessage400AIS()
+                   .map(m -> new TppMessage404AIS()
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
-                                 .code(MessageCode400AIS.fromValue(m.getMessageErrorCode().getName()))
+                                 .code(MessageCode404AIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
                                  .text(messageService.getMessage(m.getMessageErrorCode().name()))
                    ).collect(Collectors.toList());

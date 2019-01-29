@@ -56,7 +56,7 @@ public class AIS415ErrorMapper extends Psd2ErrorMapper<MessageError, Error415NGA
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode415AIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

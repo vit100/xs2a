@@ -56,7 +56,7 @@ public class SB404ErrorMapper extends Psd2ErrorMapper<MessageError, Error404NGSB
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode404SB.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

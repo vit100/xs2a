@@ -56,7 +56,7 @@ public class PISCANC405ErrorMapper extends Psd2ErrorMapper<MessageError, Error40
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode405PISCANC.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

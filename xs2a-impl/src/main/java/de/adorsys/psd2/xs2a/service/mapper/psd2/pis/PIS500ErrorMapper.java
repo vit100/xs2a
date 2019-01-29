@@ -56,7 +56,7 @@ public class PIS500ErrorMapper extends Psd2ErrorMapper<MessageError, Error500NGP
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode500PIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

@@ -56,7 +56,7 @@ public class SB500ErrorMapper extends Psd2ErrorMapper<MessageError, Error500NGSB
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode500SB.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

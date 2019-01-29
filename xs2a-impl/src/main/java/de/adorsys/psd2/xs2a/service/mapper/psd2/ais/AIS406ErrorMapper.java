@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper.psd2;
+package de.adorsys.psd2.xs2a.service.mapper.psd2.ais;
 
 import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -29,30 +30,30 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class AIS401ErrorMapper extends Psd2ErrorMapper<MessageError, Error401NGAIS> {
+public class AIS406ErrorMapper extends Psd2ErrorMapper<MessageError, Error406NGAIS> {
 
     @Override
-    public Function<MessageError, Error401NGAIS> getMapper() {
+    public Function<MessageError, Error406NGAIS> getMapper() {
         return this::mapToPsd2Error;
     }
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.UNAUTHORIZED;
+        return HttpStatus.NOT_ACCEPTABLE;
     }
 
-    private Error401NGAIS mapToPsd2Error(MessageError messageError) {
-        return new Error401NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()))
+    private Error406NGAIS mapToPsd2Error(MessageError messageError) {
+        return new Error406NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()))
                    ._links(Collections.EMPTY_MAP);
     }
 
-    private List<TppMessage401AIS> mapToTppMessages(Set<TppMessageInformation> tppMessages) {
+    private List<TppMessage406AIS> mapToTppMessages(Set<TppMessageInformation> tppMessages) {
         return tppMessages.stream()
-                   .map(m -> new TppMessage401AIS()
+                   .map(m -> new TppMessage406AIS()
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
-                                 .code(MessageCode401AIS.fromValue(m.getMessageErrorCode().getName()))
+                                 .code(MessageCode406AIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(messageService.getMessage(m.getMessageErrorCode().name()))
                    ).collect(Collectors.toList());
     }
 }

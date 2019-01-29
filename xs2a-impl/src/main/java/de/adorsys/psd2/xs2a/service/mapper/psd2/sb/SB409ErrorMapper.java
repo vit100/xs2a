@@ -56,7 +56,7 @@ public class SB409ErrorMapper extends Psd2ErrorMapper<MessageError, Error409NGSB
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode409SB.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

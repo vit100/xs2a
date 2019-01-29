@@ -56,7 +56,7 @@ public class PIIS409ErrorMapper extends Psd2ErrorMapper<MessageError, Error409NG
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode409PIIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }

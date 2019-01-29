@@ -53,7 +53,7 @@ public class PIIS401ErrorMapper extends Psd2ErrorMapper<MessageError, Error401NG
                                  .category(TppMessageCategory.fromValue(m.getCategory().name()))
                                  .code(MessageCode401PIIS.fromValue(m.getMessageErrorCode().getName()))
                                  .path(m.getPath())
-                                 .text(messageService.getMessage(m.getMessageErrorCode().getName()))
+                                 .text(getErrorText(m))
                    ).collect(Collectors.toList());
     }
 }
