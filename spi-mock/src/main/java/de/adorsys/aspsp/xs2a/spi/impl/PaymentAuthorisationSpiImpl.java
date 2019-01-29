@@ -49,7 +49,6 @@ import java.util.Optional;
 import static de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus.FAILURE;
 import static de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus.SUCCESS;
 
-
 @Service
 @RequiredArgsConstructor
 public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
