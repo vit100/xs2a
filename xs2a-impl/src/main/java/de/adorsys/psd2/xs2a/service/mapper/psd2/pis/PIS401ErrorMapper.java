@@ -16,14 +16,16 @@
 
 package de.adorsys.psd2.xs2a.service.mapper.psd2.pis;
 
-import de.adorsys.psd2.model.*;
+import de.adorsys.psd2.model.Error401NGPIS;
+import de.adorsys.psd2.model.MessageCode401PIS;
+import de.adorsys.psd2.model.TppMessage401PIS;
+import de.adorsys.psd2.model.TppMessageCategory;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -43,8 +45,7 @@ public class PIS401ErrorMapper extends Psd2ErrorMapper<MessageError, Error401NGP
     }
 
     private Error401NGPIS mapToPsd2Error(MessageError messageError) {
-        return new Error401NGPIS().tppMessages(mapToTppMessage400PIS(messageError.getTppMessages()))
-                   ._links(Collections.EMPTY_MAP);
+        return new Error401NGPIS().tppMessages(mapToTppMessage400PIS(messageError.getTppMessages()));
     }
 
     private List<TppMessage401PIS> mapToTppMessage400PIS(Set<TppMessageInformation> tppMessages) {

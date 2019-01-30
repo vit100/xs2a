@@ -26,7 +26,6 @@ import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -46,8 +45,7 @@ public class PIIS500ErrorMapper extends Psd2ErrorMapper<MessageError, Error500NG
     }
 
     private Error500NGPIIS mapToPsd2Error(MessageError messageError) {
-        return new Error500NGPIIS().tppMessages(mapToTppMessage500PIIS(messageError.getTppMessages()))
-                   ._links(Collections.EMPTY_MAP);
+        return new Error500NGPIIS().tppMessages(mapToTppMessage500PIIS(messageError.getTppMessages()));
     }
 
     private List<TppMessage500PIIS> mapToTppMessage500PIIS(Set<TppMessageInformation> tppMessages) {

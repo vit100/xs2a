@@ -26,7 +26,6 @@ import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -46,8 +45,7 @@ public class PIIS429ErrorMapper extends Psd2ErrorMapper<MessageError, Error429NG
     }
 
     private Error429NGPIIS mapToPsd2Error(MessageError messageError) {
-        return new Error429NGPIIS().tppMessages(mapToTppMessage429PIIS(messageError.getTppMessages()))
-                   ._links(Collections.EMPTY_MAP);
+        return new Error429NGPIIS().tppMessages(mapToTppMessage429PIIS(messageError.getTppMessages()));
     }
 
     private List<TppMessage429PIIS> mapToTppMessage429PIIS(Set<TppMessageInformation> tppMessages) {

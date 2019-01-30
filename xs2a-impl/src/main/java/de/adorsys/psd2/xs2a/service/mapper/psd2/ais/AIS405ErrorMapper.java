@@ -16,14 +16,16 @@
 
 package de.adorsys.psd2.xs2a.service.mapper.psd2.ais;
 
-import de.adorsys.psd2.model.*;
+import de.adorsys.psd2.model.Error405NGAIS;
+import de.adorsys.psd2.model.MessageCode405AIS;
+import de.adorsys.psd2.model.TppMessage405AIS;
+import de.adorsys.psd2.model.TppMessageCategory;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -43,8 +45,7 @@ public class AIS405ErrorMapper extends Psd2ErrorMapper<MessageError, Error405NGA
     }
 
     private Error405NGAIS mapToPsd2Error(MessageError messageError) {
-        return new Error405NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()))
-                   ._links(Collections.EMPTY_MAP);
+        return new Error405NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()));
     }
 
     private List<TppMessage405AIS> mapToTppMessages(Set<TppMessageInformation> tppMessages) {

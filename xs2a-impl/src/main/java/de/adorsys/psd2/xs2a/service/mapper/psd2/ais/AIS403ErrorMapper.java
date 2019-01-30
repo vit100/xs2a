@@ -16,14 +16,16 @@
 
 package de.adorsys.psd2.xs2a.service.mapper.psd2.ais;
 
-import de.adorsys.psd2.model.*;
+import de.adorsys.psd2.model.Error403NGAIS;
+import de.adorsys.psd2.model.MessageCode403AIS;
+import de.adorsys.psd2.model.TppMessage403AIS;
+import de.adorsys.psd2.model.TppMessageCategory;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.Psd2ErrorMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -43,8 +45,7 @@ public class AIS403ErrorMapper extends Psd2ErrorMapper<MessageError, Error403NGA
     }
 
     private Error403NGAIS mapToPsd2Error(MessageError messageError) {
-        return new Error403NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()))
-                   ._links(Collections.EMPTY_MAP);
+        return new Error403NGAIS().tppMessages(mapToTppMessages(messageError.getTppMessages()));
     }
 
     private List<TppMessage403AIS> mapToTppMessages(Set<TppMessageInformation> tppMessages) {
