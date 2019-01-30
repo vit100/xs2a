@@ -161,15 +161,15 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     /**
      * Update common payment authorisation
      *
-     * @param authorizationId id of the authorisation to be updated
+     * @param authorisationId id of the authorisation to be updated
      * @param request         contains data for updating authorisation
      * @return response contains updated data
      */
     @Override
     @Transactional
-    public Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisAuthorisation(String authorizationId, UpdatePisCommonPaymentPsuDataRequest request) {
+    public Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisAuthorisation(String authorisationId, UpdatePisCommonPaymentPsuDataRequest request) {
         Optional<PisAuthorization> pisAuthorisationOptional = pisAuthorisationRepository.findByExternalIdAndAuthorizationType(
-            authorizationId, CmsAuthorisationType.CREATED);
+            authorisationId, CmsAuthorisationType.CREATED);
 
         if (pisAuthorisationOptional.isPresent()) {
             ScaStatus scaStatus = doUpdateConsentAuthorisation(request, pisAuthorisationOptional.get());
@@ -255,19 +255,19 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     @Override
     @Transactional
     public Optional<ScaStatus> getAuthorisationScaStatus(@NotNull String paymentId, @NotNull String authorisationId, CmsAuthorisationType authorisationType) {
-        Optional<PisAuthorization> authorizationOptional = pisAuthorisationRepository.findByExternalIdAndAuthorizationType(authorisationId, authorisationType);
+        Optional<PisAuthorization> authorisationOptional = pisAuthorisationRepository.findByExternalIdAndAuthorizationType(authorisationId, authorisationType);
 
-        if (!authorizationOptional.isPresent()) {
+        if (!authorisationOptional.isPresent()) {
             return Optional.empty();
         }
 
-        PisCommonPaymentData paymentData = authorizationOptional.get().getPaymentData();
+        PisCommonPaymentData paymentData = authorisationOptional.get().getPaymentData();
         if (pisCommonPaymentConfirmationExpirationService.isPaymentDataOnConfirmationExpired(paymentData)) {
             pisCommonPaymentConfirmationExpirationService.updatePaymentDataOnConfirmationExpiration(paymentData);
             return Optional.of(ScaStatus.FAILED);
         }
 
-        return authorizationOptional
+        return authorisationOptional
                    .filter(auth -> paymentId.equals(auth.getPaymentData().getPaymentId()))
                    .map(PisAuthorization::getScaStatus);
     }
