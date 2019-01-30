@@ -20,14 +20,14 @@ import de.adorsys.aspsp.aspspmockserver.repository.AccountDetailsRepository;
 import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountDetails;
 import de.adorsys.psd2.aspsp.mock.api.account.AspspAccountReference;
 import de.adorsys.psd2.aspsp.mock.api.psu.AspspPsuData;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AccountDetailsService {
     private final AccountDetailsRepository accountDetailsRepository;
 
