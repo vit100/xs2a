@@ -31,8 +31,8 @@ import java.util.List;
 public class AccountDetailsService {
     private final AccountDetailsRepository accountDetailsRepository;
 
-    public List<AspspPsuData> getPsuDataByAccount(AspspAccountReference debtorAccount) {
-        return accountDetailsRepository.findByIbanAndCurrency(debtorAccount.getIban(), debtorAccount.getCurrency())
+    public List<AspspPsuData> getPsuDataByAccount(AspspAccountReference accountReference) {
+        return accountDetailsRepository.findByIbanAndCurrency(accountReference.getIban(), accountReference.getCurrency())
                    .stream()
                    .findFirst()
                    .map(AspspAccountDetails::getPsuDataList)
