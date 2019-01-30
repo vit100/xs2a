@@ -105,8 +105,8 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
             SpiResponse<SpiPaymentExecutionResponse> spiResponse = paymentSpi.executePaymentWithoutSca(contextData, payment, availableScaMethodsResponse.getAspspConsentData());
             pisAspspDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
-            if (executePaymentResponse.hasError()) {
-                return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(executePaymentResponse, ServiceType.PIS));
+            if (spiResponse.hasError()) {
+                return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS));
             }
 
             TransactionStatus paymentStatus = spiToXs2aTransactionalStatusMapper.mapToTransactionStatus(spiResponse.getPayload().getTransactionStatus());
