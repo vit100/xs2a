@@ -17,6 +17,7 @@
 package de.adorsys.psd2.xs2a.component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ import java.util.Optional;
 public class JsonConverter {
     private final ObjectMapper objectMapper;
 
-    public <T> Optional<String> toJson(final T object){
+    public <T> Optional<String> toJson(final T object) {
         try {
             return Optional.ofNullable(objectMapper.writeValueAsString(object));
         } catch (JsonProcessingException e) {
@@ -41,7 +42,7 @@ public class JsonConverter {
         return Optional.empty();
     }
 
-    public <T> Optional<T> toObject(final String json, final Class<T> target){
+    public <T> Optional<T> toObject(final String json, final Class<T> target) {
         try {
             return Optional.ofNullable(objectMapper.readValue(json, target));
         } catch (IOException e) {
@@ -50,9 +51,9 @@ public class JsonConverter {
         return Optional.empty();
     }
 
-    public <T> Optional<T> toObject(final byte[] bytes, final Class<T> target){
+    public <T> Optional<T> toObject(final byte[] bytes, final TypeReference valueTypeRef) {
         try {
-            return Optional.ofNullable(objectMapper.readValue(IOUtils.toString(bytes, "UTF-8"), target));
+            return Optional.ofNullable(objectMapper.readValue(IOUtils.toString(bytes, "UTF-8"), valueTypeRef));
         } catch (IOException e) {
             log.error("Can't convert json to object: {}", e.getMessage(), e);
         }

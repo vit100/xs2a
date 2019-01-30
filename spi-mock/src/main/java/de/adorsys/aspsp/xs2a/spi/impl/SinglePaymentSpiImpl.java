@@ -16,6 +16,7 @@
 
 package de.adorsys.aspsp.xs2a.spi.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import de.adorsys.aspsp.xs2a.spi.config.rest.AspspRemoteUrls;
 import de.adorsys.aspsp.xs2a.spi.mapper.SpiPaymentMapper;
 import de.adorsys.aspsp.xs2a.spi.mapper.SpiSinglePaymentMapper;
@@ -163,7 +164,7 @@ public class SinglePaymentSpiImpl implements SinglePaymentSpi {
         AspspConsentData responseData = aspspConsentData;
 
         if (aspspConsentData.getAspspConsentData() != null) {
-            Optional<Map> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), Map.class);
+            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>(){});
             if (authMapOptional.isPresent()) {
                 Map<String, Boolean> authMap = authMapOptional.get();
                 String psuId = spiContextData.getPsuData().getPsuId();
@@ -217,7 +218,7 @@ public class SinglePaymentSpiImpl implements SinglePaymentSpi {
         AspspConsentData responseData = aspspConsentData;
 
         if (aspspConsentData.getAspspConsentData() != null) {
-            Optional<Map> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), Map.class);
+            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>(){});
             if (authMapOptional.isPresent()) {
                 Map<String, Boolean> authMap = authMapOptional.get();
                 String psuId = spiContextData.getPsuData().getPsuId();
