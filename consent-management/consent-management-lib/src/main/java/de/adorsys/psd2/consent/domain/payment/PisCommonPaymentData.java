@@ -87,7 +87,7 @@ public class PisCommonPaymentData extends InstanceDependableEntity {
     @ApiModelProperty(value = "Creation timestamp of the consent.", required = true, example = "2018-12-28T00:00:00Z")
     private OffsetDateTime creationTimestamp = OffsetDateTime.now();
 
-    @Column(name = "multilevel_sca_required")
+    @Column(name = "multilevel_sca_required", nullable = false)
     @ApiModelProperty(value = "Defines whether the payment requires multilevel SCA", example = "true")
     private boolean multilevelScaRequired;
 
