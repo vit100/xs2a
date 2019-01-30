@@ -115,6 +115,12 @@ public class PaymentController implements PaymentApi {
                                           String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID,
                                           String psUGeoLocation) {
 
+        if (!PaymentType.getByValue(paymentService).isPresent()) {
+            ResponseObject<TransactionStatus> responseObject = ResponseObject.<TransactionStatus>builder()
+                                                                   .fail(new MessageError(ErrorType.PIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR))).build();
+            return responseErrorMapper.generateErrorResponse(responseObject.getError());
+        }
+
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
         PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData);
         ResponseObject serviceResponse =
@@ -137,6 +143,12 @@ public class PaymentController implements PaymentApi {
                                                   String tpPNokRedirectURI, boolean tpPExplicitAuthorisationPreferred, String psUIPPort,
                                                   String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage,
                                                   String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
+
+        if (!PaymentType.getByValue(paymentService).isPresent()) {
+            ResponseObject<TransactionStatus> responseObject = ResponseObject.<TransactionStatus>builder()
+                                                                   .fail(new MessageError(ErrorType.PIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR))).build();
+            return responseErrorMapper.generateErrorResponse(responseObject.getError());
+        }
 
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
         PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData);
@@ -241,7 +253,7 @@ public class PaymentController implements PaymentApi {
 
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
         //TODO check for Optional.get() without check for value presence https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/380
-        ResponseObject<Xs2aCreatePisAuthorisationResponse> serviceResponse = paymentAuthorisationService.createPisAuthorization(paymentId, PaymentType.getByValue(paymentService).get(),paymentProduct, psuData);
+        ResponseObject<Xs2aCreatePisAuthorisationResponse> serviceResponse = paymentAuthorisationService.createPisAuthorization(paymentId, PaymentType.getByValue(paymentService).get(), paymentProduct, psuData);
         return serviceResponse.hasError()
                    ? responseErrorMapper.generateErrorResponse(serviceResponse.getError())
                    : responseMapper.created(serviceResponse, consentModelMapper::mapToStartScaProcessResponse);
