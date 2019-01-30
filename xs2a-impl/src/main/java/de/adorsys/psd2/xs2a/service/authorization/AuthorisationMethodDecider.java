@@ -33,7 +33,8 @@ public class AuthorisationMethodDecider {
      * @return is explicit method of authorisation will be used
      */
     public boolean isExplicitMethod(boolean tppExplicitAuthorisationPreferred, boolean multilevelScaRequired) {
-        return multilevelScaRequired || tppExplicitAuthorisationPreferred && aspspProfileService.isSigningBasketSupported();
+        return multilevelScaRequired
+                   || tppExplicitAuthorisationPreferred && aspspProfileService.isSigningBasketSupported();
     }
 
     /**
