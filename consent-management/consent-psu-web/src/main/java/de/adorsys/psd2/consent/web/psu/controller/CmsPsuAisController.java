@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,19 +34,23 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "psu-api/v1/ais/consent")
-@Api(value = "psu-api/v1/ais/consent", tags = "PSU AIS, Consents", description = "Provides access to consent management system for PSU AIS")
+@Api(value = "psu-api/v1/ais/consent", tags = {"PSU AIS Consents"})
 public class CmsPsuAisController {
     private static final String DEFAULT_SERVICE_INSTANCE_ID = "UNDEFINED";
 
     private final CmsPsuAisService cmsPsuAisService;
 
-    @PutMapping(path = "/redirects/{redirect-id}/psu-data")
+    @PutMapping(path = "/{consent-id}/authorisation/{authorisation-id}/psu-data")
     @ApiOperation(value = "Updates PSU Data in consent, based on the trusted information about PSU known to ASPSP (i.e. after authorisation).")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Boolean.class)})
-    public ResponseEntity<Boolean> updatePsuDataInConsent(
-        @ApiParam(name = "redirect-id", value = "The redirect identification assigned to the created account consent.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
-        @PathVariable("redirect-id") String redirectId,
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 400, message = "Bad Request"),
+    })
+    public ResponseEntity<Void> updatePsuDataInConsent(
+        @ApiParam(name = "consent-id", value = "The consent identifier", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7", required = true)
+        @PathVariable("consent-id") String consentId,
+        @ApiParam(name = "authorisation-id", value = "The authorisation identifier of the current authorisation session", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7", required = true)
+        @PathVariable("authorisation-id") String authorisationId,
         @ApiParam(value = "Client ID of the PSU in the ASPSP client interface. Might be mandated in the ASPSP's documentation. Is not contained if an OAuth2 based authentication was performed in a pre-step or an OAuth2 based SCA was performed in an preceeding AIS service in the same session. ")
         @RequestHeader(value = "psu-id", required = false) String psuId,
         @ApiParam(value = "Type of the PSU-ID, needed in scenarios where PSUs have several PSU-IDs as access possibility. ")
@@ -57,7 +61,9 @@ public class CmsPsuAisController {
         @RequestHeader(value = "psu-corporate-id-type", required = false) String psuCorporateIdType,
         @RequestHeader(value = "instance-id", required = false, defaultValue = DEFAULT_SERVICE_INSTANCE_ID) String instanceId) {
         PsuIdData psuIdData = getPsuIdData(psuId, psuIdType, psuCorporateId, psuCorporateIdType);
-        return new ResponseEntity<>(cmsPsuAisService.updatePsuDataInConsent(psuIdData, redirectId, instanceId), HttpStatus.OK);
+        return cmsPsuAisService.updatePsuDataInConsent(psuIdData, authorisationId, instanceId)
+                               ? ResponseEntity.ok().build()
+                               : ResponseEntity.badRequest().build();
     }
 
     @GetMapping(path = "/{consent-id}")
@@ -83,7 +89,7 @@ public class CmsPsuAisController {
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/{consent-id}/authorizations/{authorization-id}/status/{status}")
+    @PutMapping(path = "/{consent-id}/authorization/{authorization-id}/status/{status}")
     @ApiOperation(value = "Updates a Status of AIS Consent Authorisation by its ID and PSU ID")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Boolean.class),
@@ -190,7 +196,7 @@ public class CmsPsuAisController {
         return new ResponseEntity<>(cmsPsuAisService.revokeConsent(psuIdData, consentId, instanceId), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/redirects/{redirect-id}")
+    @GetMapping(path = "/redirect/{redirect-id}")
     @ApiOperation(value = "Gets consent response by redirect id")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CmsAisConsentResponse.class),
