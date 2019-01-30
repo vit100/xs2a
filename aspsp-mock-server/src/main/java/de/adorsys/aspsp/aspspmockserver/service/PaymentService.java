@@ -311,7 +311,7 @@ public class PaymentService {
         return reference;
     }
 
-    private List<AspspPsuData> readAccountPsuData(AspspAccountReference debtorAccount) {
-        return accountDetailsService.getPsuDataByAccount(debtorAccount);
+    private List<AspspPsuData> readAccountPsuData(AspspAccountReference accountReference) {
+        return accountDetailsService.getPsuDataByAccount(accountReference);
     }
 }
