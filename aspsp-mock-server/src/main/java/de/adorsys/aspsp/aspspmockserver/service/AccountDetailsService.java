@@ -32,9 +32,8 @@ public class AccountDetailsService {
     private final AccountDetailsRepository accountDetailsRepository;
 
     public List<AspspPsuData> getPsuDataByAccount(AspspAccountReference debtorAccount) {
-        return accountDetailsRepository.findByIban(debtorAccount.getIban())
+        return accountDetailsRepository.findByIbanAndCurrency(debtorAccount.getIban(), debtorAccount.getCurrency())
                    .stream()
-                   .filter(a -> a.getCurrency() == debtorAccount.getCurrency())
                    .findFirst()
                    .map(AspspAccountDetails::getPsuDataList)
                    .orElseGet(Collections::emptyList);
