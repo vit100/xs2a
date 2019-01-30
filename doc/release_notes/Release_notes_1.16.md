@@ -77,7 +77,7 @@ Corresponding endpoint in the CMS controller was changed as well:
 Now `SpiAccountConsent` argument contains proper `SpiAccountAccess` in `de.adorsys.psd2.xs2a.spi.service.AccountSpi#requestAccountList`
 method when no accesses were previously provided by the connector in a response to AIS consent initiation.
 
-## Change the paths of some PIS enpoints in CMS-PSU-API
+## Change the paths of some PIS and AIS enpoints in CMS-PSU-API
 Some paths were confusing, so that was not clear which endpoint should be used to validate redirectUrl.
 Now "Update PSU Data" call is done using authorisationId, not redirectId.
 Also PsuData is provided by request's body, not in the header (normal behaviour for PUT).
