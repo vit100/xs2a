@@ -106,7 +106,8 @@ public class BulkPaymentSpiImpl implements BulkPaymentSpi {
     }
 
     @Override
-    public @NotNull SpiResponse<SpiBulkPayment> getPaymentById(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
+    @NotNull
+    public SpiResponse<SpiBulkPayment> getPaymentById(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
         try {
             ResponseEntity<List<AspspSinglePayment>> aspspResponse =
                 aspspRestTemplate.exchange(aspspRemoteUrls.getPaymentById(), HttpMethod.GET, null, new ParameterizedTypeReference<List<AspspSinglePayment>>() {
@@ -135,7 +136,8 @@ public class BulkPaymentSpiImpl implements BulkPaymentSpi {
     }
 
     @Override
-    public @NotNull SpiResponse<SpiTransactionStatus> getPaymentStatusById(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
+    @NotNull
+    public SpiResponse<SpiTransactionStatus> getPaymentStatusById(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
         try {
             ResponseEntity<AspspTransactionStatus> aspspResponse = aspspRestTemplate.getForEntity(aspspRemoteUrls.getPaymentStatus(), AspspTransactionStatus.class, payment.getPaymentId());
             SpiTransactionStatus status = spiPaymentMapper.mapToSpiTransactionStatus(aspspResponse.getBody());
@@ -158,12 +160,14 @@ public class BulkPaymentSpiImpl implements BulkPaymentSpi {
     }
 
     @Override
-    public @NotNull SpiResponse<SpiPaymentExecutionResponse> executePaymentWithoutSca(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
+    @NotNull
+    public SpiResponse<SpiPaymentExecutionResponse> executePaymentWithoutSca(@NotNull SpiContextData spiContextData, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
         SpiTransactionStatus responseStatus = SpiTransactionStatus.ACCP;
         AspspConsentData responseData = aspspConsentData;
 
         if (aspspConsentData.getAspspConsentData() != null) {
-            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>(){});
+            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>() {});
+
             if (authMapOptional.isPresent()) {
                 Map<String, Boolean> authMap = authMapOptional.get();
                 String psuId = spiContextData.getPsuData().getPsuId();
@@ -178,8 +182,9 @@ public class BulkPaymentSpiImpl implements BulkPaymentSpi {
 
                 if (authMap.values().contains(false)) {
                     responseStatus = SpiTransactionStatus.PATC;
+                } else {
+                    responseStatus = SpiTransactionStatus.ACTC;
                 }
-
 
                 byte[] bytes = jsonConverter.toJson(authMap)
                                    .map(String::getBytes)
@@ -211,44 +216,48 @@ public class BulkPaymentSpiImpl implements BulkPaymentSpi {
     }
 
     @Override
-    public @NotNull SpiResponse<SpiPaymentExecutionResponse> verifyScaAuthorisationAndExecutePayment(@NotNull SpiContextData spiContextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
+    @NotNull
+    public SpiResponse<SpiPaymentExecutionResponse> verifyScaAuthorisationAndExecutePayment(@NotNull SpiContextData spiContextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull SpiBulkPayment payment, @NotNull AspspConsentData aspspConsentData) {
         SpiTransactionStatus responseStatus = SpiTransactionStatus.ACCP;
         AspspConsentData responseData = aspspConsentData;
 
-        if (aspspConsentData.getAspspConsentData() != null) {
-            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>(){});
-            if (authMapOptional.isPresent()) {
-                Map<String, Boolean> authMap = authMapOptional.get();
-                String psuId = spiContextData.getPsuData().getPsuId();
-
-                if (!authMap.containsKey(psuId)) {
-                    return SpiResponse.<SpiPaymentExecutionResponse>builder()
-                               .aspspConsentData(responseData)
-                               .fail(SpiResponseStatus.LOGICAL_FAILURE);
-                }
-
-                authMap.put(psuId, true);
-
-                if (authMap.values().contains(false)) {
-                    responseStatus = SpiTransactionStatus.PATC;
-                }
-
-
-                byte[] bytes = jsonConverter.toJson(authMap)
-                                   .map(String::getBytes)
-                                   .orElse(TEST_ASPSP_DATA.getBytes());
-                responseData = aspspConsentData.respondWith(bytes);
-            }
-        }
-
         try {
             aspspRestTemplate.exchange(aspspRemoteUrls.applyStrongUserAuthorisation(), HttpMethod.PUT, new HttpEntity<>(spiScaConfirmation), ResponseEntity.class);
+
+            if (aspspConsentData.getAspspConsentData() != null) {
+                Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>() {});
+
+                if (authMapOptional.isPresent()) {
+                    Map<String, Boolean> authMap = authMapOptional.get();
+                    String psuId = spiContextData.getPsuData().getPsuId();
+
+                    if (!authMap.containsKey(psuId)) {
+                        return SpiResponse.<SpiPaymentExecutionResponse>builder()
+                                   .aspspConsentData(responseData)
+                                   .fail(SpiResponseStatus.LOGICAL_FAILURE);
+                    }
+
+                    authMap.put(psuId, true);
+
+                    if (authMap.values().contains(false)) {
+                        responseStatus = SpiTransactionStatus.PATC;
+                    } else {
+                        responseStatus = SpiTransactionStatus.ACTC;
+                    }
+
+                    byte[] bytes = jsonConverter.toJson(authMap)
+                                       .map(String::getBytes)
+                                       .orElse(TEST_ASPSP_DATA.getBytes());
+                    responseData = aspspConsentData.respondWith(bytes);
+                }
+            }
+
             AspspBulkPayment request = spiBulkPaymentMapper.mapToAspspBulkPayment(payment, responseStatus);
             aspspRestTemplate.postForEntity(aspspRemoteUrls.createBulkPayment(), request, AspspBulkPayment.class);
 
             return SpiResponse.<SpiPaymentExecutionResponse>builder()
-                       .payload(new SpiPaymentExecutionResponse(responseStatus))
                        .aspspConsentData(responseData)
+                       .payload(new SpiPaymentExecutionResponse(responseStatus))
                        .success();
 
         } catch (RestException e) {

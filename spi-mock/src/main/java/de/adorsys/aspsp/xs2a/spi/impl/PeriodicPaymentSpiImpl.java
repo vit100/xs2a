@@ -162,7 +162,8 @@ public class PeriodicPaymentSpiImpl implements PeriodicPaymentSpi {
         AspspConsentData responseData = aspspConsentData;
 
         if (aspspConsentData.getAspspConsentData() != null) {
-            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>(){});
+            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>() {});
+
             if (authMapOptional.isPresent()) {
                 Map<String, Boolean> authMap = authMapOptional.get();
                 String psuId = spiContextData.getPsuData().getPsuId();
@@ -177,8 +178,9 @@ public class PeriodicPaymentSpiImpl implements PeriodicPaymentSpi {
 
                 if (authMap.values().contains(false)) {
                     responseStatus = SpiTransactionStatus.PATC;
+                } else {
+                    responseStatus = SpiTransactionStatus.ACTC;
                 }
-
 
                 byte[] bytes = jsonConverter.toJson(authMap)
                                    .map(String::getBytes)
@@ -214,34 +216,37 @@ public class PeriodicPaymentSpiImpl implements PeriodicPaymentSpi {
         SpiTransactionStatus responseStatus = SpiTransactionStatus.ACCP;
         AspspConsentData responseData = aspspConsentData;
 
-        if (aspspConsentData.getAspspConsentData() != null) {
-            Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>(){});
-            if (authMapOptional.isPresent()) {
-                Map<String, Boolean> authMap = authMapOptional.get();
-                String psuId = spiContextData.getPsuData().getPsuId();
-
-                if (!authMap.containsKey(psuId)) {
-                    return SpiResponse.<SpiPaymentExecutionResponse>builder()
-                               .aspspConsentData(responseData)
-                               .fail(SpiResponseStatus.LOGICAL_FAILURE);
-                }
-
-                authMap.put(psuId, true);
-
-                if (authMap.values().contains(false)) {
-                    responseStatus = SpiTransactionStatus.PATC;
-                }
-
-
-                byte[] bytes = jsonConverter.toJson(authMap)
-                                   .map(String::getBytes)
-                                   .orElse(TEST_ASPSP_DATA.getBytes());
-                responseData = aspspConsentData.respondWith(bytes);
-            }
-        }
-
         try {
             aspspRestTemplate.exchange(aspspRemoteUrls.applyStrongUserAuthorisation(), HttpMethod.PUT, new HttpEntity<>(spiScaConfirmation), ResponseEntity.class);
+
+            if (aspspConsentData.getAspspConsentData() != null) {
+                Optional<Map<String, Boolean>> authMapOptional = jsonConverter.toObject(aspspConsentData.getAspspConsentData(), new TypeReference<Map<String, Boolean>>() {});
+
+                if (authMapOptional.isPresent()) {
+                    Map<String, Boolean> authMap = authMapOptional.get();
+                    String psuId = spiContextData.getPsuData().getPsuId();
+
+                    if (!authMap.containsKey(psuId)) {
+                        return SpiResponse.<SpiPaymentExecutionResponse>builder()
+                                   .aspspConsentData(responseData)
+                                   .fail(SpiResponseStatus.LOGICAL_FAILURE);
+                    }
+
+                    authMap.put(psuId, true);
+
+                    if (authMap.values().contains(false)) {
+                        responseStatus = SpiTransactionStatus.PATC;
+                    } else {
+                        responseStatus = SpiTransactionStatus.ACTC;
+                    }
+
+                    byte[] bytes = jsonConverter.toJson(authMap)
+                                       .map(String::getBytes)
+                                       .orElse(TEST_ASPSP_DATA.getBytes());
+                    responseData = aspspConsentData.respondWith(bytes);
+                }
+            }
+
             AspspPeriodicPayment request = spiPeriodicPaymentMapper.mapToAspspPeriodicPayment(payment, responseStatus);
             aspspRestTemplate.postForEntity(aspspRemoteUrls.createPeriodicPayment(), request, AspspPeriodicPayment.class);
 
