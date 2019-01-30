@@ -115,9 +115,10 @@ public class PaymentController implements PaymentApi {
                                           String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID,
                                           String psUGeoLocation) {
 
+        // As this method is mapped to '/v1/{payment-service}/{payment-product}' path, we need to check payment-service value to be compliant with spec
         if (!PaymentType.getByValue(paymentService).isPresent()) {
             ResponseObject<TransactionStatus> responseObject = ResponseObject.<TransactionStatus>builder()
-                                                                   .fail(new MessageError(ErrorType.PIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR))).build();
+                                                                   .fail(new MessageError(ErrorType.PIS_404, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404))).build();
             return responseErrorMapper.generateErrorResponse(responseObject.getError());
         }
 
@@ -144,9 +145,10 @@ public class PaymentController implements PaymentApi {
                                                   String psUAccept, String psUAcceptCharset, String psUAcceptEncoding, String psUAcceptLanguage,
                                                   String psUUserAgent, String psUHttpMethod, UUID psUDeviceID, String psUGeoLocation) {
 
+        // As this method is mapped to '/v1/{payment-service}/{payment-product}' path, we need to check payment-service value to be compliant with spec
         if (!PaymentType.getByValue(paymentService).isPresent()) {
             ResponseObject<TransactionStatus> responseObject = ResponseObject.<TransactionStatus>builder()
-                                                                   .fail(new MessageError(ErrorType.PIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR))).build();
+                                                                   .fail(new MessageError(ErrorType.PIS_404, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404))).build();
             return responseErrorMapper.generateErrorResponse(responseObject.getError());
         }
 
