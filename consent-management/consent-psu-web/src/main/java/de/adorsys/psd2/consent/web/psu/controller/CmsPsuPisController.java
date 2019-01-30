@@ -80,7 +80,7 @@ public class CmsPsuPisController {
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping(path = "/redirects/{redirect-id}")
+    @GetMapping(path = "/redirect/{redirect-id}")
     @ApiOperation(value = "")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CmsPaymentResponse.class),
@@ -115,7 +115,7 @@ public class CmsPsuPisController {
 
     }
 
-    @GetMapping(path = "/cancellation/redirects/{redirect-id}")
+    @GetMapping(path = "/cancellation/redirect/{redirect-id}")
     @ApiOperation(value = "")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CmsPaymentResponse.class),
