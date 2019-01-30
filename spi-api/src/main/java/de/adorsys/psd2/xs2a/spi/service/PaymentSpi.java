@@ -65,7 +65,7 @@ public interface PaymentSpi<T extends SpiPayment, R> {
      * @param contextData      holder of call's context data (e.g. about PSU and TPP)
      * @param payment          T payment, that extends SpiPayment
      * @param aspspConsentData Encrypted data that may stored in the consent management system in the consent linked to a request
-     * @return Returns a response object, which contains the transaction status
+     * @return Returns a response object, which contains the transaction status. For multilevel SCA, PATC status should be returned for all successful authorisation but the last
      */
     @NotNull
     SpiResponse<SpiPaymentExecutionResponse> executePaymentWithoutSca(@NotNull SpiContextData contextData, @NotNull T payment, @NotNull AspspConsentData aspspConsentData);
@@ -78,7 +78,7 @@ public interface PaymentSpi<T extends SpiPayment, R> {
      * @param payment            payment object
      * @param aspspConsentData   Encrypted data that may stored in the consent management system in the consent linked to a request.
      *                           May be null if consent does not contain such data, or request isn't done from a workflow with a consent
-     * @return Returns a response object, which contains the transaction status
+     * @return Returns a response object, which contains the transaction status. For multilevel SCA, PATC status should be returned for all successful authorisations but the last
      */
     @NotNull
     SpiResponse<SpiPaymentExecutionResponse> verifyScaAuthorisationAndExecutePayment(@NotNull SpiContextData contextData, @NotNull SpiScaConfirmation spiScaConfirmation, @NotNull T payment, @NotNull AspspConsentData aspspConsentData);

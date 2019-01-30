@@ -30,6 +30,7 @@ import java.util.function.Supplier;
 @Component
 @RequiredArgsConstructor
 public class SpiToXs2aPaymentMapper {
+    private final SpiToXs2aTransactionalStatusMapper spiToXs2aTransactionalStatusMapper;
 
     public <T extends SpiPaymentInitiationResponse, R extends PaymentInitiationResponse> R mapToPaymentInitiateResponse(T spi, Supplier<R> xs2a, AspspConsentData aspspConsentData) {
         R response = xs2a.get();
@@ -46,7 +47,7 @@ public class SpiToXs2aPaymentMapper {
         response.setPaymentType(type);
         response.setPaymentId(spiResponse.getPaymentId());
         response.setMultilevelScaRequired(spiResponse.isMultilevelScaRequired());
-        response.setTransactionStatus(TransactionStatus.getByValue(spiResponse.getTransactionStatus().getName()));
+        response.setTransactionStatus(spiToXs2aTransactionalStatusMapper.mapToTransactionStatus(spiResponse.getTransactionStatus()));
         response.setAspspConsentData(aspspConsentData);
         response.setAspspAccountId(spiResponse.getAspspAccountId());
         return response;

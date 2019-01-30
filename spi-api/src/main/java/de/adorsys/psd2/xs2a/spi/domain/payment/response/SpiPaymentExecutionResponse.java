@@ -17,15 +17,13 @@
 package de.adorsys.psd2.xs2a.spi.domain.payment.response;
 
 import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A response object that is returned by the ASPSP after the successful execution of payment
  */
-@Data
-@AllArgsConstructor
+@Value
 public class SpiPaymentExecutionResponse {
     @NotNull
     private SpiTransactionStatus transactionStatus;
