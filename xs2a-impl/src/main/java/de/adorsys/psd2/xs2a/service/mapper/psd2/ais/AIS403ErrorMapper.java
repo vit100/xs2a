@@ -39,7 +39,7 @@ public class AIS403ErrorMapper extends Psd2ErrorMapper<MessageError, Error403NGA
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.UNAUTHORIZED;
+        return HttpStatus.FORBIDDEN;
     }
 
     private Error403NGAIS mapToPsd2Error(MessageError messageError) {

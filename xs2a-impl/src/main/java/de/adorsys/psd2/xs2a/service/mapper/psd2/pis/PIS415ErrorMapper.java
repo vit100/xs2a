@@ -42,7 +42,7 @@ public class PIS415ErrorMapper extends Psd2ErrorMapper<MessageError, Error415NGP
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.INTERNAL_SERVER_ERROR;
+        return HttpStatus.UNSUPPORTED_MEDIA_TYPE;
     }
 
     private Error415NGPIS mapToPsd2Error(MessageError messageError) {

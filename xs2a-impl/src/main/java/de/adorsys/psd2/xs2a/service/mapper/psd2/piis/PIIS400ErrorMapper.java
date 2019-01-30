@@ -39,7 +39,7 @@ public class PIIS400ErrorMapper extends Psd2ErrorMapper<MessageError, Error400NG
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.UNAUTHORIZED;
+        return HttpStatus.BAD_REQUEST;
     }
 
     private Error400NGPIIS mapToPsd2Error(MessageError messageError) {

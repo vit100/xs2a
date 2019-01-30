@@ -42,7 +42,7 @@ public class SB415ErrorMapper extends Psd2ErrorMapper<MessageError, Error415NGSB
 
     @Override
     public HttpStatus getErrorStatus() {
-        return HttpStatus.INTERNAL_SERVER_ERROR;
+        return HttpStatus.UNSUPPORTED_MEDIA_TYPE;
     }
 
     private Error415NGSB mapToPsd2Error(MessageError messageError) {
