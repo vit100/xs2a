@@ -23,7 +23,7 @@
         <comment>Add multilevel_sca_required column to pis_common_payment</comment>
 
         <addColumn tableName="pis_common_payment">
-            <column name="multilevel_sca_required" type="BOOLEAN">
+            <column name="multilevel_sca_required" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>

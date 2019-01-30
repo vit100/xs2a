@@ -83,6 +83,7 @@ public class PisCommonPaymentServiceInternalTest {
     private static final String EXTERNAL_ID = "4b112130-6a96-4941-a220-2da8a4af2c65";
     private static final String PAYMENT_ID = "5bbde955ca10e8e4035a10c2";
     private static final String PAYMENT_ID_WRONG = "5bbdcb28ca10e8e14a41b12f";
+    private static final String PAYMENT_ID_WRONG_TRANSACTION_STATUS = "6bbdcb28ca10e8e14a41b12f";
     private static final String FINALISED_AUTHORISATION_ID = "9b112130-6a96-4941-a220-2da8a4af2c65";
     private static final String FINALISED_CANCELLATION_AUTHORISATION_ID = "2a112130-6a96-4941-a220-2da8a4af2c65";
     private static final String AUTHORISATION_ID = "ad746cb3-a01b-4196-a6b9-40b0e4cd2350";
@@ -156,6 +157,18 @@ public class PisCommonPaymentServiceInternalTest {
         when(pisCommonPaymentDataRepository.findByPaymentIdAndTransactionStatusIn(PAYMENT_ID_WRONG, Arrays.asList(RCVD, PATC))).thenReturn(Optional.empty());
         //Then
         Optional<List<String>> authorizationByPaymentId = pisCommonPaymentService.getAuthorisationsByPaymentId(PAYMENT_ID_WRONG, CmsAuthorisationType.CANCELLED);
+        //Assert
+        assertFalse(authorizationByPaymentId.isPresent());
+    }
+
+    @Test
+    public void getAuthorisationByPaymentIdWrongTransactionStatus() {
+        //When
+        when(securityDataService.decryptId(PAYMENT_ID)).thenReturn(Optional.of(PAYMENT_ID_WRONG_TRANSACTION_STATUS));
+        when(pisPaymentDataRepository.findByPaymentIdAndPaymentDataTransactionStatusIn(PAYMENT_ID_WRONG_TRANSACTION_STATUS, Arrays.asList(RCVD, PATC))).thenReturn(Optional.empty());
+        when(pisCommonPaymentDataRepository.findByPaymentIdAndTransactionStatusIn(PAYMENT_ID_WRONG_TRANSACTION_STATUS, Arrays.asList(RCVD, PATC))).thenReturn(Optional.empty());
+        //Then
+        Optional<List<String>> authorizationByPaymentId = pisCommonPaymentService.getAuthorisationsByPaymentId(PAYMENT_ID_WRONG_TRANSACTION_STATUS, CmsAuthorisationType.CREATED);
         //Assert
         assertFalse(authorizationByPaymentId.isPresent());
     }

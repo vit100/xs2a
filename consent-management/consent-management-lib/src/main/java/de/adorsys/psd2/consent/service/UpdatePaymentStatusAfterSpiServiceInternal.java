@@ -48,9 +48,14 @@ public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePayment
         }
 
         boolean commonResult = commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
+
+        if (!commonResult) {
+            return false;
+        }
+        
         Optional<List<PisPaymentData>> list = pisPaymentDataRepository.findByPaymentId(paymentId);
 
-        return list.map(pisPaymentData -> commonResult && updateStatusInPaymentDataList(pisPaymentData, status))
+        return list.map(pisPaymentData -> updateStatusInPaymentDataList(pisPaymentData, status))
                    .orElse(commonResult);
 
     }
