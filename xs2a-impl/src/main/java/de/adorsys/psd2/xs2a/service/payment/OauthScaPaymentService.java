@@ -29,8 +29,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OauthScaPaymentService extends ScaPaymentService {
-    public OauthScaPaymentService(SinglePaymentSpi singlePaymentSpi, PeriodicPaymentSpi periodicPaymentSpi, BulkPaymentSpi bulkPaymentSpi, CommonPaymentSpi commonPaymentSpi, Xs2aToSpiSinglePaymentMapper xs2AToSpiSinglePaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiToXs2aPaymentMapper spiToXs2aPaymentMapper, SpiContextDataProvider spiContextDataProvider, SpiErrorMapper spiErrorMapper) {
-        super(singlePaymentSpi, periodicPaymentSpi, bulkPaymentSpi, commonPaymentSpi, xs2AToSpiSinglePaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiBulkPaymentMapper, spiToXs2aPaymentMapper, spiContextDataProvider, spiErrorMapper);
+    public OauthScaPaymentService(SinglePaymentSpi singlePaymentSpi, PeriodicPaymentSpi periodicPaymentSpi, BulkPaymentSpi bulkPaymentSpi, CommonPaymentSpi commonPaymentSpi, Xs2aToSpiSinglePaymentMapper xs2AToSpiSinglePaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, Xs2aToSpiPaymentInfo xs2aToSpiPaymentInfo, SpiToXs2aPaymentMapper spiToXs2aPaymentMapper, SpiContextDataProvider spiContextDataProvider, SpiErrorMapper spiErrorMapper) {
+        super(singlePaymentSpi, periodicPaymentSpi, bulkPaymentSpi, commonPaymentSpi, xs2AToSpiSinglePaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiBulkPaymentMapper, xs2aToSpiPaymentInfo, spiToXs2aPaymentMapper, spiContextDataProvider, spiErrorMapper);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class OauthScaPaymentService extends ScaPaymentService {
     }
 
     @Override
-    public CommonPaymentInitiationResponse createPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
+    public CommonPaymentInitiationResponse createXmlPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
         throw new UnsupportedOperationException("Unsupported operation");
     }
 }
