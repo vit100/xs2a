@@ -39,16 +39,16 @@ public class ScaAuthorizationConfig {
 
     @Bean
     public ScaPaymentService scaPaymentService(
-                                               OauthScaPaymentService oauthScaPaymentService,
-                                               RedirectScaPaymentService redirectScaPaymentService,
-                                               EmbeddedScaPaymentService embeddedScaPaymentService,
-                                               DecoupedScaPaymentService decoupedScaPaymentService) {
+        OauthScaPaymentService oauthScaPaymentService,
+        RedirectScaPaymentService redirectScaPaymentService,
+        EmbeddedScaPaymentService embeddedScaPaymentService,
+        DecoupledScaPaymentService decoupledScaPaymentService) {
         ScaApproach scaApproach = getScaApproach();
         if (OAUTH == scaApproach) {
             return oauthScaPaymentService;
         }
         if (DECOUPLED == scaApproach) {
-            return decoupedScaPaymentService;
+            return decoupledScaPaymentService;
         }
         if (EMBEDDED == scaApproach) {
             return embeddedScaPaymentService;
