@@ -49,7 +49,7 @@ public class OauthScaPaymentService extends ScaPaymentService {
     }
 
     @Override
-    public CommonPaymentInitiationResponse createXmlPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
+    public CommonPaymentInitiationResponse createCommonPayment(CommonPayment payment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
         throw new UnsupportedOperationException("Unsupported operation");
     }
 }
