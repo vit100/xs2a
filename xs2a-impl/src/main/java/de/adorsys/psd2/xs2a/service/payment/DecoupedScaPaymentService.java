@@ -16,25 +16,17 @@
 
 package de.adorsys.psd2.xs2a.service.payment;
 
-import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
-import de.adorsys.psd2.xs2a.domain.pis.*;
+import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
+import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.*;
+import de.adorsys.psd2.xs2a.spi.service.BulkPaymentSpi;
+import de.adorsys.psd2.xs2a.spi.service.CommonPaymentSpi;
+import de.adorsys.psd2.xs2a.spi.service.PeriodicPaymentSpi;
+import de.adorsys.psd2.xs2a.spi.service.SinglePaymentSpi;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DecoupedScaPaymentService implements ScaPaymentService {
-    @Override
-    public SinglePaymentInitiationResponse createSinglePayment(SinglePayment singlePayment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
-        throw new UnsupportedOperationException("Unsupported operation");
-    }
-
-    @Override
-    public PeriodicPaymentInitiationResponse createPeriodicPayment(PeriodicPayment periodicPayment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
-        throw new UnsupportedOperationException("Unsupported operation");
-    }
-
-    @Override
-    public BulkPaymentInitiationResponse createBulkPayment(BulkPayment bulkPayment, TppInfo tppInfo, String paymentProduct, PsuIdData psuIdData) {
-        throw new UnsupportedOperationException("Unsupported operation");
+public class DecoupedScaPaymentService extends ScaPaymentService {
+    public DecoupedScaPaymentService(SinglePaymentSpi singlePaymentSpi, PeriodicPaymentSpi periodicPaymentSpi, BulkPaymentSpi bulkPaymentSpi, CommonPaymentSpi commonPaymentSpi, Xs2aToSpiSinglePaymentMapper xs2AToSpiSinglePaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiToXs2aPaymentMapper spiToXs2aPaymentMapper, SpiContextDataProvider spiContextDataProvider, SpiErrorMapper spiErrorMapper) {
+        super(singlePaymentSpi, periodicPaymentSpi, bulkPaymentSpi, commonPaymentSpi, xs2AToSpiSinglePaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiBulkPaymentMapper, spiToXs2aPaymentMapper, spiContextDataProvider, spiErrorMapper);
     }
 }

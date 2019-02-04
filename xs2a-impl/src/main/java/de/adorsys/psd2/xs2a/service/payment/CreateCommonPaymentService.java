@@ -47,7 +47,7 @@ import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
 @Service
 @RequiredArgsConstructor
 public class CreateCommonPaymentService implements CreatePaymentService<CommonPayment, PaymentInitiationResponse> {
-    private final ScaCommonPaymentService scaPaymentService;
+    private final ScaPaymentService scaPaymentService;
     private final Xs2aPisCommonPaymentService pisCommonPaymentService;
     private final AuthorisationMethodDecider authorisationMethodDecider;
     private final PisScaAuthorisationService pisScaAuthorisationService;
