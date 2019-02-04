@@ -36,7 +36,7 @@ import java.util.Optional;
 @Component
 public class Xs2aPisCommonPaymentMapper {
 
-    public Optional<Xs2aCreatePisAuthorisationResponse> mapToXsa2CreatePisAuthorizationResponse(CreatePisAuthorisationResponse response, PaymentType paymentType) {
+    public Optional<Xs2aCreatePisAuthorisationResponse> mapToXsa2CreatePisAuthorisationResponse(CreatePisAuthorisationResponse response, PaymentType paymentType) {
         return Optional.of(new Xs2aCreatePisAuthorisationResponse(response.getAuthorizationId(), ScaStatus.RECEIVED, paymentType));
     }
 

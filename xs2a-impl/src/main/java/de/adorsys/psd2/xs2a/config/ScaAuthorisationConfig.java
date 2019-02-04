@@ -79,7 +79,7 @@ public class ScaAuthorisationConfig {
             return new OauthPisScaAuthorisationService();
         }
         if (DECOUPLED == scaApproach) {
-            return new DecoupledPisScaAuthorisationService();
+            return new DecoupledPisScaAuthorisationService(authorisationService, pisCommonPaymentMapper);
         }
         if (EMBEDDED == scaApproach) {
             return new EmbeddedPisScaAuthorisationService(authorisationService, pisCommonPaymentMapper);
