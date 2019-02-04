@@ -72,8 +72,8 @@ public class ScaAuthorisationConfig {
     }
 
     @Bean
-    public PisScaAuthorisationService pisAuthorisationService(PisAuthorisationService authorisationService,
-                                                              Xs2aPisCommonPaymentMapper pisCommonPaymentMapper) {
+    public PisScaAuthorisationService pisScaAuthorisationService(PisAuthorisationService authorisationService,
+                                                                 Xs2aPisCommonPaymentMapper pisCommonPaymentMapper) {
         ScaApproach scaApproach = getScaApproach();
         if (OAUTH == scaApproach) {
             return new OauthPisScaAuthorisationService();
