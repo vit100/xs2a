@@ -30,15 +30,26 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RequestProviderService {
+    private static final String TPP_REDIRECT_PREFERRED_HEADER = "tpp-redirect-preferred";
+    private static final String X_REQUEST_ID_HEADER = "x-request-id";
+
     private final HttpServletRequest httpServletRequest;
 
     public RequestData getRequestData() {
         String uri = httpServletRequest.getRequestURI();
-        UUID requestId = UUID.fromString(httpServletRequest.getHeader("X-Request-ID"));
+        UUID requestId = UUID.fromString(httpServletRequest.getHeader(X_REQUEST_ID_HEADER));
         String ip = httpServletRequest.getRemoteAddr();
         Map<String, String> headers = getRequestHeaders(httpServletRequest);
 
         return new RequestData(uri, requestId, ip, headers);
+    }
+
+    public boolean resolveTppRedirectPreferred() {
+        Map<String, String> headers = getRequestData().getHeaders();
+        if (headers == null || !headers.containsKey(TPP_REDIRECT_PREFERRED_HEADER)) {
+            return false;
+        }
+        return Boolean.valueOf(headers.get(TPP_REDIRECT_PREFERRED_HEADER));
     }
 
     private Map<String, String> getRequestHeaders(HttpServletRequest request) {
