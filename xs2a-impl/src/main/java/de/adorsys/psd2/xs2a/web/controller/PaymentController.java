@@ -109,7 +109,7 @@ public class PaymentController implements PaymentApi {
     @Override
     public ResponseEntity initiatePayment(Object body, UUID xRequestID, String psUIPAddress, String paymentService, String paymentProduct,
                                           String digest, String signature, byte[] tpPSignatureCertificate, String PSU_ID, String psUIDType,
-                                          String psUCorporateID, String psUCorporateIDType, String consentID, String tpPRedirectPreferred,
+                                          String psUCorporateID, String psUCorporateIDType, String consentID, boolean tppRedirectPreferred,
                                           String tpPRedirectURI, String tpPNokRedirectURI, boolean tpPExplicitAuthorisationPreferred,
                                           String psUIPPort, String psUAccept, String psUAcceptCharset, String psUAcceptEncoding,
                                           String psUAcceptLanguage, String psUUserAgent, String psUHttpMethod, UUID psUDeviceID,
@@ -123,7 +123,7 @@ public class PaymentController implements PaymentApi {
         }
 
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
-        PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData);
+        PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData, tppRedirectPreferred);
         ResponseObject serviceResponse =
             xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aPayment(body, paymentInitiationParameters), paymentInitiationParameters);
 
@@ -153,7 +153,7 @@ public class PaymentController implements PaymentApi {
         }
 
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
-        PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData);
+        PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData, false);
         ResponseObject serviceResponse =
             xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aXmlPayment(paymentInitiationParameters, xmlSct, jsonStandingorderType), paymentInitiationParameters);
 
