@@ -19,6 +19,6 @@ package de.adorsys.psd2.xs2a.spi.domain.authorisation;
 import lombok.Value;
 
 @Value
-public class SpiAuthorizationDecoupledSceResponse {
+public class SpiAuthorisationDecoupledSceResponse {
     private String psuMessage;
 }

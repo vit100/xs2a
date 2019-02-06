@@ -215,7 +215,7 @@ public class PaymentCancellationSpiImpl implements PaymentCancellationSpi {
 
     @Override
     @NotNull
-    public SpiResponse<SpiAuthorizationDecoupledSceResponse> requestDecoupledSca(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull SpiPayment businessObject, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiAuthorisationDecoupledSceResponse> requestDecoupledSca(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull SpiPayment businessObject, @NotNull AspspConsentData aspspConsentData) {
         return null;
     }
 }

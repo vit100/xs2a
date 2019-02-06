@@ -25,5 +25,5 @@ public class SpiAuthenticationObject {
     private String authenticationVersion;
     private String name;
     private String explanation;
-    private boolean isDecoupled;
+    private boolean decoupled;
 }

@@ -294,7 +294,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
 
     @Override
     @NotNull
-    public SpiResponse<SpiAuthorizationDecoupledSceResponse> requestDecoupledSca(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull SpiAccountConsent businessObject, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiAuthorisationDecoupledSceResponse> requestDecoupledSca(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull SpiAccountConsent businessObject, @NotNull AspspConsentData aspspConsentData) {
         return null;
     }
 }
