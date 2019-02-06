@@ -35,7 +35,7 @@ public class ScaApproachResolver {
     private final RequestProviderService requestProviderService;
 
     /**
-     * Resolve which sca approach from sca appeoaches list in ASPSP-profile should be used for authorisation.
+     * Resolve which sca approach from sca approaches list in ASPSP-profile should be used for authorisation.
      * If header "tpp-redirect-preferred" is provided with value "true", Redirect approach will be used,
      * otherwise the first approach from the list will be chosen
      *
