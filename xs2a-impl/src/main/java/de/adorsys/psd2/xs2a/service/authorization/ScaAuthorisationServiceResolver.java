@@ -19,22 +19,22 @@ package de.adorsys.psd2.xs2a.service.authorization;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ScaAuthorisationServiceResolver<R extends ScaApproachServiceTypeProvider> {
+public class ScaAuthorisationServiceResolver<R extends ScaApproachServiceTypeProvider> implements InitializingBean {
     private final List<R> services;
     private final ScaApproachResolver scaApproachResolver;
     private final Map<ScaApproach, R> SERVICE_CONTAINER = new HashMap<>();
 
-    @PostConstruct
-    protected void fillServiceContainer() {
+    @Override
+    public void afterPropertiesSet() {
         services.forEach(service -> SERVICE_CONTAINER.put(service.getScaApproachServiceType(), service));
     }
 

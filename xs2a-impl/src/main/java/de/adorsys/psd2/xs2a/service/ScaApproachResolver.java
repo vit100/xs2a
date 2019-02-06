@@ -16,31 +16,29 @@
 
 package de.adorsys.psd2.xs2a.service;
 
+import de.adorsys.psd2.aspsp.profile.service.AspspProfileService;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
-import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 import static de.adorsys.psd2.xs2a.core.profile.ScaApproach.REDIRECT;
 
 @Service
 @RequiredArgsConstructor
 public class ScaApproachResolver {
-    private static final String TPP_REDIRECT_PREFERRED_HEADER = "tpp-redirect-preferred";
-    private static final int SINGLE_VALUE = 1;
+    private static final int COLLECTION_SIZE_ONE = 1;
 
-    private final AspspProfileServiceWrapper aspspProfileService;
+    private final AspspProfileService aspspProfileService;
     private final RequestProviderService requestProviderService;
 
     public ScaApproach resolveScaApproach() {
-        boolean tppRedirectPreferred = resolveTppRedirectPreferred();
+        boolean tppRedirectPreferred = requestProviderService.resolveTppRedirectPreferred();
         List<ScaApproach> scaApproaches = aspspProfileService.getScaApproaches();
 
-        if (singleSca(scaApproaches)) {
+        if (isSingleSca(scaApproaches)) {
             return getFirst(scaApproaches);
         } else if (tppRedirectPreferred && scaApproaches.contains(REDIRECT)) {
             return REDIRECT;
@@ -48,20 +46,11 @@ public class ScaApproachResolver {
         return getFirst(scaApproaches);
     }
 
-    private boolean resolveTppRedirectPreferred() {
-        Map<String, String> headers = requestProviderService.getRequestData()
-                                          .getHeaders();
-        if (headers == null || !headers.containsKey(TPP_REDIRECT_PREFERRED_HEADER)) {
-            return false;
-        }
-        return Boolean.valueOf(headers.get(TPP_REDIRECT_PREFERRED_HEADER));
-    }
-
     private ScaApproach getFirst(List<ScaApproach> scaApproaches) {
         return scaApproaches.get(0);
     }
 
-    private boolean singleSca(List<ScaApproach> scaApproaches) {
-        return SINGLE_VALUE == CollectionUtils.size(scaApproaches);
+    private boolean isSingleSca(List<ScaApproach> scaApproaches) {
+        return COLLECTION_SIZE_ONE == CollectionUtils.size(scaApproaches);
     }
 }
