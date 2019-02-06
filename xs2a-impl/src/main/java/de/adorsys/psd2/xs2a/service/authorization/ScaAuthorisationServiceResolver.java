@@ -38,6 +38,11 @@ public class ScaAuthorisationServiceResolver<T extends ScaApproachServiceTypePro
         services.forEach(service -> SERVICE_CONTAINER.put(service.getScaApproachServiceType(), service));
     }
 
+    /**
+     * Get authorisation service for sca approach that was chosen in resolver
+     *
+     * @return authorisation service for chosen sca approach
+     */
     public T getService() {
         return SERVICE_CONTAINER.get(scaApproachResolver.resolveScaApproach());
     }
