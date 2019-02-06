@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,9 @@
 
 package de.adorsys.psd2.xs2a.spi.domain.authorisation;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
-public class SpiAuthenticationObject {
-    private String authenticationType;
-    private String authenticationMethodId;
-    private String authenticationVersion;
-    private String name;
-    private String explanation;
-    private boolean isDecoupled;
+@Value
+public class SpiAuthorizationDecoupledSceResponse {
+    private String psuMessage;
 }

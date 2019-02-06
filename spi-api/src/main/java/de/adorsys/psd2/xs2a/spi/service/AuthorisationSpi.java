@@ -21,6 +21,7 @@ import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationDecoupledSceResponse;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import org.jetbrains.annotations.NotNull;
@@ -71,4 +72,17 @@ interface AuthorisationSpi<T> {
      */
     @NotNull
     SpiResponse<SpiAuthorizationCodeResult> requestAuthorisationCode(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
+
+    /**
+     * Performs strong customer authorisation for a decoupled approach or for a selected decoupled SCA method within embedded approach. Used with decoupled or embedded SCA Approach.
+     *
+     * @param contextData            holder of call's context data (e.g. about PSU and TPP)
+     * @param authenticationMethodId Id of a chosen sca method(for a decoupled SCA method within embedded approach)
+     * @param businessObject         generic consent/payment object
+     * @param aspspConsentData       Encrypted data that may stored in the consent management system in the consent linked to a request.
+     *                               May be null if consent does not contain such data, or request isn't done from a workflow with a consent
+     * @return Return a positive or negative response as part of SpiResponse. If authentication method is unknown, then empty SpiAuthorizationCodeResult should be returned.
+     */
+    @NotNull
+    SpiResponse<SpiAuthorizationDecoupledSceResponse> requestDecoupledSca(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
 }
