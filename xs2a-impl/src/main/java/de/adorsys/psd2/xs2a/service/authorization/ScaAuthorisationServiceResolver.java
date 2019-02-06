@@ -28,17 +28,17 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ScaAuthorisationServiceResolver<R extends ScaApproachServiceTypeProvider> implements InitializingBean {
-    private final List<R> services;
+public class ScaAuthorisationServiceResolver<T extends ScaApproachServiceTypeProvider> implements InitializingBean {
+    private final List<T> services;
     private final ScaApproachResolver scaApproachResolver;
-    private final Map<ScaApproach, R> SERVICE_CONTAINER = new HashMap<>();
+    private final Map<ScaApproach, T> SERVICE_CONTAINER = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() {
         services.forEach(service -> SERVICE_CONTAINER.put(service.getScaApproachServiceType(), service));
     }
 
-    public R getService() {
+    public T getService() {
         return SERVICE_CONTAINER.get(scaApproachResolver.resolveScaApproach());
     }
 }
