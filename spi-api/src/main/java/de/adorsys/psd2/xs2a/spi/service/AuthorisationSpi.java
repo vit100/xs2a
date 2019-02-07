@@ -74,9 +74,10 @@ interface AuthorisationSpi<T> {
     SpiResponse<SpiAuthorizationCodeResult> requestAuthorisationCode(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
 
     /**
-     * Performs strong customer authorisation for a decoupled approach or for a selected decoupled SCA method within embedded approach. Used with decoupled or embedded SCA Approach.
+     * Notifies a decoupled app about starting SCA. AuthorisationId is provided to allow the app to access CMS(the same way like redirectId is used in Redirect Approach). Used only with decoupled SCA Approach.
      *
      * @param contextData            holder of call's context data (e.g. about PSU and TPP)
+     * @param authorisationId        a unique identifier of authorisation process
      * @param authenticationMethodId Id of a chosen sca method(for a decoupled SCA method within embedded approach)
      * @param businessObject         generic consent/payment object
      * @param aspspConsentData       Encrypted data that may stored in the consent management system in the consent linked to a request.
@@ -84,5 +85,5 @@ interface AuthorisationSpi<T> {
      * @return Return a response object, containing a message from ASPSP to PSU, giving him instructions regarding decoupled SCA starting.
      */
     @NotNull
-    SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
+    SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authorisationId, @NotNull String authenticationMethodId, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
 }
