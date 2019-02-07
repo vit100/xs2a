@@ -19,7 +19,6 @@ package de.adorsys.psd2.xs2a.service;
 import de.adorsys.psd2.aspsp.profile.service.AspspProfileService;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +28,6 @@ import static de.adorsys.psd2.xs2a.core.profile.ScaApproach.REDIRECT;
 @Service
 @RequiredArgsConstructor
 public class ScaApproachResolver {
-    private static final int COLLECTION_SIZE_ONE = 1;
-
     private final AspspProfileService aspspProfileService;
     private final RequestProviderService requestProviderService;
 
@@ -45,9 +42,7 @@ public class ScaApproachResolver {
         boolean tppRedirectPreferred = requestProviderService.resolveTppRedirectPreferred();
         List<ScaApproach> scaApproaches = aspspProfileService.getScaApproaches();
 
-        if (isSingleSca(scaApproaches)) {
-            return getFirst(scaApproaches);
-        } else if (tppRedirectPreferred && scaApproaches.contains(REDIRECT)) {
+        if (tppRedirectPreferred && scaApproaches.contains(REDIRECT)) {
             return REDIRECT;
         }
         return getFirst(scaApproaches);
@@ -55,9 +50,5 @@ public class ScaApproachResolver {
 
     private ScaApproach getFirst(List<ScaApproach> scaApproaches) {
         return scaApproaches.get(0);
-    }
-
-    private boolean isSingleSca(List<ScaApproach> scaApproaches) {
-        return COLLECTION_SIZE_ONE == CollectionUtils.size(scaApproaches);
     }
 }
