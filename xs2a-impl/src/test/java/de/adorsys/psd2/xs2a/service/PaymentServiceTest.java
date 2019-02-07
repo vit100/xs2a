@@ -50,7 +50,6 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapp
 import de.adorsys.psd2.xs2a.service.payment.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
-import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiSinglePayment;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
@@ -97,8 +96,6 @@ public class PaymentServiceTest {
     private PaymentService paymentService;
     @Mock
     private CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
-    @Mock
-    private SpiToXs2aTransactionalStatusMapper paymentMapper;
     @Mock
     private CancelPaymentService cancelPaymentService;
     @Mock
@@ -155,10 +152,6 @@ public class PaymentServiceTest {
     @Before
     public void setUp() {
         //Mapper
-        when(paymentMapper.mapToTransactionStatus(SpiTransactionStatus.RCVD)).thenReturn(RCVD);
-        when(paymentMapper.mapToTransactionStatus(SpiTransactionStatus.ACCP)).thenReturn(TransactionStatus.ACCP);
-        when(paymentMapper.mapToTransactionStatus(SpiTransactionStatus.RJCT)).thenReturn(TransactionStatus.RJCT);
-        when(paymentMapper.mapToTransactionStatus(null)).thenReturn(null);
         when(xs2aPisCommonPaymentMapper.mapToXs2aPisCommonPayment(any(), any())).thenReturn(getXs2aPisCommonPayment());
         when(psuDataMapper.mapToSpiPsuData(PSU_ID_DATA))
             .thenReturn(SPI_PSU_DATA);
@@ -331,7 +324,7 @@ public class PaymentServiceTest {
 
     @Test
     public void getPaymentStatusById_Success_ShouldRecordEvent() {
-        SpiResponse<SpiTransactionStatus> spiResponse = buildSpiResponseTransactionStatus();
+        SpiResponse<TransactionStatus> spiResponse = buildSpiResponseTransactionStatus();
         when(singlePaymentSpi.getPaymentStatusById(any(), any(), any())).thenReturn(spiResponse);
         when(xs2aPisCommonPaymentService.getPisCommonPaymentById(anyString())).thenReturn(Optional.of(pisCommonPaymentResponse));
         when(pisCommonPaymentResponse.getPayments()).thenReturn(Collections.singletonList(pisPayment));
@@ -339,8 +332,8 @@ public class PaymentServiceTest {
         when(readPaymentStatusFactory.getService(anyString())).thenReturn(readPaymentStatusService);
         when(readPaymentStatusService.readPaymentStatus(eq(Collections.singletonList(pisPayment)), eq("sepa-credit-transfers"), any(SpiContextData.class), eq(ASPSP_CONSENT_DATA)))
             .thenReturn(
-                SpiResponse.<SpiTransactionStatus>builder()
-                    .payload(SpiTransactionStatus.RCVD)
+                SpiResponse.<TransactionStatus>builder()
+                    .payload(TransactionStatus.RCVD)
                     .aspspConsentData(ASPSP_CONSENT_DATA)
                     .success()
             );
@@ -371,6 +364,10 @@ public class PaymentServiceTest {
         assertThat(error.getErrorType()).isEqualTo(ErrorType.PIS_400);
         assertThat(error.getTppMessage().getMessageErrorCode()).isEqualTo(MessageErrorCode.FORMAT_ERROR);
     }
+
+    private SpiResponse<TransactionStatus> buildSpiResponseTransactionStatus() {
+        return new SpiResponse<>(TransactionStatus.ACCP, ASPSP_CONSENT_DATA);
+
 
     private SpiResponse<SpiTransactionStatus> buildSpiResponseTransactionStatus() {
         return new SpiResponse<>(SpiTransactionStatus.ACCP, ASPSP_CONSENT_DATA);
