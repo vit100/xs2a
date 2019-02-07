@@ -69,12 +69,41 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
     public UpdateConsentPsuDataResponse apply(UpdateConsentPsuDataReq request) {
         AccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
-        String authenticationMethodId = request.getAuthenticationMethodId();
 
         // TODO check if decoupled
         // private method
+        if (isDecoupledApproach(request.getAuthenticationMethodId(), request.getAuthorizationId())) {
+            return proceedDecoupledApproach();
+        }
 
-        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(spiContextDataProvider.provideWithPsuIdData(request.getPsuData()), authenticationMethodId, spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+        return proceedEmbeddedApproach(request, spiAccountConsent);
+    }
+
+    private boolean isDecoupledApproach(String authenticationMethodId, String authorisationId) {
+        return aisConsentService.isAuthenticationMethodDecoupled(authenticationMethodId, authorisationId);
+    }
+
+    private UpdateConsentPsuDataResponse proceedDecoupledApproach() {
+        // TODO use new SPI method for decoupled
+
+        // TODO 1. make SPI call
+        // TODO 2. check the response on error:
+        /*
+        if (spiResponse.hasError()) {
+            MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.AIS));
+            return createFailedResponse(messageError, spiResponse.getMessages());
+        }
+         */
+
+        UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
+        // TODO 3. use SpiAuthorisationDecoupledSceResponse#getPsuMessage() after SPI call
+        response.setPsuMessage("");
+        response.setScaStatus(ScaStatus.SCAMETHODSELECTED);
+        return null;
+    }
+
+    private UpdateConsentPsuDataResponse proceedEmbeddedApproach(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent) {
+        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(spiContextDataProvider.provideWithPsuIdData(request.getPsuData()), request.getAuthenticationMethodId(), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
@@ -94,5 +123,4 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         response.setChallengeData(challengeData);
         return response;
     }
-
 }

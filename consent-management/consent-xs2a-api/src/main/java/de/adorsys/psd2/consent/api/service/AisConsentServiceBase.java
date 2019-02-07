@@ -144,4 +144,13 @@ interface AisConsentServiceBase {
      * @return SCA status of the authorisation
      */
     Optional<ScaStatus> getAuthorisationScaStatus(String consentId, String authorisationId);
+
+    /**
+     * Checks if requested authentication method is decoupled.
+     *
+     * @param authenticationMethodId String representation of the available authentication method identifier
+     * @param authorisationId        String representation of the authorisation identifier
+     * @return true, if authentication method is decoupled and false otherwise.
+     */
+    boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId);
 }

@@ -141,4 +141,10 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
         return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(consentId -> aisConsentService.getAuthorisationScaStatus(consentId, authorisationId));
     }
+
+    @Override
+    public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
+        // TODO implement
+        return false;
+    }
 }

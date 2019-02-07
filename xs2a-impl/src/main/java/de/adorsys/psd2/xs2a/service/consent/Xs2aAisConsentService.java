@@ -197,4 +197,7 @@ public class Xs2aAisConsentService {
     }
 
     // TODO add method for saving methods
+    public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
+        return aisConsentService.isAuthenticationMethodDecoupled(authenticationMethodId, authorisationId);
+    }
 }

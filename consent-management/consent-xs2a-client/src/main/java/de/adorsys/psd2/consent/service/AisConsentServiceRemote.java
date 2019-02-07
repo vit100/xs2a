@@ -145,4 +145,10 @@ public class AisConsentServiceRemote implements AisConsentServiceEncrypted {
         }
         return Optional.empty();
     }
+
+    @Override
+    public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
+        // TODO implement
+        return false;
+    }
 }
