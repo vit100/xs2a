@@ -25,4 +25,4 @@ ASPSP profile was extended with list of approaches (in order of priority - first
 |                                          |                                                                                                        |  - DECOUPLED  |
 
 Choice of SCA approaches depends on header parameter in payment,consent or signing basket initiation request - `TPP-Redirect-Preferred`. For Payment Cancellation parameter "TPP-Redirect-Preferred" is not used.
-If `TPP-Redirect-Preferred` is true, then `REDIRECT` approach is used. Otherwise first approach in ASPSP-profile option `scaApproaches` is used.
+If `TPP-Redirect-Preferred` is true and ASPSP supports REDIRECT approach, then `REDIRECT` approach is used. Otherwise first approach in ASPSP-profile option `scaApproaches` is used.
