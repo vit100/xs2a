@@ -35,6 +35,14 @@ public class RequestProviderService {
 
     private final HttpServletRequest httpServletRequest;
 
+    public boolean resolveTppRedirectPreferred() {
+        Map<String, String> headers = getRequestData().getHeaders();
+        if (headers == null || !headers.containsKey(TPP_REDIRECT_PREFERRED_HEADER)) {
+            return false;
+        }
+        return Boolean.valueOf(headers.get(TPP_REDIRECT_PREFERRED_HEADER));
+    }
+
     public RequestData getRequestData() {
         String uri = httpServletRequest.getRequestURI();
         UUID requestId = UUID.fromString(httpServletRequest.getHeader(X_REQUEST_ID_HEADER));
@@ -42,14 +50,6 @@ public class RequestProviderService {
         Map<String, String> headers = getRequestHeaders(httpServletRequest);
 
         return new RequestData(uri, requestId, ip, headers);
-    }
-
-    public boolean resolveTppRedirectPreferred() {
-        Map<String, String> headers = getRequestData().getHeaders();
-        if (headers == null || !headers.containsKey(TPP_REDIRECT_PREFERRED_HEADER)) {
-            return false;
-        }
-        return Boolean.valueOf(headers.get(TPP_REDIRECT_PREFERRED_HEADER));
     }
 
     private Map<String, String> getRequestHeaders(HttpServletRequest request) {
