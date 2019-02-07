@@ -20,9 +20,9 @@ import de.adorsys.psd2.xs2a.domain.Links;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationParameters;
 import de.adorsys.psd2.xs2a.domain.pis.PaymentInitiationResponse;
+import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
 import de.adorsys.psd2.xs2a.service.authorization.AuthorisationMethodDecider;
 import de.adorsys.psd2.xs2a.service.message.MessageService;
-import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.web.RedirectLinkBuilder;
 
 import java.util.EnumSet;
@@ -34,9 +34,8 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
     private final AuthorisationMethodDecider authorisationMethodDecider;
     private final RedirectLinkBuilder redirectLinkBuilder;
 
-
-    public AbstractPaymentLink(AspspProfileServiceWrapper aspspProfileService, MessageService messageService, AuthorisationMethodDecider authorisationMethodDecider, RedirectLinkBuilder redirectLinkBuilder) {
-        super(aspspProfileService, messageService);
+    public AbstractPaymentLink(ScaApproachResolver scaApproachResolver, MessageService messageService, AuthorisationMethodDecider authorisationMethodDecider, RedirectLinkBuilder redirectLinkBuilder) {
+        super(scaApproachResolver, messageService);
         this.authorisationMethodDecider = authorisationMethodDecider;
         this.redirectLinkBuilder = redirectLinkBuilder;
     }
@@ -69,7 +68,7 @@ public abstract class AbstractPaymentLink<T> extends AbstractLinkAspect<T> {
             return addEmbeddedDecoupledRelatedLinks(links, paymentRequestParameters, body);
         } else if (aspspProfileService.getScaApproach() == REDIRECT) {
             return addRedirectRelatedLinks(links, paymentRequestParameters, body);
-        } else if (aspspProfileService.getScaApproach() == OAUTH) {
+        } else if (scaApproachResolver.resolveScaApproach() == ScaApproach.OAUTH) {
             links.setScaOAuth("scaOAuth"); //TODO generate link for oauth https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/326
         }
         return links;
