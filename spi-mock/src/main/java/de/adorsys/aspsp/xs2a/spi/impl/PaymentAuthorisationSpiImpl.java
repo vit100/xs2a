@@ -153,7 +153,7 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
 
     @Override
     @NotNull
-    public SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull SpiPayment businessObject, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authorisationId, @NotNull String authenticationMethodId, @NotNull SpiPayment businessObject, @NotNull AspspConsentData aspspConsentData) {
         throw new UnsupportedOperationException("Operation is not supported!");
     }
 }
