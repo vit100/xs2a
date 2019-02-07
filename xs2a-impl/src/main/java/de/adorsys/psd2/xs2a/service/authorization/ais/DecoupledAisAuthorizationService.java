@@ -18,6 +18,7 @@ package de.adorsys.psd2.xs2a.service.authorization.ais;
 
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.consent.*;
@@ -120,6 +121,7 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
         return aisConsentService.getAuthorisationScaStatus(consentId, authorisationId);
     }
 
+    // TODO provide Javadocs
     @Override
     public ScaApproach getScaApproachServiceType() {
         return ScaApproach.DECOUPLED;
