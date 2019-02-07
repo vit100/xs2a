@@ -21,7 +21,7 @@ import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationDecoupledSceResponse;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationDecoupledScaResponse;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import org.jetbrains.annotations.NotNull;
@@ -81,8 +81,8 @@ interface AuthorisationSpi<T> {
      * @param businessObject         generic consent/payment object
      * @param aspspConsentData       Encrypted data that may stored in the consent management system in the consent linked to a request.
      *                               May be null if consent does not contain such data, or request isn't done from a workflow with a consent
-     * @return Return a positive or negative response as part of SpiResponse. If authentication method is unknown, then empty SpiAuthorizationCodeResult should be returned.
+     * @return Return a response object, containing a message from ASPSP to PSU, giving him instructions regarding decoupled SCA starting.
      */
     @NotNull
-    SpiResponse<SpiAuthorisationDecoupledSceResponse> requestDecoupledSca(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
+    SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authenticationMethodId, @NotNull T businessObject, @NotNull AspspConsentData aspspConsentData);
 }

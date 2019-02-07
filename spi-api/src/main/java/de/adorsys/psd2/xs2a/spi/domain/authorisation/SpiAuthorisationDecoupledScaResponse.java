@@ -18,7 +18,11 @@ package de.adorsys.psd2.xs2a.spi.domain.authorisation;
 
 import lombok.Value;
 
+/**
+ * This class is used with decoupled approach as a response to a start decoupled SCA call.
+ * The response contains a message to PSU regarding decoupled SCA starting.
+ */
 @Value
-public class SpiAuthorisationDecoupledSceResponse {
+public class SpiAuthorisationDecoupledScaResponse {
     private String psuMessage;
 }

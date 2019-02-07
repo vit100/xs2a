@@ -25,5 +25,8 @@ public class SpiAuthenticationObject {
     private String authenticationVersion;
     private String name;
     private String explanation;
+    /**
+     * Represents, whether current authentication object requires decoupled SCA
+     */
     private boolean decoupled;
 }
