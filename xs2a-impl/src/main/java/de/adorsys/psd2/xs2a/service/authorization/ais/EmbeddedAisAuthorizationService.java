@@ -24,12 +24,15 @@ import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStage;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SERVICE_PREFIX;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_AUTHENTICATION;
+import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
 
 /**
  * AisAuthorizationService implementation to be used in case of embedded approach
@@ -51,14 +54,29 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
      */
     @Override
     public Optional<CreateConsentAuthorizationResponse> createConsentAuthorization(PsuIdData psuData, String consentId) {
-        return aisConsentService.createAisConsentAuthorization(consentId, ScaStatus.valueOf(ScaStatus.STARTED.name()), psuData)
+        AccountConsent consent = aisConsentService.getAccountConsentById(consentId);
+        if (Objects.isNull(consent)) {
+            return Optional.empty();
+        }
+
+        boolean isPsuInConsent = Objects.nonNull(consent.getPsuData())
+                                     && StringUtils.isNotBlank(consent.getPsuData().getPsuId());
+        boolean isPsuInAuthorisation = StringUtils.isNotBlank(psuData.getPsuId());
+
+        ConsentAuthorizationResponseLinkType responseLinkType = isPsuInConsent || isPsuInAuthorisation
+                                                                    ? START_AUTHORISATION_WITH_PSU_AUTHENTICATION
+                                                                    : START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
+
+        PsuIdData psuDataAuthorization = isPsuInConsent && !isPsuInAuthorisation ? consent.getPsuData() : psuData;
+
+        return aisConsentService.createAisConsentAuthorization(consentId, ScaStatus.valueOf(ScaStatus.STARTED.name()), psuDataAuthorization)
                    .map(authId -> {
                        CreateConsentAuthorizationResponse resp = new CreateConsentAuthorizationResponse();
 
                        resp.setConsentId(consentId);
                        resp.setAuthorizationId(authId);
                        resp.setScaStatus(ScaStatus.STARTED);
-                       resp.setResponseLinkType(START_AUTHORISATION_WITH_PSU_AUTHENTICATION);
+                       resp.setResponseLinkType(responseLinkType);
 
                        return resp;
                    });

@@ -19,10 +19,7 @@ package de.adorsys.psd2.xs2a.service.authorization.ais;
 import de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import de.adorsys.psd2.xs2a.domain.consent.AccountConsentAuthorization;
-import de.adorsys.psd2.xs2a.domain.consent.CreateConsentAuthorizationResponse;
-import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
-import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.domain.consent.*;
 import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStartAuthorisationStage;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
@@ -70,6 +67,8 @@ public class EmbeddedAisAuthorizationServiceTest {
     private AccountConsentAuthorization consentAuthorization;
     @Mock
     private UpdateConsentPsuDataResponse updateConsentPsuDataResponse;
+    @Mock
+    private AccountConsent consent;
 
     @Before
     public void setUp() {
@@ -93,6 +92,7 @@ public class EmbeddedAisAuthorizationServiceTest {
     public void createConsentAuthorization_Success() {
         when(aisConsentService.createAisConsentAuthorization(CONSENT_ID, STARTED_XS2A_SCA_STATUS, PSU_DATA))
             .thenReturn(Optional.of(AUTHORISATION_ID));
+        when(aisConsentService.getAccountConsentById(CONSENT_ID)).thenReturn(consent);
 
         Optional<CreateConsentAuthorizationResponse> actualResponseOptional = authorizationService.createConsentAuthorization(PSU_DATA, CONSENT_ID);
 
