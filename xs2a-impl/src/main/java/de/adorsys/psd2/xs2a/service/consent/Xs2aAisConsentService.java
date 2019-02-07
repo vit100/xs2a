@@ -195,4 +195,6 @@ public class Xs2aAisConsentService {
     public Optional<ScaStatus> getAuthorisationScaStatus(String consentId, String authorisationId) {
         return aisConsentService.getAuthorisationScaStatus(consentId, authorisationId);
     }
+
+    // TODO add method for saving methods
 }

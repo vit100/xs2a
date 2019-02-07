@@ -71,6 +71,9 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
         String authenticationMethodId = request.getAuthenticationMethodId();
 
+        // TODO check if decoupled
+        // private method
+
         SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(spiContextDataProvider.provideWithPsuIdData(request.getPsuData()), authenticationMethodId, spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
