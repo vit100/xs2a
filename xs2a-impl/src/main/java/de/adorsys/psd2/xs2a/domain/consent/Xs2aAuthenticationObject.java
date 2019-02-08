@@ -17,6 +17,7 @@
 package de.adorsys.psd2.xs2a.domain.consent;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -43,5 +44,7 @@ public class Xs2aAuthenticationObject {
     @ApiModelProperty(value = "Detailed information about the sca method for the PSU", required = false)
     private String explanation;
 
+    @JsonIgnore
+    private boolean decoupled;
 }
 

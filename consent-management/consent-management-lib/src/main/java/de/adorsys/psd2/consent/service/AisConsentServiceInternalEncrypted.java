@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.service;
 
+import de.adorsys.psd2.consent.api.AuthenticationObject;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
 import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
@@ -144,7 +145,12 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
 
     @Override
     public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
-        // TODO implement
-        return false;
+        return aisConsentService.isAuthenticationMethodDecoupled(authenticationMethodId, authorisationId);
+    }
+
+    @Override
+    @Transactional
+    public boolean saveAuthenticationMethods(List<AuthenticationObject> methods, String authorisationId) {
+        return aisConsentService.saveAuthenticationMethods(methods, authorisationId);
     }
 }

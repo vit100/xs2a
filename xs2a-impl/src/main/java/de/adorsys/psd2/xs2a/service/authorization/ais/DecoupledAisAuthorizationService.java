@@ -22,18 +22,24 @@ import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.consent.*;
+import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStage;
+import de.adorsys.psd2.xs2a.service.authorization.ais.stage.embedded.AisScaMethodSelectedStage;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
+import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SERVICE_PREFIX;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
 
 @Service
 @RequiredArgsConstructor
 public class DecoupledAisAuthorizationService implements AisAuthorizationService {
     private final Xs2aAisConsentService aisConsentService;
+    private final Xs2aAisConsentMapper aisConsentMapper;
+    private final AisScaStageAuthorisationFactory scaStageAuthorisationFactory;
 
     /**
      * Creates consent authorisation using provided psu id and consent id by invoking CMS through AisConsentService
@@ -62,7 +68,7 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
      * Updates consent PSU data.
      * {@link AisScaStageAuthorisationFactory} is used there to provide the actual service for current stage.
      * Service returns UpdateConsentPsuDataResponse on invoking its apply() method
-     * (e.g. see {@link de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaMethodSelectedStage#apply}).
+     * (e.g. see {@link AisScaMethodSelectedStage#apply}).
      * If response has no errors, consent authorisation is updated by invoking CMS through AisConsentService
      * See {@link Xs2aAisConsentService#updateConsentAuthorization(UpdateConsentPsuDataReq)} for details.
      *
@@ -72,15 +78,14 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
      */
     @Override
     public UpdateConsentPsuDataResponse updateConsentPsuData(UpdateConsentPsuDataReq updatePsuData, AccountConsentAuthorization consentAuthorization) {
-//        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + consentAuthorization.getScaStatus().name());
-//        UpdateConsentPsuDataResponse response = service.apply(request);
-//
-//        if (!response.hasError()) {
-//            aisConsentService.updateConsentAuthorization(aisConsentMapper.mapToSpiUpdateConsentPsuDataReq(response, request));
-//        }
-//
-//        return response;
-        return null;
+        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + getScaApproachServiceType().name() + consentAuthorization.getScaStatus().name());
+        UpdateConsentPsuDataResponse response = service.apply(updatePsuData);
+
+        if (!response.hasError()) {
+            aisConsentService.updateConsentAuthorization(aisConsentMapper.mapToSpiUpdateConsentPsuDataReq(response, updatePsuData));
+        }
+
+        return response;
     }
 
     /**
