@@ -68,13 +68,12 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
      */
     @Override
     public UpdateConsentPsuDataResponse apply(UpdateConsentPsuDataReq request) {
-        AccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
-        SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
-
         if (isDecoupledApproach(request.getAuthenticationMethodId(), request.getAuthorizationId())) {
             return proceedDecoupledApproach();
         }
 
+        AccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
+        SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
         return proceedEmbeddedApproach(request, spiAccountConsent);
     }
 

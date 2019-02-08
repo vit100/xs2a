@@ -155,11 +155,6 @@ public class AisConsentServiceRemote implements AisConsentServiceEncrypted {
     }
 
     @Override
-    public boolean saveAuthenticationMethods(List<AuthenticationObject> methods, String authorisationId) {
-        return false;
-    }
-
-    @Override
     public boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods) {
         try {
             ResponseEntity<Void> responseEntity = consentRestTemplate.exchange(remoteAisConsentUrls.saveAuthenticationMethods(), HttpMethod.PUT, new HttpEntity<>(methods), Void.class, authorisationId);

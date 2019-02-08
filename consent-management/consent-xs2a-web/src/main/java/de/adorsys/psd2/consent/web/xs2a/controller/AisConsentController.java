@@ -213,7 +213,7 @@ public class AisConsentController {
         @ApiResponse(code = 204, message = "No Content"),
         @ApiResponse(code = 404, message = "Not Found")})
     public ResponseEntity<Void> saveAuthenticationMethods(
-        @ApiParam(name = "authorization-id", value = "The consent authorisation identification assigned to the created authorisation.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
+        @ApiParam(name = "authorisation-id", value = "The consent authorisation identification assigned to the created authorisation.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("authorisation-id") String authorisationId,
         @RequestBody List<AuthenticationObject> authenticationObjects) {
         return aisConsentService.saveAuthenticationMethods(authorisationId, authenticationObjects)

@@ -19,5 +19,6 @@ package de.adorsys.psd2.xs2a.service.authorization;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 
 public interface ScaApproachServiceTypeProvider {
+    // TODO provide javadocs
     ScaApproach getScaApproachServiceType();
 }
