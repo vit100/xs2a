@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.spi.domain.payment.response;
+package de.adorsys.psd2.xs2a.service.authorization.ais;
 
-import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
-import lombok.Value;
-import org.jetbrains.annotations.NotNull;
+import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
+import de.adorsys.psd2.xs2a.service.authorization.ScaServiceResolver;
+import org.springframework.stereotype.Service;
 
-/**
- * A response object that is returned by the ASPSP after the successful execution of payment
- */
-@Value
-public class SpiPaymentExecutionResponse {
-    @NotNull
-    private TransactionStatus transactionStatus;
+import java.util.List;
+
+@Service
+public class AisScaAuthorisationServiceResolver extends ScaServiceResolver<AisAuthorizationService> {
+
+    public AisScaAuthorisationServiceResolver(List<AisAuthorizationService> services, ScaApproachResolver scaApproachResolver) {
+        super(services, scaApproachResolver);
+    }
 }
