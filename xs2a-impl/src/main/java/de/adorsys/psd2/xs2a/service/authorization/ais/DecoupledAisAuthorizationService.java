@@ -36,6 +36,8 @@ import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLi
 @Service
 @RequiredArgsConstructor
 public class DecoupledAisAuthorizationService implements AisAuthorizationService {
+    private static final String SEPARATOR = "_";
+
     private final Xs2aAisConsentService aisConsentService;
     private final Xs2aAisConsentMapper aisConsentMapper;
     private final AisScaStageAuthorisationFactory scaStageAuthorisationFactory;
@@ -71,13 +73,13 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
      * If response has no errors, consent authorisation is updated by invoking CMS through AisConsentService
      * See {@link Xs2aAisConsentService#updateConsentAuthorization(UpdateConsentPsuDataReq)} for details.
      *
-     * @param request              UpdateConsentPsuDataReq request to update PSU data
+     * @param updatePsuData        UpdateConsentPsuDataReq request to update PSU data
      * @param consentAuthorization AccountConsentAuthorization instance with authorisation data
      * @return UpdateConsentPsuDataResponse update consent PSU data response
      */
     @Override
     public UpdateConsentPsuDataResponse updateConsentPsuData(UpdateConsentPsuDataReq updatePsuData, AccountConsentAuthorization consentAuthorization) {
-        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + getScaApproachServiceType().name() + consentAuthorization.getScaStatus().name());
+        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + getScaApproachServiceType().name() + SEPARATOR + consentAuthorization.getScaStatus().name());
         UpdateConsentPsuDataResponse response = service.apply(updatePsuData);
 
         if (!response.hasError()) {

@@ -39,8 +39,11 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiResponseStatusToX
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aAuthenticationObjectMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
+import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationDecoupledScaResponse;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
+import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
 import org.springframework.stereotype.Service;
@@ -71,8 +74,10 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
         PsuIdData psuData = updateConsentPsuDataReq.getPsuData();
 
-        SpiResponse<SpiAuthorisationStatus> authorisationStatusSpiResponse = aisConsentSpi.authorisePsu(spiContextDataProvider.provideWithPsuIdData(psuData),
-                                                                                                        psuDataMapper.mapToSpiPsuData(psuData),
+        SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuData);
+        SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(psuData);
+        SpiResponse<SpiAuthorisationStatus> authorisationStatusSpiResponse = aisConsentSpi.authorisePsu(spiContextData,
+                                                                                                        spiPsuData,
                                                                                                         updateConsentPsuDataReq.getPassword(),
                                                                                                         spiAccountConsent,
                                                                                                         aisConsentDataService.getAspspConsentDataByConsentId(updateConsentPsuDataReq.getConsentId()));
@@ -88,7 +93,6 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
             return createFailedResponse(messageError, authorisationStatusSpiResponse.getMessages());
         }
 
-        // TODO clarify whether it's used for decoupled
         if (accountConsent.getAisConsentRequestType() == AisConsentRequestType.ALL_AVAILABLE_ACCOUNTS
                 && accountConsent.isOneAccessType()
                 && !aspspProfileServiceWrapper.isScaByOneTimeAvailableAccountsConsentRequired()) {
@@ -101,9 +105,17 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
             return response;
         }
 
-        // TODO SPI call for decoupled
+        SpiResponse<SpiAuthorisationDecoupledScaResponse> authorisationDecoupledScaResponseSpiResponse = aisConsentSpi.startScaDecoupled(spiContextData, updateConsentPsuDataReq.getAuthorizationId(), null, spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(updateConsentPsuDataReq.getConsentId()));
 
-        // TODO return valid response for decoupled
-        return null;
+        if (authorisationDecoupledScaResponseSpiResponse.hasError()) {
+            MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(authorisationDecoupledScaResponseSpiResponse, ServiceType.AIS));
+            return createFailedResponse(messageError, authorisationDecoupledScaResponseSpiResponse.getMessages());
+        }
+
+        UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
+        response.setPsuMessage(authorisationDecoupledScaResponseSpiResponse.getPayload().getPsuMessage());
+        response.setScaStatus(ScaStatus.SCAMETHODSELECTED);
+        response.setDecoupled(true);
+        return response;
     }
 }

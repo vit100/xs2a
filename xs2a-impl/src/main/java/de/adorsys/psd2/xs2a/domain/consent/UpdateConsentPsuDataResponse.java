@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.domain.consent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.Links;
@@ -46,6 +47,9 @@ public class UpdateConsentPsuDataResponse {
     private String psuMessage;
 
     private MessageError messageError;
+
+    @JsonIgnore
+    private boolean decoupled;
 
     public UpdateConsentPsuDataResponse(ScaStatus scaStatus) {
         this.scaStatus = scaStatus;

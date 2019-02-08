@@ -152,7 +152,7 @@ public class AisConsentRemoteUrls {
     }
 
     public String saveAuthenticationMethods() {
-        return consentServiceBaseUrl + "ais/consent/authorisations/{authorisation-id}/authentication-methods";
+        return consentServiceBaseUrl + "/ais/consent/authorisations/{authorisation-id}/authentication-methods";
     }
     /**
      * @return true, if authentication method is decoupled and false otherwise.

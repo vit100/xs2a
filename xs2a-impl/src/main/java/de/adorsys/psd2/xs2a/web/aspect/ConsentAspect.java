@@ -86,8 +86,6 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
                 links.setScaStatus(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", response.getConsentId(), response.getAuthorizationId()));
             }
             links.setStatus(buildPath("/v1/consents/{consentId}/status", response.getConsentId()));
-        } else {
-            links.setScaRedirect(redirectLinkBuilder.buildConsentScaRedirectLink(response.getConsentId(), response.getAuthorizationId()));
         }
 
         return links;
@@ -111,7 +109,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
                        if (status == ScaStatus.PSUAUTHENTICATED) {
                            links = buildLinksForPsuAuthenticatedConsentResponse(request);
                        } else if (status == ScaStatus.SCAMETHODSELECTED) {
-                           links = buildLinksForScaMethodSelectedConsentResponse(request);
+                           links = buildLinksForScaMethodSelectedConsentResponse(response, request);
                        } else if (status == ScaStatus.FINALISED) {
                            links = buildLinksForFinalisedConsentResponse(request);
                        }
@@ -128,9 +126,14 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
         return links;
     }
 
-    private Links buildLinksForScaMethodSelectedConsentResponse(UpdateConsentPsuDataReq request) {
+    private Links buildLinksForScaMethodSelectedConsentResponse(UpdateConsentPsuDataResponse response, UpdateConsentPsuDataReq request) {
         Links links = new Links();
-        links.setAuthoriseTransaction(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", request.getConsentId(), request.getAuthorizationId()));
+
+        if (response.isDecoupled()) {
+            links.setScaStatus(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", request.getConsentId(), request.getAuthorizationId()));
+        } else {
+            links.setAuthoriseTransaction(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", request.getConsentId(), request.getAuthorizationId()));
+        }
 
         return links;
     }

@@ -38,6 +38,7 @@ import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -225,6 +226,17 @@ public class AisConsentSpiImpl implements AisConsentSpi {
         }
     }
 
+    @Override
+    @NotNull
+    public SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authorisationId, @Nullable String authenticationMethodId, @NotNull SpiAccountConsent businessObject, @NotNull AspspConsentData aspspConsentData) {
+        SpiAuthorisationDecoupledScaResponse response = new SpiAuthorisationDecoupledScaResponse("Please use your BankApp for transaction Authorisation");
+
+        return SpiResponse.<SpiAuthorisationDecoupledScaResponse>builder()
+                   .payload(response)
+                   .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))
+                   .success();
+    }
+
     private SpiAuthorizationCodeResult getDefaultSpiAuthorizationCodeResult() {
         SpiAuthenticationObject method = new SpiAuthenticationObject();
         method.setAuthenticationMethodId("sms");
@@ -290,11 +302,5 @@ public class AisConsentSpiImpl implements AisConsentSpi {
         return accountDetails.stream()
                    .filter(acc -> acc.getCurrency() == reference.getCurrency())
                    .findFirst();
-    }
-
-    @Override
-    @NotNull
-    public SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authorisationId, @NotNull String authenticationMethodId, @NotNull SpiAccountConsent businessObject, @NotNull AspspConsentData aspspConsentData) {
-        return SpiResponse.<SpiAuthorisationDecoupledScaResponse>builder().fail(SpiResponseStatus.NOT_SUPPORTED);
     }
 }
