@@ -28,6 +28,7 @@ import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountDetails;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountReference;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.*;
+import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.consent.SpiAccountAccess;
 import de.adorsys.psd2.xs2a.spi.domain.consent.SpiInitiateAisConsentResponse;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
@@ -295,6 +296,6 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     @Override
     @NotNull
     public SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authorisationId, @NotNull String authenticationMethodId, @NotNull SpiAccountConsent businessObject, @NotNull AspspConsentData aspspConsentData) {
-        throw new UnsupportedOperationException("Operation is not supported!");
+        return SpiResponse.<SpiAuthorisationDecoupledScaResponse>builder().fail(SpiResponseStatus.NOT_SUPPORTED);
     }
 }

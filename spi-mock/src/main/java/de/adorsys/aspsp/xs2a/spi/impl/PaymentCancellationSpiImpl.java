@@ -216,6 +216,6 @@ public class PaymentCancellationSpiImpl implements PaymentCancellationSpi {
     @Override
     @NotNull
     public SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authorisationId, @NotNull String authenticationMethodId, @NotNull SpiPayment businessObject, @NotNull AspspConsentData aspspConsentData) {
-        throw new UnsupportedOperationException("Operation is not supported!");
+        return SpiResponse.<SpiAuthorisationDecoupledScaResponse>builder().fail(SpiResponseStatus.NOT_SUPPORTED);
     }
 }
