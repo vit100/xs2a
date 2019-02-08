@@ -19,10 +19,12 @@ package de.adorsys.psd2.xs2a.service.mapper.consent;
 import de.adorsys.psd2.consent.api.AuthenticationObject;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class Xs2aToCmsAuthenticationMapper {
     @NotNull
     public List<AuthenticationObject> mapToAuthenticationObjects(@NotNull List<Xs2aAuthenticationObject> xs2aAuthenticationObjects) {
