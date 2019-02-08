@@ -220,4 +220,16 @@ public class AisConsentController {
                    ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping(path = "/authorisations/{authorisation-id}/authentication-methods/{authentication-method-id}")
+    @ApiOperation(value = "Checks if requested authentication method is decoupled")
+    @ApiResponse(code = 200, message = "OK")
+    public ResponseEntity<Boolean> isAuthenticationMethodDecoupled(
+        @ApiParam(name = "authorisation-id", value = "Consent authorisation identification", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
+        @PathVariable("authorisation-id") String authorisationId,
+        @ApiParam(name = "authentication-method-id", value = "Authentication method identification", example = "sms")
+        @PathVariable("authentication-method-id") String authenticationMethodId) {
+        boolean isMethodDecoupled = aisConsentService.isAuthenticationMethodDecoupled(authorisationId, authenticationMethodId);
+        return new ResponseEntity<>(isMethodDecoupled, HttpStatus.OK);
+    }
 }

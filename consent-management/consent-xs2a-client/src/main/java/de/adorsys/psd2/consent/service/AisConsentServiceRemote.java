@@ -149,8 +149,13 @@ public class AisConsentServiceRemote implements AisConsentServiceEncrypted {
     }
 
     @Override
-    public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
-        // TODO implement
+    public boolean isAuthenticationMethodDecoupled(String authorisationId, String authenticationMethodId) {
+        return consentRestTemplate.getForEntity(remoteAisConsentUrls.isAuthenticationMethodDecoupled(), Boolean.class, authorisationId, authenticationMethodId)
+                   .getBody();
+    }
+
+    @Override
+    public boolean saveAuthenticationMethods(List<AuthenticationObject> methods, String authorisationId) {
         return false;
     }
 

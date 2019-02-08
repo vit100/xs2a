@@ -149,11 +149,11 @@ interface AisConsentServiceBase {
     /**
      * Checks if requested authentication method is decoupled.
      *
-     * @param authenticationMethodId String representation of the available authentication method identifier
      * @param authorisationId        String representation of the authorisation identifier
+     * @param authenticationMethodId String representation of the available authentication method identifier
      * @return true, if authentication method is decoupled and false otherwise.
      */
-    boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId);
+    boolean isAuthenticationMethodDecoupled(String authorisationId, String authenticationMethodId);
 
     boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods);
 }

@@ -280,7 +280,7 @@ public class AisConsentServiceInternal implements AisConsentService {
     }
 
     @Override
-    public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
+    public boolean isAuthenticationMethodDecoupled(String authorisationId, String authenticationMethodId) {
         Optional<AisConsentAuthorization> authorisationOptional = aisConsentAuthorisationRepository.findByExternalId(authorisationId);
 
         return authorisationOptional.map(a -> a.getAvailableScaMethods()

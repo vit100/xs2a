@@ -195,9 +195,15 @@ public class Xs2aAisConsentService {
         return aisConsentService.getAuthorisationScaStatus(consentId, authorisationId);
     }
 
-    // TODO add method for saving methods
-    public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
-        return aisConsentService.isAuthenticationMethodDecoupled(authenticationMethodId, authorisationId);
+    /**
+     * Requests CMS to retrieve authentication method and checks if requested authentication method is decoupled.
+     *
+     * @param authorisationId        String representation of the authorisation identifier
+     * @param authenticationMethodId String representation of the available authentication method identifier
+     * @return true, if authentication method is decoupled and false otherwise.
+     */
+    public boolean isAuthenticationMethodDecoupled(String authorisationId, String authenticationMethodId) {
+        return aisConsentService.isAuthenticationMethodDecoupled(authorisationId, authenticationMethodId);
     }
 
     public boolean saveAuthenticationMethods(String authorisationId, List<Xs2aAuthenticationObject> methods) {

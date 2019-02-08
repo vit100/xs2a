@@ -144,8 +144,8 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
     }
 
     @Override
-    public boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId) {
-        return aisConsentService.isAuthenticationMethodDecoupled(authenticationMethodId, authorisationId);
+    public boolean isAuthenticationMethodDecoupled(String authorisationId, String authenticationMethodId) {
+        return aisConsentService.isAuthenticationMethodDecoupled(authorisationId, authenticationMethodId);
     }
 
     @Override
