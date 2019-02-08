@@ -28,11 +28,9 @@ import de.adorsys.psd2.consent.psu.api.ais.CmsAisConsentAccessRequest;
 import de.adorsys.psd2.consent.psu.api.ais.CmsAisConsentResponse;
 import de.adorsys.psd2.consent.repository.AisConsentAuthorisationRepository;
 import de.adorsys.psd2.consent.repository.AisConsentRepository;
-import de.adorsys.psd2.consent.repository.PsuDataRepository;
 import de.adorsys.psd2.consent.repository.specification.AisConsentAuthorizationSpecification;
 import de.adorsys.psd2.consent.repository.specification.AisConsentSpecification;
 import de.adorsys.psd2.consent.service.mapper.AisConsentMapper;
-import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
@@ -59,8 +57,6 @@ import static de.adorsys.psd2.xs2a.core.consent.ConsentStatus.*;
 public class CmsPsuAisServiceInternal implements CmsPsuAisService {
     private final AisConsentRepository aisConsentRepository;
     private final AisConsentMapper consentMapper;
-    private final PsuDataRepository psuDataRepository;
-    private final PsuDataMapper psuDataMapper;
     private final AisConsentAuthorisationRepository aisConsentAuthorisationRepository;
     private final AisConsentAuthorizationSpecification aisConsentAuthorizationSpecification;
     private final AisConsentSpecification aisConsentSpecification;
@@ -200,13 +196,16 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
     }
 
     private boolean updatePsuData(AisConsent consent, PsuIdData psuIdData) {
-        PsuData psuData = consent.getPsuData();
+        PsuData psuData = Optional.ofNullable(consent.getPsuData())
+                              .orElse(new PsuData());
         psuData.setPsuId(psuIdData.getPsuId());
         psuData.setPsuIdType(psuIdData.getPsuIdType());
         psuData.setPsuCorporateId(psuIdData.getPsuCorporateId());
         psuData.setPsuCorporateIdType(psuIdData.getPsuCorporateIdType());
 
-        return psuDataRepository.save(psuData) != null;
+        consent.setPsuData(psuData);
+        aisConsentRepository.save(consent);
+        return true;
     }
 
     private boolean updateScaStatus(@NotNull ScaStatus status, AisConsentAuthorization authorization) {

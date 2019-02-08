@@ -45,7 +45,6 @@ import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType;
-import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
 import de.adorsys.psd2.xs2a.service.payment.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
@@ -74,7 +73,9 @@ import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -367,10 +368,6 @@ public class PaymentServiceTest {
 
     private SpiResponse<TransactionStatus> buildSpiResponseTransactionStatus() {
         return new SpiResponse<>(TransactionStatus.ACCP, ASPSP_CONSENT_DATA);
-
-
-    private SpiResponse<SpiTransactionStatus> buildSpiResponseTransactionStatus() {
-        return new SpiResponse<>(SpiTransactionStatus.ACCP, ASPSP_CONSENT_DATA);
     }
 
     private static SinglePayment getSinglePayment(String iban, String amountToPay) {

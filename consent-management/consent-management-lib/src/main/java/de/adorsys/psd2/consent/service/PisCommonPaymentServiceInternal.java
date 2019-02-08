@@ -437,6 +437,10 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
             return pisAuthorisation.getScaStatus();
         }
 
+        if (Objects.nonNull(request.getPsuData())) {
+            pisAuthorisation.setPsuData(psuDataMapper.mapToPsuData(request.getPsuData()));
+        }
+
         if (SCAMETHODSELECTED == request.getScaStatus()) {
             String chosenMethod = request.getAuthenticationMethodId();
             if (StringUtils.isNotBlank(chosenMethod)) {

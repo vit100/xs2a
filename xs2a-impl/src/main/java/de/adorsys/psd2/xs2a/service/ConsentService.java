@@ -42,6 +42,7 @@ import de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aAccountAccessMapper;
+import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.service.validator.CreateConsentRequestValidator;
 import de.adorsys.psd2.xs2a.service.validator.ValidationResult;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
@@ -78,6 +79,7 @@ public class ConsentService {
     private final AccountReferenceInConsentUpdater accountReferenceUpdater;
     private final SpiErrorMapper spiErrorMapper;
     private final ScaApproachResolver scaApproachResolver;
+    private final AspspProfileServiceWrapper aspspProfileService;
 
     /**
      * Performs create consent operation either by filling the appropriate AccountAccess fields with corresponding

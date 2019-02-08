@@ -155,16 +155,8 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
             return createFailedResponse(messageError, Collections.singletonList(errorText));
         }
 
-        PsuIdData psuData = request.getPsuData();
-        UpdateConsentPsuDataReq updateConsentPsuDataReq = new UpdateConsentPsuDataReq();
-        updateConsentPsuDataReq.setPsuData(psuData);
-        updateConsentPsuDataReq.setConsentId(request.getConsentId());
-        updateConsentPsuDataReq.setAuthorizationId(request.getAuthorizationId());
-        updateConsentPsuDataReq.setScaStatus(ScaStatus.PSUIDENTIFIED);
-        aisConsentService.updateConsentAuthorization(updateConsentPsuDataReq);
-
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
-        response.setPsuId(psuData.getPsuId());
+        response.setPsuId(request.getPsuData().getPsuId());
         response.setScaStatus(ScaStatus.PSUIDENTIFIED);
         response.setResponseLinkType(START_AUTHORISATION_WITH_PSU_AUTHENTICATION);
 

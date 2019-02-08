@@ -77,7 +77,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
         Links links = new Links();
 
         if (ScaApproach.EMBEDDED == scaApproachResolver.resolveScaApproach()) {
-            buildLinkForEmbeddedScaApproach(response, links, explicitPreferred);
+            buildLinkForEmbeddedScaApproach(response, links, explicitPreferred, psuData);
         } else if (ScaApproach.REDIRECT == scaApproachResolver.resolveScaApproach()) {
             // TODO add actual value during imlementation of multilevel sca https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/515
             if (authorisationMethodDecider.isExplicitMethod(explicitPreferred, false)) {
