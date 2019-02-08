@@ -150,7 +150,7 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
 
     @Override
     @Transactional
-    public boolean saveAuthenticationMethods(List<AuthenticationObject> methods, String authorisationId) {
-        return aisConsentService.saveAuthenticationMethods(methods, authorisationId);
+    public boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods) {
+        return aisConsentService.saveAuthenticationMethods(authorisationId, methods);
     }
 }

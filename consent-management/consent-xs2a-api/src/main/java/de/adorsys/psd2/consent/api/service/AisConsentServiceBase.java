@@ -155,5 +155,5 @@ interface AisConsentServiceBase {
      */
     boolean isAuthenticationMethodDecoupled(String authenticationMethodId, String authorisationId);
 
-    boolean saveAuthenticationMethods(List<AuthenticationObject> methods, String authorisationId);
+    boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods);
 }

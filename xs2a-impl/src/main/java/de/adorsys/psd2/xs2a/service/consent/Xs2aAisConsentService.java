@@ -200,7 +200,7 @@ public class Xs2aAisConsentService {
         return aisConsentService.isAuthenticationMethodDecoupled(authenticationMethodId, authorisationId);
     }
 
-    public boolean saveAuthenticationMethods(List<Xs2aAuthenticationObject> methods, String authorisationId) {
-        return aisConsentService.saveAuthenticationMethods(xs2aToCmsAuthenticationMapper.mapToAuthenticationObjects(methods), authorisationId);
+    public boolean saveAuthenticationMethods(String authorisationId, List<Xs2aAuthenticationObject> methods) {
+        return aisConsentService.saveAuthenticationMethods(authorisationId, xs2aToCmsAuthenticationMapper.mapToAuthenticationObjects(methods));
     }
 }

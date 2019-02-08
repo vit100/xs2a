@@ -292,7 +292,7 @@ public class AisConsentServiceInternal implements AisConsentService {
 
     @Override
     @Transactional
-    public boolean saveAuthenticationMethods(List<AuthenticationObject> methods, String authorisationId) {
+    public boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods) {
         Optional<AisConsentAuthorization> authorisationOptional = aisConsentAuthorisationRepository.findByExternalId(authorisationId);
 
         if (!authorisationOptional.isPresent()) {

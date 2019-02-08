@@ -122,7 +122,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         }
 
         List<SpiAuthenticationObject> availableScaMethods = spiResponse.getPayload();
-        aisConsentService.saveAuthenticationMethods(spiToXs2aAuthenticationObjectMapper.mapToXs2aListAuthenticationObject(availableScaMethods), request.getAuthorizationId());
+        aisConsentService.saveAuthenticationMethods(request.getAuthorizationId(), spiToXs2aAuthenticationObjectMapper.mapToXs2aListAuthenticationObject(availableScaMethods));
 
         if (CollectionUtils.isNotEmpty(availableScaMethods)) {
             if (availableScaMethods.size() > 1) {
