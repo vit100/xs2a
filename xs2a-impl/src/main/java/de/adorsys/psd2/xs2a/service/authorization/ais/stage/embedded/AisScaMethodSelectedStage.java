@@ -98,7 +98,7 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         // TODO 3. use SpiAuthorisationDecoupledSceResponse#getPsuMessage() after SPI call
         response.setPsuMessage("");
         response.setScaStatus(ScaStatus.SCAMETHODSELECTED);
-        return null;
+        return response;
     }
 
     private UpdateConsentPsuDataResponse proceedEmbeddedApproach(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent) {

@@ -151,4 +151,7 @@ public class AisConsentRemoteUrls {
         return consentServiceBaseUrl + "/ais/consent/{consent-id}/authorisations/{authorisation-id}/status";
     }
 
+    public String saveAuthenticationMethods() {
+        return consentServiceBaseUrl + "ais/consent/authorisations/{authorisation-id}/authentication-methods";
+    }
 }

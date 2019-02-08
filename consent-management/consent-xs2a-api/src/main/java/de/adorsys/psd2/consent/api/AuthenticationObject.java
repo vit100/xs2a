@@ -16,10 +16,15 @@
 
 package de.adorsys.psd2.consent.api;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Value;
 
 @Value
+@ApiModel(description = "Authentication object", value = "AuthenticationObject")
 public class AuthenticationObject {
+    @ApiModelProperty(value = "Authentication method id")
     private String authenticationMethodId;
+    @ApiModelProperty(value = "Indication whether current authentication object requires decoupled SCA")
     private boolean decoupled;
 }
