@@ -23,10 +23,7 @@ import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.exception.RestException;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationDecoupledScaResponse;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.*;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
@@ -60,19 +57,19 @@ public class PaymentAuthorisationSpiImpl implements PaymentAuthorisationSpi {
 
     @Override
     @NotNull
-    public SpiResponse<SpiAuthorisationStatus> authorisePsu(@NotNull SpiContextData spiContextData, @NotNull SpiPsuData psuLoginData, String password, SpiPayment payment, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiAuthorisationResponse> authorisePsu(@NotNull SpiContextData spiContextData, @NotNull SpiPsuData psuLoginData, String password, SpiPayment payment, @NotNull AspspConsentData aspspConsentData) {
         Optional<SpiAspspAuthorisationData> accessToken = keycloakInvokerService.obtainAuthorisationData(psuLoginData.getPsuId(), password);
         SpiAuthorisationStatus spiAuthorisationStatus = accessToken.map(t -> SUCCESS)
                                                             .orElse(FAILURE);
         if (spiAuthorisationStatus == FAILURE) {
-            return SpiResponse.<SpiAuthorisationStatus>builder()
+            return SpiResponse.<SpiAuthorisationResponse>builder()
                        .aspspConsentData(aspspConsentData)
                        .fail(SpiResponseStatus.UNAUTHORIZED_FAILURE);
         }
 
-        return SpiResponse.<SpiAuthorisationStatus>builder()
+        return SpiResponse.<SpiAuthorisationResponse>builder()
                    .aspspConsentData(aspspConsentData)
-                   .payload(spiAuthorisationStatus)
+                   .payload(new SpiAuthorisationResponse(spiAuthorisationStatus, payment.getPaymentStatus()))
                    .success();
     }
 

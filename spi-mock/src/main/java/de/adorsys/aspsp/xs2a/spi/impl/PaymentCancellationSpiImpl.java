@@ -129,7 +129,7 @@ public class PaymentCancellationSpiImpl implements PaymentCancellationSpi {
     }
 
     @Override
-    public SpiResponse<SpiAuthorisationStatus> authorisePsu(@NotNull SpiContextData spiContextData, @NotNull SpiPsuData psuLoginData, String password, SpiPayment businessObject, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiAuthorisationResponse> authorisePsu(@NotNull SpiContextData spiContextData, @NotNull SpiPsuData psuLoginData, String password, SpiPayment businessObject, @NotNull AspspConsentData aspspConsentData) {
         Optional<SpiAspspAuthorisationData> accessToken = keycloakInvokerService.obtainAuthorisationData(psuLoginData.getPsuId(), password);
         SpiAuthorisationStatus spiAuthorisationStatus = accessToken.map(t -> SUCCESS)
                                                             .orElse(FAILURE);
@@ -138,14 +138,14 @@ public class PaymentCancellationSpiImpl implements PaymentCancellationSpi {
                              .orElse(null);
 
         if (spiAuthorisationStatus == FAILURE) {
-            return SpiResponse.<SpiAuthorisationStatus>builder()
+            return SpiResponse.<SpiAuthorisationResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(payload))
                        .fail(SpiResponseStatus.UNAUTHORIZED_FAILURE);
         }
 
-        return SpiResponse.<SpiAuthorisationStatus>builder()
+        return SpiResponse.<SpiAuthorisationResponse>builder()
                    .aspspConsentData(aspspConsentData.respondWith(payload))
-                   .payload(spiAuthorisationStatus)
+                   .payload(new SpiAuthorisationResponse(spiAuthorisationStatus, businessObject.getPaymentStatus()))
                    .success();
     }
 

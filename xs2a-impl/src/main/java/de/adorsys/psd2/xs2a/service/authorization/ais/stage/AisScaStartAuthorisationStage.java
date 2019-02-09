@@ -41,6 +41,7 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapp
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationResponse;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
@@ -87,17 +88,18 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
         PsuIdData psuData = request.getPsuData();
 
-        SpiResponse<SpiAuthorisationStatus> authorisationStatusSpiResponse = aisConsentSpi.authorisePsu(spiContextDataProvider.provideWithPsuIdData(psuData), psuDataMapper.mapToSpiPsuData(psuData), request.getPassword(), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
-        aisConsentDataService.updateAspspConsentData(authorisationStatusSpiResponse.getAspspConsentData());
+        SpiResponse<SpiAuthorisationResponse> spiAuthorisationResponse = aisConsentSpi.authorisePsu(spiContextDataProvider.provideWithPsuIdData(psuData), psuDataMapper.mapToSpiPsuData(psuData), request.getPassword(), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+        aisConsentDataService.updateAspspConsentData(spiAuthorisationResponse.getAspspConsentData());
 
-        if (authorisationStatusSpiResponse.hasError()) {
-            if (authorisationStatusSpiResponse.getPayload() == SpiAuthorisationStatus.FAILURE) {
+        if (spiAuthorisationResponse.hasError()) {
+            SpiAuthorisationResponse payload = spiAuthorisationResponse.getPayload();
+            if (payload.getSpiAuthorisationStatus() == SpiAuthorisationStatus.FAILURE) {
                 MessageError messageError = new MessageError(ErrorType.AIS_401, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.PSU_CREDENTIALS_INVALID));
-                return createFailedResponse(messageError, authorisationStatusSpiResponse.getMessages());
+                return createFailedResponse(messageError, spiAuthorisationResponse.getMessages());
             }
 
-            MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(authorisationStatusSpiResponse, ServiceType.AIS));
-            return createFailedResponse(messageError, authorisationStatusSpiResponse.getMessages());
+            MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(spiAuthorisationResponse, ServiceType.AIS));
+            return createFailedResponse(messageError, spiAuthorisationResponse.getMessages());
         }
 
         if (accountConsent.getAisConsentRequestType() == AisConsentRequestType.ALL_AVAILABLE_ACCOUNTS
@@ -116,7 +118,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
-            MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(authorisationStatusSpiResponse, ServiceType.AIS));
+            MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(spiAuthorisationResponse, ServiceType.AIS));
             return createFailedResponse(messageError, spiResponse.getMessages());
         }
 

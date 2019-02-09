@@ -122,7 +122,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     }
 
     @Override
-    public SpiResponse<SpiAuthorisationStatus> authorisePsu(@NotNull SpiContextData spiContextData, @NotNull SpiPsuData psuLoginData, String password, SpiAccountConsent accountConsent, @NotNull AspspConsentData aspspConsentData) {
+    public SpiResponse<SpiAuthorisationResponse> authorisePsu(@NotNull SpiContextData spiContextData, @NotNull SpiPsuData psuLoginData, String password, SpiAccountConsent accountConsent, @NotNull AspspConsentData aspspConsentData) {
         try {
             Optional<SpiAspspAuthorisationData> accessToken = keycloakInvokerService.obtainAuthorisationData(
                 psuLoginData.getPsuId(), password);
@@ -132,19 +132,19 @@ public class AisConsentSpiImpl implements AisConsentSpi {
                                  .map(String::getBytes)
                                  .orElse(null);
             if (spiAuthorisationStatus == FAILURE) {
-                return SpiResponse.<SpiAuthorisationStatus>builder()
+                return SpiResponse.<SpiAuthorisationResponse>builder()
                            .aspspConsentData(aspspConsentData.respondWith(payload))
                            .fail(SpiResponseStatus.UNAUTHORIZED_FAILURE);
             }
-            return new SpiResponse<>(spiAuthorisationStatus, aspspConsentData.respondWith(payload));
+            return new SpiResponse<>(new SpiAuthorisationResponse(spiAuthorisationStatus), aspspConsentData.respondWith(payload));
         } catch (RestException e) {
             if (e.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                return SpiResponse.<SpiAuthorisationStatus>builder()
+                return SpiResponse.<SpiAuthorisationResponse>builder()
                            .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))            // added for test purposes TODO remove if some requirements will be received https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/394
                            .fail(SpiResponseStatus.TECHNICAL_FAILURE);
             }
 
-            return SpiResponse.<SpiAuthorisationStatus>builder()
+            return SpiResponse.<SpiAuthorisationResponse>builder()
                        .aspspConsentData(aspspConsentData.respondWith(TEST_ASPSP_DATA.getBytes()))            // added for test purposes TODO remove if some requirements will be received https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/394
                        .fail(SpiResponseStatus.LOGICAL_FAILURE);
         }

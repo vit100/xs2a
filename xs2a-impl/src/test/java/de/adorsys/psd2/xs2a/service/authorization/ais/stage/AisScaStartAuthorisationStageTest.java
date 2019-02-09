@@ -43,6 +43,7 @@ import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
+import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationResponse;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
@@ -167,7 +168,7 @@ public class AisScaStartAuthorisationStageTest {
         when(aspspProfileServiceWrapper.isScaByOneTimeAvailableAccountsConsentRequired())
             .thenReturn(false);
         when(aisConsentSpi.authorisePsu(SPI_CONTEXT_DATA, SPI_PSU_DATA, PASSWORD, spiAccountConsent, ASPSP_CONSENT_DATA))
-            .thenReturn(buildSuccessSpiResponse(SpiAuthorisationStatus.SUCCESS));
+            .thenReturn(buildSuccessSpiResponse(new SpiAuthorisationResponse(SpiAuthorisationStatus.SUCCESS)));
         //When
         UpdateConsentPsuDataResponse actualResponse = scaStartAuthorisationStage.apply(request);
         //Then
@@ -180,7 +181,7 @@ public class AisScaStartAuthorisationStageTest {
     @Test
     public void apply_Failure_AuthorisationStatusSpiResponseFailed() {
         when(aisConsentSpi.authorisePsu(SPI_CONTEXT_DATA, SPI_PSU_DATA, PASSWORD, spiAccountConsent, ASPSP_CONSENT_DATA))
-            .thenReturn(buildErrorSpiResponse(SpiAuthorisationStatus.FAILURE));
+            .thenReturn(buildErrorSpiResponse(new SpiAuthorisationResponse(SpiAuthorisationStatus.FAILURE)));
 
         UpdateConsentPsuDataResponse actualResponse = scaStartAuthorisationStage.apply(request);
 
@@ -192,7 +193,7 @@ public class AisScaStartAuthorisationStageTest {
     @Test
     public void apply_MultipleAvailableScaMethods_Success() {
         when(aisConsentSpi.authorisePsu(SPI_CONTEXT_DATA, SPI_PSU_DATA, PASSWORD, spiAccountConsent, ASPSP_CONSENT_DATA))
-            .thenReturn(buildSuccessSpiResponse(SpiAuthorisationStatus.SUCCESS));
+            .thenReturn(buildSuccessSpiResponse(new SpiAuthorisationResponse(SpiAuthorisationStatus.SUCCESS)));
 
         when(aisConsentSpi.requestAvailableScaMethods(SPI_CONTEXT_DATA, spiAccountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(MULTIPLE_SPI_SCA_METHODS));
@@ -212,7 +213,7 @@ public class AisScaStartAuthorisationStageTest {
             .thenReturn(PSU_ID_DATA);
 
         when(aisConsentSpi.authorisePsu(SPI_CONTEXT_DATA, SPI_PSU_DATA, PASSWORD, spiAccountConsent, ASPSP_CONSENT_DATA))
-            .thenReturn(buildSuccessSpiResponse(SpiAuthorisationStatus.SUCCESS));
+            .thenReturn(buildSuccessSpiResponse(new SpiAuthorisationResponse(SpiAuthorisationStatus.SUCCESS)));
 
         when(aisConsentSpi.requestAvailableScaMethods(SPI_CONTEXT_DATA, spiAccountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(ONE_SPI_SCA_METHOD));
@@ -234,7 +235,7 @@ public class AisScaStartAuthorisationStageTest {
     @Test
     public void apply_OneAvailableScaMethod_Failure_ResponseWithError() {
         when(aisConsentSpi.authorisePsu(SPI_CONTEXT_DATA, SPI_PSU_DATA, PASSWORD, spiAccountConsent, ASPSP_CONSENT_DATA))
-            .thenReturn(buildSuccessSpiResponse(SpiAuthorisationStatus.SUCCESS));
+            .thenReturn(buildSuccessSpiResponse(new SpiAuthorisationResponse(SpiAuthorisationStatus.SUCCESS)));
 
         when(aisConsentSpi.requestAvailableScaMethods(SPI_CONTEXT_DATA, spiAccountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(ONE_SPI_SCA_METHOD));
@@ -259,7 +260,7 @@ public class AisScaStartAuthorisationStageTest {
             .thenReturn(PSU_ID_DATA);
 
         when(aisConsentSpi.authorisePsu(SPI_CONTEXT_DATA, SPI_PSU_DATA, PASSWORD, spiAccountConsent, ASPSP_CONSENT_DATA))
-            .thenReturn(buildSuccessSpiResponse(SpiAuthorisationStatus.SUCCESS));
+            .thenReturn(buildSuccessSpiResponse(new SpiAuthorisationResponse(SpiAuthorisationStatus.SUCCESS)));
 
         when(aisConsentSpi.requestAvailableScaMethods(SPI_CONTEXT_DATA, spiAccountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(NONE_SPI_SCA_METHOD));
