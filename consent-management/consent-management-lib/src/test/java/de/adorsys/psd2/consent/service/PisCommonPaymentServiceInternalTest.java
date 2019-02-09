@@ -194,6 +194,24 @@ public class PisCommonPaymentServiceInternalTest {
     }
 
     @Test
+    public void updateConsentAuthorisation_Success() {
+        //Given
+        PsuIdData psuIdData = new PsuIdData("new id", "new type", "new corporate ID", "new corporate type");
+        ArgumentCaptor<PisAuthorization> argument = ArgumentCaptor.forClass(PisAuthorization.class);
+        UpdatePisCommonPaymentPsuDataRequest updatePisCommonPaymentPsuDataRequest = buildUpdatePisCommonPaymentPsuDataRequest(ScaStatus.STARTED);
+        updatePisCommonPaymentPsuDataRequest.setPsuData(psuIdData);
+        when(pisAuthorisationRepository.findByExternalIdAndAuthorizationType(PAYMENT_ID, CmsAuthorisationType.CREATED))
+            .thenReturn(Optional.of(pisAuthorization));
+        when(pisAuthorisationRepository.save(pisAuthorization)).thenReturn(pisAuthorization);
+        //When
+        Optional<UpdatePisCommonPaymentPsuDataResponse> updatePisCommonPaymentPsuDataResponse = pisCommonPaymentService.updatePisAuthorisation(PAYMENT_ID, updatePisCommonPaymentPsuDataRequest);
+        verify(pisAuthorisationRepository).save(argument.capture());
+        //Then
+        assertTrue(updatePisCommonPaymentPsuDataResponse.isPresent());
+        assertTrue(argument.getValue().getPsuData().contentEquals(psuDataMapper.mapToPsuData(psuIdData)));
+    }
+
+    @Test
     public void updateConsentCancellationAuthorisation_FinalisedStatus_Fail() {
         //Given
         ScaStatus expectedScaStatus = ScaStatus.STARTED;
@@ -242,6 +260,8 @@ public class PisCommonPaymentServiceInternalTest {
         assertEquals(scaStatuses.size(), 1);
         assertTrue(scaStatuses.contains(ScaStatus.FAILED));
     }
+
+
 
     @NotNull
     private AspspSettings getAspspSettings() {

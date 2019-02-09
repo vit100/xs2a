@@ -34,6 +34,7 @@ import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SERVICE_PREFIX;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_AUTHENTICATION;
+import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -104,6 +105,44 @@ public class EmbeddedAisAuthorizationServiceTest {
         assertThat(actualResponse.getAuthorizationId()).isEqualTo(AUTHORISATION_ID);
         assertThat(actualResponse.getScaStatus()).isEqualTo(STARTED_SCA_STATUS);
         assertThat(actualResponse.getResponseLinkType()).isEqualTo(START_AUTHORISATION_WITH_PSU_AUTHENTICATION);
+    }
+
+    @Test
+    public void createConsentAuthorizationNoPsuAuthentification_Success() {
+        when(aisConsentService.createAisConsentAuthorization(CONSENT_ID, STARTED_XS2A_SCA_STATUS, PSU_DATA))
+            .thenReturn(Optional.of(AUTHORISATION_ID));
+        when(aisConsentService.getAccountConsentById(CONSENT_ID)).thenReturn(consent);
+        when(consent.getPsuData()).thenReturn(PSU_DATA);
+        PsuIdData psuIdData = new PsuIdData(null, null, null, null);
+        Optional<CreateConsentAuthorizationResponse> actualResponseOptional = authorizationService.createConsentAuthorization(psuIdData, CONSENT_ID);
+
+        assertThat(actualResponseOptional.isPresent()).isTrue();
+
+        CreateConsentAuthorizationResponse actualResponse = actualResponseOptional.get();
+
+        assertThat(actualResponse.getConsentId()).isEqualTo(CONSENT_ID);
+        assertThat(actualResponse.getAuthorizationId()).isEqualTo(AUTHORISATION_ID);
+        assertThat(actualResponse.getScaStatus()).isEqualTo(STARTED_SCA_STATUS);
+        assertThat(actualResponse.getResponseLinkType()).isEqualTo(START_AUTHORISATION_WITH_PSU_AUTHENTICATION);
+    }
+
+    @Test
+    public void createConsentAuthorizationNoPsuIdentification_Success() {
+        PsuIdData psuIdData = new PsuIdData(null, null, null, null);
+        when(aisConsentService.createAisConsentAuthorization(CONSENT_ID, STARTED_XS2A_SCA_STATUS, psuIdData))
+            .thenReturn(Optional.of(AUTHORISATION_ID));
+        when(aisConsentService.getAccountConsentById(CONSENT_ID)).thenReturn(consent);
+        when(consent.getPsuData()).thenReturn(psuIdData);
+        Optional<CreateConsentAuthorizationResponse> actualResponseOptional = authorizationService.createConsentAuthorization(psuIdData, CONSENT_ID);
+
+        assertThat(actualResponseOptional.isPresent()).isTrue();
+
+        CreateConsentAuthorizationResponse actualResponse = actualResponseOptional.get();
+
+        assertThat(actualResponse.getConsentId()).isEqualTo(CONSENT_ID);
+        assertThat(actualResponse.getAuthorizationId()).isEqualTo(AUTHORISATION_ID);
+        assertThat(actualResponse.getScaStatus()).isEqualTo(STARTED_SCA_STATUS);
+        assertThat(actualResponse.getResponseLinkType()).isEqualTo(START_AUTHORISATION_WITH_PSU_IDENTIFICATION);
     }
 
     @Test
