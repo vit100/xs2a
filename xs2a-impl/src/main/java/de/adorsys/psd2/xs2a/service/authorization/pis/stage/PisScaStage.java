@@ -29,7 +29,6 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPeriodicPay
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiSinglePaymentMapper;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPaymentInfo;
 import de.adorsys.psd2.xs2a.spi.service.*;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -37,13 +36,15 @@ import org.springframework.context.ApplicationContext;
 import java.util.List;
 import java.util.function.BiFunction;
 
-@RequiredArgsConstructor
 public abstract class PisScaStage<T, U, R> implements BiFunction<T, U, R> {
-    private final CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
-    private final Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper;
-    private final Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper;
-    private final Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper;
-
+    @Autowired
+    private CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
+    @Autowired
+    private Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper;
+    @Autowired
+    private Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper;
+    @Autowired
+    private Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper;
     @Autowired
     private ApplicationContext applicationContext;
 
