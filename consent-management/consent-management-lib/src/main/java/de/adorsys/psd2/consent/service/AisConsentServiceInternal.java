@@ -29,7 +29,7 @@ import de.adorsys.psd2.consent.repository.AisConsentActionRepository;
 import de.adorsys.psd2.consent.repository.AisConsentAuthorisationRepository;
 import de.adorsys.psd2.consent.repository.AisConsentRepository;
 import de.adorsys.psd2.consent.service.mapper.AisConsentMapper;
-import de.adorsys.psd2.consent.service.mapper.AuthenticationMapper;
+import de.adorsys.psd2.consent.service.mapper.ScaMethodMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
 import de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType;
@@ -64,7 +64,7 @@ public class AisConsentServiceInternal implements AisConsentService {
     private final AspspProfileService aspspProfileService;
     private final AisConsentConfirmationExpirationService aisConsentConfirmationExpirationService;
     private final TppInfoMapper tppInfoMapper;
-    private final AuthenticationMapper authenticationMapper;
+    private final ScaMethodMapper scaMethodMapper;
 
     /**
      * Create AIS consent
@@ -301,7 +301,7 @@ public class AisConsentServiceInternal implements AisConsentService {
 
         AisConsentAuthorization authorisation = authorisationOptional.get();
 
-        authorisation.setAvailableScaMethods(authenticationMapper.mapToScaMethods(methods));
+        authorisation.setAvailableScaMethods(scaMethodMapper.mapToScaMethods(methods));
         aisConsentAuthorisationRepository.save(authorisation);
         return true;
     }

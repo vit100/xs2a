@@ -101,6 +101,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
             return createFailedResponse(messageError, authorisationStatusSpiResponse.getMessages());
         }
 
+        // TODO Extract common consent validation from AIS Embedded and Decoupled stages https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/677
         if (accountConsent.getAisConsentRequestType() == AisConsentRequestType.ALL_AVAILABLE_ACCOUNTS
                 && accountConsent.isOneAccessType()
                 && !aspspProfileServiceWrapper.isScaByOneTimeAvailableAccountsConsentRequired()) {

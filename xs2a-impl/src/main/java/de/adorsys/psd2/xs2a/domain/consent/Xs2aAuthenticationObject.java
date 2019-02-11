@@ -44,6 +44,9 @@ public class Xs2aAuthenticationObject {
     @ApiModelProperty(value = "Detailed information about the sca method for the PSU", required = false)
     private String explanation;
 
+    /**
+     * Represents, whether current authentication object requires decoupled SCA
+     */
     @JsonIgnore
     private boolean decoupled;
 }

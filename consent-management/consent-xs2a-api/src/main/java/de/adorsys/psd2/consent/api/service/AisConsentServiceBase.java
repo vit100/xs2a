@@ -151,9 +151,16 @@ interface AisConsentServiceBase {
      *
      * @param authorisationId        String representation of the authorisation identifier
      * @param authenticationMethodId String representation of the available authentication method identifier
-     * @return true, if authentication method is decoupled and false otherwise.
+     * @return <code>true</code>, if authentication method is decoupled and <code>false</code> otherwise.
      */
     boolean isAuthenticationMethodDecoupled(String authorisationId, String authenticationMethodId);
 
+    /**
+     * Saves authentication methods in provided authorisation
+     *
+     * @param authorisationId String representation of the authorisation identifier
+     * @param methods         List of authentication methods to be saved
+     * @return <code>true</code> if authorisation was found and updated, <code>false</code> otherwise
+     */
     boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods);
 }

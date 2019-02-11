@@ -157,7 +157,7 @@ public class AisConsentServiceRemote implements AisConsentServiceEncrypted {
     @Override
     public boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods) {
         try {
-            ResponseEntity<Void> responseEntity = consentRestTemplate.exchange(remoteAisConsentUrls.saveAuthenticationMethods(), HttpMethod.PUT, new HttpEntity<>(methods), Void.class, authorisationId);
+            ResponseEntity<Void> responseEntity = consentRestTemplate.exchange(remoteAisConsentUrls.saveAuthenticationMethods(), HttpMethod.POST, new HttpEntity<>(methods), Void.class, authorisationId);
 
             if (responseEntity.getStatusCode() == HttpStatus.NO_CONTENT) {
                 return true;

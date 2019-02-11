@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AuthenticationMapper {
+public class ScaMethodMapper {
     @NotNull
     public List<ScaMethod> mapToScaMethods(@NotNull List<CmsScaMethod> cmsScaMethods) {
         return cmsScaMethods.stream()

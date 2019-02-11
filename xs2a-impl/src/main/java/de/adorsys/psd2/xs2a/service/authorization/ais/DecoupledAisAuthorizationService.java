@@ -36,6 +36,7 @@ import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLi
 @Service
 @RequiredArgsConstructor
 public class DecoupledAisAuthorizationService implements AisAuthorizationService {
+    // TODO align with PIS
     private static final String SEPARATOR = "_";
 
     private final Xs2aAisConsentService aisConsentService;
@@ -127,7 +128,6 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
         return aisConsentService.getAuthorisationScaStatus(consentId, authorisationId);
     }
 
-    // TODO provide Javadocs
     @Override
     public ScaApproach getScaApproachServiceType() {
         return ScaApproach.DECOUPLED;

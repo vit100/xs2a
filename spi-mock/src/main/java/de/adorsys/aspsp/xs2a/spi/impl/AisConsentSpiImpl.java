@@ -63,6 +63,8 @@ import static de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStat
 @Slf4j
 @RequiredArgsConstructor
 public class AisConsentSpiImpl implements AisConsentSpi {
+    private static final String DECOUPLED_PSU_MESSAGE = "Please use your BankApp for transaction Authorisation";
+
     private final AspspRemoteUrls remoteSpiUrls;
     @Qualifier("aspspRestTemplate")
     private final RestTemplate aspspRestTemplate;
@@ -229,7 +231,7 @@ public class AisConsentSpiImpl implements AisConsentSpi {
     @Override
     @NotNull
     public SpiResponse<SpiAuthorisationDecoupledScaResponse> startScaDecoupled(@NotNull SpiContextData contextData, @NotNull String authorisationId, @Nullable String authenticationMethodId, @NotNull SpiAccountConsent businessObject, @NotNull AspspConsentData aspspConsentData) {
-        SpiAuthorisationDecoupledScaResponse response = new SpiAuthorisationDecoupledScaResponse("Please use your BankApp for transaction Authorisation");
+        SpiAuthorisationDecoupledScaResponse response = new SpiAuthorisationDecoupledScaResponse(DECOUPLED_PSU_MESSAGE);
 
         return SpiResponse.<SpiAuthorisationDecoupledScaResponse>builder()
                    .payload(response)

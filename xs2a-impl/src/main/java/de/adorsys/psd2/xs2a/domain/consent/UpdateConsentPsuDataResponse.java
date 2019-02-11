@@ -48,6 +48,10 @@ public class UpdateConsentPsuDataResponse {
 
     private MessageError messageError;
 
+    /**
+     * This property is used to indicate that current SCA approach is Decoupled
+     * (needed for switching from Embedded to Decoupled approach during SCA method selection)
+     */
     @JsonIgnore
     private boolean decoupled;
 
