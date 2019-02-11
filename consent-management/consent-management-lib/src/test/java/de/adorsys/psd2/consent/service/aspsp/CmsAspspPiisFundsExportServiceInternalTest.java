@@ -48,6 +48,7 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
     private static final String WRONG_TPP_AUTHORISATION_NUMBER = "wrong authorisation number";
     private static final LocalDate CREATION_DATE_FROM = LocalDate.of(2019, 1, 1);
     private static final LocalDate CREATION_DATE_TO = LocalDate.of(2020, 12, 1);
+    private static final String SERVICE_INSTANCE_ID = "instance id";
     private static final String DEFAULT_SERVICE_INSTANCE_ID = "UNDEFINED";
     private static final String PSU_ID = "psu id";
     private static final String WRONG_PSU_ID = "wrong psu id";
@@ -90,7 +91,28 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByTpp(TPP_AUTHORISATION_NUMBER, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, psuIdData, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                       CREATION_DATE_TO, psuIdData, SERVICE_INSTANCE_ID);
+
+        // Then
+        assertFalse(piisConsents.isEmpty());
+        assertTrue(piisConsents.contains(expectedConsent));
+        verify(piisConsentEntitySpecification, times(1))
+            .byTppIdAndCreationPeriodAndPsuIdDataAndInstanceId(TPP_AUTHORISATION_NUMBER, CREATION_DATE_FROM,
+                                                               CREATION_DATE_TO, psuIdData, SERVICE_INSTANCE_ID);
+    }
+
+    @Test
+    public void exportConsentsByTpp_success_nullInstanceId() {
+        // Given
+        //noinspection unchecked
+        when(piisConsentRepository.findAll(any(Specification.class)))
+            .thenReturn(Collections.singletonList(buildPiisConsentEntity()));
+        PiisConsent expectedConsent = buildPiisConsent();
+
+        // When
+        Collection<PiisConsent> piisConsents =
+            cmsAspspPiisFundsExportServiceInternal.exportConsentsByTpp(TPP_AUTHORISATION_NUMBER, CREATION_DATE_FROM,
+                                                                       CREATION_DATE_TO, psuIdData, null);
 
         // Then
         assertFalse(piisConsents.isEmpty());
@@ -109,7 +131,7 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByTpp(WRONG_TPP_AUTHORISATION_NUMBER, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, psuIdData, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                       CREATION_DATE_TO, psuIdData, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());
@@ -123,7 +145,7 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByTpp(null, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, psuIdData, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                       CREATION_DATE_TO, psuIdData, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());
@@ -136,20 +158,7 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByTpp("", CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, psuIdData, DEFAULT_SERVICE_INSTANCE_ID);
-
-        // Then
-        assertTrue(piisConsents.isEmpty());
-        verify(piisConsentEntitySpecification, never())
-            .byTppIdAndCreationPeriodAndPsuIdDataAndInstanceId(any(), any(), any(), any(), any());
-    }
-
-    @Test
-    public void exportConsentsByTpp_failure_blankInstanceId() {
-        // When
-        Collection<PiisConsent> piisConsents =
-            cmsAspspPiisFundsExportServiceInternal.exportConsentsByTpp(TPP_AUTHORISATION_NUMBER, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, psuIdData, "");
+                                                                       CREATION_DATE_TO, psuIdData, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());
@@ -168,7 +177,28 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByPsu(psuIdData, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                       CREATION_DATE_TO, SERVICE_INSTANCE_ID);
+
+        // Then
+        assertFalse(piisConsents.isEmpty());
+        assertTrue(piisConsents.contains(expectedConsent));
+        verify(piisConsentEntitySpecification, times(1))
+            .byPsuIdDataAndCreationPeriodAndInstanceId(psuIdData, CREATION_DATE_FROM,
+                                                       CREATION_DATE_TO, SERVICE_INSTANCE_ID);
+    }
+
+    @Test
+    public void exportConsentsByPsu_success_nullInstanceId() {
+        // Given
+        //noinspection unchecked
+        when(piisConsentRepository.findAll(any(Specification.class)))
+            .thenReturn(Collections.singletonList(buildPiisConsentEntity()));
+        PiisConsent expectedConsent = buildPiisConsent();
+
+        // When
+        Collection<PiisConsent> piisConsents =
+            cmsAspspPiisFundsExportServiceInternal.exportConsentsByPsu(psuIdData, CREATION_DATE_FROM,
+                                                                       CREATION_DATE_TO, null);
 
         // Then
         assertFalse(piisConsents.isEmpty());
@@ -187,13 +217,13 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByPsu(wrongPsuIdData, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                       CREATION_DATE_TO, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());
         verify(piisConsentEntitySpecification, times(1))
             .byPsuIdDataAndCreationPeriodAndInstanceId(wrongPsuIdData, CREATION_DATE_FROM,
-                                                       CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
+                                                       CREATION_DATE_TO, SERVICE_INSTANCE_ID);
     }
 
     @Test
@@ -201,7 +231,7 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByPsu(null, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                       CREATION_DATE_TO, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());
@@ -214,20 +244,7 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByPsu(buildEmptyPsuIdData(), CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
-
-        // Then
-        assertTrue(piisConsents.isEmpty());
-        verify(piisConsentEntitySpecification, never())
-            .byPsuIdDataAndCreationPeriodAndInstanceId(any(), any(), any(), any());
-    }
-
-    @Test
-    public void exportConsentsByPsu_failure_blankInstanceId() {
-        // When
-        Collection<PiisConsent> piisConsents =
-            cmsAspspPiisFundsExportServiceInternal.exportConsentsByPsu(psuIdData, CREATION_DATE_FROM,
-                                                                       CREATION_DATE_TO, "");
+                                                                       CREATION_DATE_TO, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());
@@ -246,7 +263,28 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByAccountId(ASPSP_ACCOUNT_ID, CREATION_DATE_FROM,
-                                                                             CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                             CREATION_DATE_TO, SERVICE_INSTANCE_ID);
+
+        // Then
+        assertFalse(piisConsents.isEmpty());
+        assertTrue(piisConsents.contains(expectedConsent));
+        verify(piisConsentEntitySpecification, times(1))
+            .byAspspAccountIdAndCreationPeriodAndInstanceId(ASPSP_ACCOUNT_ID, CREATION_DATE_FROM,
+                                                            CREATION_DATE_TO, SERVICE_INSTANCE_ID);
+    }
+
+    @Test
+    public void exportConsentsByAccountId__success_nullInstanceId() {
+        // Given
+        //noinspection unchecked
+        when(piisConsentRepository.findAll(any(Specification.class)))
+            .thenReturn(Collections.singletonList(buildPiisConsentEntity()));
+        PiisConsent expectedConsent = buildPiisConsent();
+
+        // When
+        Collection<PiisConsent> piisConsents =
+            cmsAspspPiisFundsExportServiceInternal.exportConsentsByAccountId(ASPSP_ACCOUNT_ID, CREATION_DATE_FROM,
+                                                                             CREATION_DATE_TO, null);
 
         // Then
         assertFalse(piisConsents.isEmpty());
@@ -265,13 +303,13 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByAccountId(WRONG_ASPSP_ACCOUNT_ID, CREATION_DATE_FROM,
-                                                                             CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
+                                                                             CREATION_DATE_TO, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());
         verify(piisConsentEntitySpecification, times(1))
             .byAspspAccountIdAndCreationPeriodAndInstanceId(WRONG_ASPSP_ACCOUNT_ID, CREATION_DATE_FROM,
-                                                            CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
+                                                            CREATION_DATE_TO, SERVICE_INSTANCE_ID);
     }
 
     @Test
@@ -279,20 +317,7 @@ public class CmsAspspPiisFundsExportServiceInternalTest {
         // When
         Collection<PiisConsent> piisConsents =
             cmsAspspPiisFundsExportServiceInternal.exportConsentsByAccountId("", CREATION_DATE_FROM,
-                                                                             CREATION_DATE_TO, DEFAULT_SERVICE_INSTANCE_ID);
-
-        // Then
-        assertTrue(piisConsents.isEmpty());
-        verify(piisConsentEntitySpecification, never())
-            .byAspspAccountIdAndCreationPeriodAndInstanceId(any(), any(), any(), any());
-    }
-
-    @Test
-    public void exportConsentsByAccountId__failure_blankInstanceId() {
-        // When
-        Collection<PiisConsent> piisConsents =
-            cmsAspspPiisFundsExportServiceInternal.exportConsentsByAccountId(ASPSP_ACCOUNT_ID, CREATION_DATE_FROM,
-                                                                             CREATION_DATE_TO, "");
+                                                                             CREATION_DATE_TO, SERVICE_INSTANCE_ID);
 
         // Then
         assertTrue(piisConsents.isEmpty());

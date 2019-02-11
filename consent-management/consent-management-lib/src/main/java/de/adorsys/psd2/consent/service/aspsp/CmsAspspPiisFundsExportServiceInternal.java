@@ -37,6 +37,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class CmsAspspPiisFundsExportServiceInternal implements CmsAspspPiisFundsExportService {
+    private static final String DEFAULT_SERVICE_INSTANCE_ID = "UNDEFINED";
+
     private final PiisConsentRepository piisConsentRepository;
     private final PiisConsentEntitySpecification piisConsentEntitySpecification;
     private final PiisConsentMapper piisConsentMapper;
@@ -45,23 +47,27 @@ public class CmsAspspPiisFundsExportServiceInternal implements CmsAspspPiisFunds
     public Collection<PiisConsent> exportConsentsByTpp(String tppAuthorisationNumber,
                                                        @Nullable LocalDate createDateFrom,
                                                        @Nullable LocalDate createDateTo, @Nullable PsuIdData psuIdData,
-                                                       @NotNull String instanceId) {
-        if (StringUtils.isBlank(tppAuthorisationNumber) || StringUtils.isBlank(instanceId)) {
+                                                       @Nullable String instanceId) {
+        if (StringUtils.isBlank(tppAuthorisationNumber)) {
             return Collections.emptyList();
         }
 
-        List<PiisConsentEntity> piisConsentEntities = piisConsentRepository.findAll(piisConsentEntitySpecification.byTppIdAndCreationPeriodAndPsuIdDataAndInstanceId(tppAuthorisationNumber, createDateFrom, createDateTo, psuIdData, instanceId));
+        String actualInstanceId = StringUtils.defaultIfEmpty(instanceId, DEFAULT_SERVICE_INSTANCE_ID);
+
+        List<PiisConsentEntity> piisConsentEntities = piisConsentRepository.findAll(piisConsentEntitySpecification.byTppIdAndCreationPeriodAndPsuIdDataAndInstanceId(tppAuthorisationNumber, createDateFrom, createDateTo, psuIdData, actualInstanceId));
         return piisConsentMapper.mapToPiisConsentList(piisConsentEntities);
     }
 
     @Override
     public Collection<PiisConsent> exportConsentsByPsu(PsuIdData psuIdData, @Nullable LocalDate createDateFrom,
-                                                       @Nullable LocalDate createDateTo, @NotNull String instanceId) {
-        if (psuIdData == null || psuIdData.isEmpty() || StringUtils.isBlank(instanceId)) {
+                                                       @Nullable LocalDate createDateTo, @Nullable String instanceId) {
+        if (psuIdData == null || psuIdData.isEmpty()) {
             return Collections.emptyList();
         }
 
-        List<PiisConsentEntity> piisConsentEntities = piisConsentRepository.findAll(piisConsentEntitySpecification.byPsuIdDataAndCreationPeriodAndInstanceId(psuIdData, createDateFrom, createDateTo, instanceId));
+        String actualInstanceId = StringUtils.defaultIfEmpty(instanceId, DEFAULT_SERVICE_INSTANCE_ID);
+
+        List<PiisConsentEntity> piisConsentEntities = piisConsentRepository.findAll(piisConsentEntitySpecification.byPsuIdDataAndCreationPeriodAndInstanceId(psuIdData, createDateFrom, createDateTo, actualInstanceId));
         return piisConsentMapper.mapToPiisConsentList(piisConsentEntities);
     }
 
@@ -69,12 +75,14 @@ public class CmsAspspPiisFundsExportServiceInternal implements CmsAspspPiisFunds
     public Collection<PiisConsent> exportConsentsByAccountId(@NotNull String aspspAccountId,
                                                              @Nullable LocalDate createDateFrom,
                                                              @Nullable LocalDate createDateTo,
-                                                             @NotNull String instanceId) {
-        if (StringUtils.isBlank(aspspAccountId) || StringUtils.isBlank(instanceId)) {
+                                                             @Nullable String instanceId) {
+        if (StringUtils.isBlank(aspspAccountId)) {
             return Collections.emptyList();
         }
 
-        List<PiisConsentEntity> piisConsentEntities = piisConsentRepository.findAll(piisConsentEntitySpecification.byAspspAccountIdAndCreationPeriodAndInstanceId(aspspAccountId, createDateFrom, createDateTo, instanceId));
+        String actualInstanceId = StringUtils.defaultIfEmpty(instanceId, DEFAULT_SERVICE_INSTANCE_ID);
+
+        List<PiisConsentEntity> piisConsentEntities = piisConsentRepository.findAll(piisConsentEntitySpecification.byAspspAccountIdAndCreationPeriodAndInstanceId(aspspAccountId, createDateFrom, createDateTo, actualInstanceId));
         return piisConsentMapper.mapToPiisConsentList(piisConsentEntities);
     }
 }
