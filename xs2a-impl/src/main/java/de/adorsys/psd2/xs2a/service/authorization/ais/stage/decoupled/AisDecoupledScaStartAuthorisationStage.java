@@ -116,7 +116,6 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
         response.setPsuMessage(authorisationDecoupledScaResponseSpiResponse.getPayload().getPsuMessage());
         response.setScaStatus(ScaStatus.SCAMETHODSELECTED);
-        response.setDecoupled(true);
         return response;
     }
 }

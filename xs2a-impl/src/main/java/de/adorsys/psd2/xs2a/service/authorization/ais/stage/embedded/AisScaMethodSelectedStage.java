@@ -18,10 +18,9 @@ package de.adorsys.psd2.xs2a.service.authorization.ais.stage.embedded;
 
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
-import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
-import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
+import de.adorsys.psd2.xs2a.domain.consent.*;
 import de.adorsys.psd2.xs2a.exception.MessageError;
+import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
 import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStage;
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
@@ -45,6 +44,7 @@ import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLi
 @Service("AIS_PSUAUTHENTICATED")
 public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> {
     private final SpiContextDataProvider spiContextDataProvider;
+    private final ScaApproachResolver scaApproachResolver;
 
     public AisScaMethodSelectedStage(Xs2aAisConsentService aisConsentService,
                                      AisConsentDataService aisConsentDataService,
@@ -54,9 +54,11 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
                                      Xs2aToSpiPsuDataMapper psuDataMapper,
                                      SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper,
                                      SpiContextDataProvider spiContextDataProvider,
-                                     SpiErrorMapper spiErrorMapper) {
+                                     SpiErrorMapper spiErrorMapper,
+                                     ScaApproachResolver scaApproachResolver) {
         super(aisConsentService, aisConsentDataService, aisConsentSpi, aisConsentMapper, messageErrorCodeMapper, psuDataMapper, spiToXs2aAuthenticationObjectMapper, spiErrorMapper);
         this.spiContextDataProvider = spiContextDataProvider;
+        this.scaApproachResolver = scaApproachResolver;
     }
 
     /**
@@ -72,6 +74,7 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         AccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
         if (isDecoupledApproach(request.getAuthorizationId(), request.getAuthenticationMethodId())) {
+            scaApproachResolver.forceDecoupledScaApproach();
             return proceedDecoupledApproach(request, spiAccountConsent);
         }
 
@@ -83,16 +86,16 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
     }
 
     private UpdateConsentPsuDataResponse proceedDecoupledApproach(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent) {
-        SpiResponse<SpiAuthorisationDecoupledScaResponse> spiResponse = aisConsentSpi.startScaDecoupled(spiContextDataProvider.provideWithPsuIdData(request.getPsuData()), request.getAuthenticationMethodId(), null, spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+        SpiResponse<SpiAuthorisationDecoupledScaResponse> spiResponse = aisConsentSpi.startScaDecoupled(spiContextDataProvider.provideWithPsuIdData(request.getPsuData()), request.getAuthorizationId(), request.getAuthenticationMethodId(), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         if (spiResponse.hasError()) {
             MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.AIS));
             return createFailedResponse(messageError, spiResponse.getMessages());
         }
 
-        UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
+        UpdateConsentPsuDataResponse response = new DecoupledUpdateConsentPsuDataResponse();
         response.setPsuMessage(spiResponse.getPayload().getPsuMessage());
         response.setScaStatus(ScaStatus.SCAMETHODSELECTED);
-        response.setDecoupled(true);
+        response.setChosenScaMethod(buildXs2aAuthenticationObjectForDecoupledApproach(request.getAuthenticationMethodId()));
         return response;
     }
 
@@ -116,5 +119,12 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         response.setResponseLinkType(START_AUTHORISATION_WITH_TRANSACTION_AUTHORISATION);
         response.setChallengeData(challengeData);
         return response;
+    }
+
+    // Should ONLY be used for switching from Embedded to Decoupled approach during SCA method selection
+    private Xs2aAuthenticationObject buildXs2aAuthenticationObjectForDecoupledApproach(String authenticationMethodId) {
+        Xs2aAuthenticationObject xs2aAuthenticationObject = new Xs2aAuthenticationObject();
+        xs2aAuthenticationObject.setAuthenticationMethodId(authenticationMethodId);
+        return xs2aAuthenticationObject;
     }
 }

@@ -87,7 +87,7 @@ public class ConsentModelMapper {
                                         .orElse(null)
                                 )
                                 .challengeData(coreObjectsMapper.mapToChallengeData(response.getChallengeData()))
-                                .chosenScaMethod(mapToChosenScaMethod(response.getChosenScaMethod()))
+                                .chosenScaMethod(mapToChosenScaMethod(response.getChosenScaMethodForPsd2Response()))
                                 .psuMessage(r.getPsuMessage())
                    )
                    .orElse(null);

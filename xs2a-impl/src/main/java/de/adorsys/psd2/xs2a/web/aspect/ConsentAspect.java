@@ -130,7 +130,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
     private Links buildLinksForScaMethodSelectedConsentResponse(UpdateConsentPsuDataResponse response, UpdateConsentPsuDataReq request) {
         Links links = new Links();
 
-        if (response.isDecoupled()) {
+        if (scaApproachResolver.resolveScaApproach() == ScaApproach.DECOUPLED) {
             links.setScaStatus(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", request.getConsentId(), request.getAuthorizationId()));
         } else {
             links.setAuthoriseTransaction(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", request.getConsentId(), request.getAuthorizationId()));

@@ -48,18 +48,20 @@ public class UpdateConsentPsuDataResponse {
 
     private MessageError messageError;
 
-    /**
-     * This property is used to indicate that current SCA approach is Decoupled
-     * (needed for switching from Embedded to Decoupled approach during SCA method selection)
-     */
-    @JsonIgnore
-    private boolean decoupled;
-
     public UpdateConsentPsuDataResponse(ScaStatus scaStatus) {
         this.scaStatus = scaStatus;
     }
 
     public boolean hasError() {
         return messageError != null;
+    }
+
+    /**
+     * Returns chosenScaMethod. Should be used ONLY for mapping to PSD2 response.
+     *
+     * @return chosenScaMethod
+     */
+    public Xs2aAuthenticationObject getChosenScaMethodForPsd2Response() {
+        return getChosenScaMethod();
     }
 }
