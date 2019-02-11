@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.AuthenticationObject;
+import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
 import de.adorsys.psd2.consent.config.AisConsentRemoteUrls;
@@ -92,14 +92,14 @@ public class AisConsentServiceRemote implements AisConsentServiceEncrypted {
     @Override
     public Optional<String> updateAspspAccountAccess(String consentId, AisAccountAccessInfo request) {
         CreateAisConsentResponse response = consentRestTemplate.exchange(remoteAisConsentUrls.updateAisAccountAccess(), HttpMethod.PUT,
-            new HttpEntity<>(request), CreateAisConsentResponse.class, consentId).getBody();
+                                                                         new HttpEntity<>(request), CreateAisConsentResponse.class, consentId).getBody();
         return Optional.ofNullable(response.getConsentId());
     }
 
     @Override
     public Optional<String> createAuthorization(String consentId, AisConsentAuthorizationRequest request) {
         CreateAisConsentAuthorizationResponse response = consentRestTemplate.postForEntity(remoteAisConsentUrls.createAisConsentAuthorization(),
-            request, CreateAisConsentAuthorizationResponse.class, consentId).getBody();
+                                                                                           request, CreateAisConsentAuthorizationResponse.class, consentId).getBody();
 
         return Optional.ofNullable(response)
                    .map(CreateAisConsentAuthorizationResponse::getAuthorizationId);
@@ -155,7 +155,7 @@ public class AisConsentServiceRemote implements AisConsentServiceEncrypted {
     }
 
     @Override
-    public boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods) {
+    public boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods) {
         try {
             ResponseEntity<Void> responseEntity = consentRestTemplate.exchange(remoteAisConsentUrls.saveAuthenticationMethods(), HttpMethod.PUT, new HttpEntity<>(methods), Void.class, authorisationId);
 

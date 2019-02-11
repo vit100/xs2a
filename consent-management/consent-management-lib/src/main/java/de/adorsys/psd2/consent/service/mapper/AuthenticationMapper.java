@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.service.mapper;
 
-import de.adorsys.psd2.consent.api.AuthenticationObject;
+import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.domain.ScaMethod;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -27,17 +27,17 @@ import java.util.stream.Collectors;
 @Component
 public class AuthenticationMapper {
     @NotNull
-    public List<ScaMethod> mapToScaMethods(@NotNull List<AuthenticationObject> authenticationObjects) {
-        return authenticationObjects.stream()
+    public List<ScaMethod> mapToScaMethods(@NotNull List<CmsScaMethod> cmsScaMethods) {
+        return cmsScaMethods.stream()
                    .map(this::mapToScaMethod)
                    .collect(Collectors.toList());
     }
 
     @NotNull
-    public ScaMethod mapToScaMethod(@NotNull AuthenticationObject authenticationObject) {
+    public ScaMethod mapToScaMethod(@NotNull CmsScaMethod cmsScaMethod) {
         ScaMethod scaMethod = new ScaMethod();
-        scaMethod.setAuthenticationMethodId(authenticationObject.getAuthenticationMethodId());
-        scaMethod.setDecoupled(authenticationObject.isDecoupled());
+        scaMethod.setAuthenticationMethodId(cmsScaMethod.getAuthenticationMethodId());
+        scaMethod.setDecoupled(cmsScaMethod.isDecoupled());
         return scaMethod;
     }
 }

@@ -207,6 +207,6 @@ public class Xs2aAisConsentService {
     }
 
     public boolean saveAuthenticationMethods(String authorisationId, List<Xs2aAuthenticationObject> methods) {
-        return aisConsentService.saveAuthenticationMethods(authorisationId, xs2aToCmsAuthenticationMapper.mapToAuthenticationObjects(methods));
+        return aisConsentService.saveAuthenticationMethods(authorisationId, xs2aToCmsAuthenticationMapper.mapToCmsScaMethods(methods));
     }
 }

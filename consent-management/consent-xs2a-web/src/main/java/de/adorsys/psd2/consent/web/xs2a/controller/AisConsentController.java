@@ -17,7 +17,7 @@
 package de.adorsys.psd2.consent.web.xs2a.controller;
 
 
-import de.adorsys.psd2.consent.api.AuthenticationObject;
+import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
@@ -215,8 +215,8 @@ public class AisConsentController {
     public ResponseEntity<Void> saveAuthenticationMethods(
         @ApiParam(name = "authorisation-id", value = "The consent authorisation identification assigned to the created authorisation.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("authorisation-id") String authorisationId,
-        @RequestBody List<AuthenticationObject> authenticationObjects) {
-        return aisConsentService.saveAuthenticationMethods(authorisationId, authenticationObjects)
+        @RequestBody List<CmsScaMethod> methods) {
+        return aisConsentService.saveAuthenticationMethods(authorisationId, methods)
                    ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

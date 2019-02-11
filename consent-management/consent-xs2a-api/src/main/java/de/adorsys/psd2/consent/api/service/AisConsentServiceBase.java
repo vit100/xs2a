@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.api.service;
 
-import de.adorsys.psd2.consent.api.AuthenticationObject;
+import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -155,5 +155,5 @@ interface AisConsentServiceBase {
      */
     boolean isAuthenticationMethodDecoupled(String authorisationId, String authenticationMethodId);
 
-    boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods);
+    boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods);
 }

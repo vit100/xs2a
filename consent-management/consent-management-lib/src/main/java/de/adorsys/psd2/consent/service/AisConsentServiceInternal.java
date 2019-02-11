@@ -18,7 +18,7 @@ package de.adorsys.psd2.consent.service;
 
 import de.adorsys.psd2.aspsp.profile.service.AspspProfileService;
 import de.adorsys.psd2.consent.api.ActionStatus;
-import de.adorsys.psd2.consent.api.AuthenticationObject;
+import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
 import de.adorsys.psd2.consent.domain.PsuData;
@@ -292,7 +292,7 @@ public class AisConsentServiceInternal implements AisConsentService {
 
     @Override
     @Transactional
-    public boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods) {
+    public boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods) {
         Optional<AisConsentAuthorization> authorisationOptional = aisConsentAuthorisationRepository.findByExternalId(authorisationId);
 
         if (!authorisationOptional.isPresent()) {

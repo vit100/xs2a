@@ -16,7 +16,7 @@
 
 package de.adorsys.psd2.consent.service;
 
-import de.adorsys.psd2.consent.api.AuthenticationObject;
+import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentService;
 import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
@@ -150,7 +150,7 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
 
     @Override
     @Transactional
-    public boolean saveAuthenticationMethods(String authorisationId, List<AuthenticationObject> methods) {
+    public boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods) {
         return aisConsentService.saveAuthenticationMethods(authorisationId, methods);
     }
 }
