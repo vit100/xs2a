@@ -46,6 +46,9 @@ public class Xs2aToSpiPeriodicPaymentMapper {
         if (payment.getTransactionStatus() != null) {
             periodic.setPaymentStatus(payment.getTransactionStatus());
         }
+        if (payment.getFrequency() == null || payment.getStartDate() == null) {
+            return null;
+        }
         periodic.setFrequency(SpiFrequencyCode.valueOf(payment.getFrequency().name()));
         periodic.setDayOfExecution(payment.getDayOfExecution());
         periodic.setRequestedExecutionTime(payment.getRequestedExecutionTime());
