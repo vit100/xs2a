@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class Xs2aToCmsAuthenticationMapper {
+public class Xs2aAuthenticationObjectToCmsScaMethodMapper {
     @NotNull
     public List<CmsScaMethod> mapToCmsScaMethods(@NotNull List<Xs2aAuthenticationObject> xs2aAuthenticationObjects) {
         return xs2aAuthenticationObjects.stream()

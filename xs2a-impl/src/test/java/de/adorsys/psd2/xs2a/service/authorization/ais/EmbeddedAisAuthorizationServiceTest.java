@@ -35,6 +35,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
+import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SEPARATOR;
 import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SERVICE_PREFIX;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_AUTHENTICATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,7 +77,7 @@ public class EmbeddedAisAuthorizationServiceTest {
         when(consentAuthorization.getScaStatus())
             .thenReturn(STARTED_SCA_STATUS);
 
-        when(scaStageAuthorisationFactory.getService(SERVICE_PREFIX + STARTED_SCA_STATUS.name()))
+        when(scaStageAuthorisationFactory.getService(SERVICE_PREFIX + SEPARATOR + STARTED_SCA_STATUS.name()))
             .thenReturn(startAuthorisationStage);
 
         when(startAuthorisationStage.apply(updateConsentPsuDataRequest))

@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SEPARATOR;
 import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SERVICE_PREFIX;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
 
@@ -37,7 +38,6 @@ import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLi
 @RequiredArgsConstructor
 public class DecoupledAisAuthorizationService implements AisAuthorizationService {
     // TODO align with PIS
-    private static final String SEPARATOR = "_";
 
     private final Xs2aAisConsentService aisConsentService;
     private final Xs2aAisConsentMapper aisConsentMapper;
@@ -80,7 +80,7 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
      */
     @Override
     public UpdateConsentPsuDataResponse updateConsentPsuData(UpdateConsentPsuDataReq updatePsuData, AccountConsentAuthorization consentAuthorization) {
-        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + getScaApproachServiceType().name() + SEPARATOR + consentAuthorization.getScaStatus().name());
+        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + SEPARATOR + getScaApproachServiceType().name() + SEPARATOR + consentAuthorization.getScaStatus().name());
         UpdateConsentPsuDataResponse response = service.apply(updatePsuData);
 
         if (!response.hasError()) {
