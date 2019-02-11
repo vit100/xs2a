@@ -36,6 +36,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.util.EnumSet;
 import java.util.Optional;
 
 @Slf4j
@@ -75,8 +76,8 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
     private Links buildLinksForConsentResponse(CreateConsentResponse response, boolean explicitPreferred) {
         Links links = new Links();
 
-        if (ScaApproach.EMBEDDED == scaApproachResolver.resolveScaApproach()) {
-            buildLinkForEmbeddedScaApproach(response, links, explicitPreferred);
+        if (EnumSet.of(ScaApproach.EMBEDDED, ScaApproach.DECOUPLED).contains(scaApproachResolver.resolveScaApproach())) {
+            buildLinkForEmbeddedAndDecoupledScaApproach(response, links, explicitPreferred);
         } else if (ScaApproach.REDIRECT == scaApproachResolver.resolveScaApproach()) {
             // TODO add actual value during imlementation of multilevel sca https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/515
             if (authorisationMethodDecider.isExplicitMethod(explicitPreferred, false)) {
@@ -92,7 +93,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
     }
 
 
-    private void buildLinkForEmbeddedScaApproach(CreateConsentResponse response, Links links, boolean explicitPreferred) {
+    private void buildLinkForEmbeddedAndDecoupledScaApproach(CreateConsentResponse response, Links links, boolean explicitPreferred) {
         // TODO add actual value during imlementation of multilevel sca https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/515
         if (authorisationMethodDecider.isExplicitMethod(explicitPreferred, false)) {
             links.setStartAuthorisation(buildPath("/v1/consents/{consentId}/authorisations", response.getConsentId()));
