@@ -30,4 +30,3 @@ public class ScaMethod {
     @Column(name = "decoupled", nullable = false)
     private boolean decoupled;
 }
-
