@@ -32,7 +32,6 @@ import de.adorsys.psd2.xs2a.service.message.MessageService;
 import de.adorsys.psd2.xs2a.web.RedirectLinkBuilder;
 import de.adorsys.psd2.xs2a.web.controller.ConsentController;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -101,7 +100,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
             links.setStartAuthorisation(buildPath("/v1/consents/{consentId}/authorisations", response.getConsentId()));
         } else {
             String path = buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", response.getConsentId(), response.getAuthorizationId());
-            if (StringUtils.isBlank(psuData.getPsuId())) {
+            if (psuData.isEmpty()) {
                 links.setStartAuthorisationWithPsuIdentification(path);
             } else {
                 links.setStartAuthorisationWithPsuAuthentication(path);

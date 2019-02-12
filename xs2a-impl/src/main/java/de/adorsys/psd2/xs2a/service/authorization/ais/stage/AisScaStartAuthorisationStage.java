@@ -53,6 +53,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.*;
 
@@ -214,7 +215,8 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
     }
 
     private boolean isPsuInRequest(UpdateConsentPsuDataReq request) {
-        return Objects.nonNull(request.getPsuData())
-                   && StringUtils.isNotBlank(request.getPsuData().getPsuId());
+        return Optional.ofNullable(request.getPsuData())
+                   .map(PsuIdData::isNotEmpty)
+                   .orElse(false);
     }
 }

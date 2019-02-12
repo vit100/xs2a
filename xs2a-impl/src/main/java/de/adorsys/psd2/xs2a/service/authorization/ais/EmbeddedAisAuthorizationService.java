@@ -60,15 +60,16 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
             return Optional.empty();
         }
 
-        boolean isPsuInConsent = Objects.nonNull(consent.getPsuData())
-                                     && StringUtils.isNotBlank(consent.getPsuData().getPsuId());
+        boolean isPsuInConsent = isPsuInConsent(consent);
         boolean isPsuInAuthorisation = StringUtils.isNotBlank(psuData.getPsuId());
 
         ConsentAuthorizationResponseLinkType responseLinkType = isPsuInConsent || isPsuInAuthorisation
                                                                     ? START_AUTHORISATION_WITH_PSU_AUTHENTICATION
                                                                     : START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
 
-        PsuIdData psuDataAuthorization = isPsuInConsent && !isPsuInAuthorisation ? consent.getPsuData() : psuData;
+        PsuIdData psuDataAuthorization = isPsuInAuthorisation
+                                             ? psuData
+                                             : consent.getPsuData();
 
         return aisConsentService.createAisConsentAuthorization(consentId, ScaStatus.valueOf(ScaStatus.STARTED.name()), psuDataAuthorization)
                    .map(authId -> {
@@ -149,4 +150,11 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
     public ScaApproach getScaApproachServiceType() {
         return ScaApproach.EMBEDDED;
     }
+
+    private boolean isPsuInConsent(AccountConsent consent) {
+        return Optional.ofNullable(consent.getPsuData())
+                   .map(PsuIdData::isNotEmpty)
+                   .orElse(false);
+    }
+
 }

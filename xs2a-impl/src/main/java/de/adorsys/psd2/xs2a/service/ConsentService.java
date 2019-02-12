@@ -93,7 +93,7 @@ public class ConsentService {
     public ResponseObject<CreateConsentResponse> createAccountConsentsWithResponse(CreateConsentReq request, PsuIdData psuData, boolean explicitPreferred, TppRedirectUri tppRedirectUri) {
         xs2aEventService.recordTppRequest(EventType.CREATE_AIS_CONSENT_REQUEST_RECEIVED, request);
         if (aspspProfileService.isPsuInInitialRequestMandated()
-                && StringUtils.isBlank(psuData.getPsuId())) {
+                && psuData.isEmpty()) {
             return ResponseObject.<CreateConsentResponse>builder()
                        .fail(new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR, "Please provide the PSU identification data")))
                        .build();

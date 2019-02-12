@@ -51,7 +51,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.*;
@@ -187,8 +186,9 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
     }
 
     private boolean isPsuInRequest(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        return Objects.nonNull(request.getPsuData())
-                   && StringUtils.isNotBlank(request.getPsuData().getPsuId());
+        return Optional.ofNullable(request.getPsuData())
+                   .map(PsuIdData::isNotEmpty)
+                   .orElse(false);
     }
 
     private PsuIdData getPsuIdData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
