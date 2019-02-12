@@ -261,8 +261,6 @@ public class PisCommonPaymentServiceInternalTest {
         assertTrue(scaStatuses.contains(ScaStatus.FAILED));
     }
 
-
-
     @NotNull
     private AspspSettings getAspspSettings() {
         return new AspspSettings(1, false, false, null, null,

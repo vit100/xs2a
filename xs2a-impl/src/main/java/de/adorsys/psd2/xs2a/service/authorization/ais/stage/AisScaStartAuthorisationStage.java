@@ -52,7 +52,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.*;
@@ -93,7 +92,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
     }
 
     private UpdateConsentPsuDataResponse applyAuthorisation(UpdateConsentPsuDataReq request) {
-        PsuIdData psuData = getPsuIdData(request);
+        PsuIdData psuData = extractPsuIdData(request);
         AccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
 
@@ -147,10 +146,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
     }
 
     private UpdateConsentPsuDataResponse applyIdentification(UpdateConsentPsuDataReq request) {
-
-        boolean isPsuInRequest = isPsuInRequest(request);
-
-        if (!isPsuInRequest) {
+        if (!isPsuExist(request.getPsuData())) {
             String errorText = "Please provide the PSU identification data";
             MessageError messageError = new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR, errorText));
             return createFailedResponse(messageError, Collections.singletonList(errorText));
@@ -202,20 +198,21 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         return response;
     }
 
-    private PsuIdData getPsuIdData(UpdateConsentPsuDataReq request) {
-        PsuIdData psuData = request.getPsuData();
-
-        if (!isPsuInRequest(request)) {
-            AccountConsentAuthorization auth = aisConsentService.getAccountConsentAuthorizationById(request.getAuthorizationId(), request.getConsentId());
-            if (Objects.nonNull(auth) && StringUtils.isNotBlank(auth.getPsuId())) {
-                psuData = new PsuIdData(auth.getPsuId(), psuData.getPsuIdType(), psuData.getPsuCorporateId(), psuData.getPsuCorporateIdType());
-            }
+    private PsuIdData extractPsuIdData(UpdateConsentPsuDataReq request) {
+        PsuIdData psuDataInRequest = request.getPsuData();
+        if (isPsuExist(psuDataInRequest)) {
+            return psuDataInRequest;
         }
-        return psuData;
+
+        return Optional.ofNullable(aisConsentService.getAccountConsentAuthorizationById(request.getAuthorizationId(), request.getConsentId()))
+                   .map(AccountConsentAuthorization::getPsuId)
+                   .filter(StringUtils::isNotBlank)
+                   .map(id -> new PsuIdData(id, null, null, null))
+                   .orElse(psuDataInRequest);
     }
 
-    private boolean isPsuInRequest(UpdateConsentPsuDataReq request) {
-        return Optional.ofNullable(request.getPsuData())
+    private boolean isPsuExist(PsuIdData psuIdData) {
+        return Optional.ofNullable(psuIdData)
                    .map(PsuIdData::isNotEmpty)
                    .orElse(false);
     }

@@ -25,7 +25,6 @@ import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStage;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -60,8 +59,8 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
             return Optional.empty();
         }
 
-        boolean isPsuInConsent = isPsuInConsent(consent);
-        boolean isPsuInAuthorisation = StringUtils.isNotBlank(psuData.getPsuId());
+        boolean isPsuInConsent = isPsuExist(consent.getPsuData());
+        boolean isPsuInAuthorisation = isPsuExist(psuData);
 
         ConsentAuthorizationResponseLinkType responseLinkType = isPsuInConsent || isPsuInAuthorisation
                                                                     ? START_AUTHORISATION_WITH_PSU_AUTHENTICATION
@@ -151,8 +150,8 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
         return ScaApproach.EMBEDDED;
     }
 
-    private boolean isPsuInConsent(AccountConsent consent) {
-        return Optional.ofNullable(consent.getPsuData())
+    private boolean isPsuExist(PsuIdData psuIdData) {
+        return Optional.ofNullable(psuIdData)
                    .map(PsuIdData::isNotEmpty)
                    .orElse(false);
     }

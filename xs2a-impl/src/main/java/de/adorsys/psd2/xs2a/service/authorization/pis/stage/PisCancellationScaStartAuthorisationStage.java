@@ -83,9 +83,7 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
     }
 
     private Xs2aUpdatePisCommonPaymentPsuDataResponse applyIdentification(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        boolean isPsuInRequest = isPsuInRequest(request);
-
-        if (!isPsuInRequest) {
+        if (!isPsuExist(request.getPsuData())) {
             ErrorHolder errorHolder = ErrorHolder.builder(MessageErrorCode.FORMAT_ERROR)
                                           .errorType(ErrorType.PIS_400)
                                           .messages(Collections.singletonList("Please provide the PSU identification data"))
@@ -106,7 +104,7 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
     }
 
     private Xs2aUpdatePisCommonPaymentPsuDataResponse applyAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisAuthorisationResponse pisAuthorisationResponse) {
-        PsuIdData psuData = getPsuIdData(request);
+        PsuIdData psuData = extractPsuIdData(request);
 
         PaymentType paymentType = pisAuthorisationResponse.getPaymentType();
         String paymentProduct = pisAuthorisationResponse.getPaymentProduct();
@@ -189,22 +187,23 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
         return spiScaMethods.size() > 1;
     }
 
-    private boolean isPsuInRequest(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        return Optional.ofNullable(request.getPsuData())
+    private boolean isPsuExist(PsuIdData psuIdData) {
+        return Optional.ofNullable(psuIdData)
                    .map(PsuIdData::isNotEmpty)
                    .orElse(false);
     }
 
-    private PsuIdData getPsuIdData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        PsuIdData psuData = request.getPsuData();
-
-        if (!isPsuInRequest(request)) {
-            Optional<GetPisAuthorisationResponse> authorisation = pisCommonPaymentServiceEncrypted.getPisAuthorisationById(request.getAuthorisationId());
-            if (authorisation.isPresent() && StringUtils.isNotBlank(authorisation.get().getPsuId())) {
-                psuData = new PsuIdData(authorisation.get().getPsuId(), psuData.getPsuIdType(), psuData.getPsuCorporateId(), psuData.getPsuCorporateIdType());
-            }
+    private PsuIdData extractPsuIdData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
+        PsuIdData psuDataInRequest = request.getPsuData();
+        if (isPsuExist(psuDataInRequest)) {
+            return psuDataInRequest;
         }
-        return psuData;
+
+        return pisCommonPaymentServiceEncrypted.getPisAuthorisationById(request.getAuthorisationId())
+                   .map(GetPisAuthorisationResponse::getPsuId)
+                   .filter(StringUtils::isNotBlank)
+                   .map(id -> new PsuIdData(id, null, null, null))
+                   .orElse(psuDataInRequest);
     }
 
     private boolean isPsuDataCorrect(String paymentId, PsuIdData psuData) {
