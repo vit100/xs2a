@@ -64,7 +64,6 @@ public class AisScaAuthenticatedStage extends AisScaStage<UpdateConsentPsuDataRe
      * @param request UpdateConsentPsuDataReq with updating data
      * @return UpdateConsentPsuDataResponse as a result of updating process
      */
-    // TODO refactoring!!!
     @Override
     public UpdateConsentPsuDataResponse apply(UpdateConsentPsuDataReq request) {
         String consentId = request.getConsentId();
