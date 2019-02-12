@@ -81,7 +81,6 @@ public class PisScaStartDecoupledAuthorisationStage extends PisScaStage<Xs2aUpda
 
         Xs2aUpdatePisCommonPaymentPsuDataResponse response = new Xs2aUpdatePisCommonPaymentPsuDataResponse(SCAMETHODSELECTED);
         response.setPsuMessage(spiResponse.getPayload().getPsuMessage());
-        response.setDecoupled(true);
         return response;
     }
 }

@@ -24,6 +24,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Size;
 
+// TODO Move AuthenticationObject to xs2a-core https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/682
 @Data
 @ApiModel(description = "Authentication object", value = "AuthenticationObject")
 public class Xs2aAuthenticationObject {

@@ -59,6 +59,7 @@ public class PisAuthorisationService {
      * Updates PIS authorisation according to psu's sca methods with embedded SCA approach
      *
      * @param request Provides transporting data when updating pis authorisation
+     * @param scaApproach current SCA approach, preferred by the server
      * @return update pis authorisation response, which contains payment id, authorisation id, sca status, psu message and links
      */
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updatePisAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, ScaApproach scaApproach) {
@@ -79,6 +80,7 @@ public class PisAuthorisationService {
      * Updates PIS authorisation according to psu's sca methods with decoupled SCA approach
      *
      * @param request Provides transporting data when updating pis authorisation
+     * @param scaApproach current SCA approach, preferred by the server
      * @return update pis authorisation response, which contains payment id, authorisation id, sca status, psu message and links
      */
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updateDecoupledPisAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, ScaApproach scaApproach) {

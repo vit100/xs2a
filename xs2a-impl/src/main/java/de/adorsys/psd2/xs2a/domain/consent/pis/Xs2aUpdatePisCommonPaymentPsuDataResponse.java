@@ -16,17 +16,18 @@
 
 package de.adorsys.psd2.xs2a.domain.consent.pis;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.Links;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class Xs2aUpdatePisCommonPaymentPsuDataResponse {
     private String psuId;
     private ErrorHolder errorHolder;
@@ -39,12 +40,6 @@ public class Xs2aUpdatePisCommonPaymentPsuDataResponse {
     private Xs2aAuthenticationObject chosenScaMethod;
     private ChallengeData challengeData;
     private Links links = new Links();
-    /**
-     * This property is used to indicate that current SCA approach is Decoupled
-     * (needed for switching from Embedded to Decoupled approach during SCA method selection)
-     */
-    @JsonIgnore
-    private boolean decoupled;
 
     public Xs2aUpdatePisCommonPaymentPsuDataResponse(ScaStatus scaStatus, List<Xs2aAuthenticationObject> availableScaMethods) {
         this.scaStatus = scaStatus;
@@ -62,6 +57,15 @@ public class Xs2aUpdatePisCommonPaymentPsuDataResponse {
 
     public boolean hasError() {
         return errorHolder != null;
+    }
+
+    /**
+     * Returns chosenScaMethod. Should be used ONLY for mapping to PSD2 response.
+     *
+     * @return chosenScaMethod
+     */
+    public Xs2aAuthenticationObject getChosenScaMethodForPsd2Response() {
+        return getChosenScaMethod();
     }
 }
 

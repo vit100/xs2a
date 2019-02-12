@@ -143,7 +143,7 @@ public class AccountMockServerData {
     private List<Psu> fillPsu() {
         return Arrays.asList(
             psuRepository.save(new Psu("PSU_001", "johndoutestemail@gmail.com", "aspsp", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS, Collections.emptyList())),
-            psuRepository.save(new Psu("PSU_002", "johndoutestemail@gmail.com", "aspsp1", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("SMS_OTP", "sms")))),
+            psuRepository.save(new Psu("PSU_002", "johndoutestemail@gmail.com", "aspsp1", "zzz", Arrays.asList(accountDetails.get(0), accountDetails.get(1), accountDetails.get(2)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("SMS_OTP", "sms", true)))),
             psuRepository.save(new Psu("PSU_003", "johndoutestemail@gmail.com", "aspsp2", "zzz", Arrays.asList(accountDetails.get(3), accountDetails.get(4)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("SMS_OTP", "sms"), new AspspAuthenticationObject("PUSH_OTP", "push", true)))),
             psuRepository.save(new Psu("PSU_004", "johndoutestemail@gmail.com", "aspsp3", "zzz", Arrays.asList(accountDetails.get(5), accountDetails.get(6)), ALLOWED_PAYMENTS, Arrays.asList(new AspspAuthenticationObject("PUSH_OTP", "push"), new AspspAuthenticationObject("CHIP_OTP", "chip")))),
 

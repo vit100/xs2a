@@ -17,16 +17,19 @@
 package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
 
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthenticationObject;
+import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aDecoupledUpdatePisCommonPaymentPsuDataResponse;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
+import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
+import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
@@ -45,17 +48,19 @@ import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
 @Service("PIS_EMBEDDED_PSUAUTHENTICATED")
 public class PisScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final SpiContextDataProvider spiContextDataProvider;
+    private final ScaApproachResolver scaApproachResolver;
     private final PisAspspDataService pisAspspDataService;
-    private final PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
+    private final Xs2aPisCommonPaymentService xs2aPisCommonPaymentService;
     private final PaymentAuthorisationSpi paymentAuthorisationSpi;
     private final SpiErrorMapper spiErrorMapper;
     private final SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper;
 
-    public PisScaAuthenticatedStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiContextDataProvider spiContextDataProvider, PisAspspDataService pisAspspDataService, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, PaymentAuthorisationSpi paymentAuthorisationSpi, SpiErrorMapper spiErrorMapper, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper) {
+    public PisScaAuthenticatedStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiContextDataProvider spiContextDataProvider, ScaApproachResolver scaApproachResolver, PisAspspDataService pisAspspDataService, Xs2aPisCommonPaymentService xs2aPisCommonPaymentService, PaymentAuthorisationSpi paymentAuthorisationSpi, SpiErrorMapper spiErrorMapper, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
         this.spiContextDataProvider = spiContextDataProvider;
+        this.scaApproachResolver = scaApproachResolver;
         this.pisAspspDataService = pisAspspDataService;
-        this.pisCommonPaymentServiceEncrypted = pisCommonPaymentServiceEncrypted;
+        this.xs2aPisCommonPaymentService = xs2aPisCommonPaymentService;
         this.paymentAuthorisationSpi = paymentAuthorisationSpi;
         this.spiErrorMapper = spiErrorMapper;
         this.spiToXs2aAuthenticationObjectMapper = spiToXs2aAuthenticationObjectMapper;
@@ -68,6 +73,7 @@ public class PisScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisCommonPay
         SpiPayment payment = mapToSpiPayment(pisAuthorisationResponse, paymentType, paymentProduct);
 
         if (isDecoupledApproach(request.getAuthorisationId(), request.getAuthenticationMethodId())) {
+            scaApproachResolver.forceDecoupledScaApproach();
             return proceedDecoupledApproach(request, payment);
         }
 
@@ -82,9 +88,9 @@ public class PisScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisCommonPay
             return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS));
         }
 
-        Xs2aUpdatePisCommonPaymentPsuDataResponse response = new Xs2aUpdatePisCommonPaymentPsuDataResponse(SCAMETHODSELECTED);
+        Xs2aUpdatePisCommonPaymentPsuDataResponse response = new Xs2aDecoupledUpdatePisCommonPaymentPsuDataResponse(SCAMETHODSELECTED);
         response.setPsuMessage(spiResponse.getPayload().getPsuMessage());
-        response.setDecoupled(true);
+        response.setChosenScaMethod(buildXs2aAuthenticationObjectForDecoupledApproach(request.getAuthenticationMethodId()));
         return response;
     }
 
@@ -119,7 +125,14 @@ public class PisScaAuthenticatedStage extends PisScaStage<Xs2aUpdatePisCommonPay
         return response;
     }
 
+    // Should ONLY be used for switching from Embedded to Decoupled approach during SCA method selection
+    private Xs2aAuthenticationObject buildXs2aAuthenticationObjectForDecoupledApproach(String authenticationMethodId) {
+        Xs2aAuthenticationObject xs2aAuthenticationObject = new Xs2aAuthenticationObject();
+        xs2aAuthenticationObject.setAuthenticationMethodId(authenticationMethodId);
+        return xs2aAuthenticationObject;
+    }
+
     private boolean isDecoupledApproach(String authorisationId, String authenticationMethodId) {
-        return pisCommonPaymentServiceEncrypted.isAuthenticationMethodDecoupled(authorisationId, authenticationMethodId);
+        return xs2aPisCommonPaymentService.isAuthenticationMethodDecoupled(authorisationId, authenticationMethodId);
     }
 }
