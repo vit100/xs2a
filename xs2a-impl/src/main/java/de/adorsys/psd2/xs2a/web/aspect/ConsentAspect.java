@@ -110,7 +110,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
                        if (status == ScaStatus.PSUAUTHENTICATED) {
                            links = buildLinksForPsuAuthenticatedConsentResponse(request);
                        } else if (status == ScaStatus.SCAMETHODSELECTED) {
-                           links = buildLinksForScaMethodSelectedConsentResponse(response, request);
+                           links = buildLinksForScaMethodSelectedConsentResponse(request);
                        } else if (status == ScaStatus.FINALISED) {
                            links = buildLinksForFinalisedConsentResponse(request);
                        }
@@ -127,7 +127,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
         return links;
     }
 
-    private Links buildLinksForScaMethodSelectedConsentResponse(UpdateConsentPsuDataResponse response, UpdateConsentPsuDataReq request) {
+    private Links buildLinksForScaMethodSelectedConsentResponse(UpdateConsentPsuDataReq request) {
         Links links = new Links();
 
         if (scaApproachResolver.resolveScaApproach() == ScaApproach.DECOUPLED) {

@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.xs2a.domain.consent;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.Links;

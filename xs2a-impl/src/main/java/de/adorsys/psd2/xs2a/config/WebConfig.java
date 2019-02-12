@@ -19,7 +19,6 @@ package de.adorsys.psd2.xs2a.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.psd2.consent.api.service.TppStopListService;
 import de.adorsys.psd2.xs2a.component.PaymentTypeEnumConverter;
-import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.domain.ScaApproachHolder;
 import de.adorsys.psd2.xs2a.service.TppService;
 import de.adorsys.psd2.xs2a.service.discovery.ServiceTypeDiscoveryService;
