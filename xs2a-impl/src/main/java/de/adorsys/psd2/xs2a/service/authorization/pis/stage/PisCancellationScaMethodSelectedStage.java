@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.FINALISED;
 
-@Service("PIS_CANC_SCAMETHODSELECTED")
+@Service("PIS_CANCELLATION_EMBEDDED_SCAMETHODSELECTED")
 public class PisCancellationScaMethodSelectedStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final PisAspspDataService pisAspspDataService;
     private final SpiErrorMapper spiErrorMapper;

@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.domain.consent.pis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
@@ -38,6 +39,12 @@ public class Xs2aUpdatePisCommonPaymentPsuDataResponse {
     private Xs2aAuthenticationObject chosenScaMethod;
     private ChallengeData challengeData;
     private Links links = new Links();
+    /**
+     * This property is used to indicate that current SCA approach is Decoupled
+     * (needed for switching from Embedded to Decoupled approach during SCA method selection)
+     */
+    @JsonIgnore
+    private boolean decoupled;
 
     public Xs2aUpdatePisCommonPaymentPsuDataResponse(ScaStatus scaStatus, List<Xs2aAuthenticationObject> availableScaMethods) {
         this.scaStatus = scaStatus;

@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.authorization;
+package de.adorsys.psd2.consent.domain;
 
-import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
+import lombok.Data;
 
-public interface ScaApproachServiceTypeProvider {
-    /**
-     * Gets SCA approach used in current service
-     *
-     * @return SCA approach
-     */
-    ScaApproach getScaApproachServiceType();
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Data
+@Embeddable
+public class ScaMethod {
+    @Column(name = "authentication_method_id", nullable = false)
+    private String authenticationMethodId;
+
+    @Column(name = "decoupled", nullable = false)
+    private boolean decoupled;
 }
+

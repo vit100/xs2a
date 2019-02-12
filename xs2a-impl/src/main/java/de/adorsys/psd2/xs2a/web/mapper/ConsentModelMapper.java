@@ -262,6 +262,7 @@ public class ConsentModelMapper {
                    .scaMethods(getAvailableScaMethods(response.getAvailableScaMethods()))
                    .chosenScaMethod(mapToChosenScaMethod(response.getChosenScaMethod()))
                    .challengeData(coreObjectsMapper.mapToChallengeData(response.getChallengeData()))
+                   .psuMessage(response.getPsuMessage())
                    .scaStatus(Optional.ofNullable(response.getScaStatus())
                        .map(s -> ScaStatus.fromValue(s.getValue()))
                        .orElse(ScaStatus.FAILED));

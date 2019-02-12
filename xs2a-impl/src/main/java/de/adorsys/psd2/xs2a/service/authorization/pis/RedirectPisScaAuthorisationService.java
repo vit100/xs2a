@@ -45,7 +45,7 @@ public class RedirectPisScaAuthorisationService implements PisScaAuthorisationSe
 
     @Override
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updateCommonPaymentPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        return authorisationService.updatePisAuthorisation(request);
+        return authorisationService.updatePisAuthorisation(request, getScaApproachServiceType());
     }
 
     @Override

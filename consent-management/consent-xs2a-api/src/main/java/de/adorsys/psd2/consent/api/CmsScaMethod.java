@@ -16,9 +16,15 @@
 
 package de.adorsys.psd2.consent.api;
 
-public enum CmsScaMethod {
-    SMS_OTP,
-    CHIP_OTP,
-    PHOTO_OTP,
-    PUSH_OTP
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Value;
+
+@Value
+@ApiModel(description = "Sca method", value = "CmsScaMethod")
+public class CmsScaMethod {
+    @ApiModelProperty(value = "Authentication method id")
+    private String authenticationMethodId;
+    @ApiModelProperty(value = "Indication whether current sca method requires decoupled SCA")
+    private boolean decoupled;
 }

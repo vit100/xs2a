@@ -29,7 +29,7 @@ import de.adorsys.psd2.xs2a.service.authorization.ScaApproachServiceTypeProvider
 
 import java.util.Optional;
 
-public interface PisScaAuthorisationService {
+public interface PisScaAuthorisationService extends ScaApproachServiceTypeProvider {
     /**
      * Creates authorisation for a payment
      *
@@ -38,7 +38,6 @@ public interface PisScaAuthorisationService {
      * @param psuData     PsuIdData container of authorisation data about PSU
      * @return create payment authorisation response
      */
-public interface PisScaAuthorisationService extends ScaApproachServiceTypeProvider {
     Optional<Xs2aCreatePisAuthorisationResponse> createCommonPaymentAuthorisation(String paymentId, PaymentType paymentType, PsuIdData psuData);
 
     /**

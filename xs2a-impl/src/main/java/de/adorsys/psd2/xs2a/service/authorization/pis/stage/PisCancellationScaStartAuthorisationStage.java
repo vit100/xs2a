@@ -44,7 +44,7 @@ import java.util.List;
 
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.*;
 
-@Service("PIS_CANC_STARTED")
+@Service("PIS_CANCELLATION_EMBEDDED_STARTED")
 public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final PisAspspDataService pisAspspDataService;
     private final Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper;
