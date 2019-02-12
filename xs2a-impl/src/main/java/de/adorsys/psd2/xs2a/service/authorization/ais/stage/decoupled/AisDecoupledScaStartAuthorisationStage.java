@@ -107,6 +107,7 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
         }
 
         SpiResponse<SpiAuthorisationDecoupledScaResponse> authorisationDecoupledScaResponseSpiResponse = aisConsentSpi.startScaDecoupled(spiContextData, updateConsentPsuDataReq.getAuthorizationId(), null, spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(updateConsentPsuDataReq.getConsentId()));
+        aisConsentDataService.updateAspspConsentData(authorisationDecoupledScaResponseSpiResponse.getAspspConsentData());
 
         if (authorisationDecoupledScaResponseSpiResponse.hasError()) {
             MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(authorisationDecoupledScaResponseSpiResponse, ServiceType.AIS));

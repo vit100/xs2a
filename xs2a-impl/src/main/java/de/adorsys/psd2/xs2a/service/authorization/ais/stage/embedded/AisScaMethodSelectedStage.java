@@ -91,6 +91,7 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
             MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.AIS));
             return createFailedResponse(messageError, spiResponse.getMessages());
         }
+        aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         UpdateConsentPsuDataResponse response = new DecoupledUpdateConsentPsuDataResponse();
         response.setPsuMessage(spiResponse.getPayload().getPsuMessage());
