@@ -187,12 +187,6 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
         return spiScaMethods.size() > 1;
     }
 
-    private boolean isPsuExist(PsuIdData psuIdData) {
-        return Optional.ofNullable(psuIdData)
-                   .map(PsuIdData::isNotEmpty)
-                   .orElse(false);
-    }
-
     private PsuIdData extractPsuIdData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
         PsuIdData psuDataInRequest = request.getPsuData();
         if (isPsuExist(psuDataInRequest)) {
@@ -204,6 +198,12 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
                    .filter(StringUtils::isNotBlank)
                    .map(id -> new PsuIdData(id, null, null, null))
                    .orElse(psuDataInRequest);
+    }
+
+    private boolean isPsuExist(PsuIdData psuIdData) {
+        return Optional.ofNullable(psuIdData)
+                   .map(PsuIdData::isNotEmpty)
+                   .orElse(false);
     }
 
     private boolean isPsuDataCorrect(String paymentId, PsuIdData psuData) {

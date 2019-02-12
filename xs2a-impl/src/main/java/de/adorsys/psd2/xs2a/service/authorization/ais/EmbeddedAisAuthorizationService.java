@@ -59,14 +59,7 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
             return Optional.empty();
         }
 
-        boolean isPsuInConsent = isPsuExist(consent.getPsuData());
-        boolean isPsuInAuthorisation = isPsuExist(psuData);
-
-        ConsentAuthorizationResponseLinkType responseLinkType = isPsuInConsent || isPsuInAuthorisation
-                                                                    ? START_AUTHORISATION_WITH_PSU_AUTHENTICATION
-                                                                    : START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
-
-        PsuIdData psuDataAuthorization = isPsuInAuthorisation
+        PsuIdData psuDataAuthorization = isPsuExist(psuData)
                                              ? psuData
                                              : consent.getPsuData();
 
@@ -77,7 +70,7 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
                        resp.setConsentId(consentId);
                        resp.setAuthorizationId(authId);
                        resp.setScaStatus(ScaStatus.STARTED);
-                       resp.setResponseLinkType(responseLinkType);
+                       resp.setResponseLinkType(getResponseLinkType(consent.getPsuData(), psuData));
 
                        return resp;
                    });
@@ -150,10 +143,15 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
         return ScaApproach.EMBEDDED;
     }
 
+    private ConsentAuthorizationResponseLinkType getResponseLinkType(PsuIdData psuIdDataConsent, PsuIdData psuIdDataAuthorisation) {
+        return isPsuExist(psuIdDataConsent) || isPsuExist(psuIdDataAuthorisation)
+                   ? START_AUTHORISATION_WITH_PSU_AUTHENTICATION
+                   : START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
+    }
+
     private boolean isPsuExist(PsuIdData psuIdData) {
         return Optional.ofNullable(psuIdData)
                    .map(PsuIdData::isNotEmpty)
                    .orElse(false);
     }
-
 }
