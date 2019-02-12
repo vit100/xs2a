@@ -22,6 +22,7 @@ import de.adorsys.psd2.xs2a.domain.consent.*;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
 import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStage;
+import de.adorsys.psd2.xs2a.service.authorization.ais.CommonDecoupledAisService;
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
@@ -33,7 +34,6 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aAuthenticat
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationDecoupledScaResponse;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorizationCodeResult;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
@@ -45,6 +45,8 @@ import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLi
 public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> {
     private final SpiContextDataProvider spiContextDataProvider;
     private final ScaApproachResolver scaApproachResolver;
+    private final CommonDecoupledAisService commonDecoupledAisService;
+
 
     public AisScaMethodSelectedStage(Xs2aAisConsentService aisConsentService,
                                      AisConsentDataService aisConsentDataService,
@@ -55,10 +57,12 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
                                      SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper,
                                      SpiContextDataProvider spiContextDataProvider,
                                      SpiErrorMapper spiErrorMapper,
-                                     ScaApproachResolver scaApproachResolver) {
+                                     ScaApproachResolver scaApproachResolver,
+                                     CommonDecoupledAisService commonDecoupledAisService) {
         super(aisConsentService, aisConsentDataService, aisConsentSpi, aisConsentMapper, messageErrorCodeMapper, psuDataMapper, spiToXs2aAuthenticationObjectMapper, spiErrorMapper);
         this.spiContextDataProvider = spiContextDataProvider;
         this.scaApproachResolver = scaApproachResolver;
+        this.commonDecoupledAisService = commonDecoupledAisService;
     }
 
     /**
@@ -73,9 +77,11 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
     public UpdateConsentPsuDataResponse apply(UpdateConsentPsuDataReq request) {
         AccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
-        if (isDecoupledApproach(request.getAuthorizationId(), request.getAuthenticationMethodId())) {
+
+        String authenticationMethodId = request.getAuthenticationMethodId();
+        if (isDecoupledApproach(request.getAuthorizationId(), authenticationMethodId)) {
             scaApproachResolver.forceDecoupledScaApproach();
-            return proceedDecoupledApproach(request, spiAccountConsent);
+            return commonDecoupledAisService.proceedDecoupledApproach(request, spiAccountConsent, authenticationMethodId);
         }
 
         return proceedEmbeddedApproach(request, spiAccountConsent);
@@ -83,21 +89,6 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
 
     private boolean isDecoupledApproach(String authorisationId, String authenticationMethodId) {
         return aisConsentService.isAuthenticationMethodDecoupled(authorisationId, authenticationMethodId);
-    }
-
-    private UpdateConsentPsuDataResponse proceedDecoupledApproach(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent) {
-        SpiResponse<SpiAuthorisationDecoupledScaResponse> spiResponse = aisConsentSpi.startScaDecoupled(spiContextDataProvider.provideWithPsuIdData(request.getPsuData()), request.getAuthorizationId(), request.getAuthenticationMethodId(), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
-        if (spiResponse.hasError()) {
-            MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.AIS));
-            return createFailedResponse(messageError, spiResponse.getMessages());
-        }
-        aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
-
-        UpdateConsentPsuDataResponse response = new DecoupledUpdateConsentPsuDataResponse();
-        response.setPsuMessage(spiResponse.getPayload().getPsuMessage());
-        response.setScaStatus(ScaStatus.SCAMETHODSELECTED);
-        response.setChosenScaMethod(buildXs2aAuthenticationObjectForDecoupledApproach(request.getAuthenticationMethodId()));
-        return response;
     }
 
     private UpdateConsentPsuDataResponse proceedEmbeddedApproach(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent) {
@@ -120,12 +111,5 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
         response.setResponseLinkType(START_AUTHORISATION_WITH_TRANSACTION_AUTHORISATION);
         response.setChallengeData(challengeData);
         return response;
-    }
-
-    // Should ONLY be used for switching from Embedded to Decoupled approach during SCA method selection
-    private Xs2aAuthenticationObject buildXs2aAuthenticationObjectForDecoupledApproach(String authenticationMethodId) {
-        Xs2aAuthenticationObject xs2aAuthenticationObject = new Xs2aAuthenticationObject();
-        xs2aAuthenticationObject.setAuthenticationMethodId(authenticationMethodId);
-        return xs2aAuthenticationObject;
     }
 }
