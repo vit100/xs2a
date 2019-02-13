@@ -59,3 +59,8 @@ Support of content type `text/plain` is planned.
 
 ## Bugfix: added missing ais_consent fields
 Now while sending POST request to the `/v1/consents` endpoint the fields "availableAccounts" and "allPsd2" are persisted to the ais_consent table. Also they are available while calling the connector.
+
+## Bugfix: removed duplicated links in xs2a responses
+Previously in xs2a responses we had two blocks of links with the same content, but different namings (`links` and `_links`).
+Now xs2a interface provides only one block of links.
+
