@@ -61,7 +61,7 @@ public class EmbeddedPisScaAuthorisationService implements PisScaAuthorisationSe
 
     @Override
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updateCommonPaymentCancellationPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        return authorisationService.updatePisCancellationAuthorisation(request);
+        return authorisationService.updatePisCancellationAuthorisation(request, getScaApproachServiceType());
     }
 
     @Override
