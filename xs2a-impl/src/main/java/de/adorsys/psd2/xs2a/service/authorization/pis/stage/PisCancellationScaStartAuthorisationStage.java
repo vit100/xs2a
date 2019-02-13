@@ -63,6 +63,8 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
     private final SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper;
     private final PisPsuDataService pisPsuDataService;
 
+    private static final String MESSAGE_ERROR_NO_PSU = "Please provide the PSU identification data";
+
     public PisCancellationScaStartAuthorisationStage(PaymentCancellationSpi paymentCancellationSpi, PisAspspDataService pisAspspDataService, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper, SpiErrorMapper spiErrorMapper, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiContextDataProvider spiContextDataProvider, PisPsuDataService pisPsuDataService) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
         this.pisAspspDataService = pisAspspDataService;
@@ -86,7 +88,7 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
         if (!isPsuExist(request.getPsuData())) {
             ErrorHolder errorHolder = ErrorHolder.builder(MessageErrorCode.FORMAT_ERROR)
                                           .errorType(ErrorType.PIS_400)
-                                          .messages(Collections.singletonList("Please provide the PSU identification data"))
+                                          .messages(Collections.singletonList(MESSAGE_ERROR_NO_PSU))
                                           .build();
             return new Xs2aUpdatePisCommonPaymentPsuDataResponse(errorHolder);
         }
@@ -193,7 +195,7 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
             return psuDataInRequest;
         }
 
-        return pisCommonPaymentServiceEncrypted.getPisAuthorisationById(request.getAuthorisationId())
+        return pisCommonPaymentServiceEncrypted.getPisCancellationAuthorisationById(request.getAuthorisationId())
                    .map(GetPisAuthorisationResponse::getPsuId)
                    .filter(StringUtils::isNotBlank)
                    .map(id -> new PsuIdData(id, null, null, null))

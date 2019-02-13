@@ -17,6 +17,7 @@
 package de.adorsys.psd2.xs2a.service.authorization.ais.stage;
 
 import de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
@@ -58,7 +59,7 @@ public class AisScaIdentifiedAuthorisationStage extends AisScaStage<UpdateConsen
      */
     @Override
     public UpdateConsentPsuDataResponse apply(UpdateConsentPsuDataReq request) {
-        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + "STARTED");
+        AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> service = scaStageAuthorisationFactory.getService(SERVICE_PREFIX + ScaStatus.STARTED.name());
         return service.apply(request);
     }
 }

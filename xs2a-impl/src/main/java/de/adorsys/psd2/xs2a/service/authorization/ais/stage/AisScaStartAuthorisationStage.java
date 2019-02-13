@@ -61,6 +61,8 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
     private final SpiContextDataProvider spiContextDataProvider;
     private final AspspProfileServiceWrapper aspspProfileServiceWrapper;
 
+    private static final String MESSAGE_ERROR_NO_PSU = "Please provide the PSU identification data";
+
     public AisScaStartAuthorisationStage(Xs2aAisConsentService aisConsentService,
                                          AisConsentDataService aisConsentDataService,
                                          AisConsentSpi aisConsentSpi,
@@ -147,9 +149,8 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
 
     private UpdateConsentPsuDataResponse applyIdentification(UpdateConsentPsuDataReq request) {
         if (!isPsuExist(request.getPsuData())) {
-            String errorText = "Please provide the PSU identification data";
-            MessageError messageError = new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR, errorText));
-            return createFailedResponse(messageError, Collections.singletonList(errorText));
+            MessageError messageError = new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR, MESSAGE_ERROR_NO_PSU));
+            return createFailedResponse(messageError, Collections.singletonList(MESSAGE_ERROR_NO_PSU));
         }
 
         UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();

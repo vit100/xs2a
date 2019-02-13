@@ -43,7 +43,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -170,9 +169,8 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
             return false;
         }
 
-        if (Objects.nonNull(authorisation.getPsuData())) {
-            newPsuData.setId(authorisation.getPsuData().getId());
-        }
+        Optional.ofNullable(authorisation.getPsuData())
+            .ifPresent(psu -> newPsuData.setId(psu.getId()));
 
         authorisation.setPsuData(newPsuData);
         pisAuthorisationRepository.save(authorisation);

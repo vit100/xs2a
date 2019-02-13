@@ -92,6 +92,8 @@ public class PaymentService {
     private final SpiContextDataProvider spiContextDataProvider;
     private final StandardPaymentProductsResolver standardPaymentProductsResolver;
 
+    private static final String MESSAGE_ERROR_NO_PSU = "Please provide the PSU identification data";
+
     /**
      * Initiates a payment though "payment service" corresponding service method
      *
@@ -105,7 +107,7 @@ public class PaymentService {
         if (profileService.isPsuInInitialRequestMandated()
                 && paymentInitiationParameters.getPsuData().isEmpty()) {
             return ResponseObject.<CreateConsentResponse>builder()
-                       .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Please provide the PSU identification data")))
+                       .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, MESSAGE_ERROR_NO_PSU)))
                        .build();
         }
 

@@ -88,7 +88,7 @@ public class PisCommonPaymentServiceInternalTest {
     private static final String FINALISED_CANCELLATION_AUTHORISATION_ID = "2a112130-6a96-4941-a220-2da8a4af2c65";
     private static final String AUTHORISATION_ID = "ad746cb3-a01b-4196-a6b9-40b0e4cd2350";
     private static final String WRONG_AUTHORISATION_ID = "wrong authorisation id";
-    private static final ScaStatus SCA_STATUS = ScaStatus.RECEIVED;
+    private static final ScaStatus SCA_STATUS = ScaStatus.STARTED;
     private static final CmsAuthorisationType AUTHORISATION_TYPE = CmsAuthorisationType.CREATED;
 
     @Before

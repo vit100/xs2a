@@ -67,6 +67,8 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
     private final SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper;
     private final PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
 
+    private static final String MESSAGE_ERROR_NO_PSU = "Please provide the PSU identification data";
+
     public PisScaStartAuthorisationStage(PaymentAuthorisationSpi paymentAuthorisationSpi, PisAspspDataService pisAspspDataService, Xs2aUpdatePaymentStatusAfterSpiService updatePaymentStatusAfterSpiService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper, SpiErrorMapper spiErrorMapper, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiContextDataProvider spiContextDataProvider, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
         this.spiContextDataProvider = spiContextDataProvider;
@@ -158,7 +160,7 @@ public class PisScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisComm
         if (!isPsuExist(request.getPsuData())) {
             ErrorHolder errorHolder = ErrorHolder.builder(MessageErrorCode.FORMAT_ERROR)
                                           .errorType(ErrorType.PIS_400)
-                                          .messages(Collections.singletonList("Please provide the PSU identification data"))
+                                          .messages(Collections.singletonList(MESSAGE_ERROR_NO_PSU))
                                           .build();
             return new Xs2aUpdatePisCommonPaymentPsuDataResponse(errorHolder);
         }

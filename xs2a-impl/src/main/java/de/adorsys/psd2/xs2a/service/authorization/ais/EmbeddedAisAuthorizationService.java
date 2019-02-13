@@ -63,7 +63,7 @@ public class EmbeddedAisAuthorizationService implements AisAuthorizationService 
                                              ? psuData
                                              : consent.getPsuData();
 
-        return aisConsentService.createAisConsentAuthorization(consentId, ScaStatus.valueOf(ScaStatus.STARTED.name()), psuDataAuthorization)
+        return aisConsentService.createAisConsentAuthorization(consentId, ScaStatus.STARTED, psuDataAuthorization)
                    .map(authId -> {
                        CreateConsentAuthorizationResponse resp = new CreateConsentAuthorizationResponse();
 

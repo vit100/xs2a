@@ -40,7 +40,6 @@ public class PisScaIdentifiedAuthorisationStage extends PisScaStage<Xs2aUpdatePi
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisAuthorisationResponse pisAuthorisationResponse) {
         PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(SERVICE_PREFIX + "STARTED");
         return service.apply(request, pisAuthorisationResponse);

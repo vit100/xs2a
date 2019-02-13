@@ -81,6 +81,8 @@ public class ConsentService {
     private final ScaApproachResolver scaApproachResolver;
     private final AspspProfileServiceWrapper aspspProfileService;
 
+    private static final String MESSAGE_ERROR_NO_PSU = "Please provide the PSU identification data";
+
     /**
      * Performs create consent operation either by filling the appropriate AccountAccess fields with corresponding
      * account details or by getting account details from ASPSP by psuId and filling the appropriate fields in
@@ -95,7 +97,7 @@ public class ConsentService {
         if (aspspProfileService.isPsuInInitialRequestMandated()
                 && psuData.isEmpty()) {
             return ResponseObject.<CreateConsentResponse>builder()
-                       .fail(new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR, "Please provide the PSU identification data")))
+                       .fail(new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR, MESSAGE_ERROR_NO_PSU)))
                        .build();
         }
 
