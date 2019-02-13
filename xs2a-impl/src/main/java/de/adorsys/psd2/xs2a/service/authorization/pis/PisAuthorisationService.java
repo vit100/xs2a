@@ -56,7 +56,7 @@ public class PisAuthorisationService {
     }
 
     /**
-     * Updates PIS authorisation according to psu's sca methods with embedded SCA approach
+     * Updates PIS authorisation according to psu's sca methods with embedded and decoupled SCA approach
      *
      * @param request Provides transporting data when updating pis authorisation
      * @param scaApproach current SCA approach, preferred by the server
@@ -77,55 +77,13 @@ public class PisAuthorisationService {
     }
 
     /**
-     * Updates PIS authorisation according to psu's sca methods with decoupled SCA approach
-     *
-     * @param request Provides transporting data when updating pis authorisation
-     * @param scaApproach current SCA approach, preferred by the server
-     * @return update pis authorisation response, which contains payment id, authorisation id, sca status, psu message and links
-     */
-    public Xs2aUpdatePisCommonPaymentPsuDataResponse updateDecoupledPisAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, ScaApproach scaApproach) {
-        GetPisAuthorisationResponse response = pisCommonPaymentServiceEncrypted.getPisAuthorisationById(request.getAuthorisationId())
-                                                   .orElse(null);
-
-        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(PisScaStageAuthorisationFactory.INITIATION_PREFIX + PisScaStageAuthorisationFactory.SEPARATOR + scaApproach.name() + PisScaStageAuthorisationFactory.SEPARATOR + response.getScaStatus().name());
-        Xs2aUpdatePisCommonPaymentPsuDataResponse stageResponse = service.apply(request, response);
-
-        if (!stageResponse.hasError()) {
-            doUpdatePisAuthorisation(pisCommonPaymentMapper.mapToCmsUpdateCommonPaymentPsuDataReq(request, stageResponse));
-        }
-
-        return stageResponse;
-    }
-
-    /**
-     * Updates PIS cancellation authorisation according to psu's sca methods with embedded SCA approach
+     * Updates PIS cancellation authorisation according to psu's sca methods with embedded and decoupled SCA approach
      *
      * @param request Provides transporting data when updating pis cancellation authorisation
      * @param scaApproach current SCA approach, preferred by the server
      * @return update pis authorisation response, which contains payment id, authorisation id, sca status, psu message and links
      */
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updatePisCancellationAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, ScaApproach scaApproach) {
-        GetPisAuthorisationResponse response = pisCommonPaymentServiceEncrypted.getPisCancellationAuthorisationById(request.getAuthorisationId())
-                                                   .orElse(null);
-
-        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(PisScaStageAuthorisationFactory.CANCELLATION_PREFIX + PisScaStageAuthorisationFactory.SEPARATOR + scaApproach.name() + PisScaStageAuthorisationFactory.SEPARATOR + response.getScaStatus().name());
-        Xs2aUpdatePisCommonPaymentPsuDataResponse stageResponse = service.apply(request, response);
-
-        if (!stageResponse.hasError()) {
-            doUpdatePisCancellationAuthorisation(pisCommonPaymentMapper.mapToCmsUpdateCommonPaymentPsuDataReq(request, stageResponse));
-        }
-
-        return stageResponse;
-    }
-
-    /**
-     * Updates PIS cancellation authorisation according to psu's sca methods with decoupled SCA approach
-     *
-     * @param request Provides transporting data when updating pis cancellation authorisation
-     * @param scaApproach current SCA approach, preferred by the server
-     * @return update pis authorisation response, which contains payment id, authorisation id, sca status, psu message and links
-     */
-    public Xs2aUpdatePisCommonPaymentPsuDataResponse updateDecoupledPisCancellationAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, ScaApproach scaApproach) {
         GetPisAuthorisationResponse response = pisCommonPaymentServiceEncrypted.getPisCancellationAuthorisationById(request.getAuthorisationId())
                                                    .orElse(null);
 

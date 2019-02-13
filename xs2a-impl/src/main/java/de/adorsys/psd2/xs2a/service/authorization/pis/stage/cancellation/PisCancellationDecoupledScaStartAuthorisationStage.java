@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
+package de.adorsys.psd2.xs2a.service.authorization.pis.stage.cancellation;
 
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
@@ -22,34 +22,35 @@ import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
+import de.adorsys.psd2.xs2a.service.authorization.pis.PisCommonDecoupledService;
+import de.adorsys.psd2.xs2a.service.authorization.pis.stage.PisScaStage;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.*;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
-import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationDecoupledScaResponse;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
-import de.adorsys.psd2.xs2a.spi.service.PaymentAuthorisationSpi;
+import de.adorsys.psd2.xs2a.spi.service.PaymentCancellationSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import org.springframework.stereotype.Service;
 
-import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.SCAMETHODSELECTED;
-
-@Service("PIS_DECOUPLED_STARTED")
-public class PisDecoupledScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
-    private final PaymentAuthorisationSpi paymentAuthorisationSpi;
+@Service("PIS_CANCELLATION_DECOUPLED_STARTED")
+public class PisCancellationDecoupledScaStartAuthorisationStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
+    private final PaymentCancellationSpi paymentCancellationSpi;
     private final PisAspspDataService pisAspspDataService;
+    private final PisCommonDecoupledService pisCommonDecoupledService;
     private final SpiContextDataProvider spiContextDataProvider;
     private final Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper;
     private final SpiErrorMapper spiErrorMapper;
 
-    public PisDecoupledScaStartAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, PaymentAuthorisationSpi paymentAuthorisationSpi, PisAspspDataService pisAspspDataService, SpiContextDataProvider spiContextDataProvider, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiErrorMapper spiErrorMapper) {
+    public PisCancellationDecoupledScaStartAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, PaymentCancellationSpi paymentCancellationSpi, PisAspspDataService pisAspspDataService, PisCommonDecoupledService pisCommonDecoupledService, SpiContextDataProvider spiContextDataProvider, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiErrorMapper spiErrorMapper) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper, pisCommonPaymentServiceEncrypted);
-        this.paymentAuthorisationSpi = paymentAuthorisationSpi;
+        this.paymentCancellationSpi = paymentCancellationSpi;
         this.pisAspspDataService = pisAspspDataService;
+        this.pisCommonDecoupledService = pisCommonDecoupledService;
         this.spiContextDataProvider = spiContextDataProvider;
         this.xs2aToSpiPsuDataMapper = xs2aToSpiPsuDataMapper;
         this.spiErrorMapper = spiErrorMapper;
@@ -66,7 +67,7 @@ public class PisDecoupledScaStartAuthorisationStage extends PisScaStage<Xs2aUpda
         SpiPsuData psuData = xs2aToSpiPsuDataMapper.mapToSpiPsuData(request.getPsuData());
         SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(request.getPsuData());
 
-        SpiResponse<SpiAuthorisationStatus> authPsuResponse = paymentAuthorisationSpi.authorisePsu(contextData, psuData, request.getPassword(), payment, aspspConsentData);
+        SpiResponse<SpiAuthorisationStatus> authPsuResponse = paymentCancellationSpi.authorisePsu(contextData, psuData, request.getPassword(), payment, aspspConsentData);
         aspspConsentData = authPsuResponse.getAspspConsentData();
         pisAspspDataService.updateAspspConsentData(aspspConsentData);
 
@@ -74,15 +75,7 @@ public class PisDecoupledScaStartAuthorisationStage extends PisScaStage<Xs2aUpda
             return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(authPsuResponse, ServiceType.PIS));
         }
 
-        SpiResponse<SpiAuthorisationDecoupledScaResponse> spiResponse = paymentAuthorisationSpi.startScaDecoupled(contextData, request.getAuthorisationId(), null, payment, aspspConsentData);
-        pisAspspDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
-
-        if (spiResponse.hasError()) {
-            return new Xs2aUpdatePisCommonPaymentPsuDataResponse(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS));
-        }
-
-        Xs2aUpdatePisCommonPaymentPsuDataResponse response = new Xs2aUpdatePisCommonPaymentPsuDataResponse(SCAMETHODSELECTED);
-        response.setPsuMessage(spiResponse.getPayload().getPsuMessage());
-        return response;
+        return pisCommonDecoupledService.proceedDecoupledCancellation(request, payment);
     }
 }
+

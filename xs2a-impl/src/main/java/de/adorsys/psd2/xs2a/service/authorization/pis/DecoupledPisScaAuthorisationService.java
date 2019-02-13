@@ -45,7 +45,7 @@ public class DecoupledPisScaAuthorisationService implements PisScaAuthorisationS
 
     @Override
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updateCommonPaymentPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        return authorisationService.updateDecoupledPisAuthorisation(request, getScaApproachServiceType());
+        return authorisationService.updatePisAuthorisation(request, getScaApproachServiceType());
     }
 
     @Override
@@ -61,7 +61,7 @@ public class DecoupledPisScaAuthorisationService implements PisScaAuthorisationS
 
     @Override
     public Xs2aUpdatePisCommonPaymentPsuDataResponse updateCommonPaymentCancellationPsuData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        return authorisationService.updateDecoupledPisCancellationAuthorisation(request, getScaApproachServiceType());
+        return authorisationService.updatePisCancellationAuthorisation(request, getScaApproachServiceType());
     }
 
     @Override

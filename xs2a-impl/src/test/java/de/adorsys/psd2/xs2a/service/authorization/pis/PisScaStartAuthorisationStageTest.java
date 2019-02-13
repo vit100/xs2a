@@ -22,7 +22,7 @@ import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
-import de.adorsys.psd2.xs2a.service.authorization.pis.stage.PisScaStartAuthorisationStage;
+import de.adorsys.psd2.xs2a.service.authorization.pis.stage.initiation.PisScaStartAuthorisationStage;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType;
 import org.junit.Test;
 import org.junit.runner.RunWith;

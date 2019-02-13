@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
+package de.adorsys.psd2.xs2a.service.authorization.pis.stage.initiation;
 
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
@@ -24,6 +24,7 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
+import de.adorsys.psd2.xs2a.service.authorization.pis.stage.PisScaStage;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
@@ -48,9 +49,9 @@ import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.FINALISED;
 public class PisScaMethodSelectedStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final PisAspspDataService pisAspspDataService;
     private final Xs2aUpdatePaymentStatusAfterSpiService updatePaymentStatusAfterSpiService;
+    private final SpiContextDataProvider spiContextDataProvider;
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper;
-    private final SpiContextDataProvider spiContextDataProvider;
 
     public PisScaMethodSelectedStage(PisAspspDataService pisAspspDataService, Xs2aUpdatePaymentStatusAfterSpiService updatePaymentStatusAfterSpiService, CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, Xs2aPisCommonPaymentMapper xs2aPisCommonPaymentMapper, SpiErrorMapper spiErrorMapper, SpiContextDataProvider spiContextDataProvider, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper, pisCommonPaymentServiceEncrypted);
