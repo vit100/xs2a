@@ -402,6 +402,86 @@ public class PaymentControllerTest {
         assertThat(actual.getStatusCode()).isEqualTo(FORBIDDEN);
     }
 
+    @Test
+    public void getPaymentInitiationCancellationAuthorisationInformationClassCheck_success() {
+        when(consentModelMapper.mapToCancellationList(any()))
+            .thenCallRealMethod();
+
+        when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(CORRECT_PAYMENT_ID))
+            .thenReturn(getCancellationResponseList(Collections.singletonList(CORRECT_PAYMENT_ID)));
+
+        when(responseMapper.ok(any()))
+            .thenCallRealMethod();
+
+        // When
+        ResponseEntity actual = paymentController.getPaymentInitiationCancellationAuthorisationInformation(null, null, CORRECT_PAYMENT_ID,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        // Then
+        assertThat(actual.getStatusCode()).isEqualTo(OK);
+        assertTrue(actual.getBody() instanceof CancellationList);
+    }
+
+    @Test
+    public void getPaymentInitiationCancellationAuthorisationInformation_success() {
+        when(consentModelMapper.mapToCancellationList(any()))
+            .thenCallRealMethod();
+
+        when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(CORRECT_PAYMENT_ID))
+            .thenReturn(getCancellationResponseList(Collections.singletonList(CORRECT_PAYMENT_ID)));
+
+        when(responseMapper.ok(any()))
+            .thenCallRealMethod();
+
+        // When
+        ResponseEntity actual = paymentController.getPaymentInitiationCancellationAuthorisationInformation(null, null, CORRECT_PAYMENT_ID,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        // Then
+        assertThat(actual.getStatusCode()).isEqualTo(OK);
+        assertThat(((CancellationList) actual.getBody()).size()).isEqualTo(1);
+    }
+
+    @Test
+    public void getPaymentInitiationCancellationAuthorisationInformationManyIds_success() {
+        when(consentModelMapper.mapToCancellationList(any()))
+            .thenCallRealMethod();
+
+        when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(CORRECT_PAYMENT_ID))
+            .thenReturn(getCancellationResponseList(Arrays.asList(CORRECT_PAYMENT_ID, CORRECT_PAYMENT_ID_2)));
+
+        when(responseMapper.ok(any()))
+            .thenCallRealMethod();
+
+        // When
+        ResponseEntity actual = paymentController.getPaymentInitiationCancellationAuthorisationInformation(null, null, CORRECT_PAYMENT_ID,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        // Then
+        assertThat(((CancellationList) actual.getBody()).size()).isEqualTo(2);
+    }
+
+
+    @Test
+    public void getPaymentInitiationCancellationAuthorisationInformationWithNull_success() {
+        when(consentModelMapper.mapToCancellationList(any()))
+            .thenCallRealMethod();
+
+        when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(anyString()))
+            .thenReturn(getCancellationResponseNullList());
+
+        when(responseMapper.ok(any()))
+            .thenCallRealMethod();
+
+        // When
+        ResponseEntity actual = paymentController.getPaymentInitiationCancellationAuthorisationInformation(null, null, CORRECT_PAYMENT_ID,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        // Then
+        assertThat(actual.getStatusCode()).isEqualTo(OK);
+        assertTrue(((CancellationList) actual.getBody()).isEmpty());
+    }
+
     private ResponseObject<CancelPaymentResponse> getCancelPaymentResponseObject(boolean startAuthorisationRequired) {
         CancelPaymentResponse response = new CancelPaymentResponse();
         response.setStartAuthorisationRequired(startAuthorisationRequired);

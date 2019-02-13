@@ -17,7 +17,6 @@
 package de.adorsys.psd2.xs2a.web.controller;
 
 import de.adorsys.psd2.api.PaymentApi;
-import de.adorsys.psd2.model.CancellationList;
 import de.adorsys.psd2.model.PaymentInitiationCancelResponse204202;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
