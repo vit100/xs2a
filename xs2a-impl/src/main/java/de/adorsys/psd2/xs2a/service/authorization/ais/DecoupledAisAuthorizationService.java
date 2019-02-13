@@ -28,10 +28,12 @@ import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SEPARATOR;
 import static de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory.SERVICE_PREFIX;
+import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_AUTHENTICATION;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
 
 @Service
@@ -51,14 +53,23 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
      */
     @Override
     public Optional<CreateConsentAuthorizationResponse> createConsentAuthorization(PsuIdData psuData, String consentId) {
-        return aisConsentService.createAisConsentAuthorization(consentId, ScaStatus.valueOf(ScaStatus.STARTED.name()), psuData)
+        AccountConsent consent = aisConsentService.getAccountConsentById(consentId);
+        if (Objects.isNull(consent)) {
+            return Optional.empty();
+        }
+
+        PsuIdData psuDataAuthorization = isPsuExist(psuData)
+                                             ? psuData
+                                             : consent.getPsuData();
+
+        return aisConsentService.createAisConsentAuthorization(consentId, ScaStatus.valueOf(ScaStatus.STARTED.name()), psuDataAuthorization)
                    .map(authId -> {
                        CreateConsentAuthorizationResponse resp = new CreateConsentAuthorizationResponse();
 
                        resp.setConsentId(consentId);
                        resp.setAuthorizationId(authId);
                        resp.setScaStatus(ScaStatus.STARTED);
-                       resp.setResponseLinkType(START_AUTHORISATION_WITH_PSU_IDENTIFICATION);
+                       resp.setResponseLinkType(getResponseLinkType(consent.getPsuData(), psuData));
 
                        return resp;
                    });
@@ -129,5 +140,17 @@ public class DecoupledAisAuthorizationService implements AisAuthorizationService
     @Override
     public ScaApproach getScaApproachServiceType() {
         return ScaApproach.DECOUPLED;
+    }
+
+    private ConsentAuthorizationResponseLinkType getResponseLinkType(PsuIdData psuIdDataConsent, PsuIdData psuIdDataAuthorisation) {
+        return isPsuExist(psuIdDataConsent) || isPsuExist(psuIdDataAuthorisation)
+                   ? START_AUTHORISATION_WITH_PSU_AUTHENTICATION
+                   : START_AUTHORISATION_WITH_PSU_IDENTIFICATION;
+    }
+
+    private boolean isPsuExist(PsuIdData psuIdData) {
+        return Optional.ofNullable(psuIdData)
+                   .map(PsuIdData::isNotEmpty)
+                   .orElse(false);
     }
 }

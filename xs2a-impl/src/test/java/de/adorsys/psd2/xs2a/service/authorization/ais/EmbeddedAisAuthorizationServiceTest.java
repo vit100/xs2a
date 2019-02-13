@@ -20,11 +20,6 @@ import de.adorsys.psd2.xs2a.config.factory.AisScaStageAuthorisationFactory;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.consent.*;
-import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStartAuthorisationStage;
-import de.adorsys.psd2.xs2a.domain.consent.AccountConsentAuthorization;
-import de.adorsys.psd2.xs2a.domain.consent.CreateConsentAuthorizationResponse;
-import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
-import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.service.authorization.ais.stage.embedded.AisScaStartAuthorisationStage;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
@@ -44,6 +39,7 @@ import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLi
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmbeddedAisAuthorizationServiceTest {

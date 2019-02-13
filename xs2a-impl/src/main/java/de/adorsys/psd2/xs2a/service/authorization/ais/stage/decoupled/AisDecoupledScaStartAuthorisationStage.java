@@ -23,6 +23,7 @@ import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
+import de.adorsys.psd2.xs2a.domain.consent.AccountConsentAuthorization;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.exception.MessageCategory;
@@ -46,10 +47,18 @@ import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.Optional;
+
+import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_AUTHENTICATION;
 
 @Service("AIS_DECOUPLED_STARTED")
 public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuDataReq, UpdateConsentPsuDataResponse> {
+    private static final String MESSAGE_ERROR_NO_PSU = "Please provide the PSU identification data";
+
     private final SpiContextDataProvider spiContextDataProvider;
     private final AspspProfileServiceWrapper aspspProfileServiceWrapper;
     private final CommonDecoupledAisService commonDecoupledAisService;
@@ -73,9 +82,16 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
 
     @Override
     public UpdateConsentPsuDataResponse apply(UpdateConsentPsuDataReq updateConsentPsuDataReq) {
+        return updateConsentPsuDataReq.isUpdatePsuIdentification()
+                   ? applyIdentification(updateConsentPsuDataReq)
+                   : applyAuthorisation(updateConsentPsuDataReq);
+    }
+
+    private UpdateConsentPsuDataResponse applyAuthorisation(UpdateConsentPsuDataReq updateConsentPsuDataReq) {
         AccountConsent accountConsent = aisConsentService.getAccountConsentById(updateConsentPsuDataReq.getConsentId());
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
-        PsuIdData psuData = updateConsentPsuDataReq.getPsuData();
+        PsuIdData psuData = extractPsuIdData(updateConsentPsuDataReq);
+
 
         SpiContextData spiContextData = spiContextDataProvider.provideWithPsuIdData(psuData);
         SpiPsuData spiPsuData = psuDataMapper.mapToSpiPsuData(psuData);
@@ -111,5 +127,38 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
         }
 
         return commonDecoupledAisService.proceedDecoupledApproach(updateConsentPsuDataReq, spiAccountConsent);
+    }
+
+    private UpdateConsentPsuDataResponse applyIdentification(UpdateConsentPsuDataReq request) {
+        if (!isPsuExist(request.getPsuData())) {
+            MessageError messageError = new MessageError(ErrorType.AIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR, MESSAGE_ERROR_NO_PSU));
+            return createFailedResponse(messageError, Collections.singletonList(MESSAGE_ERROR_NO_PSU));
+        }
+
+        UpdateConsentPsuDataResponse response = new UpdateConsentPsuDataResponse();
+        response.setPsuId(request.getPsuData().getPsuId());
+        response.setScaStatus(ScaStatus.PSUIDENTIFIED);
+        response.setResponseLinkType(START_AUTHORISATION_WITH_PSU_AUTHENTICATION);
+
+        return response;
+    }
+
+    private PsuIdData extractPsuIdData(UpdateConsentPsuDataReq request) {
+        PsuIdData psuDataInRequest = request.getPsuData();
+        if (isPsuExist(psuDataInRequest)) {
+            return psuDataInRequest;
+        }
+
+        return Optional.ofNullable(aisConsentService.getAccountConsentAuthorizationById(request.getAuthorizationId(), request.getConsentId()))
+                   .map(AccountConsentAuthorization::getPsuId)
+                   .filter(StringUtils::isNotBlank)
+                   .map(id -> new PsuIdData(id, null, null, null))
+                   .orElse(psuDataInRequest);
+    }
+
+    private boolean isPsuExist(PsuIdData psuIdData) {
+        return Optional.ofNullable(psuIdData)
+                   .map(PsuIdData::isNotEmpty)
+                   .orElse(false);
     }
 }

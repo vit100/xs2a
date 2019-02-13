@@ -22,7 +22,9 @@ import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
+import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
+import de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.service.authorization.ais.CommonDecoupledAisService;
@@ -179,6 +181,35 @@ public class AisDecoupledScaStartAuthorisationStageTest {
 
         assertThat(actualResponse).isNotNull();
         verify(commonDecoupledAisService).proceedDecoupledApproach(request, spiAccountConsent);
+    }
+
+    @Test
+    public void apply_Identification_Success() {
+        //Given
+        when(request.isUpdatePsuIdentification()).thenReturn(true);
+        when(request.getPsuData()).thenReturn(PSU_ID_DATA);
+
+        //When
+        UpdateConsentPsuDataResponse actualResponse = scaStartAuthorisationStage.apply(request);
+
+        //Then
+        assertThat(actualResponse.getScaStatus()).isEqualTo(ScaStatus.PSUIDENTIFIED);
+        assertThat(actualResponse.getResponseLinkType()).isEqualTo(ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_AUTHENTICATION);
+    }
+
+    @Test
+    public void apply_Identification_Failure() {
+        //Given
+        when(request.isUpdatePsuIdentification()).thenReturn(true);
+        when(request.getPsuData()).thenReturn(null);
+
+        //When
+        UpdateConsentPsuDataResponse actualResponse = scaStartAuthorisationStage.apply(request);
+
+        //Then
+        assertThat(actualResponse.getScaStatus()).isEqualTo(ScaStatus.FAILED);
+        assertThat(actualResponse.getMessageError().getErrorType()).isEqualTo(ErrorType.AIS_400);
+        assertThat(actualResponse.getMessageError().getTppMessage().getMessageErrorCode()).isEqualTo(MessageErrorCode.FORMAT_ERROR);
     }
 
     // Needed because SpiResponse is final, so it's impossible to mock it
