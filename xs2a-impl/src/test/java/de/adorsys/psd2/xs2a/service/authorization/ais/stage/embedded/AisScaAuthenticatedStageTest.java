@@ -53,6 +53,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_AUTHENTICATION_METHOD_SELECTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -113,7 +114,7 @@ public class AisScaAuthenticatedStageTest {
         when(psuDataMapper.mapToSpiPsuData(any(PsuIdData.class)))
             .thenReturn(SPI_PSU_DATA);
 
-        when(aisConsentMapper.mapToSpiScaConfirmation(request))
+        when(aisConsentMapper.mapToSpiScaConfirmation(eq(request), any()))
             .thenReturn(scaConfirmation);
 
         when(aisConsentMapper.mapToSpiAccountConsent(accountConsent))

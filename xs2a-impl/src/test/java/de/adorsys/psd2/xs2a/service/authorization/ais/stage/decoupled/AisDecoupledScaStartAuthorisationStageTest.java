@@ -174,13 +174,13 @@ public class AisDecoupledScaStartAuthorisationStageTest {
         when(aisConsentSpi.startScaDecoupled(SPI_CONTEXT_DATA, AUTHORISATION_ID, null, spiAccountConsent, ASPSP_CONSENT_DATA))
             .thenReturn(buildSuccessSpiResponse(new SpiAuthorisationDecoupledScaResponse(PSU_SUCCESS_MESSAGE)));
 
-        when(commonDecoupledAisService.proceedDecoupledApproach(request, spiAccountConsent))
+        when(commonDecoupledAisService.proceedDecoupledApproach(eq(request), eq(spiAccountConsent), any(PsuIdData.class)))
             .thenReturn(buildUpdateConsentPsuDataResponse());
 
         UpdateConsentPsuDataResponse actualResponse = scaStartAuthorisationStage.apply(request);
 
         assertThat(actualResponse).isNotNull();
-        verify(commonDecoupledAisService).proceedDecoupledApproach(request, spiAccountConsent);
+        verify(commonDecoupledAisService).proceedDecoupledApproach(eq(request), eq(spiAccountConsent), any(PsuIdData.class));
     }
 
     @Test

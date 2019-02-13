@@ -167,7 +167,7 @@ public class AisScaMethodSelectedStageTest {
             .thenReturn(buildSuccessSpiResponse(buildSpiAuthorizationCodeResult()));
         when(aisConsentService.isAuthenticationMethodDecoupled(anyString(), anyString()))
             .thenReturn(true);
-        when(commonDecoupledAisService.proceedDecoupledApproach(any(), any(), eq(AUTHENTICATION_METHOD_ID)))
+        when(commonDecoupledAisService.proceedDecoupledApproach(any(), any(), eq(AUTHENTICATION_METHOD_ID), any()))
             .thenReturn(buildUpdateConsentPsuDataResponse());
 
         UpdateConsentPsuDataResponse actualResponse = scaMethodSelectedStage.apply(request);
@@ -175,7 +175,7 @@ public class AisScaMethodSelectedStageTest {
         assertThat(actualResponse).isNotNull();
         assertThat(actualResponse.getPsuMessage()).isEqualTo(PSU_SUCCESS_MESSAGE);
         assertThat(actualResponse.getScaStatus()).isEqualTo(METHOD_SELECTED_SCA_STATUS);
-        verify(commonDecoupledAisService).proceedDecoupledApproach(request, spiAccountConsent, AUTHENTICATION_METHOD_ID);
+        verify(commonDecoupledAisService).proceedDecoupledApproach(eq(request), eq(spiAccountConsent), eq(AUTHENTICATION_METHOD_ID), any());
     }
 
     @Test

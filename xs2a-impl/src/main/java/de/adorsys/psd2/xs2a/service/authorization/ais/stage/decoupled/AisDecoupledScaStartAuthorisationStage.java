@@ -23,7 +23,6 @@ import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
-import de.adorsys.psd2.xs2a.domain.consent.AccountConsentAuthorization;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.exception.MessageCategory;
@@ -47,11 +46,9 @@ import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthorisationStatus;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.START_AUTHORISATION_WITH_PSU_AUTHENTICATION;
 
@@ -126,7 +123,7 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
             return response;
         }
 
-        return commonDecoupledAisService.proceedDecoupledApproach(updateConsentPsuDataReq, spiAccountConsent);
+        return commonDecoupledAisService.proceedDecoupledApproach(updateConsentPsuDataReq, spiAccountConsent, psuData);
     }
 
     private UpdateConsentPsuDataResponse applyIdentification(UpdateConsentPsuDataReq request) {
@@ -141,24 +138,5 @@ public class AisDecoupledScaStartAuthorisationStage extends AisScaStage<UpdateCo
         response.setResponseLinkType(START_AUTHORISATION_WITH_PSU_AUTHENTICATION);
 
         return response;
-    }
-
-    private PsuIdData extractPsuIdData(UpdateConsentPsuDataReq request) {
-        PsuIdData psuDataInRequest = request.getPsuData();
-        if (isPsuExist(psuDataInRequest)) {
-            return psuDataInRequest;
-        }
-
-        return Optional.ofNullable(aisConsentService.getAccountConsentAuthorizationById(request.getAuthorizationId(), request.getConsentId()))
-                   .map(AccountConsentAuthorization::getPsuId)
-                   .filter(StringUtils::isNotBlank)
-                   .map(id -> new PsuIdData(id, null, null, null))
-                   .orElse(psuDataInRequest);
-    }
-
-    private boolean isPsuExist(PsuIdData psuIdData) {
-        return Optional.ofNullable(psuIdData)
-                   .map(PsuIdData::isNotEmpty)
-                   .orElse(false);
     }
 }

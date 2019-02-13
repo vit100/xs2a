@@ -147,7 +147,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
             if (availableScaMethods.size() > 1) {
                 return createResponseForMultipleAvailableMethods(psuData, availableScaMethods);
             } else {
-                return createResponseForOneAvailableMethod(request, spiAccountConsent, availableScaMethods.get(0));
+                return createResponseForOneAvailableMethod(request, spiAccountConsent, availableScaMethods.get(0), psuData);
             }
         } else {
             aisConsentService.updateConsentStatus(request.getConsentId(), ConsentStatus.REJECTED);
@@ -180,10 +180,10 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         return response;
     }
 
-    private UpdateConsentPsuDataResponse createResponseForOneAvailableMethod(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent, SpiAuthenticationObject scaMethod) {
+    private UpdateConsentPsuDataResponse createResponseForOneAvailableMethod(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent, SpiAuthenticationObject scaMethod, PsuIdData psuData) {
         if (scaMethod.isDecoupled()) {
             scaApproachResolver.forceDecoupledScaApproach();
-            return commonDecoupledAisService.proceedDecoupledApproach(request, spiAccountConsent, scaMethod.getAuthenticationMethodId());
+            return commonDecoupledAisService.proceedDecoupledApproach(request, spiAccountConsent, scaMethod.getAuthenticationMethodId(), psuData);
         }
 
         return proceedEmbeddedScaApproach(request, spiAccountConsent, scaMethod);
