@@ -76,3 +76,11 @@ By default `spring-boot-1.5.x-support` is used.
 Previously in xs2a responses we had two blocks of links with the same content, but different namings (`links` and `_links`).
 Now xs2a interface provides only one block of links.
 
+## Implemented Decoupled SCA approach
+From now on XS2A supports Decoupled SCA approach for authorising account consents, payments and payment cancellations.
+It occurs in the following cases:
+ * if `DECOUPLED` SCA approach was chosen by ASPSP
+ * during the `EMBEDDED` SCA approach if decoupled SCA method was chosen by PSU during selection of SCA methods
+
+New method `de.adorsys.psd2.xs2a.spi.service.AuthorisationSpi#startScaDecoupled` was added to the SPI interface to be implemented by SPI developers.
+The response of this method should contain the message, shown to the PSU, containing recommendation to proceed the authorisation via the dedicated mobile app.
