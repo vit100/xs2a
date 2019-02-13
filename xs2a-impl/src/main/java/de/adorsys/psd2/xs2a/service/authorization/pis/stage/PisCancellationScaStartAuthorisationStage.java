@@ -48,12 +48,10 @@ import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.PaymentCancellationSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.*;
 
@@ -115,7 +113,7 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
     }
 
     private Xs2aUpdatePisCommonPaymentPsuDataResponse applyAuthorisation(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisAuthorisationResponse pisAuthorisationResponse) {
-        PsuIdData psuData = extractPsuIdData(request);
+        PsuIdData psuData = extractPsuIdData(request, true);
 
         PaymentType paymentType = pisAuthorisationResponse.getPaymentType();
         String paymentProduct = pisAuthorisationResponse.getPaymentProduct();
@@ -222,25 +220,6 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
 
     private boolean isMultipleScaMethods(List<SpiAuthenticationObject> spiScaMethods) {
         return spiScaMethods.size() > 1;
-    }
-
-    private PsuIdData extractPsuIdData(Xs2aUpdatePisCommonPaymentPsuDataRequest request) {
-        PsuIdData psuDataInRequest = request.getPsuData();
-        if (isPsuExist(psuDataInRequest)) {
-            return psuDataInRequest;
-        }
-
-        return pisCommonPaymentServiceEncrypted.getPisCancellationAuthorisationById(request.getAuthorisationId())
-                   .map(GetPisAuthorisationResponse::getPsuId)
-                   .filter(StringUtils::isNotBlank)
-                   .map(id -> new PsuIdData(id, null, null, null))
-                   .orElse(psuDataInRequest);
-    }
-
-    private boolean isPsuExist(PsuIdData psuIdData) {
-        return Optional.ofNullable(psuIdData)
-                   .map(PsuIdData::isNotEmpty)
-                   .orElse(false);
     }
 
     private boolean isPsuDataCorrect(String paymentId, PsuIdData psuData) {
