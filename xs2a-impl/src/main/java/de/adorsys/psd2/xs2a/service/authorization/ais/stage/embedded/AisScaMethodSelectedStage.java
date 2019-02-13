@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.service.authorization.ais.stage.embedded;
 
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.consent.*;
@@ -75,24 +76,25 @@ public class AisScaMethodSelectedStage extends AisScaStage<UpdateConsentPsuDataR
      */
     @Override
     public UpdateConsentPsuDataResponse apply(UpdateConsentPsuDataReq request) {
+        PsuIdData psuData = extractPsuIdData(request);
         AccountConsent accountConsent = aisConsentService.getAccountConsentById(request.getConsentId());
         SpiAccountConsent spiAccountConsent = aisConsentMapper.mapToSpiAccountConsent(accountConsent);
 
         String authenticationMethodId = request.getAuthenticationMethodId();
         if (isDecoupledApproach(request.getAuthorizationId(), authenticationMethodId)) {
             scaApproachResolver.forceDecoupledScaApproach();
-            return commonDecoupledAisService.proceedDecoupledApproach(request, spiAccountConsent, authenticationMethodId);
+            return commonDecoupledAisService.proceedDecoupledApproach(request, spiAccountConsent, authenticationMethodId, psuData);
         }
 
-        return proceedEmbeddedApproach(request, spiAccountConsent);
+        return proceedEmbeddedApproach(request, spiAccountConsent, psuData);
     }
 
     private boolean isDecoupledApproach(String authorisationId, String authenticationMethodId) {
         return aisConsentService.isAuthenticationMethodDecoupled(authorisationId, authenticationMethodId);
     }
 
-    private UpdateConsentPsuDataResponse proceedEmbeddedApproach(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent) {
-        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(spiContextDataProvider.provideWithPsuIdData(request.getPsuData()), request.getAuthenticationMethodId(), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
+    private UpdateConsentPsuDataResponse proceedEmbeddedApproach(UpdateConsentPsuDataReq request, SpiAccountConsent spiAccountConsent, PsuIdData psuData) {
+        SpiResponse<SpiAuthorizationCodeResult> spiResponse = aisConsentSpi.requestAuthorisationCode(spiContextDataProvider.provideWithPsuIdData(psuData), request.getAuthenticationMethodId(), spiAccountConsent, aisConsentDataService.getAspspConsentDataByConsentId(request.getConsentId()));
         aisConsentDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {

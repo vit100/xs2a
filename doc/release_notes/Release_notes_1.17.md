@@ -76,6 +76,21 @@ By default `spring-boot-1.5.x-support` is used.
 Previously in xs2a responses we had two blocks of links with the same content, but different namings (`links` and `_links`).
 Now xs2a interface provides only one block of links.
 
+## Implement interface for exporting PIIS consents from CMS to ASPSP
+Provided implementation for Java interface `de.adorsys.psd2.consent.aspsp.api.piis.CmsAspspPiisFundsExportService` 
+that allows exporting PIIS consents by ASPSP account id, TPP ID and PSU ID Data.
+
+From now on these endpoints are fully functional:
+
+| Method | Endpoint                                         | Description                                                                                               |
+|--------|--------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| GET    | /aspsp-api/v1/piis/consents/account/{account-id} | Returns a list of consents by given mandatory aspsp account id, optional creation date and instance ID    |
+| GET    | /aspsp-api/v1/piis/consents/psu                  | Returns a list of consents by given mandatory PSU ID Data, optional creation date and instance ID         |
+| GET    | /aspsp-api/v1/piis/consents/tpp/{tpp-id}         | Returns a list of consents by given mandatory TPP ID, optional creation date, PSU ID Data and instance ID |
+
+## Bugfix: fix instanceId not being set in the CMS that doesn't have any pre-insert listeners
+From now on `instanceId` property will be correctly set to its default value(`UNDEFINED`) when the CMS doesn't have any pre-insert listeners to override this property. 
+
 ## Implemented Decoupled SCA approach
 From now on XS2A supports Decoupled SCA approach for authorising account consents, payments and payment cancellations.
 It occurs in the following cases:
