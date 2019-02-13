@@ -19,9 +19,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet author="ssh@adorsys.com.ua" id="2019-02-07-1">
-        <comment>Create table ais_auth_available_sca_method</comment>
+        <comment>Create table ais_available_sca_method</comment>
 
-        <createTable tableName="ais_auth_available_sca_method">
+        <createTable tableName="ais_available_sca_method">
             <column name="authentication_method_id" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -33,7 +33,7 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="authorisation_id" baseTableName="ais_auth_available_sca_method"
+        <addForeignKeyConstraint baseColumnNames="authorisation_id" baseTableName="ais_available_sca_method"
                                  constraintName="fk_avail_sca_ais_cons_auth"
                                  referencedColumnNames="authorization_id"
                                  referencedTableName="ais_consent_authorization"/>

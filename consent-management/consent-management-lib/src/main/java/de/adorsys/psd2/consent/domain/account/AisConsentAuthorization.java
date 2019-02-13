@@ -61,7 +61,7 @@ public class AisConsentAuthorization extends InstanceDependableEntity {
     private OffsetDateTime redirectUrlExpirationTimestamp;
 
     @ElementCollection
-    @CollectionTable(name = "ais_auth_available_sca_method", joinColumns = @JoinColumn(name = "authorisation_id"))
+    @CollectionTable(name = "ais_available_sca_method", joinColumns = @JoinColumn(name = "authorisation_id"))
     private List<ScaMethod> availableScaMethods = new ArrayList<>();
 
     public boolean isExpired() {
