@@ -70,15 +70,15 @@ public class PisCancellationScaStartAuthorisationStage extends PisScaStage<Xs2aU
 
     private static final String MESSAGE_ERROR_NO_PSU = "Please provide the PSU identification data";
 
-    public PisCancellationScaStartAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisAspspDataService pisAspspDataService, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiContextDataProvider spiContextDataProvider, ScaApproachResolver scaApproachResolver, PaymentCancellationSpi paymentCancellationSpi, SpiErrorMapper spiErrorMapper, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper, Xs2aPisCommonPaymentService xs2aPisCommonPaymentService, PisPsuDataService pisPsuDataService) {
-        super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
+    public PisCancellationScaStartAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, PisAspspDataService pisAspspDataService, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiContextDataProvider spiContextDataProvider, ScaApproachResolver scaApproachResolver, PaymentCancellationSpi paymentCancellationSpi, SpiErrorMapper spiErrorMapper, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted1, SpiToXs2aAuthenticationObjectMapper spiToXs2aAuthenticationObjectMapper, Xs2aPisCommonPaymentService xs2aPisCommonPaymentService, PisPsuDataService pisPsuDataService) {
+        super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper, pisCommonPaymentServiceEncrypted);
         this.pisAspspDataService = pisAspspDataService;
         this.xs2aToSpiPsuDataMapper = xs2aToSpiPsuDataMapper;
         this.spiContextDataProvider = spiContextDataProvider;
         this.scaApproachResolver = scaApproachResolver;
         this.paymentCancellationSpi = paymentCancellationSpi;
         this.spiErrorMapper = spiErrorMapper;
-        this.pisCommonPaymentServiceEncrypted = pisCommonPaymentServiceEncrypted;
+        this.pisCommonPaymentServiceEncrypted = pisCommonPaymentServiceEncrypted1;
         this.spiToXs2aAuthenticationObjectMapper = spiToXs2aAuthenticationObjectMapper;
         this.xs2aPisCommonPaymentService = xs2aPisCommonPaymentService;
         this.pisPsuDataService = pisPsuDataService;
