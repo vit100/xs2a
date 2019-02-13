@@ -18,14 +18,13 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.pis.ReadPaymentStatusResponse;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
-import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
-import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiBulkPayment;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
@@ -43,7 +42,6 @@ public class ReadBulkPaymentStatusService implements ReadPaymentStatusService {
     private final PisAspspDataService pisAspspDataService;
     private final SpiPaymentFactory spiPaymentFactory;
     private final SpiErrorMapper spiErrorMapper;
-    private final SpiToXs2aTransactionalStatusMapper transactionalStatusMapper;
     private final BulkPaymentSpi bulkPaymentSpi;
 
     @Override
@@ -65,6 +63,6 @@ public class ReadBulkPaymentStatusService implements ReadPaymentStatusService {
             return new ReadPaymentStatusResponse(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS));
         }
 
-        return new ReadPaymentStatusResponse(transactionalStatusMapper.mapToTransactionStatus(spiResponse.getPayload()));
+        return new ReadPaymentStatusResponse(spiResponse.getPayload());
     }
 }

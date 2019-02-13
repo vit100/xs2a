@@ -18,15 +18,14 @@ package de.adorsys.psd2.xs2a.service.payment;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.pis.ReadPaymentStatusResponse;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
-import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aTransactionalStatusMapper;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
-import de.adorsys.psd2.xs2a.spi.domain.common.SpiTransactionStatus;
 import de.adorsys.psd2.xs2a.spi.domain.payment.SpiPeriodicPayment;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.PeriodicPaymentSpi;
@@ -43,7 +42,6 @@ public class ReadPeriodicPaymentStatusService implements ReadPaymentStatusServic
     private final PisAspspDataService pisAspspDataService;
     private final SpiPaymentFactory spiPaymentFactory;
     private final SpiErrorMapper spiErrorMapper;
-    private final SpiToXs2aTransactionalStatusMapper transactionalStatusMapper;
     private final PeriodicPaymentSpi periodicPaymentSpi;
 
     @Override
@@ -58,13 +56,13 @@ public class ReadPeriodicPaymentStatusService implements ReadPaymentStatusServic
             );
         }
 
-        SpiResponse<SpiTransactionStatus> spiResponse = periodicPaymentSpi.getPaymentStatusById(spiContextData, spiPeriodicPaymentOptional.get(), aspspConsentData);
+        SpiResponse<TransactionStatus> spiResponse = periodicPaymentSpi.getPaymentStatusById(spiContextData, spiPeriodicPaymentOptional.get(), aspspConsentData);
         pisAspspDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
             return new ReadPaymentStatusResponse(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS));
         }
 
-        return new ReadPaymentStatusResponse(transactionalStatusMapper.mapToTransactionStatus(spiResponse.getPayload()));
+        return new ReadPaymentStatusResponse(spiResponse.getPayload());
     }
 }
