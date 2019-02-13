@@ -22,6 +22,7 @@ import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
+import de.adorsys.psd2.xs2a.domain.consent.Xs2aPaymentCancellationAuthorisationSubResource;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
 import de.adorsys.psd2.xs2a.domain.pis.SinglePayment;
 import de.adorsys.psd2.xs2a.exception.MessageCategory;
@@ -44,6 +45,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static de.adorsys.psd2.xs2a.core.profile.PaymentType.SINGLE;
@@ -51,8 +55,8 @@ import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_403;
 import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.*;
@@ -60,6 +64,7 @@ import static org.springframework.http.HttpStatus.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentControllerTest {
     private static final String CORRECT_PAYMENT_ID = "33333-444444-55555-55555";
+    private static final String CORRECT_PAYMENT_ID_2 = "33333-444444-55555-66666";
     private static final String WRONG_PAYMENT_ID = "wrong_payment_id";
     private static final String REDIRECT_LINK = "http://localhost:4200/consent/confirmation/pis";
     private static final UUID REQUEST_ID = UUID.fromString("ddd36e05-d67a-4830-93ad-9462f71ae1e6");
@@ -428,5 +433,18 @@ public class PaymentControllerTest {
     private MessageError createMessageError(ErrorType errorType, MessageErrorCode errorCode) {
         return new MessageError(errorType, new TppMessageInformation(MessageCategory.ERROR, errorCode));
     }
+
+    private ResponseObject<Xs2aPaymentCancellationAuthorisationSubResource> getCancellationResponseList(List<String> paymentIds) {
+        return ResponseObject.<Xs2aPaymentCancellationAuthorisationSubResource>builder()
+            .body(new Xs2aPaymentCancellationAuthorisationSubResource(paymentIds))
+            .build();
+    }
+
+    private ResponseObject<Xs2aPaymentCancellationAuthorisationSubResource> getCancellationResponseNullList() {
+        return ResponseObject.<Xs2aPaymentCancellationAuthorisationSubResource>builder()
+            .body(new Xs2aPaymentCancellationAuthorisationSubResource(null))
+            .build();
+    }
+
 
 }

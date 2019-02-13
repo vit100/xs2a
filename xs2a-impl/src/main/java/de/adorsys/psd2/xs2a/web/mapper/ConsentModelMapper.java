@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adorsys.psd2.model.*;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.consent.*;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
@@ -232,6 +233,12 @@ public class ConsentModelMapper {
         }
 
         return updatePsuData;
+    }
+
+    public ResponseObject<CancellationList> mapToCancellationList(ResponseObject<Xs2aPaymentCancellationAuthorisationSubResource> inputResponse) {
+        return ResponseObject.<CancellationList>builder()
+            .body(new CancellationList(inputResponse.getBody().getCancellationIds()))
+            .build();
     }
 
     public Xs2aUpdatePisCommonPaymentPsuDataRequest mapToPisUpdatePsuData(PsuIdData psuData, String paymentId, String authorisationId, String paymentService, String paymentProduct, Map body) {

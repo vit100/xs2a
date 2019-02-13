@@ -17,6 +17,7 @@
 package de.adorsys.psd2.xs2a.web.controller;
 
 import de.adorsys.psd2.api.PaymentApi;
+import de.adorsys.psd2.model.CancellationList;
 import de.adorsys.psd2.model.PaymentInitiationCancelResponse204202;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
@@ -224,11 +225,10 @@ public class PaymentController implements PaymentApi {
                                                                                    String psUUserAgent, String psUHttpMethod, UUID psUDeviceID,
                                                                                    String psUGeoLocation) {
 
-        //Todo map response to CancellationList, when it will be possible https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/402
         ResponseObject<Xs2aPaymentCancellationAuthorisationSubResource> serviceResponse = paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(paymentId);
         return serviceResponse.hasError()
                    ? responseErrorMapper.generateErrorResponse(serviceResponse.getError())
-                   : responseMapper.ok(serviceResponse);
+                   : responseMapper.ok(consentModelMapper.mapToCancellationList(serviceResponse));
     }
 
     @Override
