@@ -236,8 +236,14 @@ public class ConsentModelMapper {
     }
 
     public ResponseObject<CancellationList> mapToCancellationList(ResponseObject<Xs2aPaymentCancellationAuthorisationSubResource> inputResponse) {
+        CancellationList list = new CancellationList();
+
+        list.addAll(Optional.ofNullable(inputResponse.getBody().getCancellationIds())
+            .map(ArrayList::new)
+            .orElseGet(ArrayList::new));
+
         return ResponseObject.<CancellationList>builder()
-            .body(new CancellationList(inputResponse.getBody().getCancellationIds()))
+            .body(list)
             .build();
     }
 

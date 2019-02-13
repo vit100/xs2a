@@ -19,8 +19,8 @@ package de.adorsys.psd2.model;
 import io.swagger.annotations.ApiModel;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * An array of all cancellationIds connected to this resource.
@@ -30,12 +30,6 @@ import java.util.stream.Collectors;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-01-11T12:48:04.675377+02:00[Europe/Kiev]")
 
 public class CancellationList extends ArrayList<String>  {
-
-    public CancellationList(List<String> inputIds) {
-        this.addAll(Optional.ofNullable(inputIds)
-            .map(p -> p.stream().collect(Collectors.toList()))
-            .orElseGet(Collections::emptyList));
-    }
 
   @Override
   public boolean equals(Object o) {
