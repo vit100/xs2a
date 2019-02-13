@@ -191,9 +191,9 @@ public class AspspProfileServiceWrapper {
     }
 
     /**
-     * Reads if ASPSP requires PSU in initial request
+     * Reads if ASPSP requires PSU in initial request for payment initiation or establishing consent
      *
-     * @return true if ASPSP requires PSU in initial request
+     * @return true if ASPSP requires PSU in initial request for payment initiation or establishing consent
      */
     public boolean isPsuInInitialRequestMandated() {
         return readAspspSettings().isPsuInInitialRequestMandated();
