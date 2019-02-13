@@ -16,7 +16,6 @@
 
 package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
 
-
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
 import de.adorsys.psd2.xs2a.config.factory.PisScaStageAuthorisationFactory;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
@@ -29,19 +28,18 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPeriodicPay
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiSinglePaymentMapper;
 import org.springframework.stereotype.Service;
 
-
-@Service("PIS_EMBEDDED_PSUIDENTIFIED")
-public class PisScaIdentifiedAuthorisationStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
+@Service("PIS_DECOUPLED_PSUIDENTIFIED")
+public class PisDecoupledScaIdentifiedAuthorisationStage extends PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> {
     private final PisScaStageAuthorisationFactory pisScaStageAuthorisationFactory;
 
-    public PisScaIdentifiedAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisScaStageAuthorisationFactory pisScaStageAuthorisationFactory) {
+    public PisDecoupledScaIdentifiedAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisScaStageAuthorisationFactory pisScaStageAuthorisationFactory) {
         super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper);
         this.pisScaStageAuthorisationFactory = pisScaStageAuthorisationFactory;
     }
 
     @Override
     public Xs2aUpdatePisCommonPaymentPsuDataResponse apply(Xs2aUpdatePisCommonPaymentPsuDataRequest request, GetPisAuthorisationResponse pisAuthorisationResponse) {
-        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(PisScaStageAuthorisationFactory.INITIATION_PREFIX + PisScaStageAuthorisationFactory.SEPARATOR + ScaApproach.EMBEDDED + PisScaStageAuthorisationFactory.SEPARATOR + ScaStatus.STARTED.name());
+        PisScaStage<Xs2aUpdatePisCommonPaymentPsuDataRequest, GetPisAuthorisationResponse, Xs2aUpdatePisCommonPaymentPsuDataResponse> service = pisScaStageAuthorisationFactory.getService(PisScaStageAuthorisationFactory.INITIATION_PREFIX + PisScaStageAuthorisationFactory.SEPARATOR + ScaApproach.DECOUPLED + PisScaStageAuthorisationFactory.SEPARATOR + ScaStatus.STARTED.name());
         return service.apply(request, pisAuthorisationResponse);
     }
 }
