@@ -253,6 +253,8 @@ public class ConsentModelMapper {
 
             Optional.ofNullable(body.get("scaAuthenticationData"))
                 .ifPresent(authData -> request.setScaAuthenticationData((String) authData));
+        } else {
+            request.setUpdatePsuIdentification(true);
         }
         return request;
     }

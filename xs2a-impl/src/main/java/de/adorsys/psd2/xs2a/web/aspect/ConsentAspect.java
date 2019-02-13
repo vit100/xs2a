@@ -57,7 +57,7 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
         if (!result.hasError()) {
 
             CreateConsentResponse body = result.getBody();
-            body.setLinks(buildLinksForConsentResponse(body, explicitPreferred));
+            body.setLinks(buildLinksForConsentResponse(body, explicitPreferred, psuData));
             return result;
         }
         return enrichErrorTextMessage(result);
@@ -73,11 +73,11 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
         return enrichErrorTextMessage(result);
     }
 
-    private Links buildLinksForConsentResponse(CreateConsentResponse response, boolean explicitPreferred) {
+    private Links buildLinksForConsentResponse(CreateConsentResponse response, boolean explicitPreferred, PsuIdData psuData) {
         Links links = new Links();
 
         if (EnumSet.of(ScaApproach.EMBEDDED, ScaApproach.DECOUPLED).contains(scaApproachResolver.resolveScaApproach())) {
-            buildLinkForEmbeddedAndDecoupledScaApproach(response, links, explicitPreferred);
+            buildLinkForEmbeddedAndDecoupledScaApproach(response, links, explicitPreferred, psuData);
         } else if (ScaApproach.REDIRECT == scaApproachResolver.resolveScaApproach()) {
             // TODO add actual value during imlementation of multilevel sca https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/515
             if (authorisationMethodDecider.isExplicitMethod(explicitPreferred, false)) {
@@ -93,12 +93,17 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
     }
 
 
-    private void buildLinkForEmbeddedAndDecoupledScaApproach(CreateConsentResponse response, Links links, boolean explicitPreferred) {
+    private void buildLinkForEmbeddedAndDecoupledScaApproach(CreateConsentResponse response, Links links, boolean explicitPreferred, PsuIdData psuData) {
         // TODO add actual value during imlementation of multilevel sca https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/515
         if (authorisationMethodDecider.isExplicitMethod(explicitPreferred, false)) {
             links.setStartAuthorisation(buildPath("/v1/consents/{consentId}/authorisations", response.getConsentId()));
         } else {
-            links.setStartAuthorisationWithPsuAuthentication(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", response.getConsentId(), response.getAuthorizationId()));
+            String path = buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", response.getConsentId(), response.getAuthorizationId());
+            if (psuData.isEmpty()) {
+                links.setStartAuthorisationWithPsuIdentification(path);
+            } else {
+                links.setStartAuthorisationWithPsuAuthentication(path);
+            }
         }
     }
 
@@ -113,6 +118,8 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
                            links = buildLinksForScaMethodSelectedConsentResponse(request);
                        } else if (status == ScaStatus.FINALISED) {
                            links = buildLinksForFinalisedConsentResponse(request);
+                       } else if (status == ScaStatus.PSUIDENTIFIED) {
+                           links = buildLinksForPsuIdentifiedConsentResponse(request);
                        }
 
                        return links;
@@ -142,6 +149,13 @@ public class ConsentAspect extends AbstractLinkAspect<ConsentController> {
     private Links buildLinksForFinalisedConsentResponse(UpdateConsentPsuDataReq request) {
         Links links = new Links();
         links.setScaStatus(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", request.getConsentId(), request.getAuthorizationId()));
+
+        return links;
+    }
+
+    private Links buildLinksForPsuIdentifiedConsentResponse(UpdateConsentPsuDataReq request) {
+        Links links = new Links();
+        links.setStartAuthorisationWithPsuAuthentication(buildPath("/v1/consents/{consentId}/authorisations/{authorisation-id}", request.getConsentId(), request.getAuthorizationId()));
 
         return links;
     }
