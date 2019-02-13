@@ -66,4 +66,5 @@
     <include relativeToChangelogFile="true" file="migration/0041-add-creation-timestamp-to-piis-consent.xml"/>
     <include relativeToChangelogFile="true" file="migration/0042-add-chosen-sca-approach-and-tan-to-pis-consent-authorization.xml"/>
     <include relativeToChangelogFile="true" file="migration/0043-create-pis-authorization-sca-approach.xml"/>
+    <include relativeToChangelogFile="true" file="migration/0044-add-columns-to-ais-consent.xml"/>
 </databaseChangeLog>
