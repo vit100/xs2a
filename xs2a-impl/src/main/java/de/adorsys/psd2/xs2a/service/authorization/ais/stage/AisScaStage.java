@@ -76,7 +76,6 @@ public abstract class AisScaStage<T, R> implements Function<T, R> {
                    .orElse(psuDataInRequest);
     }
 
-
     protected boolean isPsuExist(PsuIdData psuIdData) {
         return Optional.ofNullable(psuIdData)
                    .map(PsuIdData::isNotEmpty)
