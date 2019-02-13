@@ -68,7 +68,7 @@ public class PisAuthorization extends InstanceDependableEntity {
     private String tan;
 
     @ElementCollection
-    @CollectionTable(name = "pis_auth_available_sca_method", joinColumns = @JoinColumn(name = "authorisation_id"))
+    @CollectionTable(name = "pis_available_sca_method", joinColumns = @JoinColumn(name = "authorisation_id"))
     private List<ScaMethod> availableScaMethods = new ArrayList<>();
 
     public boolean isExpired() {

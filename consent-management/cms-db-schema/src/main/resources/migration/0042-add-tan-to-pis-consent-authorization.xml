@@ -22,7 +22,7 @@
         <comment>Add tan to pis_consent_authorization</comment>
 
         <addColumn tableName="pis_consent_authorization">
-            <column name="tan" type="VARCHAR(30)"/>
+            <column name="tan" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
 

@@ -22,7 +22,7 @@
     <changeSet author="iiu@adorsys.com.ua" id="2019-02-07-2">
         <comment>Create table pis_auth_available_sca_method</comment>
 
-        <createTable tableName="pis_auth_available_sca_method">
+        <createTable tableName="pis_available_sca_method">
             <column name="authentication_method_id" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -34,7 +34,7 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="authorisation_id" baseTableName="pis_auth_available_sca_method"
+        <addForeignKeyConstraint baseColumnNames="authorisation_id" baseTableName="pis_available_sca_method"
                                  constraintName="fk_avail_sca_pis_cons_auth"
                                  referencedColumnNames="authorization_id"
                                  referencedTableName="pis_consent_authorization"/>
