@@ -26,6 +26,7 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @MappedSuperclass
 public abstract class InstanceDependableEntity {
+    // TODO Create integration tests in CMS to verify whether instanceId is set https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/690
     private static final String DEFAULT_SERVICE_INSTANCE_ID = "UNDEFINED";
 
     @Column(name = "instance_id", nullable = false, updatable = false)
