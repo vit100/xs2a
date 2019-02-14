@@ -60,6 +60,9 @@ Support of content type `text/plain` is planned.
 ## Bugfix: added missing ais_consent fields
 Now while sending POST request to the `/v1/consents` endpoint the fields "availableAccounts" and "allPsd2" are persisted to the ais_consent table. Also they are available while calling the connector.
 
+## Changed response class for cancellation authorisation
+Now when sending GET request to the `/v1/{payment-service}/{paymentId}/cancellation-authorisations` the result is CancellationList class, which is actually a list of IDs.
+
 ## Added support of Spring Data 2.x
 In order to use Spring Data 2.x in CMS developer now shall use a dependency to help-module `spring-boot-2.x-support`
 ```xml
@@ -90,6 +93,9 @@ From now on these endpoints are fully functional:
 
 ## Bugfix: fix instanceId not being set in the CMS that doesn't have any pre-insert listeners
 From now on `instanceId` property will be correctly set to its default value(`UNDEFINED`) when the CMS doesn't have any pre-insert listeners to override this property. 
+
+## Bugfix: Error messages from spi-api should be returned to the tpp in response
+Now messages that are provided in spi-api in case of the error will be returned to the tpp in response
 
 ## Implemented Decoupled SCA approach
 From now on XS2A supports Decoupled SCA approach for authorising account consents, payments and payment cancellations.
