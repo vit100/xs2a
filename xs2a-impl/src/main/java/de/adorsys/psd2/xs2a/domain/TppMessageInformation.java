@@ -32,7 +32,7 @@ public class TppMessageInformation {
     private String text;
 
     public static TppMessageInformation of(MessageCategory category, MessageErrorCode messageErrorCode) { //NOPMD
-        return new TppMessageInformation(category, messageErrorCode);
+        return of(category, messageErrorCode, null);
     }
 
     public static TppMessageInformation of(MessageCategory category, MessageErrorCode messageErrorCode, String text) { //NOPMD
