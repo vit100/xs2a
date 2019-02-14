@@ -42,11 +42,11 @@ public class TppMessageInformation {
     }
 
     public static TppMessageInformation of(MessageCategory category, MessageErrorCode messageErrorCode) { //NOPMD
-        return of(category, messageErrorCode, null);
+        return of(category, messageErrorCode, null, null);
     }
 
     public static TppMessageInformation of(MessageCategory category, MessageErrorCode messageErrorCode, String text) { //NOPMD
-        return new TppMessageInformation(category, messageErrorCode, text, null);
+        return of(category, messageErrorCode, text, null);
     }
 
     public static TppMessageInformation of(MessageCategory category, MessageErrorCode messageErrorCode, String text, String path) { //NOPMD
