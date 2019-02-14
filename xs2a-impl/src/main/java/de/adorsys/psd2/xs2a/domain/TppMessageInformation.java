@@ -31,18 +31,29 @@ public class TppMessageInformation {
     @Size(max = 512)
     private String text;
 
+    public static TppMessageInformation of(MessageCategory category, MessageErrorCode messageErrorCode) { //NOPMD
+        return new TppMessageInformation(category, messageErrorCode);
+    }
+
+    public static TppMessageInformation of(MessageCategory category, MessageErrorCode messageErrorCode, String text) { //NOPMD
+        return new TppMessageInformation(category, messageErrorCode, text);
+    }
+
+    /**
+     * @deprecated use {@link #of(MessageCategory category, MessageErrorCode messageErrorCode, String text) instead.
+     */
+    @Deprecated
     public TppMessageInformation(MessageCategory category, MessageErrorCode messageErrorCode, String text) {
         this.category = category;
         this.messageErrorCode = messageErrorCode;
         this.text = text;
     }
 
+    /**
+     * @deprecated use {@link #of(MessageCategory category, MessageErrorCode messageErrorCode) instead.
+     */
+    @Deprecated
     public TppMessageInformation(MessageCategory category, MessageErrorCode messageErrorCode) {
         this(category, messageErrorCode, null);
-    }
-
-    public TppMessageInformation path(String path) {
-        this.path = path;
-        return this;
     }
 }

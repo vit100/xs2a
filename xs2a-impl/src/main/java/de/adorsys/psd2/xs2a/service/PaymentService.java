@@ -28,11 +28,8 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.consent.CreateConsentResponse;
 import de.adorsys.psd2.xs2a.domain.pis.*;
-import de.adorsys.psd2.xs2a.exception.MessageCategory;
-import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aPisCommonPaymentService;
@@ -62,6 +59,8 @@ import java.util.stream.Collectors;
 
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.FORMAT_ERROR;
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_403;
+import static de.adorsys.psd2.xs2a.domain.TppMessageInformation.of;
+import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_403;
 
@@ -107,7 +106,7 @@ public class PaymentService {
         if (profileService.isPsuInInitialRequestMandated()
                 && paymentInitiationParameters.getPsuData().isEmpty()) {
             return ResponseObject.<CreateConsentResponse>builder()
-                       .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, MESSAGE_ERROR_NO_PSU)))
+                       .fail(PIS_400, of(ERROR, FORMAT_ERROR, MESSAGE_ERROR_NO_PSU))
                        .build();
         }
 
@@ -147,7 +146,7 @@ public class PaymentService {
 
         if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.builder()
-                       .fail(new MessageError(PIS_403, new TppMessageInformation(MessageCategory.ERROR, RESOURCE_UNKNOWN_403)))
+                       .fail(PIS_403, of(ERROR, RESOURCE_UNKNOWN_403))
                        .build();
         }
 
@@ -164,7 +163,7 @@ public class PaymentService {
             List<PisPayment> pisPayments = getPisPaymentFromCommonPaymentResponse(commonPaymentResponse);
             if (CollectionUtils.isEmpty(pisPayments)) {
                 return ResponseObject.builder()
-                           .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Payment not found")))
+                           .fail(PIS_400, of(ERROR, FORMAT_ERROR, "Payment not found"))
                            .build();
             }
 
@@ -173,9 +172,8 @@ public class PaymentService {
         }
 
         if (response.hasError()) {
-            ErrorHolder errorHolder = response.getErrorHolder();
             return ResponseObject.builder()
-                       .fail(new MessageError(errorHolder))
+                       .fail(response.getErrorHolder())
                        .build();
         }
         return ResponseObject.builder()
@@ -195,7 +193,7 @@ public class PaymentService {
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
         if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.<TransactionStatus>builder()
-                       .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Payment not found")))
+                       .fail(PIS_400, of(ERROR, FORMAT_ERROR, "Payment not found"))
                        .build();
         }
 
@@ -219,7 +217,7 @@ public class PaymentService {
             List<PisPayment> pisPayments = getPisPaymentFromCommonPaymentResponse(pisCommonPaymentResponse);
             if (CollectionUtils.isEmpty(pisPayments)) {
                 return ResponseObject.<TransactionStatus>builder()
-                           .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Payment not found")))
+                           .fail(PIS_400, of(ERROR, FORMAT_ERROR, "Payment not found"))
                            .build();
             }
 
@@ -232,7 +230,7 @@ public class PaymentService {
         if (spiResponse.hasError()) {
             ErrorHolder errorHolder = spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS);
             return ResponseObject.<TransactionStatus>builder()
-                       .fail(new MessageError(errorHolder))
+                       .fail(errorHolder)
                        .build();
         }
 
@@ -240,13 +238,13 @@ public class PaymentService {
 
         if (transactionStatus == null) {
             return ResponseObject.<TransactionStatus>builder()
-                       .fail(new MessageError(PIS_403, new TppMessageInformation(MessageCategory.ERROR, RESOURCE_UNKNOWN_403)))
+                       .fail(PIS_403, of(ERROR, RESOURCE_UNKNOWN_403))
                        .build();
         }
 
         if (!updatePaymentStatusAfterSpiService.updatePaymentStatus(paymentId, transactionStatus)) {
             return ResponseObject.<TransactionStatus>builder()
-                       .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Payment is finalised already, so its status cannot be changed")))
+                       .fail(PIS_400, of(ERROR, FORMAT_ERROR, "Payment is finalised already, so its status cannot be changed"))
                        .build();
         }
 
@@ -267,12 +265,12 @@ public class PaymentService {
 
         if (!pisCommonPaymentOptional.isPresent()) {
             return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Payment not found")))
+                       .fail(PIS_400, of(ERROR, FORMAT_ERROR, "Payment not found"))
                        .build();
         }
 
         PisCommonPaymentResponse pisCommonPaymentResponse = pisCommonPaymentOptional.get();
-        SpiPayment spiPayment = null;
+        SpiPayment spiPayment;
 
         if (pisCommonPaymentResponse.getPaymentData() != null) {
             CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisCommonPaymentResponse);
@@ -281,7 +279,7 @@ public class PaymentService {
             List<PisPayment> pisPayments = getPisPaymentFromCommonPaymentResponse(pisCommonPaymentResponse);
             if (CollectionUtils.isEmpty(pisPayments)) {
                 return ResponseObject.<CancelPaymentResponse>builder()
-                           .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Payment not found")))
+                           .fail(PIS_400, of(ERROR, FORMAT_ERROR, "Payment not found"))
                            .build();
             }
 
@@ -290,7 +288,7 @@ public class PaymentService {
             if (!spiPaymentOptional.isPresent()) {
                 log.error("Unknown payment type: {}", paymentType);
                 return ResponseObject.<CancelPaymentResponse>builder()
-                           .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR)))
+                           .fail(PIS_400, of(ERROR, FORMAT_ERROR))
                            .build();
             }
 
@@ -301,7 +299,7 @@ public class PaymentService {
 
         if (commonPayment.isPresent() && isFinalisedPayment(commonPayment.get())) {
             return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(new MessageError(PIS_400, new TppMessageInformation(MessageCategory.ERROR, FORMAT_ERROR, "Payment is finalised already and cannot be cancelled")))
+                       .fail(PIS_400, of(ERROR, FORMAT_ERROR, "Payment is finalised already and cannot be cancelled"))
                        .build();
         }
 
