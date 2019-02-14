@@ -29,4 +29,3 @@ public class ScaApproachHolder {
         return scaApproach != null;
     }
 }
-
