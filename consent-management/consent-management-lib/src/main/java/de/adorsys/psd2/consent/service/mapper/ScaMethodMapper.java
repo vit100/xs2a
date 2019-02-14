@@ -41,4 +41,3 @@ public class ScaMethodMapper {
         return scaMethod;
     }
 }
-
