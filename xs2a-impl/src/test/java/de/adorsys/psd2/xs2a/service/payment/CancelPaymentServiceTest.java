@@ -19,11 +19,8 @@ package de.adorsys.psd2.xs2a.service.payment;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
-import de.adorsys.psd2.xs2a.exception.MessageCategory;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
@@ -44,6 +41,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.ACTC;
 import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.CANC;
+import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_403;
+import static de.adorsys.psd2.xs2a.domain.TppMessageInformation.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -114,7 +113,7 @@ public class CancelPaymentServiceTest {
         //Than
         assertThat(response.hasError()).isTrue();
         assertThat(response.getBody()).isNull();
-        assertThat(response.getError()).isEqualTo(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_403)));
+        assertThat(response.getError()).isEqualTo(new MessageError(ErrorType.PIS_403, of(RESOURCE_UNKNOWN_403)));
     }
 
     @Test
@@ -137,7 +136,7 @@ public class CancelPaymentServiceTest {
         //Than
         assertThat(response.hasError()).isTrue();
         assertThat(response.getBody()).isNull();
-        assertThat(response.getError()).isEqualTo(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_403)));
+        assertThat(response.getError()).isEqualTo(new MessageError(ErrorType.PIS_403, of(RESOURCE_UNKNOWN_403)));
     }
 
     private SpiPaymentCancellationResponse getSpiCancelPaymentResponse(boolean authorisationRequired, TransactionStatus transactionStatus) {

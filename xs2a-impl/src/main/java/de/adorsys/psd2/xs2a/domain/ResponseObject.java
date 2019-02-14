@@ -54,10 +54,6 @@ public class ResponseObject<T> {
             return this;
         }
 
-        /**
-         * @deprecated use {@link #fail(ErrorType errorType, TppMessageInformation... tppMessageInformation)()} instead.
-         */
-        @Deprecated
         public ResponseBuilder<T> fail(MessageError error) {
             this.error = error;
             return this;
@@ -69,7 +65,7 @@ public class ResponseObject<T> {
         }
 
         public ResponseBuilder<T> fail(ErrorHolder errorHolder) {
-            this.error = new MessageError(errorHolder.getErrorType(),  of(ERROR, errorHolder.getErrorCode(), errorHolder.getMessage()));
+            this.error = new MessageError(errorHolder.getErrorType(), of(ERROR, errorHolder.getErrorCode(), errorHolder.getMessage()));
             return this;
         }
 
