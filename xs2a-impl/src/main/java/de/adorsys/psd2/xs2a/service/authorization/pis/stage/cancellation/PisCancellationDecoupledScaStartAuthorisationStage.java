@@ -35,6 +35,7 @@ import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
 import de.adorsys.psd2.xs2a.spi.service.PaymentCancellationSpi;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service("PIS_CANCELLATION_DECOUPLED_STARTED")
@@ -46,8 +47,8 @@ public class PisCancellationDecoupledScaStartAuthorisationStage extends PisScaSt
     private final Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper;
     private final SpiErrorMapper spiErrorMapper;
 
-    public PisCancellationDecoupledScaStartAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, PaymentCancellationSpi paymentCancellationSpi, PisAspspDataService pisAspspDataService, PisCommonDecoupledService pisCommonDecoupledService, SpiContextDataProvider spiContextDataProvider, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiErrorMapper spiErrorMapper) {
-        super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper, pisCommonPaymentServiceEncrypted);
+    public PisCancellationDecoupledScaStartAuthorisationStage(CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper, Xs2aToSpiPeriodicPaymentMapper xs2aToSpiPeriodicPaymentMapper, Xs2aToSpiSinglePaymentMapper xs2aToSpiSinglePaymentMapper, Xs2aToSpiBulkPaymentMapper xs2aToSpiBulkPaymentMapper, PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted, ApplicationContext applicationContext, PaymentCancellationSpi paymentCancellationSpi, PisAspspDataService pisAspspDataService, PisCommonDecoupledService pisCommonDecoupledService, SpiContextDataProvider spiContextDataProvider, Xs2aToSpiPsuDataMapper xs2aToSpiPsuDataMapper, SpiErrorMapper spiErrorMapper) {
+        super(cmsToXs2aPaymentMapper, xs2aToSpiPeriodicPaymentMapper, xs2aToSpiSinglePaymentMapper, xs2aToSpiBulkPaymentMapper, pisCommonPaymentServiceEncrypted, applicationContext);
         this.paymentCancellationSpi = paymentCancellationSpi;
         this.pisAspspDataService = pisAspspDataService;
         this.pisCommonDecoupledService = pisCommonDecoupledService;

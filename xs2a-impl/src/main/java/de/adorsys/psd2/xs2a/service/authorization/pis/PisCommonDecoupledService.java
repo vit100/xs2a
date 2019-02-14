@@ -61,7 +61,6 @@ public class PisCommonDecoupledService {
         return proceedDecoupled(request, payment, authenticationMethodId, PaymentScaType.CANCELLATION);
     }
 
-    // isInitiation should be 'true' for payment initiation authorisation and 'false' for payment cancellation authorisation
     private Xs2aUpdatePisCommonPaymentPsuDataResponse proceedDecoupled(Xs2aUpdatePisCommonPaymentPsuDataRequest request, SpiPayment payment, String authenticationMethodId, PaymentScaType scaType) {
         PsuIdData psuData = request.getPsuData();
         AspspConsentData aspspConsentData = pisAspspDataService.getAspspConsentData(request.getPaymentId());
