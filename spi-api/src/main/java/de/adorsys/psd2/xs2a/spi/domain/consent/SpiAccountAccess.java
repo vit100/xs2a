@@ -20,6 +20,7 @@ import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
@@ -34,9 +35,10 @@ public class SpiAccountAccess {
     private SpiAccountAccessType allPsd2;
 
     public boolean isEmpty() {
-        return (this.accounts == null || this.accounts.isEmpty())
-                   && (this.balances == null || this.balances.isEmpty())
-                   && (this.transactions == null || this.transactions.isEmpty())
-                   && this.allPsd2 == null && this.availableAccounts == null;
+        return CollectionUtils.isEmpty(this.accounts)
+                   && CollectionUtils.isEmpty(this.balances)
+                   && CollectionUtils.isEmpty(this.transactions)
+                   && this.allPsd2 == null
+                   && this.availableAccounts == null;
     }
 }
