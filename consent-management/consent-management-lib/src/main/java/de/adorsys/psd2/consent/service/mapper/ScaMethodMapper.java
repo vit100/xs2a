@@ -34,7 +34,7 @@ public class ScaMethodMapper {
     }
 
     @NotNull
-    public ScaMethod mapToScaMethod(@NotNull CmsScaMethod cmsScaMethod) {
+    private ScaMethod mapToScaMethod(@NotNull CmsScaMethod cmsScaMethod) {
         ScaMethod scaMethod = new ScaMethod();
         scaMethod.setAuthenticationMethodId(cmsScaMethod.getAuthenticationMethodId());
         scaMethod.setDecoupled(cmsScaMethod.isDecoupled());

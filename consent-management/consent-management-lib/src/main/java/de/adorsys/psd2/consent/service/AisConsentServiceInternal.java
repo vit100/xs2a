@@ -285,7 +285,7 @@ public class AisConsentServiceInternal implements AisConsentService {
 
         return authorisationOptional.map(a -> a.getAvailableScaMethods()
                                                   .stream()
-                                                  .filter(m -> m.getAuthenticationMethodId().equals(authenticationMethodId))
+                                                  .filter(m -> Objects.equals(m.getAuthenticationMethodId(), authenticationMethodId))
                                                   .anyMatch(ScaMethod::isDecoupled))
                    .orElse(false);
     }
