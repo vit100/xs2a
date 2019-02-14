@@ -412,7 +412,7 @@ public class PaymentControllerTest {
         when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(CORRECT_PAYMENT_ID))
             .thenReturn(getCancellationResponseList(Collections.singletonList(CORRECT_PAYMENT_ID)));
 
-        when(responseMapper.ok(any()))
+        when(responseMapper.ok(any(), any()))
             .thenCallRealMethod();
 
         // When
@@ -438,7 +438,7 @@ public class PaymentControllerTest {
         when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(CORRECT_PAYMENT_ID))
             .thenReturn(getCancellationResponseList(Collections.singletonList(CORRECT_PAYMENT_ID)));
 
-        when(responseMapper.ok(any()))
+        when(responseMapper.ok(any(), any()))
             .thenCallRealMethod();
 
         // When
@@ -464,7 +464,7 @@ public class PaymentControllerTest {
         when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(CORRECT_PAYMENT_ID))
             .thenReturn(getCancellationResponseList(Arrays.asList(CORRECT_PAYMENT_ID, CORRECT_PAYMENT_ID_2)));
 
-        when(responseMapper.ok(any()))
+        when(responseMapper.ok(any(), any()))
             .thenCallRealMethod();
 
         // When
@@ -489,7 +489,7 @@ public class PaymentControllerTest {
         when(paymentCancellationAuthorisationService.getPaymentInitiationCancellationAuthorisationInformation(anyString()))
             .thenReturn(getCancellationResponseNullList());
 
-        when(responseMapper.ok(any()))
+        when(responseMapper.ok(any(), any()))
             .thenCallRealMethod();
 
         // When
