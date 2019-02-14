@@ -21,6 +21,7 @@ import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.domain.pis.CommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.ReadPaymentStatusResponse;
+import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ReadCommonPaymentStatusService {
+    private final PisAspspDataService pisAspspDataService;
     private final CommonPaymentSpi commonPaymentSpi;
     private final SpiErrorMapper spiErrorMapper;
     private final Xs2aToSpiPaymentInfoMapper xs2aToSpiPaymentInfoMapper;
@@ -44,6 +46,7 @@ public class ReadCommonPaymentStatusService {
         CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(pisCommonPaymentResponse);
         SpiPaymentInfo request = xs2aToSpiPaymentInfoMapper.mapToSpiPaymentInfo(commonPayment);
         SpiResponse<TransactionStatus> spiResponse = commonPaymentSpi.getPaymentStatusById(spiContextData, request, aspspConsentData);
+        pisAspspDataService.updateAspspConsentData(spiResponse.getAspspConsentData());
 
         if (spiResponse.hasError()) {
             return new ReadPaymentStatusResponse(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS));
