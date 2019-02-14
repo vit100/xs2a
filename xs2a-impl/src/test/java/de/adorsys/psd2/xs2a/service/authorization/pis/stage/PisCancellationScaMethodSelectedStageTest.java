@@ -49,6 +49,7 @@ import org.springframework.context.ApplicationContext;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -97,6 +98,8 @@ public class PisCancellationScaMethodSelectedStageTest {
 
         when(spiErrorMapper.mapToErrorHolder(any(SpiResponse.class), eq(ServiceType.PIS)))
             .thenReturn(errorHolder);
+        when(pisCommonPaymentServiceEncrypted.getPisCancellationAuthorisationById(AUTHORISATION_ID))
+            .thenReturn(Optional.of(buildGetPisAuthorisationResponse()));
 
         when(pisAspspDataService.getAspspConsentData(PAYMENT_ID)).thenReturn(ASPSP_CONSENT_DATA);
     }
@@ -156,4 +159,9 @@ public class PisCancellationScaMethodSelectedStageTest {
         pisPayment.setTransactionStatus(TransactionStatus.RCVD);
         return Collections.singletonList(pisPayment);
     }
+
+    private GetPisAuthorisationResponse buildGetPisAuthorisationResponse() {
+        return new GetPisAuthorisationResponse();
+    }
+
 }
