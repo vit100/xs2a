@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.authorization.pis.stage;
+package de.adorsys.psd2.xs2a.service.authorization.pis.stage.initiation;
 
 import de.adorsys.psd2.consent.api.pis.PisPayment;
 import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
@@ -28,7 +28,6 @@ import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
-import de.adorsys.psd2.xs2a.service.authorization.pis.stage.initiation.PisScaMethodSelectedStage;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
@@ -36,6 +35,7 @@ import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiSinglePaymentMapper;
+import de.adorsys.psd2.xs2a.service.payment.Xs2aUpdatePaymentStatusAfterSpiService;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiPaymentExecutionResponse;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
@@ -54,10 +54,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static de.adorsys.psd2.xs2a.core.sca.ScaStatus.FINALISED;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_400;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -66,9 +68,12 @@ public class PisScaMethodSelectedStageTest {
     private final List<String> ERROR_MESSAGE_TEXT = Arrays.asList("message 1", "message 2", "message 3");
     private static final String AUTHENTICATION_METHOD_ID = "sms";
     private static final String PAYMENT_ID = "123456789";
+    private static final String PSU_ID = "id";
     private static final AspspConsentData ASPSP_CONSENT_DATA = new AspspConsentData(TEST_ASPSP_DATA.getBytes(), "");
     private static final SpiContextData CONTEXT_DATA = new SpiContextData(new SpiPsuData(null, null, null, null), new TppInfo());
     private static final String PAYMENT_PRODUCT = "sepa-credit-transfers";
+    private static final TransactionStatus ACCP_TRANSACTION_STATUS = TransactionStatus.ACCP;
+    private static final SpiPaymentExecutionResponse SPI_PAYMENT_EXECUTION_RESPONSE = new SpiPaymentExecutionResponse(ACCP_TRANSACTION_STATUS);
 
     @InjectMocks
     private PisScaMethodSelectedStage pisScaMethodSelectedStage;
@@ -88,6 +93,8 @@ public class PisScaMethodSelectedStageTest {
     private CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
     @Mock
     private ApplicationContext applicationContext;
+    @Mock
+    private Xs2aUpdatePaymentStatusAfterSpiService updatePaymentStatusAfterSpiService;
 
     @Before
     public void setUp() {
@@ -101,6 +108,9 @@ public class PisScaMethodSelectedStageTest {
         when(pisAspspDataService.getAspspConsentData(PAYMENT_ID)).thenReturn(ASPSP_CONSENT_DATA);
 
         when(spiContextDataProvider.provideWithPsuIdData(any(PsuIdData.class))).thenReturn(CONTEXT_DATA);
+
+        doNothing()
+            .when(pisAspspDataService).updateAspspConsentData(ASPSP_CONSENT_DATA);
     }
 
     @Test
@@ -125,6 +135,26 @@ public class PisScaMethodSelectedStageTest {
         assertThat(actualResponse.hasError()).isTrue();
         assertThat(actualResponse.getErrorHolder().getErrorCode()).isEqualTo(MessageErrorCode.FORMAT_ERROR);
         assertThat(actualResponse.getErrorHolder().getMessage()).isEqualTo(errorMessagesString);
+    }
+
+    @Test
+    public void apply_Success() {
+        when(pisAspspDataService.getInternalPaymentIdByEncryptedString(PAYMENT_ID)).thenReturn(any());
+        when(applicationContext.getBean(SinglePaymentSpi.class))
+            .thenReturn(singlePaymentSpi);
+
+        when(singlePaymentSpi.verifyScaAuthorisationAndExecutePayment(any(), any(), any(), any()))
+            .thenReturn(buildSuccessSpiResponse());
+
+        when(updatePaymentStatusAfterSpiService.updatePaymentStatus(PAYMENT_ID, ACCP_TRANSACTION_STATUS))
+            .thenReturn(true);
+
+        Xs2aUpdatePisCommonPaymentPsuDataResponse actualResponse = pisScaMethodSelectedStage.apply(buildRequest(AUTHENTICATION_METHOD_ID, PAYMENT_ID), buildResponse(PAYMENT_ID));
+
+        assertThat(actualResponse).isNotNull();
+        assertThat(actualResponse.hasError()).isFalse();
+        assertThat(actualResponse.getScaStatus()).isEqualTo(FINALISED);
+        assertThat(actualResponse.getPsuId()).isEqualTo(PSU_ID);
     }
 
     private Xs2aUpdatePisCommonPaymentPsuDataRequest buildRequest(String authenticationMethodId, String paymentId) {
@@ -154,12 +184,19 @@ public class PisScaMethodSelectedStageTest {
     }
 
     private PsuIdData buildPsuIdData() {
-        return new PsuIdData("id", "type", "corporate ID", "corporate type");
+        return new PsuIdData(PSU_ID, "type", "corporate ID", "corporate type");
     }
 
     private List<PisPayment> getPisPayment() {
         PisPayment pisPayment = new PisPayment();
         pisPayment.setTransactionStatus(TransactionStatus.RCVD);
         return Collections.singletonList(pisPayment);
+    }
+
+    private SpiResponse<SpiPaymentExecutionResponse> buildSuccessSpiResponse() {
+        return SpiResponse.<SpiPaymentExecutionResponse>builder()
+                   .payload(SPI_PAYMENT_EXECUTION_RESPONSE)
+                   .aspspConsentData(ASPSP_CONSENT_DATA)
+                   .success();
     }
 }
