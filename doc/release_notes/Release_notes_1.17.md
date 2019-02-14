@@ -102,3 +102,6 @@ The response of this method should contain the message, shown to the PSU, contai
 
 `authorisationId`, provided in this method shall be used as `redirectId` to finish authorisation in the App, by accessing corresponding endpoints in CMS-PSU-API
 
+An SPI Developer now shall consider also Flag `decoupled` in `de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiAuthenticationObject` (defaults to `false`) returend by
+method `requestAvailableScaMethods`.
+If it is set to `true` and PSU chooses this authentication method, the SCA approach will be switched to `DECOUPLED`
