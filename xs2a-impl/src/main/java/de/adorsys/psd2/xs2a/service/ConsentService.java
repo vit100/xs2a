@@ -60,7 +60,6 @@ import java.util.Optional;
 
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.*;
 import static de.adorsys.psd2.xs2a.domain.TppMessageInformation.of;
-import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.*;
 
 @Service
@@ -99,7 +98,7 @@ public class ConsentService {
         if (aspspProfileService.isPsuInInitialRequestMandated()
                 && psuData.isEmpty()) {
             return ResponseObject.<CreateConsentResponse>builder()
-                       .fail(AIS_400, of(ERROR, FORMAT_ERROR, MESSAGE_ERROR_NO_PSU))
+                       .fail(AIS_400, of(FORMAT_ERROR, MESSAGE_ERROR_NO_PSU))
                        .build();
         }
 

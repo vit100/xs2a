@@ -21,7 +21,6 @@ import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ChallengeData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsent;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
@@ -48,11 +47,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.PSU_CREDENTIALS_INVALID;
-import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.SCA_METHOD_UNKNOWN;
+import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.*;
 import static de.adorsys.psd2.xs2a.domain.TppMessageInformation.of;
 import static de.adorsys.psd2.xs2a.domain.consent.ConsentAuthorizationResponseLinkType.*;
-import static de.adorsys.psd2.xs2a.exception.MessageCategory.ERROR;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.AIS_400;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.AIS_401;
 
@@ -149,7 +146,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
 
     private UpdateConsentPsuDataResponse applyIdentification(UpdateConsentPsuDataReq request) {
         if (!isPsuExist(request.getPsuData())) {
-            MessageError messageError = new MessageError(AIS_400, of(ERROR, MessageErrorCode.FORMAT_ERROR, MESSAGE_ERROR_NO_PSU));
+            MessageError messageError = new MessageError(AIS_400, of(FORMAT_ERROR, MESSAGE_ERROR_NO_PSU));
             return createFailedResponse(messageError, Collections.singletonList(MESSAGE_ERROR_NO_PSU));
         }
 
