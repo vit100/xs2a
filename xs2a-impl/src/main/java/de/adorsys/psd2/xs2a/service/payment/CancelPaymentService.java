@@ -23,6 +23,8 @@ import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.pis.CancelPaymentResponse;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
+import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
+import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiToXs2aCancelPaymentMapper;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.payment.response.SpiPaymentCancellationResponse;
@@ -45,6 +47,7 @@ public class CancelPaymentService {
     private final SpiToXs2aCancelPaymentMapper spiToXs2aCancelPaymentMapper;
     private final PisAspspDataService pisAspspDataService;
     private final SpiContextDataProvider spiContextDataProvider;
+    private final SpiErrorMapper spiErrorMapper;
 
     /**
      * Cancels payment without performing strong customer authentication
@@ -63,7 +66,7 @@ public class CancelPaymentService {
 
         if (spiResponse.hasError()) {
             return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(PIS_403, of(RESOURCE_UNKNOWN_403))
+                       .fail(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS))
                        .build();
         }
 
@@ -92,7 +95,7 @@ public class CancelPaymentService {
 
         if (spiResponse.hasError()) {
             return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(PIS_403, of(RESOURCE_UNKNOWN_403))
+                       .fail(spiErrorMapper.mapToErrorHolder(spiResponse, ServiceType.PIS))
                        .build();
         }
 
