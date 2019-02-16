@@ -24,6 +24,7 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.consent.*;
+import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentAuthorisationMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAisConsentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aAuthenticationObjectToCmsScaMethodMapper;
@@ -42,6 +43,7 @@ public class Xs2aAisConsentService {
     private final Xs2aAisConsentAuthorisationMapper aisConsentAuthorisationMapper;
     private final Xs2aAuthenticationObjectToCmsScaMethodMapper xs2AAuthenticationObjectToCmsScaMethodMapper;
     private final FrequencyPerDateCalculationService frequencyPerDateCalculationService;
+    private final ScaApproachResolver scaApproachResolver;
 
     /**
      * Sends a POST request to CMS to store created AISconsent
@@ -132,7 +134,7 @@ public class Xs2aAisConsentService {
      * @return long representation of identifier of stored consent authorization
      */
     public Optional<String> createAisConsentAuthorization(String consentId, ScaStatus scaStatus, PsuIdData psuData) {
-        AisConsentAuthorizationRequest request = aisConsentAuthorisationMapper.mapToAisConsentAuthorization(scaStatus, psuData);
+        AisConsentAuthorizationRequest request = aisConsentAuthorisationMapper.mapToAisConsentAuthorization(scaStatus, psuData, scaApproachResolver.resolveScaApproach());
         return aisConsentService.createAuthorization(consentId, request);
     }
 
