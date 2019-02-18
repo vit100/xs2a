@@ -36,6 +36,7 @@ import de.adorsys.psd2.consent.service.mapper.PisCommonPaymentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.ScaMethodMapper;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
@@ -312,6 +313,21 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
         return true;
     }
 
+    @Override
+    @Transactional
+    public boolean updateScaApproach(String authorisationId, ScaApproach scaApproach) {
+        Optional<PisAuthorization> authorisationOptional = pisAuthorisationRepository.findByExternalId(authorisationId);
+
+        if (!authorisationOptional.isPresent()) {
+            return false;
+        }
+
+        PisAuthorization authorisation = authorisationOptional.get();
+
+        authorisation.setScaApproach(scaApproach);
+        pisAuthorisationRepository.save(authorisation);
+        return true;
+    }
 
     private PisCommonPaymentData setStatusAndSaveCommonPaymentData(PisCommonPaymentData commonPaymentData, TransactionStatus status) {
         commonPaymentData.setTransactionStatus(status);

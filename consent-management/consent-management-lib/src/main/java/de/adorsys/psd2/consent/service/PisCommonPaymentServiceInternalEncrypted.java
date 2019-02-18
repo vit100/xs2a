@@ -27,6 +27,7 @@ import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
@@ -153,5 +154,11 @@ public class PisCommonPaymentServiceInternalEncrypted implements PisCommonPaymen
     @Transactional
     public boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods) {
         return pisCommonPaymentService.saveAuthenticationMethods(authorisationId, methods);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateScaApproach(String authorisationId, ScaApproach scaApproach) {
+        return pisCommonPaymentService.updateScaApproach(authorisationId, scaApproach);
     }
 }
