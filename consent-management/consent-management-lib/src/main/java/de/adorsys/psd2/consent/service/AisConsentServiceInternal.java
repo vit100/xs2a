@@ -154,14 +154,17 @@ public class AisConsentServiceInternal implements AisConsentService {
             return false;
         }
 
-        PsuData psuData = newConsent.getPsuData();
+        List<PsuData> psuData = newConsent.getPsuData();
         TppInfoEntity tppInfo = newConsent.getTppInfo();
 
-        if (psuData == null || tppInfo == null) {
+        if (psuData.isEmpty()
+                || psuData.get(0) == null
+                || tppInfo == null) {
             throw new IllegalArgumentException("Wrong consent data");
         }
 
-        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(psuData.getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
+        // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(psuData.get(0).getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
                                                                                               newConsent.getInstanceId(), newConsent.getExternalId(), EnumSet.of(RECEIVED, VALID));
 
         if (oldConsents.isEmpty()) {
@@ -332,8 +335,17 @@ public class AisConsentServiceInternal implements AisConsentService {
             PsuData psuData = psuDataMapper.mapToPsuData(request.getPsuData());
             aisConsentAuthorization.setPsuData(psuData);
             AisConsent consent = aisConsentAuthorization.getConsent();
-            if (Objects.isNull(consent.getPsuData())) {
-                consent.setPsuData(psuData);
+
+            // TODO refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+            List<PsuData> existingPsuDataList = consent.getPsuData();
+            PsuData existingPsuData = null;
+            if (!existingPsuDataList.isEmpty()) {
+                existingPsuData = existingPsuDataList.get(0);
+            }
+
+            if (Objects.isNull(existingPsuData)) {
+                // TODO refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+                consent.setPsuData(Collections.singletonList(psuData));
                 aisConsentRepository.save(consent);
             }
         }
@@ -351,8 +363,11 @@ public class AisConsentServiceInternal implements AisConsentService {
 
     @Override
     public Optional<PsuIdData> getPsuDataByConsentId(String consentId) {
+        // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
         return getActualAisConsent(consentId)
-                   .map(ac -> psuDataMapper.mapToPsuIdData(ac.getPsuData()));
+                   .map(AisConsent::getPsuData)
+                   .filter(psu -> !psu.isEmpty())
+                   .map(psu -> psuDataMapper.mapToPsuIdData(psu.get(0)));
     }
 
     private AisConsent createConsentFromRequest(CreateAisConsentRequest request) {
@@ -364,7 +379,11 @@ public class AisConsentServiceInternal implements AisConsentService {
         consent.setUsageCounter(request.getAllowedFrequencyPerDay()); // Initially we set maximum and then decrement it by usage
         consent.setRequestDateTime(LocalDateTime.now());
         consent.setExpireDate(request.getValidUntil());
-        consent.setPsuData(psuDataMapper.mapToPsuData(request.getPsuData()));
+
+        // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        PsuData psuData = psuDataMapper.mapToPsuData(request.getPsuData());
+        consent.setPsuData(Collections.singletonList(psuData));
+
         consent.setTppInfo(tppInfoMapper.mapToTppInfoEntity(request.getTppInfo()));
         consent.addAccountAccess(new TppAccountAccessHolder(request.getAccess())
                                      .getAccountAccesses());

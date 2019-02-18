@@ -53,6 +53,12 @@ public class AisConsentMapper {
                                                 ? mapToAisAccountAccess(consent)
                                                 : mapToAspspAisAccountAccess(consent);
 
+        // TODO refactor after changes to AisAccountConsent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        PsuData psuData = null;
+        if (!consent.getPsuData().isEmpty()) {
+            psuData = consent.getPsuData().get(0);
+        }
+
         return new AisAccountConsent(
             consent.getExternalId(),
             aisAccountAccess,
@@ -64,7 +70,7 @@ public class AisConsentMapper {
             consent.getAccesses().stream().anyMatch(a -> a.getTypeAccess() == TypeAccess.BALANCE),
             consent.isTppRedirectPreferred(),
             consent.getAisConsentRequestType(),
-            psuDataMapper.mapToPsuIdData(consent.getPsuData()),
+            psuDataMapper.mapToPsuIdData(psuData),
             tppInfoMapper.mapToTppInfo(consent.getTppInfo()));
     }
 
@@ -75,6 +81,12 @@ public class AisConsentMapper {
      * @return mapped AIS consent
      */
     public AisAccountConsent mapToInitialAisAccountConsent(AisConsent consent) {
+        // TODO refactor after changes to AisAccountConsent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        PsuData psuData = null;
+        if (!consent.getPsuData().isEmpty()) {
+            psuData = consent.getPsuData().get(0);
+        }
+
         return new AisAccountConsent(
             consent.getExternalId(),
             mapToAisAccountAccess(consent),
@@ -86,7 +98,7 @@ public class AisConsentMapper {
             consent.getAccesses().stream().anyMatch(a -> a.getTypeAccess() == TypeAccess.BALANCE),
             consent.isTppRedirectPreferred(),
             consent.getAisConsentRequestType(),
-            psuDataMapper.mapToPsuIdData(consent.getPsuData()),
+            psuDataMapper.mapToPsuIdData(psuData),
             tppInfoMapper.mapToTppInfo(consent.getTppInfo()));
     }
 
