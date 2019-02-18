@@ -36,7 +36,7 @@
 
         <sql>
             INSERT INTO ais_consent_psu_data (psu_data_id, ais_consent_id)
-            SELECT psu_id as psu_id, id
+            SELECT psu_id, id
             FROM ais_consent
         </sql>
     </changeSet>
