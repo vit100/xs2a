@@ -19,10 +19,7 @@ package de.adorsys.psd2.consent.api.service;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.api.pis.CreatePisCommonPaymentResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.*;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
@@ -72,22 +69,20 @@ interface PisCommonPaymentServiceBase {
     /**
      * Creates payment authorization
      *
-     * @param paymentId         String representation of the payment identifier
-     * @param authorizationType Type of authorisation
-     * @param psuData           Information about PSU
+     * @param paymentId String representation of the payment identifier
+     * @param request   PIS authorisation request
      * @return Response containing authorization id
      */
-    Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData);
+    Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CreatePisAuthorisationRequest request);
 
     /**
      * Creates payment authorization cancellation
      *
-     * @param paymentId         String representation of the payment identifier
-     * @param authorizationType Type of authorisation
-     * @param psuData           Information about PSU
+     * @param paymentId               String representation of the payment identifier
+     * @param pisAuthorisationRequest PIS authorisation request
      * @return Response containing authorization id
      */
-    Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData);
+    Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String paymentId, CreatePisAuthorisationRequest pisAuthorisationRequest);
 
     /**
      * Updates payment authorization

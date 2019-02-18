@@ -19,10 +19,7 @@ package de.adorsys.psd2.consent.service;
 import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.CreatePisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.CmsScaMethod;
-import de.adorsys.psd2.consent.api.pis.authorisation.CreatePisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.GetPisAuthorisationResponse;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataRequest;
-import de.adorsys.psd2.consent.api.pis.authorisation.UpdatePisCommonPaymentPsuDataResponse;
+import de.adorsys.psd2.consent.api.pis.authorisation.*;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentRequest;
 import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
@@ -92,16 +89,16 @@ public class PisCommonPaymentServiceRemote implements PisCommonPaymentServiceEnc
     }
 
     @Override
-    public Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
+    public Optional<CreatePisAuthorisationResponse> createAuthorization(String paymentId, CreatePisAuthorisationRequest request) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisCommonPaymentUrls.createPisAuthorisation(),
-                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId))
+                                                                     request, CreatePisAuthorisationResponse.class, paymentId))
                    .map(ResponseEntity::getBody);
     }
 
     @Override
-    public Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String paymentId, CmsAuthorisationType authorizationType, PsuIdData psuData) {
+    public Optional<CreatePisAuthorisationResponse> createAuthorizationCancellation(String paymentId, CreatePisAuthorisationRequest request) {
         return Optional.ofNullable(consentRestTemplate.postForEntity(remotePisCommonPaymentUrls.createPisAuthorisationCancellation(),
-                                                                     psuData, CreatePisAuthorisationResponse.class, paymentId))
+                                                                     request, CreatePisAuthorisationResponse.class, paymentId))
                    .map(ResponseEntity::getBody);
     }
 
