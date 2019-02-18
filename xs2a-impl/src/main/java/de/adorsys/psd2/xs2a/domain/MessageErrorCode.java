@@ -119,6 +119,7 @@ public enum MessageErrorCode {
             return "RESOURCE_EXPIRED";
         }
     }, // 403 if path
+    FORBIDDEN(403),
     RESOURCE_EXPIRED_400(400) {
         @Override
         public String getName() {
