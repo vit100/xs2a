@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -204,10 +205,15 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
             return false;
         }
 
-        Optional.ofNullable(consent.getPsuData())
-            .ifPresent(psu -> newPsuData.setId(psu.getId()));
+        // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        List<PsuData> psuDataList = consent.getPsuData();
+        if (!psuDataList.isEmpty()) {
+            Optional.ofNullable(psuDataList.get(0))
+                .ifPresent(psu -> newPsuData.setId(psu.getId()));
+        }
 
-        consent.setPsuData(newPsuData);
+        // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        consent.setPsuData(Collections.singletonList(newPsuData));
         aisConsentRepository.save(consent);
         return true;
     }
