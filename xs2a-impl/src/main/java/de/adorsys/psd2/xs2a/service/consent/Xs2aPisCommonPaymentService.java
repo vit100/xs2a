@@ -119,7 +119,7 @@ public class Xs2aPisCommonPaymentService {
      * Saves authentication methods in provided authorisation
      *
      * @param authorisationId String representation of the authorisation identifier
-     * @param scaApproach sca approach
+     * @param scaApproach     sca approach
      */
     public void updateScaApproach(String authorisationId, ScaApproach scaApproach) {
         pisCommonPaymentServiceEncrypted.updateScaApproach(authorisationId, scaApproach);
