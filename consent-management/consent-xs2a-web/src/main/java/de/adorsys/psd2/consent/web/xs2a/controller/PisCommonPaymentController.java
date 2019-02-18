@@ -26,6 +26,7 @@ import de.adorsys.psd2.consent.api.pis.proto.PisCommonPaymentResponse;
 import de.adorsys.psd2.consent.api.pis.proto.PisPaymentInfo;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -267,4 +268,17 @@ public class PisCommonPaymentController {
                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping(path = "/authorizations/{authorization-id}/sca-approach/{sca-approach}")
+    @ApiOperation(value = "Updates pis sca approach.")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Not Found")})
+    public ResponseEntity<Boolean> updateScaApproach(
+        @ApiParam(name = "authorization-id", value = "The authorization identification assigned to the created authorization.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
+        @PathVariable("authorization-id") String authorizationId,
+        @PathVariable("sca-approach") ScaApproach scaApproach) {
+        return pisCommonPaymentServiceEncrypted.updateScaApproach(authorizationId, scaApproach)
+                   ? new ResponseEntity<>(true, HttpStatus.OK)
+                   : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
