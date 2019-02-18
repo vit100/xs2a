@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.xs2a.domain.consent;
 
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.Data;
 
@@ -29,4 +30,5 @@ public class AccountConsentAuthorization {
     private String authenticationMethodId;
     private String scaAuthenticationData;
     private String password;
+    private ScaApproach chosenScaApproach;
 }

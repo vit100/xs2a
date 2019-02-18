@@ -43,6 +43,7 @@ public class Xs2aAisConsentAuthorisationMapper {
                        consentAuthorization.setAuthenticationMethodId(conAuth.getAuthenticationMethodId());
                        consentAuthorization.setScaAuthenticationData(conAuth.getScaAuthenticationData());
                        consentAuthorization.setPassword(conAuth.getPassword());
+                       consentAuthorization.setChosenScaApproach(conAuth.getChosenScaApproach());
                        return consentAuthorization;
                    })
                    .orElse(null);
