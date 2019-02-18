@@ -37,15 +37,13 @@ public interface AisConsentRepository extends Xs2aCrudRepository<AisConsent, Lon
 
     @Query(
         "select c from ais_consent c " +
-            "where c.psuData.psuId = :psuId " +
-            "and c.tppInfo.authorisationNumber = :authorisationNumber " +
+            "where c.tppInfo.authorisationNumber = :authorisationNumber " +
             "and c.tppInfo.authorityId = :authorityId " +
             "and c.instanceId = :instanceId " +
             "and c.consentStatus in :consentStatuses " +
             "and c.externalId <> :newConsentId"
     )
-    List<AisConsent> findOldConsentsByNewConsentParams(@Param("psuId") String psuId,
-                                                       @Param("authorisationNumber") String tppAuthorisationNumber,
+    List<AisConsent> findOldConsentsByNewConsentParams(@Param("authorisationNumber") String tppAuthorisationNumber,
                                                        @Param("authorityId") String tppAuthorityId,
                                                        @Param("instanceId") String instanceId,
                                                        @Param("newConsentId") String newConsentId,

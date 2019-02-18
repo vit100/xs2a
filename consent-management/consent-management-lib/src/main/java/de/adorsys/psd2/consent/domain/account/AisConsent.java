@@ -76,9 +76,8 @@ public class AisConsent extends InstanceDependableEntity {
     @ApiModelProperty(value = "Expiration date for the requested consent. The content is the local ASPSP date in ISODate Format", required = true, example = "2018-05-04")
     private LocalDate expireDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "psu_id")
-    private PsuData psuData;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<PsuData> psuData = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tpp_info_id", nullable = false)

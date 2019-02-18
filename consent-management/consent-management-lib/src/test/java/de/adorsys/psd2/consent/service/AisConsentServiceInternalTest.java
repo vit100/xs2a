@@ -298,7 +298,7 @@ public class AisConsentServiceInternalTest {
         boolean result = aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
 
         assertFalse(result);
-        verify(aisConsentRepository, never()).findOldConsentsByNewConsentParams(any(), any(), any(), any(), any(), any());
+        verify(aisConsentRepository, never()).findOldConsentsByNewConsentParams(any(), any(), any(), any(), any());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -332,7 +332,7 @@ public class AisConsentServiceInternalTest {
             .thenReturn(tppInfoMocked);
 
         when(aisConsentMocked.getPsuData())
-            .thenReturn(psuDataMocked);
+            .thenReturn(Collections.singletonList(psuDataMocked));
 
         when(psuDataMocked.getPsuId())
             .thenReturn(PSU_ID);
@@ -349,7 +349,7 @@ public class AisConsentServiceInternalTest {
         when(aisConsentMocked.getExternalId())
             .thenReturn(EXTERNAL_CONSENT_ID);
 
-        when(aisConsentRepository.findOldConsentsByNewConsentParams(PSU_ID, AUTHORISATION_NUMBER, AUTHORISATION_ID, INSTANCE_ID, EXTERNAL_CONSENT_ID, EnumSet.of(ConsentStatus.RECEIVED, ConsentStatus.VALID)))
+        when(aisConsentRepository.findOldConsentsByNewConsentParams(AUTHORISATION_NUMBER, AUTHORISATION_ID, INSTANCE_ID, EXTERNAL_CONSENT_ID, EnumSet.of(ConsentStatus.RECEIVED, ConsentStatus.VALID)))
             .thenReturn(Collections.emptyList());
 
         boolean result = aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
@@ -366,7 +366,7 @@ public class AisConsentServiceInternalTest {
             .thenReturn(tppInfoMocked);
 
         when(aisConsentMocked.getPsuData())
-            .thenReturn(psuDataMocked);
+            .thenReturn(Collections.singletonList(psuDataMocked));
 
         when(psuDataMocked.getPsuId())
             .thenReturn(PSU_ID);
@@ -385,7 +385,7 @@ public class AisConsentServiceInternalTest {
 
         AisConsent oldConsent = buildConsent(EXTERNAL_CONSENT_ID_NOT_EXIST);
         List<AisConsent> oldConsents = Collections.singletonList(oldConsent);
-        when(aisConsentRepository.findOldConsentsByNewConsentParams(PSU_ID, AUTHORISATION_NUMBER, AUTHORISATION_ID, INSTANCE_ID, EXTERNAL_CONSENT_ID, EnumSet.of(ConsentStatus.RECEIVED, ConsentStatus.VALID)))
+        when(aisConsentRepository.findOldConsentsByNewConsentParams(AUTHORISATION_NUMBER, AUTHORISATION_ID, INSTANCE_ID, EXTERNAL_CONSENT_ID, EnumSet.of(ConsentStatus.RECEIVED, ConsentStatus.VALID)))
             .thenReturn(oldConsents);
 
         when(aisConsentRepository.save(oldConsents))

@@ -187,7 +187,10 @@ public class ConsentService {
         if (accountConsent != null) {
             // TODO this is not correct. https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/569
             // PSU Data here should be provided from actual request headers. Data in consent is provided in consent
-            SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+            //TODO correct spi level https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+            SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(CollectionUtils.isNotEmpty(accountConsent.getPsuIdDataList())
+                                                                                         ? accountConsent.getPsuIdDataList().get(0)
+                                                                                         : null);
 
             SpiResponse<VoidResponse> revokeAisConsentResponse = aisConsentSpi.revokeAisConsent(contextData, aisConsentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
             aisConsentDataService.updateAspspConsentData(revokeAisConsentResponse.getAspspConsentData());

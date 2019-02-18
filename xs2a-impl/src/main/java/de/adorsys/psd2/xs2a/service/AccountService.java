@@ -48,6 +48,7 @@ import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
 import de.adorsys.psd2.xs2a.spi.service.AccountSpi;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -101,7 +102,10 @@ public class AccountService {
         }
 
         AccountConsent accountConsent = accountConsentResponse.getBody();
-        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+        //TODO correct spi level https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(CollectionUtils.isNotEmpty(accountConsent.getPsuIdDataList())
+                                                                                     ? accountConsent.getPsuIdDataList().get(0)
+                                                                                     : null);
 
         SpiResponse<List<SpiAccountDetails>> spiResponse = accountSpi.requestAccountList(contextData, withBalance,
                                                                                          consentMapper.mapToSpiAccountConsent(accountConsent),
@@ -158,7 +162,11 @@ public class AccountService {
                        .build();
         }
 
-        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+        //TODO correct spi level https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(CollectionUtils.isNotEmpty(accountConsent.getPsuIdDataList())
+                                                                                     ? accountConsent.getPsuIdDataList().get(0)
+                                                                                     : null);
+
 
         SpiResponse<SpiAccountDetails> spiResponse = accountSpi.requestAccountDetailForAccount(contextData, withBalance, requestedAccountReference.get(),
                                                                                                consentMapper.mapToSpiAccountConsent(accountConsent),
@@ -218,8 +226,10 @@ public class AccountService {
                        .fail(new MessageError(ErrorType.AIS_404, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404)))
                        .build();
         }
-        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
-
+//TODO correct spi level https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(CollectionUtils.isNotEmpty(accountConsent.getPsuIdDataList())
+                                                                                     ? accountConsent.getPsuIdDataList().get(0)
+                                                                                     : null);
 
         SpiResponse<List<SpiAccountBalance>> spiResponse = accountSpi.requestBalancesForAccount(contextData, requestedAccountReference.get(),
                                                                                                 consentMapper.mapToSpiAccountConsent(accountConsent),
@@ -299,7 +309,10 @@ public class AccountService {
         boolean isTransactionsShouldContainBalances =
             !aspspProfileService.isTransactionsWithoutBalancesSupported() || withBalance;
 
-        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+        //TODO correct spi level https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(CollectionUtils.isNotEmpty(accountConsent.getPsuIdDataList())
+                                                                                     ? accountConsent.getPsuIdDataList().get(0)
+                                                                                     : null);
 
         SpiResponse<SpiTransactionReport> spiResponse = accountSpi.requestTransactionsForAccount(
             contextData,
@@ -380,7 +393,10 @@ public class AccountService {
 
         validatorService.validateAccountIdTransactionId(accountId, transactionId);
 
-        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(accountConsent.getPsuData());
+        //TODO correct spi level https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
+        SpiContextData contextData = spiContextDataProvider.provideWithPsuIdData(CollectionUtils.isNotEmpty(accountConsent.getPsuIdDataList())
+                                                                                     ? accountConsent.getPsuIdDataList().get(0)
+                                                                                     : null);
 
         SpiResponse<SpiTransaction> spiResponse = accountSpi.requestTransactionForAccountByTransactionId(contextData, transactionId, requestedAccountReference.get(), consentMapper.mapToSpiAccountConsent(accountConsent), aisConsentDataService.getAspspConsentDataByConsentId(consentId));
 

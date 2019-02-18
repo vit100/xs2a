@@ -29,8 +29,8 @@ import de.adorsys.psd2.consent.repository.AisConsentActionRepository;
 import de.adorsys.psd2.consent.repository.AisConsentAuthorisationRepository;
 import de.adorsys.psd2.consent.repository.AisConsentRepository;
 import de.adorsys.psd2.consent.service.mapper.AisConsentMapper;
-import de.adorsys.psd2.consent.service.mapper.ScaMethodMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
+import de.adorsys.psd2.consent.service.mapper.ScaMethodMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
 import de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
@@ -154,14 +154,13 @@ public class AisConsentServiceInternal implements AisConsentService {
             return false;
         }
 
-        PsuData psuData = newConsent.getPsuData();
         TppInfoEntity tppInfo = newConsent.getTppInfo();
 
-        if (psuData == null || tppInfo == null) {
+        if (tppInfo == null) {
             throw new IllegalArgumentException("Wrong consent data");
         }
 
-        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(psuData.getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
+        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
                                                                                               newConsent.getInstanceId(), newConsent.getExternalId(), EnumSet.of(RECEIVED, VALID));
 
         if (oldConsents.isEmpty()) {
@@ -332,8 +331,9 @@ public class AisConsentServiceInternal implements AisConsentService {
             PsuData psuData = psuDataMapper.mapToPsuData(request.getPsuData());
             aisConsentAuthorization.setPsuData(psuData);
             AisConsent consent = aisConsentAuthorization.getConsent();
-            if (Objects.isNull(consent.getPsuData())) {
-                consent.setPsuData(psuData);
+
+            if (CollectionUtils.isEmpty(consent.getPsuData())) {
+                consent.setPsuData(enrichPsuData(psuData, consent));
                 aisConsentRepository.save(consent);
             }
         }
@@ -350,9 +350,27 @@ public class AisConsentServiceInternal implements AisConsentService {
     }
 
     @Override
-    public Optional<PsuIdData> getPsuDataByConsentId(String consentId) {
+    public Optional<List<PsuIdData>> getPsuDataByConsentId(String consentId) {
         return getActualAisConsent(consentId)
-                   .map(ac -> psuDataMapper.mapToPsuIdData(ac.getPsuData()));
+                   .map(ac -> psuDataMapper.mapToPsuIdDataList(ac.getPsuData()));
+    }
+
+    private List<PsuData> enrichPsuData(PsuData psuData, AisConsent consent) {
+        List<PsuData> psuDataList = consent.getPsuData();
+        if (isPsuDataNew(psuData, psuDataList)) {
+            psuDataList.add(psuData);
+        }
+        return psuDataList;
+    }
+
+    private boolean isPsuDataNew(PsuData psuData, List<PsuData> psuDataList) {
+        return !isPsuDataInList(psuData, psuDataList);
+    }
+
+    private boolean isPsuDataInList(PsuData psuData, List<PsuData> psuDataList) {
+        return isPsuDataCorrect(psuData)
+                   && psuDataList.stream()
+                          .anyMatch(psuData::contentEquals);
     }
 
     private AisConsent createConsentFromRequest(CreateAisConsentRequest request) {
@@ -364,7 +382,7 @@ public class AisConsentServiceInternal implements AisConsentService {
         consent.setUsageCounter(request.getAllowedFrequencyPerDay()); // Initially we set maximum and then decrement it by usage
         consent.setRequestDateTime(LocalDateTime.now());
         consent.setExpireDate(request.getValidUntil());
-        consent.setPsuData(psuDataMapper.mapToPsuData(request.getPsuData()));
+        consent.setPsuData(psuDataMapper.mapToPsuDataList(Collections.singletonList(request.getPsuData())));
         consent.setTppInfo(tppInfoMapper.mapToTppInfoEntity(request.getTppInfo()));
         consent.addAccountAccess(new TppAccountAccessHolder(request.getAccess())
                                      .getAccountAccesses());

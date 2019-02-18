@@ -373,7 +373,6 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
 
         PisAuthorization consentAuthorisation = new PisAuthorization();
         consentAuthorisation.setExternalId(UUID.randomUUID().toString());
-        consentAuthorisation.setPaymentData(paymentData);
         consentAuthorisation.setScaStatus(STARTED);
         consentAuthorisation.setAuthorizationType(authorisationType);
         consentAuthorisation.setRedirectUrlExpirationTimestamp(countRedirectUrlExpirationTimestampForAuthorisationType(authorisationType));

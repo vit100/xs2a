@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @ApiModel(description = "Response for the get account information consent request by consent Id")
@@ -62,7 +63,7 @@ public class AccountConsent {
 
     @ApiModelProperty(value = "Corresponding PSU", name = "psuData")
     @JsonIgnore
-    private final PsuIdData psuData;
+    private final List<PsuIdData> psuIdDataList;
 
     @ApiModelProperty(value = "TPP information", required = true)
     @JsonIgnore

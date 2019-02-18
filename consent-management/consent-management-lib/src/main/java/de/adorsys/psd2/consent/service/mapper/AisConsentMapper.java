@@ -64,7 +64,7 @@ public class AisConsentMapper {
             consent.getAccesses().stream().anyMatch(a -> a.getTypeAccess() == TypeAccess.BALANCE),
             consent.isTppRedirectPreferred(),
             consent.getAisConsentRequestType(),
-            psuDataMapper.mapToPsuIdData(consent.getPsuData()),
+            psuDataMapper.mapToPsuIdDataList(consent.getPsuData()),
             tppInfoMapper.mapToTppInfo(consent.getTppInfo()));
     }
 
@@ -86,7 +86,7 @@ public class AisConsentMapper {
             consent.getAccesses().stream().anyMatch(a -> a.getTypeAccess() == TypeAccess.BALANCE),
             consent.isTppRedirectPreferred(),
             consent.getAisConsentRequestType(),
-            psuDataMapper.mapToPsuIdData(consent.getPsuData()),
+            psuDataMapper.mapToPsuIdDataList(consent.getPsuData()),
             tppInfoMapper.mapToTppInfo(consent.getTppInfo()));
     }
 

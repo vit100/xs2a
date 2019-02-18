@@ -125,7 +125,7 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
     }
 
     @Override
-    public Optional<PsuIdData> getPsuDataByConsentId(String encryptedConsentId) {
+    public Optional<List<PsuIdData>> getPsuDataByConsentId(String encryptedConsentId) {
         return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(aisConsentService::getPsuDataByConsentId);
     }
