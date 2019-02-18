@@ -77,6 +77,9 @@ public class AisConsent extends InstanceDependableEntity {
     private LocalDate expireDate;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "ais_consent_psu_data",
+        joinColumns = @JoinColumn(name = "ais_consent_id"),
+        inverseJoinColumns = @JoinColumn(name = "psu_data_id"))
     private List<PsuData> psuData = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
