@@ -34,6 +34,7 @@ import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
 import de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
@@ -353,6 +354,22 @@ public class AisConsentServiceInternal implements AisConsentService {
     public Optional<PsuIdData> getPsuDataByConsentId(String consentId) {
         return getActualAisConsent(consentId)
                    .map(ac -> psuDataMapper.mapToPsuIdData(ac.getPsuData()));
+    }
+
+    @Override
+    @Transactional
+    public boolean updateScaApproach(String authorisationId, ScaApproach scaApproach) {
+        Optional<AisConsentAuthorization> aisConsentAuthorizationOptional = aisConsentAuthorisationRepository.findByExternalId(authorisationId);
+
+        if (!aisConsentAuthorizationOptional.isPresent()) {
+            return false;
+        }
+
+        AisConsentAuthorization aisConsentAuthorization = aisConsentAuthorizationOptional.get();
+
+        aisConsentAuthorization.setScaApproach(scaApproach);
+        aisConsentAuthorisationRepository.save(aisConsentAuthorization);
+        return true;
     }
 
     private AisConsent createConsentFromRequest(CreateAisConsentRequest request) {

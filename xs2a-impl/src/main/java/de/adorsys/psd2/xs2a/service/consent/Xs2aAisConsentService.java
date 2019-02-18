@@ -20,6 +20,7 @@ import de.adorsys.psd2.consent.api.ActionStatus;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
@@ -217,5 +218,15 @@ public class Xs2aAisConsentService {
      */
     public boolean saveAuthenticationMethods(String authorisationId, List<Xs2aAuthenticationObject> methods) {
         return aisConsentService.saveAuthenticationMethods(authorisationId, xs2AAuthenticationObjectToCmsScaMethodMapper.mapToCmsScaMethods(methods));
+    }
+
+    /**
+     * Updates AIS SCA approach in authorisation
+     *
+     * @param authorisationId String representation of the authorisation identifier
+     * @param scaApproach     Chosen SCA approach
+     */
+    public void updateScaApproach(String authorisationId, ScaApproach scaApproach) {
+        aisConsentService.updateScaApproach(authorisationId, scaApproach);
     }
 }
