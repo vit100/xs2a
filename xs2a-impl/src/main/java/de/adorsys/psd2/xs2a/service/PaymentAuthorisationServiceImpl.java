@@ -93,7 +93,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
 
         if (!pisEndpointAccessCheckerService.isEndpointAccessible(request.getAuthorisationId())) {
             return ResponseObject.<Xs2aUpdatePisCommonPaymentPsuDataResponse>builder()
-                       .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORBIDDEN)))
+                       .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.SERVICE_BLOCKED)))
                        .build();
         }
 
