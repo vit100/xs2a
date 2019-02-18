@@ -284,7 +284,7 @@ public class ConsentService {
 
         if (!endpointAccessCheckerService.isEndpointAccessible(updatePsuData.getAuthorizationId(), updatePsuData.getConsentId())) {
             return ResponseObject.<UpdateConsentPsuDataResponse>builder()
-                .fail(new MessageError(ErrorType.AIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORMAT_ERROR)))
+                .fail(new MessageError(ErrorType.AIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.FORBIDDEN)))
                 .build();
         }
 
