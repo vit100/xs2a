@@ -72,3 +72,6 @@ Take out ASPSP Mock Server and corresponding Connector out of XS2A
 - Implement Read Card Account Details request
 - Implement Read Card Account Balance request
 - Implement Read Card Account Transaction List request
+
+## Test changes
+*Change
