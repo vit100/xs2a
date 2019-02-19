@@ -16,22 +16,26 @@
 
 package de.adorsys.psd2.xs2a.service.validator;
 
-import de.adorsys.psd2.xs2a.domain.consent.AccountConsentAuthorization;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AisEndpointAccessCheckerService extends EndpointAccessChecker {
     private final Xs2aAisConsentService aisConsentService;
 
+    /**
+     * Checks whether endpoint is accessible for current authorisation
+     *
+     * @param authorisationId ID of authorisation process
+     * @return <code>true</code> if accessible. <code>false</code> otherwise.
+     */
     public boolean isEndpointAccessible(String authorisationId, String consentId) {
-        AccountConsentAuthorization accountConsentAuthorisation = aisConsentService.getAccountConsentAuthorizationById(authorisationId, consentId);
-
-        return Objects.isNull(accountConsentAuthorisation)
-                   || isAccessible(accountConsentAuthorisation.getChosenScaApproach(), accountConsentAuthorisation.getScaStatus());
+        return Optional.ofNullable(aisConsentService.getAccountConsentAuthorizationById(authorisationId, consentId))
+                   .map(a -> isAccessible(a.getChosenScaApproach(), a.getScaStatus()))
+                   .orElse(true);
     }
 }

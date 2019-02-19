@@ -25,6 +25,12 @@ import org.springframework.stereotype.Service;
 public class PisEndpointAccessCheckerService extends EndpointAccessChecker {
     private final PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
 
+    /**
+     * Checks whether endpoint is accessible for current authorisation
+     *
+     * @param authorisationId ID of authorisation process
+     * @return <code>true</code> if accessible. <code>false</code> otherwise.
+     */
     public boolean isEndpointAccessible(String authorisationId) {
         return pisCommonPaymentServiceEncrypted.getPisAuthorisationById(authorisationId)
                    .map(p -> isAccessible(p.getChosenScaApproach(), p.getScaStatus()))
