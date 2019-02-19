@@ -34,6 +34,7 @@ import de.adorsys.psd2.consent.service.mapper.ScaMethodMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
 import de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
@@ -357,6 +358,22 @@ public class AisConsentServiceInternal implements AisConsentService {
                    .map(ac -> psuDataMapper.mapToPsuIdDataList(ac.getPsuDataList()));
     }
 
+    @Override
+    @Transactional
+    public boolean updateScaApproach(String authorisationId, ScaApproach scaApproach) {
+        Optional<AisConsentAuthorization> aisConsentAuthorisationOptional = aisConsentAuthorisationRepository.findByExternalId(authorisationId);
+
+        if (!aisConsentAuthorisationOptional.isPresent()) {
+            return false;
+        }
+
+        AisConsentAuthorization aisConsentAuthorisation = aisConsentAuthorisationOptional.get();
+
+        aisConsentAuthorisation.setScaApproach(scaApproach);
+        aisConsentAuthorisationRepository.save(aisConsentAuthorisation);
+        return true;
+    }
+
     private AisConsent createConsentFromRequest(CreateAisConsentRequest request) {
 
         AisConsent consent = new AisConsent();
@@ -456,6 +473,7 @@ public class AisConsentServiceInternal implements AisConsentService {
         consentAuthorization.setConsent(aisConsent);
         consentAuthorization.setScaStatus(request.getScaStatus());
         consentAuthorization.setRedirectUrlExpirationTimestamp(OffsetDateTime.now().plus(aspspProfileService.getAspspSettings().getRedirectUrlExpirationTimeMs(), ChronoUnit.MILLIS));
+        consentAuthorization.setScaApproach(request.getScaApproach());
         return aisConsentAuthorisationRepository.save(consentAuthorization).getExternalId();
     }
 
