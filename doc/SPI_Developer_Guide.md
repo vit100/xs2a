@@ -80,7 +80,7 @@ public interface SinglePaymentSpi extends PaymentSpi<SpiSinglePayment, SpiSingle
         - "Registration number": example = "1234_registrationNumber",
         - "Tpp name": example = "Tpp company",
         - "National competent authority": example = "Bafin",
-        - "Redirect URI": URI of TPP, where the transaction flow shall be redirected to after a Redirect. Mandated for the **Redirect SCA Approach** (including OAuth2 SCA approach), specially when TPP-Redirect-prefferred equals "true". It is recommended to always use this header field. 
+        - "Redirect URI": URI of TPP, where the transaction flow shall be redirected to after a Redirect. Mandated for the **Redirect SCA Approach** (including OAuth2 SCA approach), specially when TPP-Redirect-preferred equals "true". It is recommended to always use this header field. 
         - "Nok redirect URI": if this URI is contained, the TPP is asking to redirect the transaction flow to this address instead of the TPP-Redirect-URI in case of a negative result of the redirect ScaMethod. This might be ignored by the ASPSP
   
    
@@ -106,20 +106,36 @@ public interface SinglePaymentSpi extends PaymentSpi<SpiSinglePayment, SpiSingle
   
   
   
-  The Payment initiaton depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to umplement this, but we currently done this with 
+  The Payment initiation depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to umplement this, but we currently done this with 
   3 Approaches (REDIRECT, DECOUPLED and EMBEDDED). 
   
 #### SCA Approach REDIRECT
 
-After the Payment Initiation is created, it has to be authorise from the PSU. In case of redirect approach this authorisation can be explicit or implicit.
+-- Prerequisites in case of **consent for payment initiation**
+
+    - PSU initaited a payment by using TPP
+    - PSU is authenticated via two factors: for example PsuId and passwort
+    - Each Payment initiation needs it own consent!
+
+After the Payment Initiation is created, it has to be authorise from the PSU. In case of redirect approach the authorisation can be explicit or implicit.
     
  1. **The explicit Start of the authorisation** process means that the Payment initiation Request is followed by an explicit Request of the TPP to start the authorisation. This is followed by a redirection to the ASPSP SCA authorisation site. 
  A status request might be requested by the TPP after the session is reredirected to the TPP's system: 
    
-    * The PSU initiates a payment via a TPP and the TPP make a Payment-Initiation Request to the ASPSP
+    * PSU initiates a payment via a TPP and the TPP make a Payment-Initiation Request to the ASPSP
     * After the Payment Initiation is created, TPP have to send to ASPSP an Authorisation Request for the initiated payment
     * TPP have to inform the customer to authorise the transaction redirectly
-    * The PSU will be redirected to an authorisation webpage of ASPSP and authorises the payment with TAN confirmation received via email. 
+    * The PSU will be redirected to an authorisation webpage of ASPSP and authorises the payment with TAN confirmation received via email.
+    * The TPP can get the Payment'status from ASPSP by making a Payment-Status Request
+    
+ 2. In case of **implicit Start of the Authorisation process** the ASPSP needed no additional data from TPP. In this case, the redirection of the PSU browser session happens 
+ directly after the Payment Initiation Response. In addition an SCA status request can be sent by the TPP to follow the SCA process.
+ 
+   * PSU initiates a payment via a TPP and the TPP make a Payment-Initiation Request to the ASPSP
+   * After the Payment Initiation Response, the PSU have to authorise the transaction
+   * The PSU will be redirected to an authorisation Webpage of ASPSP and authorises the payment with TAN confirmation received via email.
+   * The TPP can get the Payment'status from ASPSP by making a Payment-Status Request
+    
 
 #### SCA Approach DECOUPLED
 
