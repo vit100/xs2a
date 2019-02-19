@@ -152,7 +152,8 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status, @NotNull String instanceId) {
         Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId, instanceId);
 
-        return paymentDataOptional.isPresent() && !paymentDataOptional.get().getTransactionStatus().isFinalisedStatus()
+        return paymentDataOptional.isPresent()
+                   && !paymentDataOptional.get().getTransactionStatus().isFinalisedStatus()
                    && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
 
     }
