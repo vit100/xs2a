@@ -156,7 +156,7 @@ public class PaymentController implements PaymentApi {
         PsuIdData psuData = new PsuIdData(PSU_ID, psUIDType, psUCorporateID, psUCorporateIDType);
         PaymentInitiationParameters paymentInitiationParameters = paymentModelMapperPsd2.mapToPaymentRequestParameters(paymentProduct, paymentService, tpPSignatureCertificate, tpPRedirectURI, tpPNokRedirectURI, BooleanUtils.isTrue(tpPExplicitAuthorisationPreferred), psuData);
         ResponseObject serviceResponse =
-            xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aXmlPayment(paymentInitiationParameters, xmlSct, jsonStandingorderType), paymentInitiationParameters);
+            xs2aPaymentService.createPayment(paymentModelMapperXs2a.mapToXs2aRawPayment(paymentInitiationParameters, xmlSct, jsonStandingorderType), paymentInitiationParameters);
 
         return serviceResponse.hasError()
                    ? responseErrorMapper.generateErrorResponse(serviceResponse.getError())
