@@ -154,17 +154,17 @@ public class AisConsentServiceInternal implements AisConsentService {
             return false;
         }
 
-        List<PsuData> psuData = newConsent.getPsuData();
+        PsuData firstPsuData = newConsent.getFirstPsuData();
         TppInfoEntity tppInfo = newConsent.getTppInfo();
 
-        if (psuData.isEmpty()
-                || psuData.get(0) == null
+        if (newConsent.isEmptyPsuData()
+                || firstPsuData == null
                 || tppInfo == null) {
             throw new IllegalArgumentException("Wrong consent data");
         }
 
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
-        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(psuData.get(0).getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
+        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(firstPsuData.getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
                                                                                               newConsent.getInstanceId(), newConsent.getExternalId(), EnumSet.of(RECEIVED, VALID));
 
         if (oldConsents.isEmpty()) {
@@ -337,10 +337,9 @@ public class AisConsentServiceInternal implements AisConsentService {
             AisConsent consent = aisConsentAuthorization.getConsent();
 
             // TODO refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
-            List<PsuData> existingPsuDataList = consent.getPsuData();
             PsuData existingPsuData = null;
-            if (!existingPsuDataList.isEmpty()) {
-                existingPsuData = existingPsuDataList.get(0);
+            if (consent.isNotEmptyPsuData()) {
+                existingPsuData = consent.getFirstPsuData();
             }
 
             if (Objects.isNull(existingPsuData)) {
@@ -365,9 +364,9 @@ public class AisConsentServiceInternal implements AisConsentService {
     public Optional<PsuIdData> getPsuDataByConsentId(String consentId) {
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
         return getActualAisConsent(consentId)
-                   .map(AisConsent::getPsuData)
-                   .filter(psu -> !psu.isEmpty())
-                   .map(psu -> psuDataMapper.mapToPsuIdData(psu.get(0)));
+                   .filter(AisConsent::isNotEmptyPsuData)
+                   .map(AisConsent::getFirstPsuData)
+                   .map(psuDataMapper::mapToPsuIdData);
     }
 
     private AisConsent createConsentFromRequest(CreateAisConsentRequest request) {

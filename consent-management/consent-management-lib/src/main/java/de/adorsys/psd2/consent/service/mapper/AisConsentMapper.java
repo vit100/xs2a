@@ -54,8 +54,8 @@ public class AisConsentMapper {
 
         // TODO refactor after changes to AisAccountConsent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
         PsuData psuData = null;
-        if (!consent.getPsuData().isEmpty()) {
-            psuData = consent.getPsuData().get(0);
+        if (consent.isNotEmptyPsuData()) {
+            psuData = consent.getFirstPsuData();
         }
 
         return new AisAccountConsent(
@@ -82,8 +82,8 @@ public class AisConsentMapper {
     public AisAccountConsent mapToInitialAisAccountConsent(AisConsent consent) {
         // TODO refactor after changes to AisAccountConsent https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
         PsuData psuData = null;
-        if (!consent.getPsuData().isEmpty()) {
-            psuData = consent.getPsuData().get(0);
+        if (consent.isNotEmptyPsuData()) {
+            psuData = consent.getFirstPsuData();
         }
 
         return new AisAccountConsent(

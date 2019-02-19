@@ -206,9 +206,8 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
         }
 
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
-        List<PsuData> psuDataList = consent.getPsuData();
-        if (!psuDataList.isEmpty()) {
-            Optional.ofNullable(psuDataList.get(0))
+        if (consent.isNotEmptyPsuData()) {
+            Optional.ofNullable(consent.getFirstPsuData())
                 .ifPresent(psu -> newPsuData.setId(psu.getId()));
         }
 

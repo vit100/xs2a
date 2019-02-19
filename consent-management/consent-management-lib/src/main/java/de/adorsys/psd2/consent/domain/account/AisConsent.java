@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -182,5 +183,17 @@ public class AisConsent extends InstanceDependableEntity {
 
     public boolean isOneAccessType() {
         return !recurringIndicator;
+    }
+
+    public boolean isEmptyPsuData() {
+        return CollectionUtils.isEmpty(psuData);
+    }
+
+    public boolean isNotEmptyPsuData() {
+        return !isEmptyPsuData();
+    }
+
+    public PsuData getFirstPsuData() {
+        return psuData.get(0);
     }
 }
