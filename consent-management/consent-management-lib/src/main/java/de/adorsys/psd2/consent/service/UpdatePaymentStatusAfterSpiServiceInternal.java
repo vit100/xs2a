@@ -38,7 +38,7 @@ public class UpdatePaymentStatusAfterSpiServiceInternal implements UpdatePayment
     @Transactional
     public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status) {
         Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId, null);
-        if (!paymentDataOptional.isPresent() || paymentDataOptional.get().isChangingFinaliseStatus()) {
+        if (!paymentDataOptional.isPresent() || paymentDataOptional.get().isFinalised()) {
             return false;
         }
 
