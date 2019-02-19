@@ -74,7 +74,6 @@ public class FundsConfirmationControllerTest {
         when(responseMapper.ok(any(), any())).thenCallRealMethod();
         when(fundsModelMapper.mapToInlineResponse200(any())).thenCallRealMethod();
 
-
         //Given
         ConfirmationOfFunds confirmationOfFunds = getConfirmationOfFunds();
         HttpStatus expectedStatusCode = HttpStatus.OK;
