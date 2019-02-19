@@ -333,8 +333,8 @@ public class AisConsentServiceInternal implements AisConsentService {
             AisConsent consent = aisConsentAuthorization.getConsent();
             PsuData psuData = psuDataMapper.mapToPsuData(request.getPsuData());
 
-            if (CollectionUtils.isEmpty(consent.getPsuData())) {
-                consent.setPsuData(enrichPsuData(psuData, consent));
+            if (CollectionUtils.isEmpty(consent.getPsuDataList())) {
+                consent.setPsuDataList(enrichPsuData(psuData, consent.getPsuDataList()));
                 aisConsentAuthorization.setConsent(consent);
             }
             aisConsentAuthorization.setPsuData(psuData);
@@ -354,7 +354,7 @@ public class AisConsentServiceInternal implements AisConsentService {
     @Override
     public Optional<List<PsuIdData>> getPsuDataByConsentId(String consentId) {
         return getActualAisConsent(consentId)
-                   .map(ac -> psuDataMapper.mapToPsuIdDataList(ac.getPsuData()));
+                   .map(ac -> psuDataMapper.mapToPsuIdDataList(ac.getPsuDataList()));
     }
 
     private AisConsent createConsentFromRequest(CreateAisConsentRequest request) {
@@ -366,7 +366,7 @@ public class AisConsentServiceInternal implements AisConsentService {
         consent.setUsageCounter(request.getAllowedFrequencyPerDay()); // Initially we set maximum and then decrement it by usage
         consent.setRequestDateTime(LocalDateTime.now());
         consent.setExpireDate(request.getValidUntil());
-        consent.setPsuData(psuDataMapper.mapToPsuDataList(Collections.singletonList(request.getPsuData())));
+        consent.setPsuDataList(psuDataMapper.mapToPsuDataList(Collections.singletonList(request.getPsuData())));
         consent.setTppInfo(tppInfoMapper.mapToTppInfoEntity(request.getTppInfo()));
         consent.addAccountAccess(new TppAccountAccessHolder(request.getAccess())
                                      .getAccountAccesses());
@@ -447,8 +447,8 @@ public class AisConsentServiceInternal implements AisConsentService {
     }
 
     private String saveNewAuthorization(AisConsent aisConsent, AisConsentAuthorizationRequest request) {
-        PsuData psuData = definePsuDataForAuthorisation(psuDataMapper.mapToPsuData(request.getPsuData()), aisConsent);
-        aisConsent.setPsuData(enrichPsuData(psuData, aisConsent));
+        PsuData psuData = definePsuDataForAuthorisation(psuDataMapper.mapToPsuData(request.getPsuData()), aisConsent.getPsuDataList());
+        aisConsent.setPsuDataList(enrichPsuData(psuData, aisConsent.getPsuDataList()));
 
         AisConsentAuthorization consentAuthorization = new AisConsentAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
@@ -488,19 +488,18 @@ public class AisConsentServiceInternal implements AisConsentService {
         return auth;
     }
 
-    private PsuData definePsuDataForAuthorisation(PsuData psuData, AisConsent consent) {
-        if (isPsuDataNew(psuData, consent.getPsuData())) {
+    private PsuData definePsuDataForAuthorisation(PsuData psuData, List<PsuData> psuDataList) {
+        if (isPsuDataNew(psuData, psuDataList)) {
             return psuData;
         }
 
-        return consent.getPsuData().stream()
+        return psuDataList.stream()
                    .filter(psu -> StringUtils.equals(psu.getPsuId(), psuData.getPsuId()))
                    .findAny()
                    .orElse(null);
     }
 
-    private List<PsuData> enrichPsuData(PsuData psuData, AisConsent consent) {
-        List<PsuData> psuDataList = consent.getPsuData();
+    private List<PsuData> enrichPsuData(PsuData psuData,List<PsuData> psuDataList) {
         if (isPsuDataNew(psuData, psuDataList)) {
             psuDataList.add(psuData);
         }
