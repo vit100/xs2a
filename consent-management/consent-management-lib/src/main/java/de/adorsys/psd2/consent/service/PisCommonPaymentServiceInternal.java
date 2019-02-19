@@ -139,8 +139,8 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
      * Create common payment authorization
      *
      * @param paymentId               id of the payment
-     * @param request needed parameters for creating PIS authorization
-     * @return response contains authorization id
+     * @param request needed parameters for creating PIS authorisation
+     * @return response contains authorisation id
      */
     @Override
     @Transactional

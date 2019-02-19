@@ -194,6 +194,6 @@ public class PisCommonPaymentRemoteUrls {
      * PathVariables: String sca-approach
      */
     public String updateScaApproach() {
-        return commonPaymentServiceBaseUrl + "/pis/common-payments/authorizations/{authorization-id}/sca-approach/{sca-approach}";
+        return commonPaymentServiceBaseUrl + "/pis/common-payments/authorisations/{authorisation-id}/sca-approach/{sca-approach}";
     }
 }
