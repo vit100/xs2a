@@ -276,6 +276,7 @@ public class PisCommonPaymentController {
     public ResponseEntity<Boolean> updateScaApproach(
         @ApiParam(name = "authorisation-id", value = "The authorisation identification assigned to the created authorisation.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
         @PathVariable("authorisation-id") String authorisationId,
+        @ApiParam(name = "sca-approach", value = "Chosen SCA approach.", example = "REDIRECT")
         @PathVariable("sca-approach") ScaApproach scaApproach) {
         return pisCommonPaymentServiceEncrypted.updateScaApproach(authorisationId, scaApproach)
                    ? new ResponseEntity<>(true, HttpStatus.OK)
