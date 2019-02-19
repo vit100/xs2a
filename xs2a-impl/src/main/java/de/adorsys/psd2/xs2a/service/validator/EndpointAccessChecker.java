@@ -16,18 +16,17 @@
 
 package de.adorsys.psd2.xs2a.service.validator;
 
-import de.adorsys.psd2.consent.api.service.PisCommonPaymentServiceEncrypted;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 
-@Service
-@RequiredArgsConstructor
-public class PisEndpointAccessCheckerService extends EndpointAccessChecker {
-    private final PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
+public class EndpointAccessChecker {
 
-    public boolean isEndpointAccessible(String authorisationId) {
-        return pisCommonPaymentServiceEncrypted.getPisAuthorisationById(authorisationId)
-                   .map(p -> isAccessible(p.getChosenScaApproach(), p.getScaStatus()))
-                   .orElse(true);
+    protected boolean isAccessible(ScaApproach chosenScaApproach, ScaStatus scaStatus){
+        if (ScaApproach.REDIRECT == chosenScaApproach) {
+            return false;
+        } else if (ScaApproach.DECOUPLED == chosenScaApproach) {
+            return ScaStatus.SCAMETHODSELECTED != scaStatus;
+        }
+        return true;
     }
 }

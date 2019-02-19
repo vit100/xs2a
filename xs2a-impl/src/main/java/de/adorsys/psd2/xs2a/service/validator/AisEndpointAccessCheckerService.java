@@ -16,8 +16,6 @@
 
 package de.adorsys.psd2.xs2a.service.validator;
 
-import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
-import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.domain.consent.AccountConsentAuthorization;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import lombok.RequiredArgsConstructor;
@@ -27,21 +25,13 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class AisEndpointAccessCheckerService {
+public class AisEndpointAccessCheckerService extends EndpointAccessChecker {
     private final Xs2aAisConsentService aisConsentService;
 
     public boolean isEndpointAccessible(String authorisationId, String consentId) {
         AccountConsentAuthorization accountConsentAuthorisation = aisConsentService.getAccountConsentAuthorizationById(authorisationId, consentId);
 
-        if (Objects.nonNull(accountConsentAuthorisation)) {
-            ScaApproach chosenScaApproach = accountConsentAuthorisation.getChosenScaApproach();
-
-            if (ScaApproach.REDIRECT == chosenScaApproach) {
-                return false;
-            } else if (ScaApproach.DECOUPLED == chosenScaApproach) {
-                return ScaStatus.SCAMETHODSELECTED != accountConsentAuthorisation.getScaStatus();
-            }
-        }
-        return true;
+        return Objects.isNull(accountConsentAuthorisation)
+                   || isAccessible(accountConsentAuthorisation.getChosenScaApproach(), accountConsentAuthorisation.getScaStatus());
     }
 }
