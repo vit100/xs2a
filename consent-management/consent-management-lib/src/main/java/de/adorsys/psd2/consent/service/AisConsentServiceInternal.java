@@ -495,7 +495,7 @@ public class AisConsentServiceInternal implements AisConsentService {
         }
 
         return consent.getPsuData().stream()
-                   .filter(psu -> StringUtils.equals(psu.getPsuId(), (psuData.getPsuId())))
+                   .filter(psu -> StringUtils.equals(psu.getPsuId(), psuData.getPsuId()))
                    .findAny()
                    .orElse(null);
     }
