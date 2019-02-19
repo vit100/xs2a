@@ -63,7 +63,7 @@ public interface SinglePaymentSpi extends PaymentSpi<SpiSinglePayment, SpiSingle
 ```
 
 
- 1. **SpiContextData**: This object represents known Context of call, provided by this or previous requests in scope of one process (e.g. one payment).
+ * Create **SpiContextData**: This object represents known Context of call, provided by this or previous requests in scope of one process (e.g. one payment).
    It contains **PsuData** and **tppInfo**.
    
    - **PsuData** contains data about PSU known in scope of the request: 
@@ -84,11 +84,11 @@ public interface SinglePaymentSpi extends PaymentSpi<SpiSinglePayment, SpiSingle
         - "Nok redirect URI": if this URI is contained, the TPP is asking to redirect the transaction flow to this address instead of the TPP-Redirect-URI in case of a negative result of the redirect ScaMethod. This might be ignored by the ASPSP
   
    
-2. **AspspConsentData**: This is used as a container of some binary data to be used on SPI level. Spi developers may save here necessary information, that will be stored and encrypted in consent. This shall not use without consentId!
+* Create **AspspConsentData**: This is used as a container of some binary data to be used on SPI level. Spi developers may save here necessary information, that will be stored and encrypted in consent. This shall not use without consentId!
                          Encrypted data that may be stored in the consent management system in the consent linked to a request.They may be null if consent does not contain such data, or request is not done from a workflow with a consent. 
     
                          
-When a payment is initiated the response code is generated with following data: 
+* When a payment is initiated, a response code (Statuscode: 201) is generated with following data: 
   
  
   | Data                        |           Type                  |      Condition  | Description       |
@@ -105,9 +105,21 @@ When a payment is initiated the response code is generated with following data:
   | aspspAccountId              |                                 |                 |                                                 |
   
   
+  
+  The Payment initiaton depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to umplement this, but we currently done this with 
+  3 Approaches (REDIRECT, DECOUPLED and EMBEDDED). 
+  
 #### SCA Approach REDIRECT
 
-
+After the Payment Initiation is created, it has to be authorise from the PSU. In case of redirect approach this authorisation can be explicit or implicit.
+    
+ 1. **The explicit Start of the authorisation** process means that the Payment initiation Request is followed by an explicit Request of the TPP to start the authorisation. This is followed by a redirection to the ASPSP SCA authorisation site. 
+ A status request might be requested by the TPP after the session is reredirected to the TPP's system: 
+   
+    * The PSU initiates a payment via a TPP and the TPP make a Payment-Initiation Request to the ASPSP
+    * After the Payment Initiation is created, TPP have to send to ASPSP an Authorisation Request for the initiated payment
+    * TPP have to inform the customer to authorise the transaction redirectly
+    * The PSU will be redirected to an authorisation webpage of ASPSP and authorises the payment with TAN confirmation received via email. 
 
 #### SCA Approach DECOUPLED
 
