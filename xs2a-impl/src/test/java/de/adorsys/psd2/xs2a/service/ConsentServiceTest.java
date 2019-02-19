@@ -21,7 +21,6 @@ import de.adorsys.psd2.consent.api.ActionStatus;
 import de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType;
 import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
-import de.adorsys.psd2.xs2a.domain.consent.Xs2aAccountAccessType;
 import de.adorsys.psd2.xs2a.core.event.EventType;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
@@ -76,6 +75,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
+import static de.adorsys.psd2.xs2a.domain.TppMessageInformation.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -817,7 +817,7 @@ public class ConsentServiceTest {
     }
 
     private MessageError createMessageError(ErrorType errorType, MessageErrorCode errorCode) {
-        return new MessageError(errorType, new TppMessageInformation(MessageCategory.ERROR, errorCode));
+        return new MessageError(errorType, of(errorCode));
     }
 
     private UpdateConsentPsuDataReq buildUpdateConsentPsuDataReq() {

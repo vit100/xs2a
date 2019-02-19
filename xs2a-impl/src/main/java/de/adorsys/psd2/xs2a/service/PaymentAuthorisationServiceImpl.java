@@ -22,14 +22,11 @@ import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.profile.PaymentType;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
-import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aAuthorisationSubResources;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aCreatePisAuthorisationResponse;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataRequest;
 import de.adorsys.psd2.xs2a.domain.consent.pis.Xs2aUpdatePisCommonPaymentPsuDataResponse;
-import de.adorsys.psd2.xs2a.exception.MessageCategory;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationService;
 import de.adorsys.psd2.xs2a.service.authorization.pis.PisScaAuthorisationServiceResolver;
@@ -41,6 +38,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.*;
+import static de.adorsys.psd2.xs2a.domain.TppMessageInformation.of;
+import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +68,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
         Optional<PisCommonPaymentResponse> pisCommonPaymentResponse = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
         if (pisCommonPaymentResponse.isPresent() && pisCommonPaymentResponse.get().getTransactionStatus() == TransactionStatus.RJCT) {
             return ResponseObject.<Xs2aCreatePisAuthorisationResponse>builder()
-                       .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_EXPIRED_403)))
+                       .fail(PIS_403, of(RESOURCE_EXPIRED_403))
                        .build();
         }
 
@@ -77,7 +78,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
                                     .body(resp)
                                     .build())
                    .orElseGet(ResponseObject.<Xs2aCreatePisAuthorisationResponse>builder()
-                                  .fail(new MessageError(ErrorType.PIS_400, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.PAYMENT_FAILED)))
+                                  .fail(PIS_400, of(PAYMENT_FAILED))
                                   ::build);
     }
 
@@ -93,7 +94,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
 
         if (!pisEndpointAccessCheckerService.isEndpointAccessible(request.getAuthorisationId())) {
             return ResponseObject.<Xs2aUpdatePisCommonPaymentPsuDataResponse>builder()
-                       .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.SERVICE_BLOCKED)))
+                       .fail(ErrorType.PIS_403, of(SERVICE_BLOCKED))
                        .build();
         }
 
@@ -101,7 +102,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
         Optional<PisCommonPaymentResponse> pisCommonPaymentResponse = pisCommonPaymentService.getPisCommonPaymentById(request.getPaymentId());
         if (pisCommonPaymentResponse.isPresent() && pisCommonPaymentResponse.get().getTransactionStatus() == TransactionStatus.RJCT) {
             return ResponseObject.<Xs2aUpdatePisCommonPaymentPsuDataResponse>builder()
-                       .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_EXPIRED_403)))
+                       .fail(PIS_403, of(RESOURCE_EXPIRED_403))
                        .build();
         }
 
@@ -132,7 +133,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
         return pisScaAuthorisationService.getAuthorisationSubResources(paymentId)
                    .map(resp -> ResponseObject.<Xs2aAuthorisationSubResources>builder().body(resp).build())
                    .orElseGet(ResponseObject.<Xs2aAuthorisationSubResources>builder()
-                                  .fail(new MessageError(ErrorType.PIS_404, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404)))
+                                  .fail(PIS_404, of(RESOURCE_UNKNOWN_404))
                                   ::build);
     }
 
@@ -152,7 +153,7 @@ public class PaymentAuthorisationServiceImpl implements PaymentAuthorisationServ
 
         if (!scaStatus.isPresent()) {
             return ResponseObject.<ScaStatus>builder()
-                       .fail(new MessageError(ErrorType.PIS_403, new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_403)))
+                       .fail(PIS_403, of(RESOURCE_UNKNOWN_403))
                        .build();
         }
 
