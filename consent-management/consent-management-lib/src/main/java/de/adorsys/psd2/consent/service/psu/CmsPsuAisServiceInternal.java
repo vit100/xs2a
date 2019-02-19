@@ -206,13 +206,13 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
         }
 
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
-        if (consent.isNotEmptyPsuData()) {
+        if (consent.isNotEmptyPsuDataList()) {
             Optional.ofNullable(consent.getFirstPsuData())
                 .ifPresent(psu -> newPsuData.setId(psu.getId()));
         }
 
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
-        consent.setPsuData(Collections.singletonList(newPsuData));
+        consent.setPsuDataList(Collections.singletonList(newPsuData));
         aisConsentRepository.save(consent);
         return true;
     }

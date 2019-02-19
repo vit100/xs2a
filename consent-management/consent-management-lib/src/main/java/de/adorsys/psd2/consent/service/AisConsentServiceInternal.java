@@ -157,7 +157,7 @@ public class AisConsentServiceInternal implements AisConsentService {
         PsuData firstPsuData = newConsent.getFirstPsuData();
         TppInfoEntity tppInfo = newConsent.getTppInfo();
 
-        if (newConsent.isEmptyPsuData()
+        if (newConsent.isEmptyPsuDataList()
                 || firstPsuData == null
                 || tppInfo == null) {
             throw new IllegalArgumentException("Wrong consent data");
@@ -338,13 +338,13 @@ public class AisConsentServiceInternal implements AisConsentService {
 
             // TODO refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
             PsuData existingPsuData = null;
-            if (consent.isNotEmptyPsuData()) {
+            if (consent.isNotEmptyPsuDataList()) {
                 existingPsuData = consent.getFirstPsuData();
             }
 
             if (Objects.isNull(existingPsuData)) {
                 // TODO refactor https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
-                consent.setPsuData(Collections.singletonList(psuData));
+                consent.setPsuDataList(Collections.singletonList(psuData));
                 aisConsentRepository.save(consent);
             }
         }
@@ -364,7 +364,7 @@ public class AisConsentServiceInternal implements AisConsentService {
     public Optional<PsuIdData> getPsuDataByConsentId(String consentId) {
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
         return getActualAisConsent(consentId)
-                   .filter(AisConsent::isNotEmptyPsuData)
+                   .filter(AisConsent::isNotEmptyPsuDataList)
                    .map(AisConsent::getFirstPsuData)
                    .map(psuDataMapper::mapToPsuIdData);
     }
@@ -381,7 +381,7 @@ public class AisConsentServiceInternal implements AisConsentService {
 
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
         PsuData psuData = psuDataMapper.mapToPsuData(request.getPsuData());
-        consent.setPsuData(Collections.singletonList(psuData));
+        consent.setPsuDataList(Collections.singletonList(psuData));
 
         consent.setTppInfo(tppInfoMapper.mapToTppInfoEntity(request.getTppInfo()));
         consent.addAccountAccess(new TppAccountAccessHolder(request.getAccess())

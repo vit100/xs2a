@@ -81,7 +81,7 @@ public class AisConsent extends InstanceDependableEntity {
     @JoinTable(name = "ais_consent_psu_data",
         joinColumns = @JoinColumn(name = "ais_consent_id"),
         inverseJoinColumns = @JoinColumn(name = "psu_data_id"))
-    private List<PsuData> psuData = new ArrayList<>();
+    private List<PsuData> psuDataList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tpp_info_id", nullable = false)
@@ -185,15 +185,15 @@ public class AisConsent extends InstanceDependableEntity {
         return !recurringIndicator;
     }
 
-    public boolean isEmptyPsuData() {
-        return CollectionUtils.isEmpty(psuData);
+    public boolean isEmptyPsuDataList() {
+        return CollectionUtils.isEmpty(psuDataList);
     }
 
-    public boolean isNotEmptyPsuData() {
-        return !isEmptyPsuData();
+    public boolean isNotEmptyPsuDataList() {
+        return !isEmptyPsuDataList();
     }
 
     public PsuData getFirstPsuData() {
-        return psuData.get(0);
+        return psuDataList.get(0);
     }
 }

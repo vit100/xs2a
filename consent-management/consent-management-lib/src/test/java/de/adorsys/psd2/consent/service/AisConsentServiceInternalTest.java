@@ -306,7 +306,7 @@ public class AisConsentServiceInternalTest {
         when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID))
             .thenReturn(Optional.of(aisConsentMocked));
 
-        when(aisConsentMocked.getPsuData())
+        when(aisConsentMocked.getPsuDataList())
             .thenReturn(Collections.emptyList());
 
         aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
@@ -317,7 +317,7 @@ public class AisConsentServiceInternalTest {
         when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID))
             .thenReturn(Optional.of(aisConsentMocked));
 
-        when(aisConsentMocked.getPsuData())
+        when(aisConsentMocked.getPsuDataList())
             .thenReturn(Collections.singletonList(null));
 
         aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
