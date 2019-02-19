@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -80,7 +81,7 @@ public class AisConsent extends InstanceDependableEntity {
     @JoinTable(name = "ais_consent_psu_data",
         joinColumns = @JoinColumn(name = "ais_consent_id"),
         inverseJoinColumns = @JoinColumn(name = "psu_data_id"))
-    private List<PsuData> psuData = new ArrayList<>();
+    private List<PsuData> psuDataList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tpp_info_id", nullable = false)
@@ -182,5 +183,23 @@ public class AisConsent extends InstanceDependableEntity {
 
     public boolean isOneAccessType() {
         return !recurringIndicator;
+    }
+
+    public boolean isWrongConsentData() {
+        return isEmptyPsuDataList()
+                   || getFirstPsuData() == null
+                   || tppInfo == null;
+    }
+
+    public boolean isNotEmptyPsuDataList() {
+        return !isEmptyPsuDataList();
+    }
+
+    public boolean isEmptyPsuDataList() {
+        return CollectionUtils.isEmpty(psuDataList);
+    }
+
+    public PsuData getFirstPsuData() {
+        return psuDataList.get(0);
     }
 }

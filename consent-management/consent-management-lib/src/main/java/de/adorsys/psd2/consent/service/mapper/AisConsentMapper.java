@@ -169,8 +169,8 @@ public class AisConsentMapper {
 
     private String getAccessType(AisAccountAccessType type) {
         return Optional.ofNullable(type)
-            .map(Enum::name)
-            .orElse(null);
+                   .map(Enum::name)
+                   .orElse(null);
     }
 
 }

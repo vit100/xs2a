@@ -153,17 +153,16 @@ public class AisConsentServiceInternal implements AisConsentService {
         if (newConsent.isOneAccessType()) {
             return false;
         }
-        List<PsuData> psuData = newConsent.getPsuData();
-        TppInfoEntity tppInfo = newConsent.getTppInfo();
 
-        if (psuData.isEmpty()
-                || psuData.get(0) == null
-                || tppInfo == null) {
+        if (newConsent.isWrongConsentData()) {
             throw new IllegalArgumentException("Wrong consent data");
         }
 
+        PsuData firstPsuData = newConsent.getFirstPsuData();
+        TppInfoEntity tppInfo = newConsent.getTppInfo();
+
         // TODO refactor after changes to endpoints https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/546
-        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(psuData.get(0).getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
+        List<AisConsent> oldConsents = aisConsentRepository.findOldConsentsByNewConsentParams(firstPsuData.getPsuId(), tppInfo.getAuthorisationNumber(), tppInfo.getAuthorityId(),
                                                                                               newConsent.getInstanceId(), newConsent.getExternalId(), EnumSet.of(RECEIVED, VALID));
 
         if (oldConsents.isEmpty()) {
