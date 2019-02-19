@@ -26,7 +26,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@ApiModel(description = "PIS authorization", value = "PisAuthorizationRequest")
+@ApiModel(description = "Create PIS Authorisation Request", value = "CreatePisAuthorisationRequest")
 public class CreatePisAuthorisationRequest {
     @ApiModelProperty(value = "Cms authorisation type", required = true)
     private CmsAuthorisationType authorizationType;

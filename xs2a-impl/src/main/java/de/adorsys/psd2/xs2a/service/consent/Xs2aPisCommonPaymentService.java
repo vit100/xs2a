@@ -116,7 +116,7 @@ public class Xs2aPisCommonPaymentService {
     }
 
     /**
-     * Saves authentication methods in provided authorisation
+     * Updates PIS SCA approach in authorisation
      *
      * @param authorisationId String representation of the authorisation identifier
      * @param scaApproach     sca approach
