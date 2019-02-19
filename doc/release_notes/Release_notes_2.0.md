@@ -7,4 +7,4 @@ in consent-management instead of psu id only. Full PSU data is transmitted and s
 
 ## Changed response class for funds confirmation request.
 
-Fixed wrong response to POST request `/v1/funds-confirmations`, now returns `InlineResponse200` entity.
+Fixed wrong response to POST request `/v1/funds-confirmations`, now returns the `InlineResponse200` response.

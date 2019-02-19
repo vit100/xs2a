@@ -25,7 +25,6 @@ import de.adorsys.psd2.xs2a.service.AccountReferenceValidationService;
 import de.adorsys.psd2.xs2a.service.FundsConfirmationService;
 import de.adorsys.psd2.xs2a.service.mapper.FundsConfirmationModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
-import de.adorsys.psd2.xs2a.web.mapper.FundsModelMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,8 +58,6 @@ public class FundsConfirmationControllerTest {
     @Mock
     private FundsConfirmationModelMapper fundsConfirmationModelMapper;
     @Mock
-    private FundsModelMapper fundsModelMapper;
-    @Mock
     private AccountReferenceValidationService referenceValidationService;
 
     @Before
@@ -72,7 +69,7 @@ public class FundsConfirmationControllerTest {
     @Test
     public void fundConfirmation() throws IOException {
         when(responseMapper.ok(any(), any())).thenCallRealMethod();
-        when(fundsModelMapper.mapToInlineResponse200(any())).thenCallRealMethod();
+        when(fundsConfirmationModelMapper.mapToInlineResponse200(any())).thenCallRealMethod();
 
         //Given
         ConfirmationOfFunds confirmationOfFunds = getConfirmationOfFunds();
