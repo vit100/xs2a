@@ -302,34 +302,12 @@ public class AisConsentServiceInternalTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void findAndTerminateOldConsentsByNewConsentId_failure_psuDataEmpty() {
+    public void findAndTerminateOldConsentsByNewConsentId_failure_wrongConsentData() {
         when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID))
             .thenReturn(Optional.of(aisConsentMocked));
 
-        when(aisConsentMocked.getPsuDataList())
-            .thenReturn(Collections.emptyList());
-
-        aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void findAndTerminateOldConsentsByNewConsentId_failure_psuDataNull() {
-        when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID))
-            .thenReturn(Optional.of(aisConsentMocked));
-
-        when(aisConsentMocked.getPsuDataList())
-            .thenReturn(Collections.singletonList(null));
-
-        aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void findAndTerminateOldConsentsByNewConsentId_failure_tppInfoNull() {
-        when(aisConsentRepository.findByExternalId(EXTERNAL_CONSENT_ID))
-            .thenReturn(Optional.of(aisConsentMocked));
-
-        when(aisConsentMocked.getTppInfo())
-            .thenReturn(null);
+        when(aisConsentMocked.isWrongConsentData())
+            .thenReturn(true);
 
         aisConsentService.findAndTerminateOldConsentsByNewConsentId(EXTERNAL_CONSENT_ID);
     }

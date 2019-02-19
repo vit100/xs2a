@@ -21,6 +21,7 @@ import de.adorsys.psd2.consent.api.ais.AisAccountAccess;
 import de.adorsys.psd2.consent.api.ais.AisAccountAccessType;
 import de.adorsys.psd2.consent.api.ais.AisAccountConsent;
 import de.adorsys.psd2.consent.api.ais.AisConsentAuthorizationResponse;
+import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.account.AisConsent;
 import de.adorsys.psd2.consent.domain.account.AisConsentAuthorization;
 import de.adorsys.psd2.consent.domain.account.AspspAccountAccess;
@@ -178,8 +179,8 @@ public class AisConsentMapper {
 
     private String getAccessType(AisAccountAccessType type) {
         return Optional.ofNullable(type)
-            .map(Enum::name)
-            .orElse(null);
+                   .map(Enum::name)
+                   .orElse(null);
     }
 
 }

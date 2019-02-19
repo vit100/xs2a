@@ -185,12 +185,18 @@ public class AisConsent extends InstanceDependableEntity {
         return !recurringIndicator;
     }
 
-    public boolean isEmptyPsuDataList() {
-        return CollectionUtils.isEmpty(psuDataList);
+    public boolean isWrongConsentData() {
+        return isEmptyPsuDataList()
+                   || getFirstPsuData() == null
+                   || tppInfo == null;
     }
 
     public boolean isNotEmptyPsuDataList() {
         return !isEmptyPsuDataList();
+    }
+
+    public boolean isEmptyPsuDataList() {
+        return CollectionUtils.isEmpty(psuDataList);
     }
 
     public PsuData getFirstPsuData() {
