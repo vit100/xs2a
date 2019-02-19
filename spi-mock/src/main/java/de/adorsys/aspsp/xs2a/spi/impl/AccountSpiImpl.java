@@ -238,11 +238,6 @@ public class AccountSpiImpl implements AccountSpi {
                            ? accountConsent.getPsuData().get(0).getPsuId()
                            : null;
 
-        if (CollectionUtils.isNotEmpty(accountConsent.getPsuData())) {
-            psuId = accountConsent.getPsuData().get(0).getPsuId();
-        }
-
-
         return Optional.ofNullable(aspspRestTemplate.exchange(
             remoteSpiUrls.getAccountDetailsByPsuId(),
             HttpMethod.GET,
