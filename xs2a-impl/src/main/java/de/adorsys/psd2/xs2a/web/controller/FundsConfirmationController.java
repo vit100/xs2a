@@ -19,10 +19,12 @@ package de.adorsys.psd2.xs2a.web.controller;
 import de.adorsys.psd2.api.FundsConfirmationApi;
 import de.adorsys.psd2.model.ConfirmationOfFunds;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
+import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationResponse;
 import de.adorsys.psd2.xs2a.service.FundsConfirmationService;
 import de.adorsys.psd2.xs2a.service.mapper.FundsConfirmationModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ResponseErrorMapper;
+import de.adorsys.psd2.xs2a.web.mapper.FundsModelMapper;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,12 +43,14 @@ public class FundsConfirmationController implements FundsConfirmationApi {
     private final ResponseErrorMapper responseErrorMapper;
     private final FundsConfirmationService fundsConfirmationService;
     private final FundsConfirmationModelMapper fundsConfirmationModelMapper;
+    private final FundsModelMapper fundsModelMapper;
 
     @Override
     public ResponseEntity checkAvailabilityOfFunds(ConfirmationOfFunds body, UUID xRequestID, String digest, String signature, byte[] tpPSignatureCertificate) {
-        ResponseObject responseObject = fundsConfirmationService.fundsConfirmation(fundsConfirmationModelMapper.mapToFundsConfirmationRequest(body));
+        ResponseObject<FundsConfirmationResponse> responseObject = fundsConfirmationService.fundsConfirmation(fundsConfirmationModelMapper.mapToFundsConfirmationRequest(body));
+
         return responseObject.hasError()
                    ? responseErrorMapper.generateErrorResponse(responseObject.getError())
-                   : responseMapper.ok(responseObject);
+                   : responseMapper.ok(responseObject, fundsModelMapper::mapToInlineResponse200);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ package de.adorsys.psd2.xs2a.web.controller;
 
 import com.google.gson.Gson;
 import de.adorsys.psd2.model.ConfirmationOfFunds;
+import de.adorsys.psd2.model.InlineResponse200;
 import de.adorsys.psd2.xs2a.domain.ResponseObject;
 import de.adorsys.psd2.xs2a.domain.fund.FundsConfirmationResponse;
 import de.adorsys.psd2.xs2a.service.AccountReferenceValidationService;
 import de.adorsys.psd2.xs2a.service.FundsConfirmationService;
 import de.adorsys.psd2.xs2a.service.mapper.FundsConfirmationModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.ResponseMapper;
+import de.adorsys.psd2.xs2a.web.mapper.FundsModelMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +59,8 @@ public class FundsConfirmationControllerTest {
     @Mock
     private FundsConfirmationModelMapper fundsConfirmationModelMapper;
     @Mock
+    private FundsModelMapper fundsModelMapper;
+    @Mock
     private AccountReferenceValidationService referenceValidationService;
 
     @Before
@@ -67,7 +71,9 @@ public class FundsConfirmationControllerTest {
 
     @Test
     public void fundConfirmation() throws IOException {
-        when(responseMapper.ok(any())).thenReturn(new ResponseEntity<>(readResponseObject().getBody(), HttpStatus.OK));
+        when(responseMapper.ok(any(), any())).thenCallRealMethod();
+        when(fundsModelMapper.mapToInlineResponse200(any())).thenCallRealMethod();
+
 
         //Given
         ConfirmationOfFunds confirmationOfFunds = getConfirmationOfFunds();
@@ -75,7 +81,7 @@ public class FundsConfirmationControllerTest {
 
         //When:
         ResponseEntity<?> actualResult = fundsConfirmationController.checkAvailabilityOfFunds(confirmationOfFunds, null, null, null, null);
-        FundsConfirmationResponse fundsConfirmationResponse = (FundsConfirmationResponse) actualResult.getBody();
+        InlineResponse200 fundsConfirmationResponse = (InlineResponse200) actualResult.getBody();
 
         //Then:
         assertThat(actualResult.getStatusCode()).isEqualTo(expectedStatusCode);
