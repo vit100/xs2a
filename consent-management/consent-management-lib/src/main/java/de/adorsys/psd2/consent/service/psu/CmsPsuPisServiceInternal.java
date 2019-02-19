@@ -152,10 +152,10 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     public boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status, @NotNull String instanceId) {
         Optional<PisCommonPaymentData> paymentDataOptional = commonPaymentDataService.getPisCommonPaymentData(paymentId, instanceId);
 
-        return paymentDataOptional.isPresent()
-                   && !paymentDataOptional.get().getTransactionStatus().isFinalisedStatus()
-                   && commonPaymentDataService.updateStatusInPaymentData(paymentDataOptional.get(), status);
-
+        return paymentDataOptional
+                   .filter(p -> p.getTransactionStatus().isNotFinalisedStatus())
+                   .map(pd -> commonPaymentDataService.updateStatusInPaymentData(pd, status))
+                   .orElse(false);
     }
 
     private boolean updatePsuData(PisAuthorization authorisation, PsuIdData psuIdData) {
