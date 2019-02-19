@@ -359,16 +359,16 @@ public class AisConsentServiceInternal implements AisConsentService {
     @Override
     @Transactional
     public boolean updateScaApproach(String authorisationId, ScaApproach scaApproach) {
-        Optional<AisConsentAuthorization> aisConsentAuthorizationOptional = aisConsentAuthorisationRepository.findByExternalId(authorisationId);
+        Optional<AisConsentAuthorization> aisConsentAuthorisationOptional = aisConsentAuthorisationRepository.findByExternalId(authorisationId);
 
-        if (!aisConsentAuthorizationOptional.isPresent()) {
+        if (!aisConsentAuthorisationOptional.isPresent()) {
             return false;
         }
 
-        AisConsentAuthorization aisConsentAuthorization = aisConsentAuthorizationOptional.get();
+        AisConsentAuthorization aisConsentAuthorisation = aisConsentAuthorisationOptional.get();
 
-        aisConsentAuthorization.setScaApproach(scaApproach);
-        aisConsentAuthorisationRepository.save(aisConsentAuthorization);
+        aisConsentAuthorisation.setScaApproach(scaApproach);
+        aisConsentAuthorisationRepository.save(aisConsentAuthorisation);
         return true;
     }
 
