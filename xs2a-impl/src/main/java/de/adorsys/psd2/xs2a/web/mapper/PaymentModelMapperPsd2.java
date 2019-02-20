@@ -59,15 +59,9 @@ public class PaymentModelMapperPsd2 {
         if (isRawPayment(payment)) {
             PisPaymentInfo paymentInfo = (PisPaymentInfo) payment;
             String paymentResponse = convertResponseToRawData(paymentInfo.getPaymentData());
-
-            //TODO rework this check during refactoring of payment saving https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/517
-            if (standardPaymentProductsResolver.isRawPaymentProduct(paymentInfo.getPaymentProduct())) {
-                return paymentResponse;
-            }
-
-            // it will be useful when we implement raw json payment
-            return enrichPaymentWithStatus(paymentInfo.getTransactionStatus(), paymentResponse);
+            return paymentResponse;
         }
+
         if (type == SINGLE) {
             SinglePayment xs2aPayment = (SinglePayment) payment;
             PaymentInitiationTarget2WithStatusResponse paymentResponse = new PaymentInitiationTarget2WithStatusResponse();
@@ -111,18 +105,6 @@ public class PaymentModelMapperPsd2 {
             paymentResponse.setTransactionStatus(mapToTransactionStatus12(xs2aPayment.getTransactionStatus()));
             return paymentResponse;
         }
-    }
-
-    @Nullable
-    private Object enrichPaymentWithStatus(de.adorsys.psd2.xs2a.core.pis.TransactionStatus transactionStatus, Object resp) {
-        try {
-            Map paymentData = mapper.readValue(resp.toString(), Map.class);
-            paymentData.put("transactionStatus", transactionStatus);
-            return paymentData;
-        } catch (IOException e) {
-            log.warn("Can not convert payment to json ", e);
-        }
-        return null;
     }
 
     public static PaymentInitiationStatusResponse200Json mapToStatusResponse12(de.adorsys.psd2.xs2a.core.pis.TransactionStatus status) {
@@ -171,7 +153,8 @@ public class PaymentModelMapperPsd2 {
     }
 
     private boolean isRawPayment(Object payment) {
-        return payment instanceof PisPaymentInfo;
+        return payment instanceof PisPaymentInfo
+                   && standardPaymentProductsResolver.isRawPaymentProduct(((PisPaymentInfo) payment).getPaymentProduct());
     }
 
     private List<PaymentInitiationTarget2Json> mapToBulkPartList12(List<SinglePayment> payments) {

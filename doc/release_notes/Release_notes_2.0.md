@@ -32,10 +32,10 @@ From now Xs2a does not filter transactions by given booking status. Booking stat
 In Xs2a - ASPSP-mock connector filtering is done on SPI level (in private methods `getFilteredTransactions` and
 `filterByBookingStatus` in `AccountSpiImpl`).
 
-## Added support of payment initiation in DTAZV format
+## Added support of payment initiation of any payment in `application/xml` or `text/plain` format
 
-Xs2a payment initiation controller now supports initiation of DTAZV format payment.
-To enable this feature, `dtazv-payment` payment product should be added to aspsp-profile `supportedPaymentTypeAndProductMatrix`(or any other non-standard payment product).
+Xs2a payment initiation controller now supports initiation of payment in `application/xml` or `text/plain` format.
+To enable this feature, a non-standard payment product should be added to aspsp-profile `supportedPaymentTypeAndProductMatrix`(standard payment products are the 4 ones, defined by the Berlin Group Specification 1.3).
 The body of the payment is stored in the byte array and returned completely in the same form with get payment endpoint.
 Get payment status endpoint returns JSON response with current transaction status of the payment.
 
