@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -64,7 +64,9 @@ public class CmsPsuService {
      * @return if the psuData is not in the psuDataList then will return true otherwise return false
      */
     public boolean isPsuDataNew(PsuData psuData, List<PsuData> psuDataList) {
-        return !isPsuDataInList(psuData, psuDataList);
+        return Optional.ofNullable(psuData)
+                   .map(psu -> !isPsuDataInList(psu, psuDataList))
+                   .orElse(false);
     }
 
     /**
@@ -75,19 +77,8 @@ public class CmsPsuService {
      * @return if the psuData is not in the psuDataList then will return false otherwise will return true
      */
     private boolean isPsuDataInList(PsuData psuData, List<PsuData> psuDataList) {
-        return isPsuDataCorrect(psuData)
+        return psuData.isNotEmpty()
                    && psuDataList.stream()
                           .anyMatch(psuData::contentEquals);
-    }
-
-    /**
-     * Checks if psuId in psuData is not empty
-     *
-     * @param psuData     psu which will check
-     * @return if the psuId is not empty then will return true otherwise false
-     */
-    public boolean isPsuDataCorrect(PsuData psuData) {
-        return Objects.nonNull(psuData)
-                   && StringUtils.isNotBlank(psuData.getPsuId());
     }
 }

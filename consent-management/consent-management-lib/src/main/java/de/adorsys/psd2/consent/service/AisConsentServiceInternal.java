@@ -488,7 +488,8 @@ public class AisConsentServiceInternal implements AisConsentService {
     private void closePreviousAuthorisationsByPsu(List<AisConsentAuthorization> authorisations, PsuIdData psuIdData) {
         PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
 
-        if (!cmsPsuService.isPsuDataCorrect(psuData)) {
+        if (Objects.isNull((psuData))
+                || psuData.isEmpty()) {
             return;
         }
 

@@ -413,7 +413,8 @@ public class PisCommonPaymentServiceInternal implements PisCommonPaymentService 
     private void closePreviousAuthorisationsByPsu(List<PisAuthorization> authorisations, CmsAuthorisationType authorisationType, PsuIdData psuIdData) {
         PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
 
-        if (!cmsPsuService.isPsuDataCorrect(psuData)) {
+        if (Objects.isNull((psuData))
+                || psuData.isEmpty()) {
             return;
         }
 
