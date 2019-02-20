@@ -262,7 +262,6 @@ public class AisConsentServiceInternalTest {
         when(psuDataMapper.mapToPsuData(PSU_ID_DATA)).thenReturn(PSU_DATA);
         when(cmsPsuService.definePsuDataForAuthorisation(any(), any())).thenReturn(PSU_DATA);
         when(cmsPsuService.enrichPsuData(any(), any())).thenReturn(Collections.singletonList(PSU_DATA));
-        when(cmsPsuService.isPsuDataCorrect(PSU_DATA)).thenReturn(true);
 
         AisConsentAuthorizationRequest aisConsentAuthorisationRequest = new AisConsentAuthorizationRequest();
         aisConsentAuthorisationRequest.setPsuData(PSU_ID_DATA);
