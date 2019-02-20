@@ -76,6 +76,8 @@ public class CmsPsuService {
     /**
      * Checks whether two specified lists of PSU Data are equals
      *
+     * This method ignores internal entity identifier(returned by {@link PsuData#getId()}) when comparing lists.
+     *
      * @param psuDataList        the first list to be compared, must not be null
      * @param anotherPsuDataList the second list to be compared, must not be null
      * @return <code>true</code> if two lists are equal, <code>false</code> otherwise
