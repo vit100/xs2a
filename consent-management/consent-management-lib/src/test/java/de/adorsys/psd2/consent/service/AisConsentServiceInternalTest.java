@@ -53,6 +53,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -261,6 +262,7 @@ public class AisConsentServiceInternalTest {
         when(psuDataMapper.mapToPsuData(PSU_ID_DATA)).thenReturn(PSU_DATA);
         when(cmsPsuService.definePsuDataForAuthorisation(any(), any())).thenReturn(PSU_DATA);
         when(cmsPsuService.enrichPsuData(any(), any())).thenReturn(Collections.singletonList(PSU_DATA));
+        when(cmsPsuService.isPsuDataCorrect(PSU_DATA)).thenReturn(true);
 
         AisConsentAuthorizationRequest aisConsentAuthorisationRequest = new AisConsentAuthorizationRequest();
         aisConsentAuthorisationRequest.setPsuData(PSU_ID_DATA);
@@ -273,6 +275,15 @@ public class AisConsentServiceInternalTest {
         assertTrue(actual.isPresent());
         verify(aisConsentAuthorisationRepository).save(argument.capture());
         assertSame(argument.getValue().getScaStatus(), ScaStatus.STARTED);
+
+        verify(aisConsentAuthorisationRepository).save(failedAuthorisationsArgument.capture());
+        List<AisConsentAuthorization> failedAuthorisations = failedAuthorisationsArgument.getValue();
+        Set<ScaStatus> scaStatuses = failedAuthorisations.stream()
+                                         .map(AisConsentAuthorization::getScaStatus)
+                                         .collect(Collectors.toSet());
+        assertEquals(scaStatuses.size(), 1);
+        assertTrue(scaStatuses.contains(ScaStatus.FAILED));
+
     }
 
     @Test(expected = IllegalArgumentException.class)
