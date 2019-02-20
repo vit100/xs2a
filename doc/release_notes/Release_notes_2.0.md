@@ -44,3 +44,6 @@ From now on, these SPI payment objects contain list of PSU Data:
  - PeriodicPaymentSpi
  - BulkPaymentSpi
  - SpiPaymentInfo
+
+## Several PSUs in ais consent
+Due to multilevel authorisation of consents, we can store data of several PSUs for each consent
