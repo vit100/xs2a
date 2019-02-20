@@ -328,9 +328,6 @@ public class AisConsentServiceInternalTest {
         when(aisConsentMocked.getTppInfo())
             .thenReturn(tppInfoMocked);
 
-        when(aisConsentMocked.getFirstPsuData())
-            .thenReturn(psuDataMocked);
-
         when(psuDataMocked.getPsuId())
             .thenReturn(PSU_ID);
 
