@@ -332,9 +332,14 @@ public class AisConsentServiceInternal implements AisConsentService {
         }
 
         if (ScaStatus.STARTED == aisConsentAuthorization.getScaStatus()) {
-            AisConsent aisConsent = aisConsentAuthorization.getConsent();
+            PsuData psuRequest = psuDataMapper.mapToPsuData(request.getPsuData());
 
-            PsuData psuData = cmsPsuService.definePsuDataForAuthorisation(psuDataMapper.mapToPsuData(request.getPsuData()), aisConsent.getPsuDataList());
+            if (!isPsuDataRequestCorrect(psuRequest, aisConsentAuthorization.getPsuData())) {
+                return false;
+            }
+
+            AisConsent aisConsent = aisConsentAuthorization.getConsent();
+            PsuData psuData = cmsPsuService.definePsuDataForAuthorisation(psuRequest, aisConsent.getPsuDataList());
             aisConsent.setPsuDataList(cmsPsuService.enrichPsuData(psuData, aisConsent.getPsuDataList()));
 
             aisConsentAuthorization.setConsent(aisConsent);
@@ -505,5 +510,11 @@ public class AisConsentServiceInternal implements AisConsentService {
         auth.setScaStatus(ScaStatus.FAILED);
         auth.setRedirectUrlExpirationTimestamp(OffsetDateTime.now());
         return auth;
+    }
+
+    private boolean isPsuDataRequestCorrect(PsuData psuRequest, PsuData psuAuth) {
+        return psuRequest != null
+                   || psuAuth == null
+                   || psuRequest.contentEquals(psuAuth);
     }
 }
