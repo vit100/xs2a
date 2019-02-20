@@ -32,6 +32,7 @@ import de.adorsys.psd2.consent.service.mapper.AisConsentMapper;
 import de.adorsys.psd2.consent.service.mapper.PsuDataMapper;
 import de.adorsys.psd2.consent.service.mapper.ScaMethodMapper;
 import de.adorsys.psd2.consent.service.mapper.TppInfoMapper;
+import de.adorsys.psd2.consent.service.psu.CmsPsuService;
 import de.adorsys.psd2.xs2a.core.consent.AisConsentRequestType;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
 import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
@@ -39,7 +40,6 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +66,7 @@ public class AisConsentServiceInternal implements AisConsentService {
     private final AisConsentConfirmationExpirationService aisConsentConfirmationExpirationService;
     private final TppInfoMapper tppInfoMapper;
     private final ScaMethodMapper scaMethodMapper;
+    private final CmsPsuService cmsPsuService;
 
     /**
      * Create AIS consent
@@ -335,7 +336,7 @@ public class AisConsentServiceInternal implements AisConsentService {
             PsuData psuData = psuDataMapper.mapToPsuData(request.getPsuData());
 
             if (CollectionUtils.isEmpty(consent.getPsuDataList())) {
-                consent.setPsuDataList(enrichPsuData(psuData, consent.getPsuDataList()));
+                consent.setPsuDataList(cmsPsuService.enrichPsuData(psuData, consent.getPsuDataList()));
                 aisConsentAuthorization.setConsent(consent);
             }
             aisConsentAuthorization.setPsuData(psuData);
@@ -464,8 +465,8 @@ public class AisConsentServiceInternal implements AisConsentService {
     }
 
     private String saveNewAuthorization(AisConsent aisConsent, AisConsentAuthorizationRequest request) {
-        PsuData psuData = definePsuDataForAuthorisation(psuDataMapper.mapToPsuData(request.getPsuData()), aisConsent.getPsuDataList());
-        aisConsent.setPsuDataList(enrichPsuData(psuData, aisConsent.getPsuDataList()));
+        PsuData psuData = cmsPsuService.definePsuDataForAuthorisation(psuDataMapper.mapToPsuData(request.getPsuData()), aisConsent.getPsuDataList());
+        aisConsent.setPsuDataList(cmsPsuService.enrichPsuData(psuData, aisConsent.getPsuDataList()));
 
         AisConsentAuthorization consentAuthorization = new AisConsentAuthorization();
         consentAuthorization.setExternalId(UUID.randomUUID().toString());
@@ -487,7 +488,7 @@ public class AisConsentServiceInternal implements AisConsentService {
     private void closePreviousAuthorisationsByPsu(List<AisConsentAuthorization> authorisations, PsuIdData psuIdData) {
         PsuData psuData = psuDataMapper.mapToPsuData(psuIdData);
 
-        if (!isPsuDataCorrect(psuData)) {
+        if (!cmsPsuService.isPsuDataCorrect(psuData)) {
             return;
         }
 
@@ -504,38 +505,5 @@ public class AisConsentServiceInternal implements AisConsentService {
         auth.setScaStatus(ScaStatus.FAILED);
         auth.setRedirectUrlExpirationTimestamp(OffsetDateTime.now());
         return auth;
-    }
-
-    private PsuData definePsuDataForAuthorisation(PsuData psuData, List<PsuData> psuDataList) {
-        if (isPsuDataNew(psuData, psuDataList)) {
-            return psuData;
-        }
-
-        return psuDataList.stream()
-                   .filter(psu -> StringUtils.equals(psu.getPsuId(), psuData.getPsuId()))
-                   .findAny()
-                   .orElse(null);
-    }
-
-    private List<PsuData> enrichPsuData(PsuData psuData,List<PsuData> psuDataList) {
-        if (isPsuDataNew(psuData, psuDataList)) {
-            psuDataList.add(psuData);
-        }
-        return psuDataList;
-    }
-
-    private boolean isPsuDataNew(PsuData psuData, List<PsuData> psuDataList) {
-        return !isPsuDataInList(psuData, psuDataList);
-    }
-
-    private boolean isPsuDataInList(PsuData psuData, List<PsuData> psuDataList) {
-        return isPsuDataCorrect(psuData)
-                   && psuDataList.stream()
-                          .anyMatch(psuData::contentEquals);
-    }
-
-    private boolean isPsuDataCorrect(PsuData psuData) {
-        return Objects.nonNull(psuData)
-                   && StringUtils.isNotBlank(psuData.getPsuId());
     }
 }
