@@ -50,7 +50,7 @@ public class FundsConfirmationModelMapper {
      * Maps internal FundsConfirmationResponse into InlineResponse200.
      *
      * @param fundsConfirmationResponse response from funds confirmation service.
-     * @return InlineResponse200 entity
+     * @return InlineResponse200 for controller
      */
     public InlineResponse200 mapToInlineResponse200(FundsConfirmationResponse fundsConfirmationResponse) {
         return new InlineResponse200().fundsAvailable(fundsConfirmationResponse.isFundsAvailable());
