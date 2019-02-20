@@ -332,13 +332,12 @@ public class AisConsentServiceInternal implements AisConsentService {
         }
 
         if (ScaStatus.STARTED == aisConsentAuthorization.getScaStatus()) {
-            AisConsent consent = aisConsentAuthorization.getConsent();
-            PsuData psuData = psuDataMapper.mapToPsuData(request.getPsuData());
+            AisConsent aisConsent = aisConsentAuthorization.getConsent();
 
-            if (CollectionUtils.isEmpty(consent.getPsuDataList())) {
-                consent.setPsuDataList(cmsPsuService.enrichPsuData(psuData, consent.getPsuDataList()));
-                aisConsentAuthorization.setConsent(consent);
-            }
+            PsuData psuData = cmsPsuService.definePsuDataForAuthorisation(psuDataMapper.mapToPsuData(request.getPsuData()), aisConsent.getPsuDataList());
+            aisConsent.setPsuDataList(cmsPsuService.enrichPsuData(psuData, aisConsent.getPsuDataList()));
+
+            aisConsentAuthorization.setConsent(aisConsent);
             aisConsentAuthorization.setPsuData(psuData);
         }
 
