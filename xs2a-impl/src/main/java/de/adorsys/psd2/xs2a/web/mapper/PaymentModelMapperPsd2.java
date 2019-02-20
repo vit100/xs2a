@@ -28,6 +28,7 @@ import de.adorsys.psd2.xs2a.domain.consent.Xs2aChosenScaMethod;
 import de.adorsys.psd2.xs2a.domain.pis.*;
 import de.adorsys.psd2.xs2a.service.mapper.AccountModelMapper;
 import de.adorsys.psd2.xs2a.service.mapper.AmountModelMapper;
+import de.adorsys.psd2.xs2a.service.profile.StandardPaymentProductsResolver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -52,6 +53,7 @@ public class PaymentModelMapperPsd2 {
     private final AccountModelMapper accountModelMapper;
     private final TppRedirectUriMapper tppRedirectUriMapper;
     private final AmountModelMapper amountModelMapper;
+    private final StandardPaymentProductsResolver standardPaymentProductsResolver;
 
     public Object mapToGetPaymentResponse12(Object payment, PaymentType type, String product) {
         if (isRawPayment(payment)) {
@@ -59,7 +61,7 @@ public class PaymentModelMapperPsd2 {
             String paymentResponse = convertResponseToRawData(paymentInfo.getPaymentData());
 
             //TODO rework this check during refactoring of payment saving https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/517
-            if (paymentInfo.getPaymentProduct().contains("pain")) {
+            if (standardPaymentProductsResolver.isRawPaymentProduct(paymentInfo.getPaymentProduct())) {
                 return paymentResponse;
             }
 
