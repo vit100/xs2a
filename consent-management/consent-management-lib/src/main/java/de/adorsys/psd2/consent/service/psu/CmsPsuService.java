@@ -18,10 +18,14 @@ package de.adorsys.psd2.consent.service.psu;
 
 import de.adorsys.psd2.consent.domain.PsuData;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Equator;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -68,6 +72,28 @@ public class CmsPsuService {
                    .map(psu -> !isPsuDataInList(psu, psuDataList))
                    .orElse(false);
     }
+
+    /**
+     * Checks whether two specified lists of PSU Data are equals
+     *
+     * @param psuDataList        the first list to be compared, must not be null
+     * @param anotherPsuDataList the second list to be compared, must not be null
+     * @return <code>true</code> if two lists are equal, <code>false</code> otherwise
+     */
+    public boolean isPsuDataListEqual(@NotNull List<PsuData> psuDataList, @NotNull List<PsuData> anotherPsuDataList) {
+        return CollectionUtils.isEqualCollection(psuDataList, anotherPsuDataList, new Equator<PsuData>() {
+            @Override
+            public boolean equate(PsuData psuData, PsuData anotherPsuData) {
+                return psuData.contentEquals(anotherPsuData);
+            }
+
+            @Override
+            public int hash(PsuData psuData) {
+                return Objects.hashCode(psuData.getPsuId());
+            }
+        });
+    }
+
 
     /**
      * Checks if the specified psuData is in the psu list
