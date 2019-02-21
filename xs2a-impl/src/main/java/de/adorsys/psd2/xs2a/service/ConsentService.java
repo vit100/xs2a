@@ -144,9 +144,7 @@ public class ConsentService {
         SpiInitiateAisConsentResponse spiResponsePayload = initiateAisConsentSpiResponse.getPayload();
         boolean multilevelScaRequired = spiResponsePayload.isMultilevelScaRequired();
 
-        if (multilevelScaRequired) {
-            aisConsentService.updateMultilevelScaRequired(consentId, multilevelScaRequired);    // default value is false, so we do the call only for non-default (true) case
-        }
+        updateMultilevelSca(consentId, multilevelScaRequired);
 
         Optional<Xs2aAccountAccess> xs2aAccountAccess = spiToXs2aAccountAccessMapper.mapToAccountAccess(spiResponsePayload.getAccountAccess());
         xs2aAccountAccess.ifPresent(accountAccess ->
@@ -161,6 +159,13 @@ public class ConsentService {
         }
 
         return createConsentResponseObject;
+    }
+
+    private void updateMultilevelSca(String consentId, boolean multilevelScaRequired) {
+        // default value is false, so we do the call only for non-default (true) case
+        if (multilevelScaRequired) {
+            aisConsentService.updateMultilevelScaRequired(consentId, multilevelScaRequired);
+        }
     }
 
     /**
