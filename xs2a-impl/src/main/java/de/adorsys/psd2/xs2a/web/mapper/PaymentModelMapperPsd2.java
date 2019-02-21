@@ -54,8 +54,8 @@ public class PaymentModelMapperPsd2 {
     private final AmountModelMapper amountModelMapper;
     private final StandardPaymentProductsResolver standardPaymentProductsResolver;
 
-    public Object mapToGetPaymentResponse12(Object payment, PaymentType type, String product) {
-        if (isRawPayment(payment)) {
+    public Object mapToGetPaymentResponse12(Object payment, PaymentType type, String paymentProduct) {
+        if (standardPaymentProductsResolver.isRawPaymentProduct(paymentProduct)) {
             PisPaymentInfo paymentInfo = (PisPaymentInfo) payment;
             return convertResponseToRawData(paymentInfo.getPaymentData());
         }
@@ -148,11 +148,6 @@ public class PaymentModelMapperPsd2 {
         response.setChallengeData(coreObjectsMapper.mapToChallengeData(cancelPaymentResponse.getChallengeData()));
         response._links(mapper.convertValue(cancelPaymentResponse.getLinks(), Map.class));
         return response;
-    }
-
-    private boolean isRawPayment(Object payment) {
-        return payment instanceof PisPaymentInfo
-                   && standardPaymentProductsResolver.isRawPaymentProduct(((PisPaymentInfo) payment).getPaymentProduct());
     }
 
     private List<PaymentInitiationTarget2Json> mapToBulkPartList12(List<SinglePayment> payments) {

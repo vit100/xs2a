@@ -103,7 +103,7 @@ public class PaymentController implements PaymentApi {
         return serviceResponse.hasError()
                    ? responseErrorMapper.generateErrorResponse(serviceResponse.getError())
                    : responseMapper.ok(ResponseObject.builder().body(paymentModelMapperPsd2.mapToGetPaymentResponse12(serviceResponse.getBody(), PaymentType.getByValue(paymentService).get(),
-                                                                                                                      "sepa-credit-transfers")).build());
+                                                                                                                      paymentProduct)).build());
     }
 
     //Method for JSON format payments
