@@ -50,3 +50,8 @@ From now on, these SPI payment objects contain list of PSU Data:
 Fixed `scaStatus` link in response for starting authorisation POST request for the addressed payment cancellation.
 Before fixing the link was: `/v1/{payment-service}/{payment-product}/{payment-id}/authorisations/{authorisation-id}`,
 now it is: `/v1/{payment-service}/{payment-product}/{payment-id}/cancellation-authorisations/{authorisation-id}`.
+
+## Several PSUs in AIS consent
+Due to multilevel authorisation of consents, we can store data of several PSUs for each consent.
+
+These changes also affect SPI level, meaning that from now on `SpiAccountConsent` contains list of `SpiPsuData` instead of a single object.
