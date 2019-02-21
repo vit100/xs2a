@@ -40,6 +40,8 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPaymentInfo
 import de.adorsys.psd2.xs2a.service.payment.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.service.profile.StandardPaymentProductsResolver;
+import de.adorsys.psd2.xs2a.service.validator.PaymentRequestValidator;
+import de.adorsys.psd2.xs2a.service.validator.ValidationResult;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
 import lombok.AllArgsConstructor;
@@ -79,6 +81,7 @@ public class PaymentService {
     private final CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
     private final SpiContextDataProvider spiContextDataProvider;
     private final ReadCommonPaymentStatusService readCommonPaymentStatusService;
+    private final PaymentRequestValidator paymentRequestValidator;
 
     private final StandardPaymentProductsResolver standardPaymentProductsResolver;
 
@@ -135,27 +138,13 @@ public class PaymentService {
     public ResponseObject getPaymentById(PaymentType paymentType, String paymentProduct, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
+        ValidationResult validationResult = paymentRequestValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
 
-        if (!pisCommonPaymentOptional.isPresent()) {
-            return ResponseObject.builder()
-                       .fail(PIS_404, of(RESOURCE_UNKNOWN_404, "Payment not found"))
-                       .build();
+        if (validationResult.isNotValid()) {
+            return ResponseObject.builder().fail(validationResult.getMessageError()).build();
         }
 
         PisCommonPaymentResponse commonPaymentResponse = pisCommonPaymentOptional.get();
-
-        if (isPaymentTypeIncorrect(paymentType, commonPaymentResponse)) {
-            return ResponseObject.builder()
-                       .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
-                       .build();
-        }
-
-        if (isPaymentProductIncorrect(paymentProduct, commonPaymentResponse)) {
-            return ResponseObject.<TransactionStatus>builder()
-                       .fail(PIS_403, of(PRODUCT_INVALID, "Payment product invalid for addressed payment"))
-                       .build();
-        }
-
         CommonPayment commonPayment = cmsToXs2aPaymentMapper.mapToXs2aCommonPayment(commonPaymentResponse);
 
         AspspConsentData aspspConsentData = pisAspspDataService.getAspspConsentData(paymentId);
@@ -197,27 +186,15 @@ public class PaymentService {
     public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentProduct, String paymentId) {//NOPMD //TODO refactor method  and remove https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/683
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
-        if (!pisCommonPaymentOptional.isPresent()) {
-            return ResponseObject.<TransactionStatus>builder()
-                       .fail(PIS_404, of(RESOURCE_UNKNOWN_404, "Payment not found"))
-                       .build();
+        ValidationResult validationResult = paymentRequestValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
+
+        if (validationResult.isNotValid()) {
+            return ResponseObject.<TransactionStatus>builder().fail(validationResult.getMessageError()).build();
         }
 
-        // TODO temporary solution: payment initiation workflow should be clarified https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/582
         PisCommonPaymentResponse pisCommonPaymentResponse = pisCommonPaymentOptional.get();
 
-        if (isPaymentTypeIncorrect(paymentType, pisCommonPaymentResponse)) {
-            return ResponseObject.<TransactionStatus>builder()
-                       .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
-                       .build();
-        }
-
-        if (isPaymentProductIncorrect(paymentProduct, pisCommonPaymentResponse)) {
-            return ResponseObject.<TransactionStatus>builder()
-                       .fail(PIS_403, of(PRODUCT_INVALID, "Payment product invalid for addressed payment"))
-                       .build();
-        }
-
+        // TODO temporary solution: payment initiation workflow should be clarified https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/582
         if (pisCommonPaymentResponse.getTransactionStatus() == TransactionStatus.RJCT) {
             return ResponseObject.<TransactionStatus>builder().body(TransactionStatus.RJCT).build();
         }
@@ -278,24 +255,17 @@ public class PaymentService {
     public ResponseObject<CancelPaymentResponse> cancelPayment(PaymentType paymentType, String paymentProduct, String encryptedPaymentId) { //NOPMD //TODO refactor method  and remove NOPMD check https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/683
         xs2aEventService.recordPisTppRequest(encryptedPaymentId, EventType.PAYMENT_CANCELLATION_REQUEST_RECEIVED);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(encryptedPaymentId);
+        ValidationResult validationResult = paymentRequestValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
 
-        if (!pisCommonPaymentOptional.isPresent()) {
-            return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(PIS_404, of(RESOURCE_UNKNOWN_404, "Payment not found"))
-                       .build();
+        if (validationResult.isNotValid()) {
+            return ResponseObject.<CancelPaymentResponse>builder().fail(validationResult.getMessageError()).build();
         }
 
         PisCommonPaymentResponse pisCommonPaymentResponse = pisCommonPaymentOptional.get();
 
-        if (isPaymentTypeIncorrect(paymentType, pisCommonPaymentResponse)) {
+        if (isFinalisedPayment(pisCommonPaymentResponse)) {
             return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for addressed payment"))
-                       .build();
-        }
-
-        if (isPaymentProductIncorrect(paymentProduct, pisCommonPaymentResponse)) {
-            return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(PIS_403, of(PRODUCT_INVALID, "Payment product invalid for addressed payment"))
+                       .fail(PIS_400, of(FORMAT_ERROR, "Payment is finalised already and cannot be cancelled"))
                        .build();
         }
 
@@ -324,14 +294,6 @@ public class PaymentService {
             spiPayment = spiPaymentOptional.get();
         }
 
-        Optional<PisCommonPaymentResponse> commonPayment = pisCommonPaymentService.getPisCommonPaymentById(encryptedPaymentId);
-
-        if (commonPayment.isPresent() && isFinalisedPayment(commonPayment.get())) {
-            return ResponseObject.<CancelPaymentResponse>builder()
-                       .fail(PIS_400, of(FORMAT_ERROR, "Payment is finalised already and cannot be cancelled"))
-                       .build();
-        }
-
         List<PsuIdData> psuData = pisPsuDataService.getPsuDataByPaymentId(encryptedPaymentId);
 
         if (profileService.isPaymentCancellationAuthorizationMandated()) {
@@ -339,14 +301,6 @@ public class PaymentService {
         } else {
             return cancelPaymentService.cancelPaymentWithoutAuthorisation(readPsuIdDataFromList(psuData), spiPayment, encryptedPaymentId);
         }
-    }
-
-    private boolean isPaymentTypeIncorrect(PaymentType paymentType, PisCommonPaymentResponse commonPaymentResponse) {
-        return commonPaymentResponse.getPaymentType() != paymentType;
-    }
-
-    private boolean isPaymentProductIncorrect(String paymentProduct, PisCommonPaymentResponse commonPaymentResponse) {
-        return !commonPaymentResponse.getPaymentProduct().equalsIgnoreCase(paymentProduct);
     }
 
     private boolean isFinalisedPayment(PisCommonPaymentResponse response) {
