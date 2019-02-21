@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//TODO Rename consentId to encryptedConsentId https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/705
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "api/v1/ais/consent")
