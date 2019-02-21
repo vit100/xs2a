@@ -376,6 +376,7 @@ public class AisConsentServiceInternal implements AisConsentService {
     }
 
     @Override
+    @Transactional
     public boolean updateMultilevelScaRequired(String consentId, boolean multilevelScaRequired) {
         Optional<AisConsent> aisConsentOptional = aisConsentRepository.findByExternalId(consentId);
         if (!aisConsentOptional.isPresent()) {
