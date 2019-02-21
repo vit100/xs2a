@@ -45,6 +45,11 @@ From now on, these SPI payment objects contain list of PSU Data:
  - BulkPaymentSpi
  - SpiPaymentInfo
 
+## Several PSUs in AIS consent
+Due to multilevel authorisation of consents, we can store data of several PSUs for each consent.
+
+These changes also affect SPI level, meaning that from now on `SpiAccountConsent` contains list of `SpiPsuData` instead of a single object.
+
 ## Added support of payment initiation of any payment in `application/xml` or `text/plain` format
 
 Xs2a payment initiation controller now supports initiation of payment in `application/xml` or `text/plain` format.
