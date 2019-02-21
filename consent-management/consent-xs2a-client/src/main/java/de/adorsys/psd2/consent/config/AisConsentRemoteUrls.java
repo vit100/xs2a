@@ -179,4 +179,14 @@ public class AisConsentRemoteUrls {
     public String updateScaApproach() {
         return consentServiceBaseUrl + "/ais/consent/authorisations/{authorisation-id}/sca-approach/{sca-approach}";
     }
+
+    /**
+     * @return <code>true</code> if authorisation was found and SCA approach updated, <code>false</code> otherwise
+     * Method: PUT
+     * PathVariables: String authorisationId
+     * PathVariables: String sca-approach
+     */
+    public String updateMultilevelScaRequired() {
+        return consentServiceBaseUrl + "/ais/consent/{consent-id}/multilevel-sca?multilevel-sca={multilevel-sca}";
+    }
 }

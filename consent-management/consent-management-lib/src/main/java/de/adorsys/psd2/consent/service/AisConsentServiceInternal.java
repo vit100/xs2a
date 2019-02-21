@@ -375,6 +375,19 @@ public class AisConsentServiceInternal implements AisConsentService {
         return true;
     }
 
+    @Override
+    public boolean updateMultilevelScaRequired(String consentId, boolean multilevelScaRequired) {
+        Optional<AisConsent> aisConsentOptional = aisConsentRepository.findByExternalId(consentId);
+        if (!aisConsentOptional.isPresent()) {
+            return false;
+        }
+        AisConsent consent = aisConsentOptional.get();
+        consent.setMultilevelScaRequired(multilevelScaRequired);
+        aisConsentRepository.save(consent);
+
+        return true;
+    }
+
     private AisConsent createConsentFromRequest(CreateAisConsentRequest request) {
 
         AisConsent consent = new AisConsent();

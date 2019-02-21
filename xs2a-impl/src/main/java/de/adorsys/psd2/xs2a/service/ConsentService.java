@@ -141,15 +141,17 @@ public class ConsentService {
                        .build();
         }
 
-        Optional<Xs2aAccountAccess> xs2aAccountAccess = spiToXs2aAccountAccessMapper.mapToAccountAccess(initiateAisConsentSpiResponse.getPayload().getAccountAccess());
+        SpiInitiateAisConsentResponse spiResponsePayload = initiateAisConsentSpiResponse.getPayload();
+        aisConsentService.updateMultilevelScaRequired(consentId, spiResponsePayload.isMultilevelScaRequired());
+        Optional<Xs2aAccountAccess> xs2aAccountAccess = spiToXs2aAccountAccessMapper.mapToAccountAccess(spiResponsePayload.getAccountAccess());
         xs2aAccountAccess.ifPresent(accountAccess ->
                                         accountReferenceUpdater.rewriteAccountAccess(consentId, accountAccess));
 
-        ResponseObject<CreateConsentResponse> createConsentResponseObject = ResponseObject.<CreateConsentResponse>builder().body(new CreateConsentResponse(ConsentStatus.RECEIVED.getValue(), consentId, null, null, null, null)).build();
+        ResponseObject<CreateConsentResponse> createConsentResponseObject = ResponseObject.<CreateConsentResponse>builder().body(new CreateConsentResponse(ConsentStatus.RECEIVED.getValue(), consentId, null, null, null, null, spiResponsePayload.isMultilevelScaRequired())).build();
 
         // TODO add actual value during imlementation of multilevel sca https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/515
         if (isEmbeddedOrRedirectScaApproach()
-                && authorisationMethodDecider.isImplicitMethod(explicitPreferred, false)) {
+                && authorisationMethodDecider.isImplicitMethod(explicitPreferred, spiResponsePayload.isMultilevelScaRequired())) {
             proceedImplicitCaseForCreateConsent(createConsentResponseObject.getBody(), psuData, consentId);
         }
 

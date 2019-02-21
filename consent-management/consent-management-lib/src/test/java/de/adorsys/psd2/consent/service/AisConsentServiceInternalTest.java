@@ -562,7 +562,7 @@ public class AisConsentServiceInternalTest {
                                      null, false,
                                      null, 0,
                                      null, null,
-                                     false, false, null, null, null);
+                                     false, false, null, null, null, false);
     }
 
     private AisConsent buildFinalisedConsent() {

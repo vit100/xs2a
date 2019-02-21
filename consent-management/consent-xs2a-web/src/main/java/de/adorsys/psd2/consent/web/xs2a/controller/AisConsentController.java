@@ -248,4 +248,19 @@ public class AisConsentController {
                    ? new ResponseEntity<>(true, HttpStatus.OK)
                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping(path = "/{consent-id}/multilevel-sca")
+    @ApiOperation(value = "Updates multilevel SCA in consent")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Not Found")})
+    public ResponseEntity<Boolean> updateMultilevelScaRequired(
+        @ApiParam(name = "consent-id", value = "The consent identification.", example = "bf489af6-a2cb-4b75-b71d-d66d58b934d7")
+        @PathVariable("consent-id") String consentId,
+        @ApiParam(name = "multilevel-sca", value = "Multilevel SCA.", example = "false")
+        @RequestParam(value = "multilevel-sca", defaultValue = "false") boolean multilevelSca) {
+        return aisConsentService.updateMultilevelScaRequired(consentId, multilevelSca)
+                   ? new ResponseEntity<>(true, HttpStatus.OK)
+                   : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
