@@ -37,7 +37,8 @@ In Xs2a - ASPSP-mock connector filtering is done on SPI level (in private method
 From now on only one enum that represents booking status exists. `BookingStatus` is moved to `xs2a-core` package, duplicates 
 `Xs2aBookingStatus` and `SpiBookingStatus` are deleted.
 
-## Changed link in cancellation authorisation response
+## Bugfix: changed link in cancellation authorisation response
 
 Fixed `scaStatus` link in response for starting authorisation POST request for the addressed payment cancellation.
-Fixed link is: `/v1/{payment-service}/{payment-product}/{payment-id}/cancellation-authorisations/{authorisation-id}`.
+Before fixing the link was: `/v1/{payment-service}/{payment-product}/{payment-id}/authorisations/{authorisation-id}`,
+now it is: `/v1/{payment-service}/{payment-product}/{payment-id}/cancellation-authorisations/{authorisation-id}`.
