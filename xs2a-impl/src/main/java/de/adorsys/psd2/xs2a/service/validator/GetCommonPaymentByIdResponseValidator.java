@@ -23,6 +23,7 @@ import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -31,7 +32,7 @@ import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.*;
 
 @Component
 @RequiredArgsConstructor
-public class PaymentRequestValidator {
+public class GetCommonPaymentByIdResponseValidator {
     private final AspspProfileServiceWrapper aspspProfileService;
 
     /**
@@ -49,7 +50,7 @@ public class PaymentRequestValidator {
      * @return ValidationResult instance, that contains boolean isValid, that shows if request is valid
      * and MessageError for invalid case
      */
-    public ValidationResult validateRequest(Optional<PisCommonPaymentResponse> pisCommonPaymentOptional, PaymentType paymentType, String paymentProduct) {
+    public ValidationResult validateRequest(@NotNull Optional<PisCommonPaymentResponse> pisCommonPaymentOptional, @NotNull PaymentType paymentType, @NotNull String paymentProduct) {
         if (!pisCommonPaymentOptional.isPresent()) {
             return new ValidationResult(false, new MessageError(ErrorType.PIS_404, TppMessageInformation.of(RESOURCE_UNKNOWN_404, "Payment not found")));
         }

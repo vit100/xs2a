@@ -40,7 +40,7 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPaymentInfo
 import de.adorsys.psd2.xs2a.service.payment.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
 import de.adorsys.psd2.xs2a.service.profile.StandardPaymentProductsResolver;
-import de.adorsys.psd2.xs2a.service.validator.PaymentRequestValidator;
+import de.adorsys.psd2.xs2a.service.validator.GetCommonPaymentByIdResponseValidator;
 import de.adorsys.psd2.xs2a.service.validator.ValidationResult;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.service.SpiPayment;
@@ -81,7 +81,7 @@ public class PaymentService {
     private final CmsToXs2aPaymentMapper cmsToXs2aPaymentMapper;
     private final SpiContextDataProvider spiContextDataProvider;
     private final ReadCommonPaymentStatusService readCommonPaymentStatusService;
-    private final PaymentRequestValidator paymentRequestValidator;
+    private final GetCommonPaymentByIdResponseValidator getCommonPaymentByIdResponseValidator;
 
     private final StandardPaymentProductsResolver standardPaymentProductsResolver;
 
@@ -138,7 +138,7 @@ public class PaymentService {
     public ResponseObject getPaymentById(PaymentType paymentType, String paymentProduct, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_PAYMENT_REQUEST_RECEIVED);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
-        ValidationResult validationResult = paymentRequestValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
+        ValidationResult validationResult = getCommonPaymentByIdResponseValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
 
         if (validationResult.isNotValid()) {
             return ResponseObject.builder().fail(validationResult.getMessageError()).build();
@@ -183,10 +183,10 @@ public class PaymentService {
      * @param paymentId      String representation of payment primary ASPSP identifier
      * @return Information about the status of a payment
      */
-    public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentProduct, String paymentId) {//NOPMD //TODO refactor method  and remove https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/683
+    public ResponseObject<TransactionStatus> getPaymentStatusById(PaymentType paymentType, String paymentProduct, String paymentId) {
         xs2aEventService.recordPisTppRequest(paymentId, EventType.GET_TRANSACTION_STATUS_REQUEST_RECEIVED);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(paymentId);
-        ValidationResult validationResult = paymentRequestValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
+        ValidationResult validationResult = getCommonPaymentByIdResponseValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
 
         if (validationResult.isNotValid()) {
             return ResponseObject.<TransactionStatus>builder().fail(validationResult.getMessageError()).build();
@@ -252,10 +252,10 @@ public class PaymentService {
      * @param encryptedPaymentId ASPSP identifier of the payment
      * @return Response containing information about cancelled payment or corresponding error
      */
-    public ResponseObject<CancelPaymentResponse> cancelPayment(PaymentType paymentType, String paymentProduct, String encryptedPaymentId) { //NOPMD //TODO refactor method  and remove NOPMD check https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/683
+    public ResponseObject<CancelPaymentResponse> cancelPayment(PaymentType paymentType, String paymentProduct, String encryptedPaymentId) {
         xs2aEventService.recordPisTppRequest(encryptedPaymentId, EventType.PAYMENT_CANCELLATION_REQUEST_RECEIVED);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = pisCommonPaymentService.getPisCommonPaymentById(encryptedPaymentId);
-        ValidationResult validationResult = paymentRequestValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
+        ValidationResult validationResult = getCommonPaymentByIdResponseValidator.validateRequest(pisCommonPaymentOptional, paymentType, paymentProduct);
 
         if (validationResult.isNotValid()) {
             return ResponseObject.<CancelPaymentResponse>builder().fail(validationResult.getMessageError()).build();
