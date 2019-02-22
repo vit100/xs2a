@@ -30,9 +30,22 @@ public class BookingStatusTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    public void forValue() throws IOException {
+    public void forValue_lowerCase() throws IOException {
         //Given
         String bookingStatusJson = "{ \"bookingStatus\": \"booked\" }";
+        Container expectedResult = new Container(BookingStatus.BOOKED);
+
+        //When
+        Container actualResult = objectMapper.readValue(bookingStatusJson, Container.class);
+
+        //Then
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void forValue_upperCase() throws IOException {
+        //Given
+        String bookingStatusJson = "{ \"bookingStatus\": \"BOOKED\" }";
         Container expectedResult = new Container(BookingStatus.BOOKED);
 
         //When
