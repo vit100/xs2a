@@ -31,6 +31,7 @@ import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapp
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -189,8 +190,30 @@ public class Xs2aAisConsentMapper {
                        ac.isTppRedirectPreferred(),
                        ac.getPsuIdDataList(),
                        ac.getTppInfo(),
-                       ac.getAisConsentRequestType()))
+                       ac.getAisConsentRequestType(),
+                       ac.isMultilevelScaRequired(),
+                       mapToAccountConsentAuthorisation(ais.getAccountConsentAuthorizations())))
                    .orElse(null);
+    }
+
+    private List<AccountConsentAuthorization> mapToAccountConsentAuthorisation(List<AisConsentAuthorisation> accountConsentAuthorizations) {
+        if (CollectionUtils.isEmpty(accountConsentAuthorizations)) {
+            return Collections.emptyList();
+        }
+        return accountConsentAuthorizations.stream()
+                   .map(this::mapToAccountConsentAuthorisation)
+                   .collect(Collectors.toList());
+    }
+
+    private AccountConsentAuthorization mapToAccountConsentAuthorisation(AisConsentAuthorisation aisConsentAuthorisation) {
+        return Optional.ofNullable(aisConsentAuthorisation)
+            .map(auth -> {
+                AccountConsentAuthorization accountConsentAuthorisation = new AccountConsentAuthorization();
+                accountConsentAuthorisation.setPsuIdData(auth.getPsuIdData());
+                accountConsentAuthorisation.setScaStatus(auth.getScaStatus());
+                return accountConsentAuthorisation;
+            })
+            .orElse(null);
     }
 
     private Xs2aAccountAccess mapToXs2aAccountAccess(AisAccountAccess ais) {
@@ -204,8 +227,8 @@ public class Xs2aAisConsentMapper {
 
     private Xs2aAccountAccessType getAccessType(String type) {
         return Optional.ofNullable(type)
-            .map(a -> Xs2aAccountAccessType.valueOf(type))
-            .orElse(null);
+                   .map(a -> Xs2aAccountAccessType.valueOf(type))
+                   .orElse(null);
     }
 
 }

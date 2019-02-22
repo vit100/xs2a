@@ -28,8 +28,8 @@ import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataReq;
 import de.adorsys.psd2.xs2a.domain.consent.UpdateConsentPsuDataResponse;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.ScaApproachResolver;
-import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStage;
 import de.adorsys.psd2.xs2a.service.authorization.ais.CommonDecoupledAisService;
+import de.adorsys.psd2.xs2a.service.authorization.ais.stage.AisScaStage;
 import de.adorsys.psd2.xs2a.service.consent.AisConsentDataService;
 import de.adorsys.psd2.xs2a.service.consent.Xs2aAisConsentService;
 import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
@@ -112,7 +112,11 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         if (authorisationStatusSpiResponse.hasError()) {
             if (authorisationStatusSpiResponse.getPayload() == SpiAuthorisationStatus.FAILURE) {
                 MessageError messageError = new MessageError(AIS_401, of(PSU_CREDENTIALS_INVALID));
-                return createFailedResponse(messageError, authorisationStatusSpiResponse.getMessages());
+                UpdateConsentPsuDataResponse failedResponse = createFailedResponse(messageError, authorisationStatusSpiResponse.getMessages());
+
+                aisConsentService.updateConsentAuthorization(aisConsentMapper.mapToSpiUpdateConsentPsuDataReq(failedResponse, request));
+
+                return failedResponse;
             }
 
             MessageError messageError = new MessageError(spiErrorMapper.mapToErrorHolder(authorisationStatusSpiResponse, ServiceType.AIS));
@@ -120,9 +124,7 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
         }
 
         // TODO Extract common consent validation from AIS Embedded and Decoupled stages https://git.adorsys.de/adorsys/xs2a/aspsp-xs2a/issues/677
-        if (accountConsent.getAisConsentRequestType() == AisConsentRequestType.ALL_AVAILABLE_ACCOUNTS
-                && accountConsent.isOneAccessType()
-                && !aspspProfileServiceWrapper.isScaByOneTimeAvailableAccountsConsentRequired()) {
+        if (isOneFactorAuthorisation(accountConsent)) {
 
             aisConsentService.updateConsentStatus(request.getConsentId(), ConsentStatus.VALID);
 
@@ -156,6 +158,13 @@ public class AisScaStartAuthorisationStage extends AisScaStage<UpdateConsentPsuD
             aisConsentService.updateConsentAuthorization(aisConsentMapper.mapToSpiUpdateConsentPsuDataReq(response, request));
             return response;
         }
+    }
+
+    private boolean isOneFactorAuthorisation(AccountConsent accountConsent) {
+        return accountConsent.getAisConsentRequestType() == AisConsentRequestType.ALL_AVAILABLE_ACCOUNTS
+                   && accountConsent.isOneAccessType()
+                   && !aspspProfileServiceWrapper.isScaByOneTimeAvailableAccountsConsentRequired()
+                   && !accountConsent.isMultilevelScaRequired();
     }
 
     private UpdateConsentPsuDataResponse applyIdentification(UpdateConsentPsuDataReq request) {
