@@ -60,7 +60,7 @@ public class AccountConsent {
 
     private final boolean multilevelScaRequired;
 
-    private final List<AccountConsentAuthorization> accountConsentAuthorizations;
+    private final List<AccountConsentAuthorization> authorisations;
 
     @JsonIgnore
     public boolean isValidFrequency() {

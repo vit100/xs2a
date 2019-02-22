@@ -16,6 +16,10 @@
 
 package de.adorsys.psd2.xs2a.service.authorization.ais.stage.embedded;
 
+import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
+import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.domain.ErrorHolder;
 import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
@@ -31,16 +35,12 @@ import de.adorsys.psd2.xs2a.service.mapper.psd2.ServiceType;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiErrorMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.SpiResponseStatusToXs2aMessageErrorCodeMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
-import de.adorsys.psd2.xs2a.core.consent.AspspConsentData;
-import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
-import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
-import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import de.adorsys.psd2.xs2a.spi.domain.SpiContextData;
 import de.adorsys.psd2.xs2a.spi.domain.account.SpiAccountConsent;
 import de.adorsys.psd2.xs2a.spi.domain.authorisation.SpiScaConfirmation;
+import de.adorsys.psd2.xs2a.spi.domain.consent.SpiVerifyScaAuthorisationResponse;
 import de.adorsys.psd2.xs2a.spi.domain.psu.SpiPsuData;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse;
-import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponse.VoidResponse;
 import de.adorsys.psd2.xs2a.spi.domain.response.SpiResponseStatus;
 import de.adorsys.psd2.xs2a.spi.service.AisConsentSpi;
 import org.junit.Before;
@@ -171,17 +171,16 @@ public class AisScaAuthenticatedStageTest {
     }
 
     // Needed because SpiResponse is final, so it's impossible to mock it
-    private SpiResponse<VoidResponse> buildSuccessSpiResponse() {
-        return SpiResponse.<VoidResponse>builder()
-                   .payload(SpiResponse.voidResponse())
+    private SpiResponse<SpiVerifyScaAuthorisationResponse> buildSuccessSpiResponse() {
+        return SpiResponse.<SpiVerifyScaAuthorisationResponse>builder()
+                   .payload(new SpiVerifyScaAuthorisationResponse(ConsentStatus.VALID))
                    .aspspConsentData(ASPSP_CONSENT_DATA)
                    .success();
     }
 
     // Needed because SpiResponse is final, so it's impossible to mock it
-    private SpiResponse<VoidResponse> buildErrorSpiResponse() {
-        return SpiResponse.<VoidResponse>builder()
-                   .payload(SpiResponse.voidResponse())
+    private SpiResponse<SpiVerifyScaAuthorisationResponse> buildErrorSpiResponse() {
+        return SpiResponse.<SpiVerifyScaAuthorisationResponse>builder()
                    .aspspConsentData(ASPSP_CONSENT_DATA)
                    .fail(RESPONSE_STATUS);
     }

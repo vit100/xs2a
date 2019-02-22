@@ -196,7 +196,7 @@ public class Xs2aAisConsentMapper {
                    .orElse(null);
     }
 
-    private List<AccountConsentAuthorization> mapToAccountConsentAuthorisation(List<AisConsentAuthorisation> accountConsentAuthorizations) {
+    private List<AccountConsentAuthorization> mapToAccountConsentAuthorisation(List<AisAccountConsentAuthorisation> accountConsentAuthorizations) {
         if (CollectionUtils.isEmpty(accountConsentAuthorizations)) {
             return Collections.emptyList();
         }
@@ -205,8 +205,8 @@ public class Xs2aAisConsentMapper {
                    .collect(Collectors.toList());
     }
 
-    private AccountConsentAuthorization mapToAccountConsentAuthorisation(AisConsentAuthorisation aisConsentAuthorisation) {
-        return Optional.ofNullable(aisConsentAuthorisation)
+    private AccountConsentAuthorization mapToAccountConsentAuthorisation(AisAccountConsentAuthorisation aisAccountConsentAuthorisation) {
+        return Optional.ofNullable(aisAccountConsentAuthorisation)
             .map(auth -> {
                 AccountConsentAuthorization accountConsentAuthorisation = new AccountConsentAuthorization();
                 accountConsentAuthorisation.setPsuIdData(auth.getPsuIdData());

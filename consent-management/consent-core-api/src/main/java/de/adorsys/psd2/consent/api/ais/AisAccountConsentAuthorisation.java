@@ -21,7 +21,7 @@ import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.Value;
 
 @Value
-public class AisConsentAuthorisation {
+public class AisAccountConsentAuthorisation {
     private PsuIdData psuIdData;
     private ScaStatus scaStatus;
 }

@@ -44,5 +44,5 @@ public class AisAccountConsent {
     private List<PsuIdData> psuIdDataList;
     private TppInfo tppInfo;
     private boolean multilevelScaRequired;
-    private List<AisConsentAuthorisation> accountConsentAuthorizations;
+    private List<AisAccountConsentAuthorisation> accountConsentAuthorizations;
 }
