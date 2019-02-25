@@ -19,6 +19,7 @@ package de.adorsys.psd2.consent.api.service;
 import de.adorsys.psd2.consent.api.CmsScaMethod;
 import de.adorsys.psd2.consent.api.ais.*;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 
@@ -127,7 +128,7 @@ interface AisConsentServiceBase {
      */
     boolean updateConsentAuthorization(String authorizationId, AisConsentAuthorizationRequest request);
 
-    Optional<PsuIdData> getPsuDataByConsentId(String consentId);
+    Optional<List<PsuIdData>> getPsuDataByConsentId(String consentId);
 
     /**
      * Gets list of consent authorisation IDs by consent ID
@@ -163,4 +164,21 @@ interface AisConsentServiceBase {
      * @return <code>true</code> if authorisation was found and updated, <code>false</code> otherwise
      */
     boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods);
+
+    /**
+     * Updates AIS SCA approach in authorisation
+     *
+     * @param authorisationId String representation of the authorisation identifier
+     * @param scaApproach     Chosen SCA approach
+     * @return <code>true</code> if authorisation was found and SCA approach updated, <code>false</code> otherwise
+     */
+    boolean updateScaApproach(String authorisationId, ScaApproach scaApproach);
+
+    /**
+     * Updates multilevel SCA required field
+     *
+     * @param consentId             String representation of the consent identifier
+     * @param multilevelScaRequired multilevel SCA required indicator
+     */
+    boolean updateMultilevelScaRequired(String consentId, boolean multilevelScaRequired);
 }

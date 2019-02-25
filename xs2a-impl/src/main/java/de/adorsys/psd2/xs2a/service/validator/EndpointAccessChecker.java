@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.consent.config;
+package de.adorsys.psd2.xs2a.service.validator;
 
-import org.springframework.context.annotation.Import;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
+import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 
-import java.lang.annotation.*;
+public class EndpointAccessChecker {
 
-/**
- * This annotation is designed to turn on/off cms swagger
- */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-@Import(SwaggerConfig.class)
-public @interface EnableCmsSwagger {
+    protected boolean isAccessible(ScaApproach chosenScaApproach, ScaStatus scaStatus){
+        if (ScaApproach.REDIRECT == chosenScaApproach) {
+            return false;
+        } else if (ScaApproach.DECOUPLED == chosenScaApproach) {
+            return ScaStatus.SCAMETHODSELECTED != scaStatus;
+        }
+        return true;
+    }
 }

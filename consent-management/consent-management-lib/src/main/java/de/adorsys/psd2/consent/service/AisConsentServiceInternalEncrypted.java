@@ -22,6 +22,7 @@ import de.adorsys.psd2.consent.api.service.AisConsentService;
 import de.adorsys.psd2.consent.api.service.AisConsentServiceEncrypted;
 import de.adorsys.psd2.consent.service.security.SecurityDataService;
 import de.adorsys.psd2.xs2a.core.consent.ConsentStatus;
+import de.adorsys.psd2.xs2a.core.profile.ScaApproach;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import lombok.RequiredArgsConstructor;
@@ -91,8 +92,8 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
         }
 
         AisConsentActionRequest decryptedRequest = new AisConsentActionRequest(encryptedRequest.getTppId(),
-                                                                               decryptedConsentId.get(),
-                                                                               encryptedRequest.getActionStatus());
+            decryptedConsentId.get(),
+            encryptedRequest.getActionStatus());
         aisConsentService.checkConsentAndSaveActionLog(decryptedRequest);
     }
 
@@ -125,7 +126,7 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
     }
 
     @Override
-    public Optional<PsuIdData> getPsuDataByConsentId(String encryptedConsentId) {
+    public Optional<List<PsuIdData>> getPsuDataByConsentId(String encryptedConsentId) {
         return securityDataService.decryptId(encryptedConsentId)
                    .flatMap(aisConsentService::getPsuDataByConsentId);
     }
@@ -152,5 +153,19 @@ public class AisConsentServiceInternalEncrypted implements AisConsentServiceEncr
     @Transactional
     public boolean saveAuthenticationMethods(String authorisationId, List<CmsScaMethod> methods) {
         return aisConsentService.saveAuthenticationMethods(authorisationId, methods);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateScaApproach(String authorisationId, ScaApproach scaApproach) {
+        return aisConsentService.updateScaApproach(authorisationId, scaApproach);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateMultilevelScaRequired(String encryptedConsentId, boolean multilevelScaRequired) {
+        return securityDataService.decryptId(encryptedConsentId)
+                   .map(consentId -> aisConsentService.updateMultilevelScaRequired(consentId, multilevelScaRequired))
+                   .orElse(false);
     }
 }

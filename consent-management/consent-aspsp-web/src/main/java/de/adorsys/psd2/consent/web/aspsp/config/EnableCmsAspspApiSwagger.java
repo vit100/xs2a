@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2018 adorsys GmbH & Co KG
+ * Copyright 2018-2019 adorsys GmbH & Co KG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.aspsp.profile.domain;
+package de.adorsys.psd2.consent.web.aspsp.config;
 
-import io.swagger.annotations.ApiModel;
+import org.springframework.context.annotation.Import;
 
-@ApiModel(description = "Booking status", value = "BookingStatus")
-public enum BookingStatus {
-    BOOKED,
-    PENDING,
-    BOTH
+import java.lang.annotation.*;
+
+/**
+ * This annotation is designed to turn on/off cms swagger
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Import(AspspApiSwaggerConfig.class)
+public @interface EnableCmsAspspApiSwagger {
 }

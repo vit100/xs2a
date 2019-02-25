@@ -31,14 +31,9 @@ import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.tpp.TppInfo;
 import de.adorsys.psd2.xs2a.core.tpp.TppRedirectUri;
 import de.adorsys.psd2.xs2a.core.tpp.TppRole;
-import de.adorsys.psd2.xs2a.domain.ErrorHolder;
-import de.adorsys.psd2.xs2a.domain.MessageErrorCode;
-import de.adorsys.psd2.xs2a.domain.ResponseObject;
-import de.adorsys.psd2.xs2a.domain.TppMessageInformation;
-import de.adorsys.psd2.xs2a.domain.Xs2aAmount;
+import de.adorsys.psd2.xs2a.domain.*;
 import de.adorsys.psd2.xs2a.domain.consent.Xs2aPisCommonPayment;
 import de.adorsys.psd2.xs2a.domain.pis.*;
-import de.adorsys.psd2.xs2a.exception.MessageCategory;
 import de.adorsys.psd2.xs2a.exception.MessageError;
 import de.adorsys.psd2.xs2a.service.consent.PisAspspDataService;
 import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
@@ -47,8 +42,8 @@ import de.adorsys.psd2.xs2a.service.context.SpiContextDataProvider;
 import de.adorsys.psd2.xs2a.service.event.Xs2aEventService;
 import de.adorsys.psd2.xs2a.service.mapper.consent.CmsToXs2aPaymentMapper;
 import de.adorsys.psd2.xs2a.service.mapper.consent.Xs2aPisCommonPaymentMapper;
-import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPaymentInfoMapper;
 import de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType;
+import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPaymentInfoMapper;
 import de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers.Xs2aToSpiPsuDataMapper;
 import de.adorsys.psd2.xs2a.service.payment.*;
 import de.adorsys.psd2.xs2a.service.profile.AspspProfileServiceWrapper;
@@ -71,10 +66,14 @@ import java.time.OffsetDateTime;
 import java.util.*;
 
 import static de.adorsys.psd2.xs2a.core.pis.TransactionStatus.*;
+import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.RESOURCE_UNKNOWN_404;
 import static de.adorsys.psd2.xs2a.domain.MessageErrorCode.SERVICE_INVALID_405;
+import static de.adorsys.psd2.xs2a.domain.TppMessageInformation.of;
 import static de.adorsys.psd2.xs2a.service.mapper.psd2.ErrorType.PIS_405;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -204,11 +203,11 @@ public class PaymentServiceTest {
         when(aspspProfileService.isPaymentCancellationAuthorizationMandated()).thenReturn(Boolean.TRUE);
         when(pisPsuDataService.getPsuDataByPaymentId(PAYMENT_ID))
             .thenReturn(Collections.singletonList(PSU_ID_DATA));
-        when(xs2aPisCommonPaymentService.getPisCommonPaymentById(anyString())).thenReturn(Optional.of(pisCommonPaymentResponse));
+        when(xs2aPisCommonPaymentService.getPisCommonPaymentById(PAYMENT_ID)).thenReturn(Optional.of(pisCommonPaymentResponse));
         when(pisCommonPaymentResponse.getPaymentType()).thenReturn(PaymentType.SINGLE);
         when(pisCommonPaymentResponse.getPaymentProduct()).thenReturn(PAYMENT_PRODUCT);
         when(pisCommonPaymentResponse.getPayments()).thenReturn(Collections.singletonList(pisPayment));
-        when(pisPayment.getTransactionStatus()).thenReturn(TransactionStatus.ACCP);
+        when(pisCommonPaymentResponse.getTransactionStatus()).thenReturn(ACCP);
         doReturn(Optional.of(spiPayment))
             .when(spiPaymentFactory).createSpiPaymentByPaymentType(eq(Collections.singletonList(pisPayment)), eq(PAYMENT_PRODUCT), any(PaymentType.class));
 
@@ -228,7 +227,7 @@ public class PaymentServiceTest {
         when(xs2aPisCommonPaymentService.getPisCommonPaymentById(anyString())).thenReturn(Optional.of(pisCommonPaymentResponse));
         when(pisCommonPaymentResponse.getPayments()).thenReturn(Collections.singletonList(pisPayment));
         when(pisCommonPaymentResponse.getPaymentType()).thenReturn(PaymentType.SINGLE);
-        when(pisPayment.getTransactionStatus()).thenReturn(TransactionStatus.ACCP);
+        when(pisCommonPaymentResponse.getTransactionStatus()).thenReturn(ACCP);
         when(pisCommonPaymentResponse.getPaymentProduct()).thenReturn(PAYMENT_PRODUCT);
         doReturn(Optional.of(spiPayment))
             .when(spiPaymentFactory).createSpiPaymentByPaymentType(eq(Collections.singletonList(pisPayment)), eq(PAYMENT_PRODUCT), any(PaymentType.class));
@@ -335,11 +334,11 @@ public class PaymentServiceTest {
     @Test
     public void getPaymentById_spi_fail() {
         // Given:
-        TppMessageInformation errorMessages = new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404);
+        TppMessageInformation errorMessages = of(RESOURCE_UNKNOWN_404);
         Optional<PisCommonPaymentResponse> pisCommonPaymentOptional = getPisCommonPayment();
 
         PaymentInformationResponse<SinglePayment> errorResponse = new PaymentInformationResponse<>(
-            ErrorHolder.builder(MessageErrorCode.RESOURCE_UNKNOWN_404)
+            ErrorHolder.builder(RESOURCE_UNKNOWN_404)
                 .messages(ERROR_MESSAGE_TEXT)
                 .build());
 
@@ -355,17 +354,17 @@ public class PaymentServiceTest {
 
         //Then
         assertThat(actualResponse.hasError()).isTrue();
-        assertThat(actualResponse.getError().getTppMessage().getMessageErrorCode()).isEqualTo(MessageErrorCode.RESOURCE_UNKNOWN_404);
+        assertThat(actualResponse.getError().getTppMessage().getMessageErrorCode()).isEqualTo(RESOURCE_UNKNOWN_404);
         assertThat(actualResponse.getError().getTppMessages()).containsOnly(errorMessages);
     }
 
     @Test
     public void getPaymentStatusById_spi_fail() {
         // Given:
-        TppMessageInformation errorMessages = new TppMessageInformation(MessageCategory.ERROR, MessageErrorCode.RESOURCE_UNKNOWN_404);
+        TppMessageInformation errorMessages = of(RESOURCE_UNKNOWN_404);
 
         ReadPaymentStatusResponse errorResponse = new ReadPaymentStatusResponse(
-            ErrorHolder.builder(MessageErrorCode.RESOURCE_UNKNOWN_404)
+            ErrorHolder.builder(RESOURCE_UNKNOWN_404)
                 .messages(ERROR_MESSAGE_TEXT)
                 .build());
 
@@ -379,7 +378,7 @@ public class PaymentServiceTest {
         // Then
         //Then
         assertThat(actualResponse.hasError()).isTrue();
-        assertThat(actualResponse.getError().getTppMessage().getMessageErrorCode()).isEqualTo(MessageErrorCode.RESOURCE_UNKNOWN_404);
+        assertThat(actualResponse.getError().getTppMessage().getMessageErrorCode()).isEqualTo(RESOURCE_UNKNOWN_404);
         assertThat(actualResponse.getError().getTppMessages()).containsOnly(errorMessages);
     }
 
@@ -431,7 +430,7 @@ public class PaymentServiceTest {
 
         // Given
         ResponseObject expectedResult = ResponseObject.<CancelPaymentResponse>builder()
-                                            .fail(new MessageError(PIS_405, new TppMessageInformation(MessageCategory.ERROR, SERVICE_INVALID_405, "Service invalid for adressed payment")))
+                                            .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
                                             .build();
 
         // When
@@ -452,7 +451,7 @@ public class PaymentServiceTest {
 
         // Given
         ResponseObject expectedResult = ResponseObject.<CancelPaymentResponse>builder()
-                                            .fail(new MessageError(PIS_405, new TppMessageInformation(MessageCategory.ERROR, SERVICE_INVALID_405, "Service invalid for adressed payment")))
+                                            .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
                                             .build();
 
         // When
@@ -473,7 +472,7 @@ public class PaymentServiceTest {
 
         // Given
         ResponseObject expectedResult = ResponseObject.<CancelPaymentResponse>builder()
-                                            .fail(new MessageError(PIS_405, new TppMessageInformation(MessageCategory.ERROR, SERVICE_INVALID_405, "Service invalid for adressed payment")))
+                                            .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
                                             .build();
 
         // When
@@ -494,7 +493,7 @@ public class PaymentServiceTest {
 
         // Given
         ResponseObject expectedResult = ResponseObject.<CancelPaymentResponse>builder()
-                                            .fail(new MessageError(PIS_405, new TppMessageInformation(MessageCategory.ERROR, SERVICE_INVALID_405, "Service invalid for adressed payment")))
+                                            .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
                                             .build();
 
         // When
@@ -515,7 +514,7 @@ public class PaymentServiceTest {
 
         // Given
         ResponseObject expectedResult = ResponseObject.<CancelPaymentResponse>builder()
-                                            .fail(new MessageError(PIS_405, new TppMessageInformation(MessageCategory.ERROR, SERVICE_INVALID_405, "Service invalid for adressed payment")))
+                                            .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
                                             .build();
 
         // When
@@ -536,7 +535,7 @@ public class PaymentServiceTest {
 
         // Given
         ResponseObject expectedResult = ResponseObject.<CancelPaymentResponse>builder()
-                                            .fail(new MessageError(PIS_405, new TppMessageInformation(MessageCategory.ERROR, SERVICE_INVALID_405, "Service invalid for adressed payment")))
+                                            .fail(PIS_405, of(SERVICE_INVALID_405, "Service invalid for adressed payment"))
                                             .build();
 
         // When

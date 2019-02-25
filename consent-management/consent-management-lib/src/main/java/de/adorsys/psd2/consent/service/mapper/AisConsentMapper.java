@@ -18,14 +18,13 @@ package de.adorsys.psd2.consent.service.mapper;
 
 import de.adorsys.psd2.consent.api.TypeAccess;
 import de.adorsys.psd2.consent.api.ais.AisAccountAccess;
-import de.adorsys.psd2.consent.api.ais.AisAccountAccessType;
 import de.adorsys.psd2.consent.api.ais.AisAccountConsent;
 import de.adorsys.psd2.consent.api.ais.AisConsentAuthorizationResponse;
-import de.adorsys.psd2.consent.domain.PsuData;
 import de.adorsys.psd2.consent.domain.account.AisConsent;
 import de.adorsys.psd2.consent.domain.account.AisConsentAuthorization;
 import de.adorsys.psd2.consent.domain.account.AspspAccountAccess;
 import de.adorsys.psd2.consent.domain.account.TppAccountAccess;
+import de.adorsys.psd2.xs2a.core.ais.AccountAccessType;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import lombok.RequiredArgsConstructor;
@@ -64,8 +63,9 @@ public class AisConsentMapper {
             consent.getAccesses().stream().anyMatch(a -> a.getTypeAccess() == TypeAccess.BALANCE),
             consent.isTppRedirectPreferred(),
             consent.getAisConsentRequestType(),
-            psuDataMapper.mapToPsuIdData(consent.getPsuData()),
-            tppInfoMapper.mapToTppInfo(consent.getTppInfo()));
+            psuDataMapper.mapToPsuIdDataList(consent.getPsuDataList()),
+            tppInfoMapper.mapToTppInfo(consent.getTppInfo()),
+            consent.isMultilevelScaRequired());
     }
 
     /**
@@ -86,8 +86,9 @@ public class AisConsentMapper {
             consent.getAccesses().stream().anyMatch(a -> a.getTypeAccess() == TypeAccess.BALANCE),
             consent.isTppRedirectPreferred(),
             consent.getAisConsentRequestType(),
-            psuDataMapper.mapToPsuIdData(consent.getPsuData()),
-            tppInfoMapper.mapToTppInfo(consent.getTppInfo()));
+            psuDataMapper.mapToPsuIdDataList(consent.getPsuDataList()),
+            tppInfoMapper.mapToTppInfo(consent.getTppInfo()),
+            consent.isMultilevelScaRequired());
     }
 
     public AisConsentAuthorizationResponse mapToAisConsentAuthorizationResponse(AisConsentAuthorization aisConsentAuthorization) {
@@ -95,13 +96,12 @@ public class AisConsentMapper {
                    .map(conAuth -> {
                        AisConsentAuthorizationResponse resp = new AisConsentAuthorizationResponse();
                        resp.setAuthorizationId(conAuth.getExternalId());
-                       resp.setPsuId(Optional.ofNullable(conAuth.getPsuData())
-                                         .map(PsuData::getPsuId)
-                                         .orElse(null));
+                       resp.setPsuIdData(psuDataMapper.mapToPsuIdData(conAuth.getPsuData()));
                        resp.setConsentId(conAuth.getConsent().getExternalId());
                        resp.setScaStatus(conAuth.getScaStatus());
                        resp.setAuthenticationMethodId(conAuth.getAuthenticationMethodId());
                        resp.setScaAuthenticationData(conAuth.getScaAuthenticationData());
+                       resp.setChosenScaApproach(conAuth.getScaApproach());
 
                        return resp;
                    })
@@ -167,10 +167,10 @@ public class AisConsentMapper {
                                       accountReference.getAspspAccountId());
     }
 
-    private String getAccessType(AisAccountAccessType type) {
+    private String getAccessType(AccountAccessType type) {
         return Optional.ofNullable(type)
-            .map(Enum::name)
-            .orElse(null);
+                   .map(Enum::name)
+                   .orElse(null);
     }
 
 }
