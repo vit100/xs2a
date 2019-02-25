@@ -31,3 +31,48 @@ From now Xs2a does not filter transactions by given booking status. Booking stat
 
 In Xs2a - ASPSP-mock connector filtering is done on SPI level (in private methods `getFilteredTransactions` and
 `filterByBookingStatus` in `AccountSpiImpl`).
+
+## BookingStatus entity moved to xs2a-core, Xs2aBookingStatus and SpiBookingStatus deleted
+
+From now on only one enum that represents booking status exists. `BookingStatus` is moved to `xs2a-core` package, duplicates 
+`Xs2aBookingStatus` and `SpiBookingStatus` are deleted.
+
+## List of PSU Data is provided in payment objects to all SPI methods
+
+From now on, these SPI payment objects contain list of PSU Data:
+ - SinglePaymentSpi
+ - PeriodicPaymentSpi
+ - BulkPaymentSpi
+ - SpiPaymentInfo
+
+## Bugfix: changed link in cancellation authorisation response
+
+Fixed `scaStatus` link in response for starting authorisation POST request for the addressed payment cancellation.
+Before fixing the link was: `/v1/{payment-service}/{payment-product}/{payment-id}/authorisations/{authorisation-id}`,
+now it is: `/v1/{payment-service}/{payment-product}/{payment-id}/cancellation-authorisations/{authorisation-id}`.
+
+## Several PSUs in AIS consent
+Due to multilevel authorisation of consents, we can store data of several PSUs for each consent.
+
+These changes also affect SPI level, meaning that from now on `SpiAccountConsent` contains list of `SpiPsuData` instead of a single object.
+
+## Added support of payment initiation of any payment in `application/xml` or `text/plain` format
+
+Xs2a payment initiation controller now supports initiation of payment in `application/xml` or `text/plain` format.
+To enable this feature, a non-standard payment product should be added to aspsp-profile `supportedPaymentTypeAndProductMatrix`(standard payment products are the 4 ones, defined by the Berlin Group Specification 1.3).
+The body of the payment is stored in the byte array and returned completely in the same form with get payment endpoint.
+Get payment status endpoint returns JSON response with current transaction status of the payment.
+
+## Bugfix: Removed duplicate transaction status in CMS for payment
+
+Both `pis_common_payment` and `pis_payment_data` tables contained `transaction_status` column. This lead to inconsistencies.
+Transaction status field is removed from `pis_payment_data` table.
+
+## Split Swagger Documentation to CMS APIs to three Swagger Specifications
+Now instead one annotation `@EnableCmsSwagger` there are three annotations:
+* `@EnableCmsAspspApiSwagger`,
+* `@EnableCmsPsuApiSwagger`,
+* `@EnableCmsXs2aApiSwagger`.
+
+They may be used independently or all together to provide 3 Swagger specifications (may be selected in top right corner of Swagger UI).
+

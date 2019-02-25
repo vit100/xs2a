@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.spi.domain.account;
+package de.adorsys.psd2.consent.web.xs2a.config;
 
-public enum SpiBookingStatus {
-    PENDING,
-    BOOKED,
-    BOTH
+import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.*;
+
+/**
+ * This annotation is designed to turn on/off cms swagger
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Import(Xs2aApiSwaggerConfig.class)
+public @interface EnableCmsXs2aApiSwagger {
 }

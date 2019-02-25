@@ -188,8 +188,7 @@ public class AisConsent extends InstanceDependableEntity {
     }
 
     public boolean isWrongConsentData() {
-        return isEmptyPsuDataList()
-                   || getFirstPsuData() == null
+        return CollectionUtils.isEmpty(psuDataList)
                    || tppInfo == null;
     }
 

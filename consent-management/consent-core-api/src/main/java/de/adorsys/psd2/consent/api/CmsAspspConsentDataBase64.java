@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package de.adorsys.psd2.xs2a.service.mapper.spi_xs2a_mappers;
+package de.adorsys.psd2.consent.api;
 
-import de.adorsys.psd2.xs2a.domain.Xs2aBookingStatus;
-import de.adorsys.psd2.xs2a.spi.domain.account.SpiBookingStatus;
-import org.springframework.stereotype.Component;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Value;
 
-import java.util.Optional;
+@Value
+@ApiModel(description = "ASPSP Consent data", value = "CmsAspspConsentDataBase64")
+public class CmsAspspConsentDataBase64 {
 
-@Component
-public class Xs2aToSpiBookingStatusMapper {
-
-    public SpiBookingStatus mapToSpiBookingStatus(Xs2aBookingStatus bookingStatus) {
-        return Optional.ofNullable(bookingStatus)
-                   .map(b -> SpiBookingStatus.valueOf(b.name()))
-                   .orElse(null);
-    }
+    @ApiModelProperty(value = "Consent ID", required = true, example = "d2796b05-418e-49bc-84ce-c6728a1b2018")
+    private String consentId;
+    @ApiModelProperty(value = "ASPSP consent data Base64", required = true, example = "zdxcvvzzzxcvzzzz")
+    private String aspspConsentDataBase64;
 }
