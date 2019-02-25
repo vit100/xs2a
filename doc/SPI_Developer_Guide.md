@@ -44,29 +44,17 @@
      
 **SPI** means Single Payment Interface. that is an API intended to be implemented or extended by a third party. 
 
-To implement this you need to initiate a payment like in the following code: 
+We distinguished between following Interfaces: 
 
-```
-public interface SinglePaymentSpi extends PaymentSpi<SpiSinglePayment, SpiSinglePaymentInitiationResponse> {
-    @Override
-    @NotNull
-    SpiResponse<SpiSinglePaymentInitiationResponse> initiatePayment(@NotNull SpiContextData contextData, @NotNull SpiSinglePayment payment, @NotNull AspspConsentData initialAspspConsentData);
+1. **SinglePaymentSpi**:  Interface to be used for the single payment Implementation
 
-    @Override
-    @NotNull
-    SpiResponse<SpiSinglePayment> getPaymentById(@NotNull SpiContextData contextData, @NotNull SpiSinglePayment payment, @NotNull AspspConsentData aspspConsentData);
-
-    @Override
-    @NotNull
-    SpiResponse<SpiTransactionStatus> getPaymentStatusById(@NotNull SpiContextData contextData, @NotNull SpiSinglePayment payment, @NotNull AspspConsentData aspspConsentData);
-}
-```
-
-
- * Create **SpiContextData**: This object represents known Context of call, provided by this or previous requests in scope of one process (e.g. one payment).
-   It contains **PsuData** and **tppInfo**.
+    . The following Methods have to be implemented: **initiatePayment** (aims to initiate a Payment), **getPaymentById** (aims to read the pay,ent by id )and 
+    **getPaymentStatusById** (aims to read the payment status by id). 
+    
+    * Response by the methods "initiate Payment" will returns a positive or negative payment initiation response as a part of SpiResponse and will contains the following: 
+        * **contextData**: holder of call's context data (e.g. about **PsuData** and **TppInfo** )
    
-   - **PsuData** contains data about PSU known in scope of the request: 
+        - **PsuData** contains data about PSU known in scope of the request: 
    
      | Attribute         |  Type   |      Condition    | Description       |
      | :---              |  :---:  |          :---:    |          :---     |
@@ -82,31 +70,77 @@ public interface SinglePaymentSpi extends PaymentSpi<SpiSinglePayment, SpiSingle
         - "National competent authority": example = "Bafin",
         - "Redirect URI": URI of TPP, where the transaction flow shall be redirected to after a Redirect. Mandated for the **Redirect SCA Approach** (including OAuth2 SCA approach), specially when TPP-Redirect-preferred equals "true". It is recommended to always use this header field. 
         - "Nok redirect URI": if this URI is contained, the TPP is asking to redirect the transaction flow to this address instead of the TPP-Redirect-URI in case of a negative result of the redirect ScaMethod. This might be ignored by the ASPSP
-  
-   
-* Create **AspspConsentData**: This is used as a container of some binary data to be used on SPI level. Spi developers may save here necessary information, that will be stored and encrypted in consent. This shall not use without consentId!
+        
+        * **payment**: payment, that extends SpiPayment (Single Payment)
+
+        * **initialAspspConsentData** Encrypted data to be stored in the consent management system
+
+
+
+
+   * Response by the methods "getPaymentById" will returns payment as a part of SpiResponse and will contains the following data: 
+
+        **contextData**, **payment** (Single Payment), And 
+
+        **aspspConsentData**: This is used as a container of some binary data to be used on SPI level. Spi developers may save here necessary information, that will be stored and encrypted in consent. This shall not use without consentId!
                          Encrypted data that may be stored in the consent management system in the consent linked to a request.They may be null if consent does not contain such data, or request is not done from a workflow with a consent. 
-    
                          
-* When a payment is initiated, a response code (Statuscode: 201) is generated with following data: 
-  
- 
-  | Data                        |           Type                  |      Condition  | Description       |
-  | :---                        |     :---:                       |          :---:  |          :---     |
-  | transactionStatus           | Transaction Status              | Mandatory       | This Status can be **RCVD** = Payment initiation has been received by the receiving agent. **PDNG** = Payment initiation or individual transaction included in the payment initiation is pending. Further checks and status update will be performed or **RJCT** = Payment initiation or individual transaction included in the payment initiation has been rejected.|
-  | paymentId                   | String                          | Mandatory       | Resource identification of the generated payment initiation resource. It can  help us to check, if the status of the initiated payment|
-  | spiTransaFees               | Amount                          | Optional        | Cost, that must pay by processing an electronic payment for a customer. Can be used by the ASPSP to transport transaction. Fees are relevant for the underlying payments|
-  | spiTransactionFeeIndicator  | Boolean                         | Optional        | Resource identification of the generated payment initiation resource. It can  help us to check, if the status of the initiated payment|
-  | scaMethods                  | Array of authentication objects | Conditional     | This data element might be contained, if SCA is required and if PSU has a choice between different authentication methods. Depending on the risk management of the ASPSP this choice might be offered before or after the PSU has been identified with thr first relevant factor, or if an access token is transported|
-  | chosenScaMethod             | Authentication object           | Conditional     | This data element is only contained in the response if the ASPSP has chosen the Embedded SCA Approach, if the PSU is already identified e.g. with the first relevant factor or alternatively an access token, if SCA is required and if the authentication method is implicitly selected|
-  | challengeData               | Challenge                       | Conditional     | It is contained in addition to the data element "chosenScaMethod" if challenge data is needed for SCA|
-  | psuMessage                  | Max512Text                      | Optional        | Text to be displayed to the PSU                 |
-  | tppMessages                 | Array of TPP Message Information| Optional        | Messages to the TPP on operational issues       |
-  | aspspAccountId              |                                 |                 |                                                 |
-  
-  
-  
-  The Payment initiation depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to umplement this, but we currently done this with 
+                         
+   * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
+
+
+
+2. **PeriodicPaymentSpi**: Interface to be used for periodic payment SPI implementation
+
+    The following Methods have to be implemented: **initiatePayment**  **getPaymentById** and **getPaymentStatusById**. 
+    
+    * Response by the methods "initiate Payment" will returns a positive or negative payment initiation response as a part of SpiResponse and will contains the following: 
+        * **contextData**: holder of call's context data (e.g. about **PsuData** and **TppInfo** )
+   
+        * **payment**: Periordic Payment
+
+        * **initialAspspConsentData** Encrypted data to be stored in the consent management system
+
+
+   * Response by the methods "getPaymentById" will returns payment as a part of SpiResponse and will contains the following data: 
+
+        **contextData**, 
+    
+        **payment** (Periordic Payment)
+
+        **aspspConsentData**: This is used as a container of some binary data to be used on SPI level. Spi developers may save here necessary information, that will be stored and encrypted in consent. This shall not use without consentId!
+                         Encrypted data that may be stored in the consent management system in the consent linked to a request.They may be null if consent does not contain such data, or request is not done from a workflow with a consent. 
+                         
+                         
+   * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
+
+
+3. **BulkPaymentSpi**: Interface to be used for bulk payment SPI implementation
+
+    The following Methods have to be implemented: **initiatePayment**  **getPaymentById** and **getPaymentStatusById**.
+
+    * Response by the methods "initiate Payment" will returns a positive or negative payment initiation response as a part of SpiResponse and will contains the following: 
+        * **contextData**: holder of call's context data (e.g. about **PsuData** and **TppInfo** )
+   
+        * **payment**: Bulk Payment
+
+        * **initialAspspConsentData** Encrypted data to be stored in the consent management system
+
+    * Response by the methods "getPaymentById" will returns payment as a part of SpiResponse and will contains the following data: 
+
+        **contextData**, 
+    
+        **payment** (Bulk Payment)
+
+        **aspspConsentData**: This is used as a container of some binary data to be used on SPI level. Spi developers may save here necessary information, that will be stored and encrypted in consent. This shall not use without consentId!
+                         Encrypted data that may be stored in the consent management system in the consent linked to a request.They may be null if consent does not contain such data, or request is not done from a workflow with a consent. 
+                         
+                         
+   * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
+
+
+                         
+The Payment initiation depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to umplement this, but we currently done this with 
   3 Approaches (REDIRECT, DECOUPLED and EMBEDDED). 
   
 #### SCA Approach REDIRECT
