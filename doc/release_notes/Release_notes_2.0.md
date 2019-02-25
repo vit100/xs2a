@@ -80,3 +80,15 @@ They may be used independently or all together to provide 3 Swagger specificatio
 
 From now on only one enum that represents account access type exists in xs2a. `AccountAccessType` is moved to `xs2a-core` package, duplicates 
 `AisAccountAccessType`, `SpiAccountAccessType` and `Xs2aAccountAccessType` are deleted.
+
+## Bugfix: validate PIIS consent creation request
+From now on request for creating new PIIS consent by ASPSP is being validated in controller(POST 
+`aspsp-api/v1/piis/consents` endpoint) and 
+service(`de.adorsys.psd2.consent.aspsp.api.piis.CmsAspspPiisService#createConsent`) layers.
+In case of invalid request HTTP `400 Bad Request` status code(for endpoint) or empty response(for service) will be returned.
+
+To be considered valid the request must contain:
+ - some PSU credentials data
+ - either no TPP object or TPP info object with authorisation number and authority ID
+ - non-empty list of accounts
+ - valid consent expiration date
