@@ -44,15 +44,13 @@
 
 We distinguished between following Interfaces: 
 
-1. **SinglePaymentSpi**:  Interface to be used for the single payment Implementation
-
-   The following Methods have to be implemented: **initiatePayment** (aims to initiate a Payment), **getPaymentById** (aims to read the pay,ent by id )and 
-   **getPaymentStatusById** (aims to read the payment status by id). 
+**SinglePaymentSpi**:  Interface to be used for the single payment Implementation. The following Methods have to be implemented: **initiatePayment** (aims to initiate a Payment), **getPaymentById** (aims to read the pay,ent by id )and 
+**getPaymentStatusById** (aims to read the payment status by id). 
     
    * Response by the methods "initiate Payment" will returns a positive or negative payment initiation response as a part of SpiResponse and will contains the following: 
-      * **contextData**: holder of call's context data (e.g. about **PsuData** and **TppInfo** )
-   
-        - **PsuData** contains data about PSU known in scope of the request: 
+      * **contextData**: holder of call's context data (e.g. about **PsuData** and **TppInfo**): 
+        
+        * **PsuData** contains data about PSU known in scope of the request: 
    
      | Attribute         |  Type   |      Condition    | Description       |
      | :---              |  :---:  |          :---:    |          :---     |
@@ -60,9 +58,8 @@ We distinguished between following Interfaces:
      | psuIdType         | String  |      Conditional  | Type of the PsuId, needed in scenarios where PSUs have several PsuIds as access possibility|
      | psuCorporateId    | String  |      Conditional  | Identification of a Corporate in the Online Channels. Might be mandated in the ASPSP’s documentation. Only used in a corporate context.|
      | psuCorporateIdType| String  |      Conditional  | This is describing the type of the identification needed by the ASPSP to identify the psuCorporateId|
-     
-     
-   - **tppInfo** contains information about the Tpp's certificate:
+
+   * **tppInfo** contains information about the Tpp's certificate:
         - "Registration number": example = "1234_registrationNumber",
         - "Tpp name": example = "Tpp company",
         - "National competent authority": example = "Bafin",
@@ -76,7 +73,7 @@ We distinguished between following Interfaces:
 
 
 
-  * Response by the methods "getPaymentById" will returns payment as a part of SpiResponse and will contains the following data: 
+   * Response by the methods "**getPaymentById**" will returns payment as a part of SpiResponse and will contains the following data: 
 
      **contextData**, **payment** (Single Payment), And 
 
@@ -84,18 +81,18 @@ We distinguished between following Interfaces:
                          Encrypted data that may be stored in the consent management system in the consent linked to a request.They may be null if consent does not contain such data, or request is not done from a workflow with a consent. 
                          
                          
-  * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
+   * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
 
 
 
-2. **PeriodicPaymentSpi**: Interface to be used for periodic payment SPI implementation
+**PeriodicPaymentSpi**: Interface to be used for periodic payment SPI implementation
 
   The following Methods have to be implemented: **initiatePayment**  **getPaymentById** and **getPaymentStatusById**. 
     
   * Response by the methods "initiate Payment" will returns a positive or negative payment initiation response as a part of SpiResponse and will contains the following: 
       * **contextData**: holder of call's context data (e.g. about **PsuData** and **TppInfo** )
    
-      * **payment**: Periordic Payment
+      * **payment**: Periodic Payment
 
       * **initialAspspConsentData** Encrypted data to be stored in the consent management system
 
@@ -113,18 +110,18 @@ We distinguished between following Interfaces:
   * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
 
 
-3. **BulkPaymentSpi**: Interface to be used for bulk payment SPI implementation
+**BulkPaymentSpi**: Interface to be used for bulk payment SPI implementation
 
-    The following Methods have to be implemented: **initiatePayment**  **getPaymentById** and **getPaymentStatusById**.
+   The following Methods have to be implemented: **initiatePayment**  **getPaymentById** and **getPaymentStatusById**.
 
-    * Response by the methods "initiate Payment" will returns a positive or negative payment initiation response as a part of SpiResponse and will contains the following: 
+   * Response by the methods "initiate Payment" will returns a positive or negative payment initiation response as a part of SpiResponse and will contains the following: 
       * **contextData**: holder of call's context data (e.g. about **PsuData** and **TppInfo** )
    
       * **payment**: Bulk Payment
 
       * **initialAspspConsentData** Encrypted data to be stored in the consent management system
 
-    * Response by the methods "getPaymentById" will returns payment as a part of SpiResponse and will contains the following data: 
+   * Response by the methods "getPaymentById" will returns payment as a part of SpiResponse and will contains the following data: 
 
       **contextData**, 
     
@@ -137,18 +134,18 @@ We distinguished between following Interfaces:
    * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
    
    
-4. **PaymentAuthorisationSpi**: Interface to be used while implementing payment authorisation flow on SPI level. This Interface will be implemented by extending the **AuthorisationSPi** 
+**PaymentAuthorisationSpi**: Interface to be used while implementing payment authorisation flow on SPI level. This Interface will be implemented by extending the **AuthorisationSPi** 
 
-    The following methods have to be implemented: **authorisePsu**, **requestAvailableScaMethods**, **requestAuthorisationCode**.
+   The following methods have to be implemented: **authorisePsu**, **requestAvailableScaMethods**, **requestAuthorisationCode**.
     
-    * **authorisePsu**: This Method authorises psu and returns current (success or failure) authorisation status. have to be use only with embedded SCA Approach. It contains following Data:
+   * **authorisePsu**: This Method authorises psu and returns current (success or failure) authorisation status. have to be use only with embedded SCA Approach. It contains following Data:
       * **contextdata**
       * **psuLoginData**: ASPSP identifier(s) of the psu, provided by TPP within this request
       * **password**: Psu's password
       * **businessObject**: payment object
       * **aspspConsentData**
         
-    * **requestAvailableScaMethods**: This returns a list of SCA methods for the psu by its login and to be use only with the embedded Approach. It contains following Data:
+   * **requestAvailableScaMethods**: This returns a list of SCA methods for the psu by its login and to be use only with the embedded Approach. It contains following Data:
     
       * **contextdata**, **businessObject** and **aspspConsentData**
         
@@ -166,22 +163,21 @@ We distinguished between following Interfaces:
    * **contextdata**, **businessObject**, **aspspConsentData**, **authenticationMethodId** (for a decoupled SCA method within embedded approach)) and **authorisationId** (that is a unique identifier of authorisation process)
    
    
-5. **PaymentCancellationSpi**: Interface to be used to cancel a payment
+**PaymentCancellationSpi**: Interface to be used to cancel a payment
+The following methods have to be implemented:
 
-    The following methods have to be implemented:
-
-    * **initiatePaymentCancellation**: This method will return the payment cancellation response with information about transaction status and whether authorisation of the request is required. 
+   * **initiatePaymentCancellation**: This method will return the payment cancellation response with information about transaction status and whether authorisation of the request is required. 
     It contains the following data: 
-      * **contextdata**, **Payment** (payment to be cancelled) and **aspspConsentData**
+        * **contextdata**, **Payment** (payment to be cancelled) and **aspspConsentData**
       
 
-6. **cancelPaymentWithoutSca**: to be use by cancelling payment without performing SCA. This method returns a positive or negative response as part of spiRestponse. 
-It contains the following data:
+   * **cancelPaymentWithoutSca**: to be use by cancelling payment without performing SCA. This method returns a positive or negative response as part of spiRestponse. 
+   It contains the following data:
       * **contextdata**, **Payment** (payment to be cancelled) and **aspspConsentData**
     
-7. **verifyScaAuthorisationAndCancelPayment**: This method sends authorisation confirmation information (secure code or such) to ASPSP and if case of successful validation cancels payment at ASPSP. it also returnd
-a positive or negative response as part of spiResponse. It contains the following data: 
-     * **contextdata**, **Payment** (payment to be cancelled), **aspspConsentData** and **spiScaConfirmation** (payment cancellation confirmation information)
+   * **verifyScaAuthorisationAndCancelPayment**: This method sends authorisation confirmation information (secure code or such) to ASPSP and if case of successful validation cancels payment at ASPSP. it also returnd 
+   a positive or negative response as part of spiResponse. It contains the following data: 
+   * **contextdata**, **Payment** (payment to be cancelled), **aspspConsentData** and **spiScaConfirmation** (payment cancellation confirmation information)
 
                          
 The Payment initiation depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to implement this, but we currently done this with 
