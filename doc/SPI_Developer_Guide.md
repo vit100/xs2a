@@ -137,10 +137,55 @@ We distinguished between following Interfaces:
                          
                          
    * Response by the methods "getPaymentStatusById" will contains the following: **contextData**, **payment** and **aspspConsentData**. This method will return a response object, which contains the transaction status
+   
+   
+4. **PaymentAuthorisationSpi**: Interface to be used while implementing payment authorisation flow on SPI level. This Interface will be implemented by extending the **AuthorisationSPi** 
 
+    The following methods have to be implemented: **authorisePsu**, **requestAvailableScaMethods**, **requestAuthorisationCode**.
+    
+    * **authorisePsu**: This Method authorises psu and returns current (success or failure) authorisation status. have to be use only with embedded SCA Approach. It contains following Data:
+        * **contextdata**
+        * **psuLoginData**: ASPSP identifier(s) of the psu, provided by TPP within this request
+        * **password**: Psu's password
+        * **businessObject**: payment object
+        * **aspspConsentData**
+        
+    * **requestAvailableScaMethods**: This returns a list of SCA methods for the psu by its login and to be use only with the embedded Approach. It contains following Data:
+    
+        * **contextdata**, **businessObject** and **aspspConsentData**
+        
+       
+   * **requestAuthorisationCode**: This performs SCA depending on selected SCA method. To be use only with embedded Approach.  This method return a positive or negative response as a part
+   of SpiResponse. If the authentication method is unknow, then  empty SpiAuthorizationCoderesult should be returned. It contains following Data:
+   
+        * **contextdata**, **businessObject**, **aspspConsentData** and **authenticationMethodId** (Id of a chosen sca method)
+        
+        
+    
+   In case of **Decoupled SCA Approach**, the method **startScaDecoupled** have to be implement: This method notifies a decoupled app about starting SCA. AuthorisationId is provided
+   to allow the app to access CMS.  It returns a response object, containing a message from ASPSP to PSU, giving him instrctions regarding decoupled SCA starting. It contains the following data: 
+   
+   * **contextdata**, **businessObject**, **aspspConsentData**, **authenticationMethodId** (for a decoupled SCA method within embedded approach)) and **authorisationId** (that is a unique identifier of authorisation process)
+   
+   
+5. **PaymentCancellationSpi**: Interface to be used to cancel a payment
+
+The following methods have to be implemented:
+
+* **initiatePaymentCancellation**: This method will return the payment cancellation response with information about transaction status and whether authorisation of the request is required. 
+ It contains the following data: 
+    * **contextdata**, **Payment** (payment to be cancelled) and **aspspConsentData**
+
+* **cancelPaymentWithoutSca**: to be use by cancelling payment without performing SCA. This method returns a positive or negative response as part of spiRestponse. 
+It contains the following data:
+    * **contextdata**, **Payment** (payment to be cancelled) and **aspspConsentData**
+    
+* **verifyScaAuthorisationAndCancelPayment**: This method sends authorisation confirmation information (secure code or such) to ASPSP and if case of successful validation cancels payment at ASPSP. it also returnd
+a positive or negative response as part of spiResponse. It contains the following data: 
+    * **contextdata**, **Payment** (payment to be cancelled), **aspspConsentData** and **spiScaConfirmation** (payment cancellation confirmation information)
 
                          
-The Payment initiation depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to umplement this, but we currently done this with 
+The Payment initiation depends heavily on the **Strong Customer Authentication (SCA)** approach implemented by the ASPSP. The Berlin Group describes four approaches to implement this, but we currently done this with 
   3 Approaches (REDIRECT, DECOUPLED and EMBEDDED). 
   
 #### SCA Approach REDIRECT
