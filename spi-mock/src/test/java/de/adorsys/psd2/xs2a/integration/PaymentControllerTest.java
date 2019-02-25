@@ -35,7 +35,6 @@ import de.adorsys.psd2.xs2a.integration.builder.AspspSettingsBuilder;
 import de.adorsys.psd2.xs2a.integration.builder.TppInfoBuilder;
 import de.adorsys.psd2.xs2a.integration.builder.UrlBuilder;
 import de.adorsys.psd2.xs2a.service.TppService;
-import de.adorsys.psd2.xs2a.service.consent.PisPsuDataService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -96,8 +95,6 @@ public class PaymentControllerTest {
     private EventServiceEncrypted eventServiceEncrypted;
     @MockBean
     private PisCommonPaymentServiceEncrypted pisCommonPaymentServiceEncrypted;
-    @MockBean
-    private PisPsuDataService pisPsuDataService;
 
     @Before
     public void init() {
@@ -114,8 +111,8 @@ public class PaymentControllerTest {
         given(eventServiceEncrypted.recordEvent(any(Event.class)))
             .willReturn(true);
 
-        given(pisPsuDataService.getPsuDataByPaymentId(any()))
-            .willReturn(Collections.singletonList(getPsuIdData()));
+        given(pisCommonPaymentServiceEncrypted.getPsuDataListByPaymentId(any()))
+            .willReturn(Optional.of(Collections.singletonList(getPsuIdData())));
 
         given(pisCommonPaymentServiceEncrypted.createAuthorizationCancellation(any(), any()))
             .willReturn(Optional.of(new CreatePisAuthorisationResponse(CANCELLATION_ID)));
