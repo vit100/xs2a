@@ -20,6 +20,7 @@ import de.adorsys.psd2.consent.api.AccountInfo;
 import de.adorsys.psd2.consent.api.ActionStatus;
 import de.adorsys.psd2.consent.api.TypeAccess;
 import de.adorsys.psd2.consent.api.ais.*;
+import de.adorsys.psd2.xs2a.core.ais.AccountAccessType;
 import de.adorsys.psd2.xs2a.core.profile.AccountReference;
 import de.adorsys.psd2.xs2a.core.profile.AccountReferenceSelector;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
@@ -147,11 +148,11 @@ public class Xs2aAisConsentMapper {
                                        .orElseGet(Collections::emptyList));
 
         accessInfo.setAvailableAccounts(Optional.ofNullable(access.getAvailableAccounts())
-                                            .map(accessType -> AisAccountAccessType.valueOf(accessType.name()))
+                                            .map(accessType -> AccountAccessType.valueOf(accessType.name()))
                                             .orElse(null));
 
         accessInfo.setAllPsd2(Optional.ofNullable(access.getAllPsd2())
-                                  .map(accessType -> AisAccountAccessType.valueOf(accessType.name()))
+                                  .map(accessType -> AccountAccessType.valueOf(accessType.name()))
                                   .orElse(null));
 
         return accessInfo;
@@ -225,10 +226,10 @@ public class Xs2aAisConsentMapper {
             getAccessType(ais.getAllPsd2()));
     }
 
-    private Xs2aAccountAccessType getAccessType(String type) {
+    private AccountAccessType getAccessType(String type) {
         return Optional.ofNullable(type)
-                   .map(a -> Xs2aAccountAccessType.valueOf(type))
-                   .orElse(null);
+            .map(a -> AccountAccessType.valueOf(type))
+            .orElse(null);
     }
 
 }
