@@ -16,6 +16,7 @@
 
 package de.adorsys.psd2.consent.service.psu;
 
+import de.adorsys.psd2.consent.api.CmsAuthorisationType;
 import de.adorsys.psd2.consent.api.pis.CmsPayment;
 import de.adorsys.psd2.consent.api.pis.CmsPaymentResponse;
 import de.adorsys.psd2.consent.api.service.PisCommonPaymentService;
@@ -25,6 +26,7 @@ import de.adorsys.psd2.consent.domain.payment.PisAuthorization;
 import de.adorsys.psd2.consent.domain.payment.PisCommonPaymentData;
 import de.adorsys.psd2.consent.domain.payment.PisPaymentData;
 import de.adorsys.psd2.consent.psu.api.CmsPsuPisService;
+import de.adorsys.psd2.consent.psu.api.pis.AuthorisationTypeStatusesByPsu;
 import de.adorsys.psd2.consent.repository.PisAuthorisationRepository;
 import de.adorsys.psd2.consent.repository.PisCommonPaymentDataRepository;
 import de.adorsys.psd2.consent.repository.PisPaymentDataRepository;
@@ -164,17 +166,26 @@ public class CmsPsuPisServiceInternal implements CmsPsuPisService {
     }
 
     @Override
-    public Optional<Map<String, ScaStatus>> getPsuAuthorisationStatusMap(@NotNull String paymentId) {
-        return pisCommonPaymentDataRepository.findByPaymentId(paymentId)
+    public Optional<AuthorisationTypeStatusesByPsu> getAuthorisationTypeStatusesByPsu(@NotNull String paymentId, @NotNull String instanceId) {
+        return commonPaymentDataService.getPisCommonPaymentData(paymentId, instanceId)
                    .map(PisCommonPaymentData::getAuthorizations)
-                   .map(this::getPsuScaStatusMap);
+                   .map(this::getAuthorisationTypeStatusesByPsu);
     }
 
     @NotNull
-    private Map<String, ScaStatus> getPsuScaStatusMap(List<PisAuthorization> authorisations) {
+    private AuthorisationTypeStatusesByPsu getAuthorisationTypeStatusesByPsu(List<PisAuthorization> authorisations) {
+        List<PisAuthorization> actualAuthorisations = authorisations.stream()
+                                                          .filter(auth -> auth.getScaStatus() != ScaStatus.FAILED)
+                                                          .filter(auth -> Objects.nonNull(auth.getPsuData()))
+                                                          .collect(Collectors.toList());
+
+        return new AuthorisationTypeStatusesByPsu(getPsuScaStatusMapByAuthorisationType(actualAuthorisations, CmsAuthorisationType.CREATED),
+                                                  getPsuScaStatusMapByAuthorisationType(actualAuthorisations, CmsAuthorisationType.CANCELLED));
+    }
+
+    private Map<String, ScaStatus> getPsuScaStatusMapByAuthorisationType(List<PisAuthorization> authorisations, CmsAuthorisationType type) {
         return authorisations.stream()
-                   .filter(auth -> auth.getScaStatus() != ScaStatus.FAILED)
-                   .filter(auth -> Objects.nonNull(auth.getPsuData()))
+                   .filter(auth -> auth.getAuthorizationType() == type)
                    .collect(Collectors.toMap(auth -> auth.getPsuData().getPsuId(), PisAuthorization::getScaStatus));
     }
 

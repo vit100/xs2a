@@ -124,10 +124,11 @@ public interface CmsPsuAisService {
     boolean updateAccountAccessInConsent(@NotNull String consentId, @NotNull CmsAisConsentAccessRequest accountAccessRequest, @NotNull String instanceId);
 
     /**
-     * Returns map of psu data and statuses of their authorisations for this consent
+     * Returns map of psu ids and statuses of their authorisations for this consent
      *
-     * @param consentId ID of Consent
+     * @param consentId  ID of Consent
+     * @param instanceId optional ID of particular service instance
      * @return map of psu data and scaStatuses
      */
-    Optional<Map<String, ScaStatus>> getPsuAuthorisationStatusMap(@NotNull String consentId);
+    Optional<Map<String, ScaStatus>> getPsuAuthorisationStatusMap(@NotNull String consentId, @NotNull String instanceId);
 }

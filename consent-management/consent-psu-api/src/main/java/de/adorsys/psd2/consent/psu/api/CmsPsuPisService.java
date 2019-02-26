@@ -18,12 +18,12 @@ package de.adorsys.psd2.consent.psu.api;
 
 import de.adorsys.psd2.consent.api.pis.CmsPayment;
 import de.adorsys.psd2.consent.api.pis.CmsPaymentResponse;
+import de.adorsys.psd2.consent.psu.api.pis.AuthorisationTypeStatusesByPsu;
 import de.adorsys.psd2.xs2a.core.pis.TransactionStatus;
 import de.adorsys.psd2.xs2a.core.psu.PsuIdData;
 import de.adorsys.psd2.xs2a.core.sca.ScaStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
 import java.util.Optional;
 
 public interface CmsPsuPisService {
@@ -69,7 +69,7 @@ public interface CmsPsuPisService {
     Optional<CmsPaymentResponse> checkRedirectAndGetPaymentForCancellation(@NotNull String redirectId, @NotNull String instanceId);
 
     /**
-     * Updates a Status of Payment's autorisation by its ID and PSU ID
+     * Updates a Status of Payment's authorisation by its ID and PSU ID
      *
      * @param psuIdData       PSU credentials data
      * @param paymentId       ID of Payment
@@ -91,10 +91,11 @@ public interface CmsPsuPisService {
     boolean updatePaymentStatus(@NotNull String paymentId, @NotNull TransactionStatus status, @NotNull String instanceId);
 
     /**
-     * Returns map of psu data and statuses of their authorisations for this payment
+     * Returns object with of psu ids and statuses of their authorisations for this payment divided by auth type
      *
-     * @param paymentId ID of Payment
+     * @param paymentId  ID of Payment
+     * @param instanceId optional ID of particular service instance
      * @return map of psu data and scaStatuses
      */
-    Optional<Map<String, ScaStatus>> getPsuAuthorisationStatusMap(@NotNull String paymentId);
+    Optional<AuthorisationTypeStatusesByPsu> getAuthorisationTypeStatusesByPsu(@NotNull String paymentId, @NotNull String instanceId);
 }

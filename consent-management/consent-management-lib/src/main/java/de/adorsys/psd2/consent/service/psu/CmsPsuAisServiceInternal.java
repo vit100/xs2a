@@ -156,8 +156,8 @@ public class CmsPsuAisServiceInternal implements CmsPsuAisService {
     }
 
     @Override
-    public Optional<Map<String, ScaStatus>> getPsuAuthorisationStatusMap(@NotNull String consentId) {
-        return aisConsentRepository.findByExternalId(consentId)
+    public Optional<Map<String, ScaStatus>> getPsuAuthorisationStatusMap(@NotNull String consentId, @NotNull String instanceId) {
+        return getActualAisConsent(consentId, instanceId)
                    .map(AisConsent::getAuthorizations)
                    .map(this::getPsuScaStatusMap);
     }

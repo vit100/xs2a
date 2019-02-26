@@ -40,7 +40,7 @@ public class CmsPsuService {
         return Optional.ofNullable(psuDataForCheck)
                    .map(psuData -> psuDataList.stream()
                                        .filter(psu -> StringUtils.equals(psu.getPsuId(), psuData.getPsuId()))
-                                       .findAny()
+                                       .findFirst()
                                        .orElse(psuDataForCheck));
     }
 
