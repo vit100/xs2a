@@ -80,3 +80,22 @@ They may be used independently or all together to provide 3 Swagger specificatio
 
 From now on only one enum that represents account access type exists in xs2a. `AccountAccessType` is moved to `xs2a-core` package, duplicates 
 `AisAccountAccessType`, `SpiAccountAccessType` and `Xs2aAccountAccessType` are deleted.
+
+## Multilevel SCA required is stored in AIS consent
+
+AIS consent (entity and table) was extended to store Multilevel SCA required (a `boolean` value). 
+`SpiInitiateAisConsentResponse` was extended to contain `multilevelScaRequired`
+Multilevel SCA required is saved in AIS consent during the consent initiation. 
+The value is received from SPI as a part of SPI response payload (`SpiInitiateAisConsentResponse` type) on `AisConsentSpi#initiateAisConsent()` call. 
+
+## Multilevel SCA for Establish Consent in Embedded approach
+
+Support of multilevel SCA for AIS Embedded approach was added.
+To make it work, `AisConsentSpi#verifyScaAuthorisation()` SPI Response payload type was changed from `VoidResponse` 
+to `SpiVerifyScaAuthorisationResponse` (currently contains only one field - `ConsentStatus`). 
+It has been done to provide the possibility for SPI to return the consent status when authorisation is finished.
+We expect to receive a `PARTIALLY_AUTHORISED` consent status during the Multilevel SCA flow if authorisation is not finished by all PSUs.
+
+Please, note: if AIS consent contains `multilevelScaRequired`, that equals to `false`, 
+but `PARTIALLY_AUTHORISED` has been received as a part of `AisConsentSpi#verifyScaAuthorisation()` response payload, 
+`multilevelScaRequired` value of AIS consent will be updated to `true` in DB.
