@@ -193,7 +193,8 @@ public class Xs2aAisConsentMapper {
                        ac.isTppRedirectPreferred(),
                        ac.getPsuIdDataList(),
                        ac.getTppInfo(),
-                       ac.getAisConsentRequestType()))
+                       ac.getAisConsentRequestType(),
+                       ac.getUsageCounter()))
                    .orElse(null);
     }
 

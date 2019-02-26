@@ -80,3 +80,6 @@ They may be used independently or all together to provide 3 Swagger specificatio
 
 From now on only one enum that represents account access type exists in xs2a. `AccountAccessType` is moved to `xs2a-core` package, duplicates 
 `AisAccountAccessType`, `SpiAccountAccessType` and `Xs2aAccountAccessType` are deleted.
+
+## Bugfix: Fixed the process of checking daily access limit for AIS consent
+From now on when TPP exceeds allowed frequency per day for AIS consent, he will receive response with `ACCESS_EXCEEDEDD` error (response code HTTP 429).

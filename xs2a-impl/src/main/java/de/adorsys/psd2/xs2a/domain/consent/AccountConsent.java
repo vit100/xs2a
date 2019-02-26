@@ -69,8 +69,11 @@ public class AccountConsent {
     private final AisConsentRequestType aisConsentRequestType;
 
     @JsonIgnore
-    public boolean isValidFrequency() {
-        return frequencyPerDay > 0;
+    private final int usageCounter;
+
+    @JsonIgnore
+    public boolean isAccessExceeded() {
+        return usageCounter <= 0;
     }
 
     @JsonIgnore
