@@ -193,22 +193,47 @@ The Payment initiation depends heavily on the **Strong Customer Authentication (
 
 After the Payment Initiation is created, it has to be authorise from the PSU. In case of redirect approach the authorisation can be explicit or implicit.
     
- 1. **The explicit Start of the authorisation** process means that the Payment initiation Request is followed by an explicit Request of the TPP to start the authorisation. This is followed by a redirection to the ASPSP SCA authorisation site. 
- A status request might be requested by the TPP after the session is reredirected to the TPP's system: 
+ * **The explicit Start of the authorisation** process means that the Payment initiation Request is followed by an explicit Request of the TPP to start the authorisation. This is followed by a redirection to the ASPSP SCA authorisation site. 
+ A status request might be requested by the TPP after the session is reredirected to the TPP's system 
    
-    * PSU initiates a payment via a TPP and the TPP make a Payment-Initiation Request to the ASPSP
-    * After the Payment Initiation is created, TPP have to send to ASPSP an Authorisation Request for the initiated payment
-    * TPP have to inform the customer to authorise the transaction redirectly
-    * The PSU will be redirected to an authorisation webpage of ASPSP and authorises the payment with TAN confirmation received via email.
-    * The TPP can get the Payment'status from ASPSP by making a Payment-Status Request
+     * In this case the authorisation will be used in case if tppExplicitAuthorisationPreferred = true and signingBasketSupported = true or in case of multilevel SCA
+         * **tppExplicitAuthorisationPreferred**: value of tpp'choice of authorisation method
+         * **signingBasketSupported**: reads if signing basket is supported on the ASPSP profile. It will return _true_  if ASPSP supports signing basket , _false_ if doesn't
     
- 2. In case of **implicit Start of the Authorisation process** the ASPSP needed no additional data from TPP. In this case, the redirection of the PSU browser session happens 
+ * In case of **implicit Start of the Authorisation process** the ASPSP needed no additional data from TPP. In this case, the redirection of the PSU browser session happens 
  directly after the Payment Initiation Response. In addition an SCA status request can be sent by the TPP to follow the SCA process.
+  
+    * In this case the authorisation will be used based on tppExplicitAuthorisationPreferred and signingBasketSupported values.
+        * Implicit authorisation will be used in all the cases where tppExplicitAuthorisationPreferred or signingBasketSupported not equals true
+        * Implicit approach is impossible in case of multilevel SCA
+         
+
+* For The Redirect Approach the developer needs to implement the following methods: 
+
+    * **createCommonPaymentAuthorisation**: this will create payment authorisation response and contains:
+        * **paymentId**: ASPSP identifier of a payment,
+        * **paymentType**: e.g. single payment, periodic payment, bulk payment
+        * **psudata**: PsuIdData container of authorisation data about PSU
+        
+    * **updateCommonPaymentPsuData**: contains **request** that provides transporting data when updating consent psu data. It will return the update payment authorization response
+    
+    * **getAuthorisationSubResources** with the **paymentId** and returns authorisation sub resources
+    
+    * **getAuthorisationScaStatus** with **paymentId** (ASPSP identifier of the payment, associated with the authorisation) and 
+    **authorisationId** (authorisation identifier). This method will returns SCA status
+    
+    * **getScaApproachServiceTypeProvider**: to get sca approach used in current service. This will return the ScaApproach **“Redirect”**
+    
+    
+* Redirect Approach for Payment cancellation
+
+    * **createCommonPaymentCancellationAuthorisation**: This will create payment cancellation authorisation with **paymentId**, **paymentType** and **psudata**
+    * **getCancellationAuthorisationSubResources**: with the **paymentId**
+    * **updateCommonPaymentCancellationPsuData**: updates the cancellation for the payment
+    * **getCancellationAuthorisationScaStatus** with **PaymentId** and **CancellationId**
+    * **getScaApproachServiceTypeProvider**: to get sca approach used in current service. This will return the ScaApproach **“Redirect”**
+    
  
-   * PSU initiates a payment via a TPP and the TPP make a Payment-Initiation Request to the ASPSP
-   * After the Payment Initiation Response, the PSU have to authorise the transaction
-   * The PSU will be redirected to an authorisation Webpage of ASPSP and authorises the payment with TAN confirmation received via email.
-   * The TPP can get the Payment'status from ASPSP by making a Payment-Status Request
     
 
 #### SCA Approach DECOUPLED
